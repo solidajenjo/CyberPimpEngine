@@ -77,11 +77,13 @@
   <ItemGroup>
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Entity.h" />
+    <ClInclude Include="Engine\EntityAttachable.h" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\ModuleCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleModelLoader.h" />
-    <ClInclude Include="EntityAttachable.h" />
+    <ClInclude Include="Engine\SubModuleEditorMenu.h" />
+    <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Geometry\AABB.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Geometry\AABB2D.h" />
@@ -152,17 +154,18 @@
     <ClInclude Include="Resources\imgui\imstb_rectpack.h" />
     <ClInclude Include="Resources\imgui\imstb_textedit.h" />
     <ClInclude Include="Resources\imgui\imstb_truetype.h" />
-    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Application.cpp" />
     <ClCompile Include="Engine\Entity.cpp" />
+    <ClCompile Include="Engine\EntityAttachable.cpp" />
     <ClCompile Include="Engine\log.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Engine\ModuleCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleModelLoader.cpp" />
-    <ClCompile Include="EntityAttachable.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />
+    <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Geometry\Capsule.cpp" />
@@ -205,7 +208,6 @@
     <ClCompile Include="Resources\imgui\imgui_demo.cpp" />
     <ClCompile Include="Resources\imgui\imgui_draw.cpp" />
     <ClCompile Include="Resources\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

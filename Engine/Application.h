@@ -32,6 +32,8 @@ public:
 	ModuleModelLoader* modelLoader = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
+
+	bool exit = false;
 private:
 
 	std::list<Module*> modules;

@@ -25,16 +25,22 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		SDL_DisplayMode DM;
+		SDL_GetCurrentDisplayMode(0, &DM);
+		screenWidth = DM.w;
+		screenHeight = DM.h;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
+		else if (RESIZABLE_WINDOW)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, flags);
 
 		if(window == NULL)
 		{
@@ -43,9 +49,11 @@ bool ModuleWindow::Init()
 		}
 		else
 		{
-			//Get window surface
-			
+			//Get window surface			
 			screen_surface = SDL_GetWindowSurface(window);
+			if (WINDOWED_FULLSCREEN) {
+				SDL_MaximizeWindow(window);
+			}
 		}
 	}
 

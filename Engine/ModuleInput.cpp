@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "ModuleWindow.h"
 #include "SDL.h"
 
 ModuleInput::ModuleInput()
@@ -32,6 +34,31 @@ update_status ModuleInput::Update()
 	SDL_PumpEvents();
 
 	keyboard = SDL_GetKeyboardState(NULL);
+
+	SDL_Event sdlEvent;
+
+	while (SDL_PollEvent(&sdlEvent) != 0)
+	{
+		// Esc button is pressed
+		switch (sdlEvent.type)
+		{
+		case SDL_QUIT:
+			App->exit = true;
+			break;
+
+		case SDL_WINDOWEVENT:
+			if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+			{
+				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);								
+			}
+			if (sdlEvent.window.event == SDL_WINDOWEVENT_MAXIMIZED) 
+			{
+				LOG("Maximized window");
+				SDL_MaximizeWindow(App->window->window);
+			}
+			break;
+		}
+	}
 
 	return UPDATE_CONTINUE;
 }

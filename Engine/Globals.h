@@ -14,8 +14,9 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
 #define FULLSCREEN false
+#define WINDOWED_FULLSCREEN true
+#define RESIZABLE_WINDOW true
 #define VSYNC true
 #define TITLE "CyberPimp Engine"
+#define OPENGL_VERSION "#version 330"

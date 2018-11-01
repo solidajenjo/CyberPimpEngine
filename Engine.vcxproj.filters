@@ -146,10 +146,15 @@
     <ClCompile Include="Engine\ModuleModelLoader.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
-    <ClCompile Include="EntityAttachable.cpp">
+    <ClCompile Include="Engine\SubModuleEditorMenu.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Transform.cpp">
       <Filter>Entities\Entity Attachables</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Engine\EntityAttachable.cpp">
+      <Filter>Entities\Entity Attachables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\imgui\imconfig.h">
@@ -380,10 +385,15 @@
     <ClInclude Include="Engine\ModuleModelLoader.h">
       <Filter>EngineModules</Filter>
     </ClInclude>
-    <ClInclude Include="EntityAttachable.h">
+    <ClInclude Include="Engine\SubModuleEditorMenu.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Transform.h">
       <Filter>Entities\Entity Attachables</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Engine\EntityAttachable.h">
+      <Filter>Entities\Entity Attachables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
