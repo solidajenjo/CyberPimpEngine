@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _APPLICATION_H
+#define _APPLICATION_H
 
 #include<list>
 #include "Globals.h"
@@ -8,7 +9,9 @@ class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
-class ModuleRenderExercise;
+class ModuleModelLoader;
+class ModuleEditor;
+class ModuleCamera;
 
 class Application
 {
@@ -26,8 +29,9 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleTextures* textures = nullptr;
 	ModuleInput* input = nullptr;
-    ModuleRenderExercise* exercise = nullptr;
-
+	ModuleModelLoader* modelLoader = nullptr;
+	ModuleEditor* editor = nullptr;
+	ModuleCamera* camera = nullptr;
 private:
 
 	std::list<Module*> modules;
@@ -35,3 +39,5 @@ private:
 };
 
 extern Application* App;
+
+#endif

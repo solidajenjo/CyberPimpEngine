@@ -1,9 +1,8 @@
-#pragma once
-#include<list>
+#ifndef _MODULE_TEXTURES_H
+#define _MODULE_TEXTURES_H
+
 #include "Module.h"
 #include "Globals.h"
-
-struct SDL_Texture;
 
 class ModuleTextures : public Module
 {
@@ -14,8 +13,6 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	SDL_Texture* const Load(const char* path);
-
-private:
-	std::list<SDL_Texture*> textures;
 };
+
+#endif

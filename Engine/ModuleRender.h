@@ -1,10 +1,8 @@
-#pragma once
+#ifndef _MODULE_RENDER_H
+#define _MODULE_RENDER_H
+
 #include "Module.h"
 #include "Globals.h"
-
-struct SDL_Texture;
-struct SDL_Renderer;
-struct SDL_Rect;
 
 class ModuleRender : public Module
 {
@@ -22,3 +20,5 @@ public:
 private:
 	void* context;
 };
+
+#endif

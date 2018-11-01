@@ -1,8 +1,8 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#ifndef _MODULE_WINDOW_H
+#define _MODULE_WINDOW_H
 
 #include "Module.h"
-#include "SDL/include/SDL.h"
+#include "SDL.h"
 
 class Application;
 
@@ -29,4 +29,4 @@ public:
 	SDL_Surface* screen_surface = NULL;
 };
 
-#endif // __ModuleWindow_H__
+#endif 
