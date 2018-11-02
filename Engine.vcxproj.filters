@@ -155,6 +155,9 @@
     <ClCompile Include="Engine\EntityAttachable.cpp">
       <Filter>Entities\Entity Attachables</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorConsole.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\imgui\imconfig.h">
@@ -393,6 +396,12 @@
     </ClInclude>
     <ClInclude Include="Engine\EntityAttachable.h">
       <Filter>Entities\Entity Attachables</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditor.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorConsole.h">
+      <Filter>EditorModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

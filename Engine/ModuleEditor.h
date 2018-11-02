@@ -2,8 +2,11 @@
 #define _MODULE_EDITOR_H
 
 #include "Module.h"
+#include <vector>
 
+class SubModuleEditor;
 class SubModuleEditorMenu;
+class SubModuleEditorConsole;
 
 class ModuleEditor :
 	public Module
@@ -13,20 +16,19 @@ public:
 	~ModuleEditor();
 	
 	bool Init();
-
 	update_status PreUpdate();
-
 	update_status Update();
-
 	update_status PostUpdate();
-
 	bool CleanUp();
 
 //members
 
-	SubModuleEditorMenu* menu;
+	std::vector<SubModuleEditor*> subModules;
 
-	bool p_open = true;
+	SubModuleEditorMenu* menu;
+	SubModuleEditorConsole* console;
+
+	bool bDock = false;
 };
 
 #endif

@@ -82,6 +82,7 @@
     <ClInclude Include="Engine\ModuleCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleModelLoader.h" />
+    <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Resources\imgui\imstb_rectpack.h" />
     <ClInclude Include="Resources\imgui\imstb_textedit.h" />
     <ClInclude Include="Resources\imgui\imstb_truetype.h" />
+    <ClInclude Include="Engine\SubModuleEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Application.cpp" />
@@ -164,6 +166,7 @@
     <ClCompile Include="Engine\ModuleCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleModelLoader.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.cpp" />

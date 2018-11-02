@@ -1,13 +1,15 @@
 #ifndef _SUB_MODULE_EDITOR_MENU_H
 #define _SUB_MODULE_EDITOR_MENU_H
 
-class SubModuleEditorMenu 
+#include "SubModuleEditor.h"
+
+class SubModuleEditorMenu : public SubModuleEditor
 {
 public:
-	SubModuleEditorMenu();
+	SubModuleEditorMenu(char* editorModuleName);
 	~SubModuleEditorMenu();
 
-	bool drawSubmodule();
+	void Show() ;
 };
 
 #endif

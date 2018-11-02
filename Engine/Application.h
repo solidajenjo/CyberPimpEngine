@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include "Module.h"
 
+struct ImGuiTextBuffer;
+
 class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
@@ -34,6 +36,8 @@ public:
 	ModuleCamera* camera = nullptr;
 
 	bool exit = false;
+	ImGuiTextBuffer* consoleBuffer = nullptr;
+
 private:
 
 	std::list<Module*> modules;

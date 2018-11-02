@@ -7,6 +7,7 @@
 #include "ModuleRender.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
+#include "SubModuleEditorConsole.h"
 
 #include "SDL.h"
 
@@ -32,9 +33,9 @@ bool ModuleEditor::Init()
 	
 	ImGui::StyleColorsDark();
 	
-
-	menu = new SubModuleEditorMenu();
-
+	subModules.push_back(menu = new SubModuleEditorMenu("Menu"));
+	subModules.push_back(console = new SubModuleEditorConsole("Console"));
+	App->consoleBuffer = new ImGuiTextBuffer();
 	return true;
 }
 
@@ -46,15 +47,15 @@ update_status ModuleEditor::PreUpdate()
 	
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
 
-	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-	ImGui::Begin("DockSpace Demo", &p_open, window_flags);
+	ImGui::Begin("DockSpace Demo", &bDock, window_flags);
 	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
 	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 	ImGui::End();
@@ -64,13 +65,13 @@ update_status ModuleEditor::PreUpdate()
 
 update_status ModuleEditor::Update()
 {
-	menu->drawSubmodule();
+	for (std::vector<SubModuleEditor*>::iterator it = subModules.begin(); it != subModules.end(); ++it)
+		(*it)->Show();
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
-	//ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	return UPDATE_CONTINUE;

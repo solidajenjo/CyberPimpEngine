@@ -1,9 +1,11 @@
 #include "SubModuleEditorMenu.h"
+#include "ModuleEditor.h"
 #include "Application.h"
 #include "imgui.h"
+#include <vector>
 
 
-SubModuleEditorMenu::SubModuleEditorMenu()
+SubModuleEditorMenu::SubModuleEditorMenu(char* editorModuleName) : SubModuleEditor(editorModuleName)
 {	
 }
 
@@ -12,10 +14,17 @@ SubModuleEditorMenu::~SubModuleEditorMenu()
 {
 }
 
-bool SubModuleEditorMenu::drawSubmodule()
+void SubModuleEditorMenu::Show()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("SubModules")) {
+			for (std::vector<SubModuleEditor*>::iterator it = App->editor->subModules.begin() + 1; it != App->editor->subModules.end(); ++it)
+			{
+				ImGui::Checkbox((*it)->editorModuleName, &(*it)->enabled);
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Help")) {
 
 			if (ImGui::MenuItem("Documentation"))
@@ -31,5 +40,4 @@ bool SubModuleEditorMenu::drawSubmodule()
 		}
 		ImGui::EndMainMenuBar();
 	}
-	return true;
 }
