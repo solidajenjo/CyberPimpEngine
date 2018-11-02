@@ -82,8 +82,12 @@
     <ClInclude Include="Engine\ModuleCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleModelLoader.h" />
+    <ClInclude Include="Engine\ModuleProgram.h" />
+    <ClInclude Include="Engine\ModuleWorld.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
+    <ClInclude Include="Engine\SubModuleEditorViewPort.h" />
+    <ClInclude Include="Engine\SubModuleEditorWorldInspector.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Resources\MathGeoLib\include\Geometry\AABB.h" />
@@ -166,8 +170,12 @@
     <ClCompile Include="Engine\ModuleCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleModelLoader.cpp" />
+    <ClCompile Include="Engine\ModuleProgram.cpp" />
+    <ClCompile Include="Engine\ModuleWorld.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorViewPort.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorWorldInspector.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Resources\MathGeoLib\include\Geometry\AABB.cpp" />
@@ -211,6 +219,12 @@
     <ClCompile Include="Resources\imgui\imgui_demo.cpp" />
     <ClCompile Include="Resources\imgui\imgui_draw.cpp" />
     <ClCompile Include="Resources\imgui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\axis.fs" />
+    <None Include="Game\axis.vs" />
+    <None Include="Game\default.fs" />
+    <None Include="Game\default.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,11 +9,12 @@ class Entity
 		World instantiable object
 	*/
 public:
-	Entity();
-	~Entity();
+	Entity(char* name) : name(name) {};
+	~Entity() {};
 
+	bool Render();
 //members
-
+	char* name;
 	Transform* transform;
 };
 

@@ -1,6 +1,5 @@
-#ifndef _MODULE_TEXTURES_H
-#define _MODULE_TEXTURES_H
-
+#pragma once
+#include<vector>
 #include "Module.h"
 #include "Globals.h"
 
@@ -13,6 +12,6 @@ public:
 	bool Init();
 	bool CleanUp();
 
-};
+	unsigned Load(const char* path, int &xSize, int &ySize);
 
-#endif
+};

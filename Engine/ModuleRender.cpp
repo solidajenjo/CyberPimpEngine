@@ -2,8 +2,11 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleProgram.h"
+#include "ModuleCamera.h"
 #include "SDL.h"
 #include "GL/glew.h"
+#include "imgui.h"
 
 ModuleRender::ModuleRender()
 {
@@ -63,6 +66,7 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -81,5 +85,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
+	App->window->screenWidth = width;
+	App->window->screenHeight = height;
 }
 

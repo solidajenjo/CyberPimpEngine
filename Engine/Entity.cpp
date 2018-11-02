@@ -1,11 +1,9 @@
 #include "Entity.h"
 
-Entity::Entity()
+
+bool Entity::Render()
 {
+	bool ret = true;
 
-}
-
-Entity::~Entity()
-{
-
+	return ret;
 }

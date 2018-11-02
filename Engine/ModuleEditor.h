@@ -7,6 +7,8 @@
 class SubModuleEditor;
 class SubModuleEditorMenu;
 class SubModuleEditorConsole;
+class SubModuleEditorWorldInspector;
+class SubModuleEditorViewPort;
 
 class ModuleEditor :
 	public Module
@@ -27,6 +29,8 @@ public:
 
 	SubModuleEditorMenu* menu;
 	SubModuleEditorConsole* console;
+	SubModuleEditorWorldInspector* worldInspector;
+	SubModuleEditorViewPort* viewPort;
 
 	bool bDock = false;
 };

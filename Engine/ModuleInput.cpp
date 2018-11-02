@@ -49,13 +49,15 @@ update_status ModuleInput::Update()
 		case SDL_WINDOWEVENT:
 			if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 			{
-				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);								
+				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			}
-			if (sdlEvent.window.event == SDL_WINDOWEVENT_MAXIMIZED) 
+			if (sdlEvent.window.event == SDL_WINDOWEVENT_MAXIMIZED)
 			{
 				LOG("Maximized window");
 				SDL_MaximizeWindow(App->window->window);
 			}
+			break;
+		default:
 			break;
 		}
 	}

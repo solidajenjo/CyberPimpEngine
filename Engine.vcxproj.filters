@@ -158,6 +158,18 @@
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorWorldInspector.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleWorld.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleProgram.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorViewPort.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\imgui\imconfig.h">
@@ -403,6 +415,18 @@
     <ClInclude Include="Engine\SubModuleEditorConsole.h">
       <Filter>EditorModules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorWorldInspector.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleWorld.h">
+      <Filter>EngineModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleProgram.h">
+      <Filter>EngineModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorViewPort.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -432,5 +456,22 @@
     <Filter Include="Entities\Entity Attachables">
       <UniqueIdentifier>{a2f21697-d5a4-4273-be4d-b124859fbda0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{7ffd6754-325f-45ca-adf7-39c25098038c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\axis.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\axis.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\default.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

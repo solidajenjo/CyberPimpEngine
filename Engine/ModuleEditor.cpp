@@ -8,6 +8,8 @@
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
+#include "SubModuleEditorWorldInspector.h"
+#include "SubModuleEditorViewPort.h"
 
 #include "SDL.h"
 
@@ -35,7 +37,10 @@ bool ModuleEditor::Init()
 	
 	subModules.push_back(menu = new SubModuleEditorMenu("Menu"));
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
+	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
+	subModules.push_back(viewPort = new SubModuleEditorViewPort("Scene"));
 	App->consoleBuffer = new ImGuiTextBuffer();
+
 	return true;
 }
 
@@ -82,7 +87,7 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-	
+
 	delete menu;
 	return true;
 }

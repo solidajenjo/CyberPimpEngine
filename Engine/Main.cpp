@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
+#include "SubModuleEditorViewPort.h"
 #include "Globals.h"
 
 #include "SDL.h"
@@ -44,6 +46,7 @@ int main(int argc, char ** argv)
 			{
 				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
+				App->editor->viewPort->Init(); //Post glew setup initialization!!
 			}
 
 			break;
