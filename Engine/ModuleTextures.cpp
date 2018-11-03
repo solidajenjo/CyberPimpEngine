@@ -36,7 +36,7 @@ bool ModuleTextures::CleanUp()
 }
 
 // Load new texture from file path
-unsigned ModuleTextures::Load(const char* path, int &xSize, int &ySize)
+unsigned ModuleTextures::Load(const char* path)
 {
 	ILuint imageId;
 	ilGenImages(1, &imageId);

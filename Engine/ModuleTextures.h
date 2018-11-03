@@ -12,6 +12,6 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	unsigned Load(const char* path, int &xSize, int &ySize);
+	unsigned Load(const char* path);
 
 };

@@ -13,6 +13,8 @@ public:
 	ModuleWorld();
 	~ModuleWorld();
 
+	bool Init();
+
 	update_status Update();
 	bool CleanUp();
 

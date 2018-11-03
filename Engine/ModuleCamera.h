@@ -13,6 +13,7 @@ public:
 	~ModuleCamera();
 
 	bool Init();
+	update_status PreUpdate();
 	update_status Update();
 
 	void rotate(float xRot, float yRot, float zRot);
@@ -29,6 +30,8 @@ public:
 	math::float3 up;
 
 	float vFov = 90;
+	float oldAspectRatio = 0;
+
 };
 
 #endif;

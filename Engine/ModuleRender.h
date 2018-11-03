@@ -16,9 +16,15 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
+	void RecalcFrameBufferTexture() const;
 
 public:
 	void* context;
+
+	unsigned int framebuffer;
+	unsigned int texColorBuffer;
+	unsigned int viewPortWidth;
+	unsigned int viewPortHeight;
 };
 
 #endif

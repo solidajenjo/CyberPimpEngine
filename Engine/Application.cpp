@@ -7,6 +7,7 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
+#include "ModuleWorld.h"
 
 using namespace std;
 
@@ -18,9 +19,10 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(world = new ModuleWorld());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
-	modules.push_back(program = new ModuleProgram("axis.vs", "axis.fs"));
+	modules.push_back(program = new ModuleProgram("default.vs", "default.fs"));
 }
 
 Application::~Application()

@@ -1,5 +1,8 @@
 #include "SubModuleEditorWorldInspector.h"
 #include "Application.h"
+#include "ModuleWorld.h"
+#include "Entity.h"
+#include "EntityMesh.h"
 #include "imgui.h"
 
 
@@ -20,9 +23,13 @@ void SubModuleEditorWorldInspector::Show()
 		ImGui::Begin(editorModuleName, &enabled);
 		if (ImGui::TreeNode("World"))
 		{
-			if (ImGui::TreeNode("BakerHouse"))
+			for (unsigned i = 0; i < App->world->worldEntities.size(); ++i)
 			{
-				ImGui::TreePop();
+				EntityMesh* em = (EntityMesh*)App->world->worldEntities[i];
+				if (ImGui::TreeNode(App->world->worldEntities[i]->entityName))
+				{
+					ImGui::TreePop();
+				}
 			}
 			ImGui::TreePop();
 		}

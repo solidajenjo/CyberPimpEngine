@@ -1,16 +1,22 @@
-#ifndef _MODULE_MODEL_LOADER_H
-#define _MODULE_MODEL_LOADER_H
-
+#pragma once
 #include "Module.h"
-#include "Globals.h"
+#include <vector>
 
-class ModuleModelLoader : public Module
+struct aiMesh;
+struct aiMaterial;
+
+class EntityMesh;
+
+class ModuleModelLoader :
+	public Module
 {
 public:
 	ModuleModelLoader();
 	~ModuleModelLoader();
 
-
+	std::vector<EntityMesh*> Load(char * geometryPath); //return Mesh references
+	unsigned GenerateMeshData(aiMesh* meshes, unsigned &vio);
+	unsigned GenerateMaterialData(aiMaterial* materials);
+	std::vector<unsigned> meshes;
 };
 
-#endif

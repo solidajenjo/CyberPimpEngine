@@ -11,11 +11,6 @@ public:
 
 	void Show();
 
-	void Init();
-
-	unsigned int framebuffer;
-	unsigned int texColorBuffer;
-
 };
 
 #endif

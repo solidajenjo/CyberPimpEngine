@@ -1,9 +1,12 @@
 #include "Entity.h"
+#include "Transform.h"
 
-
-bool Entity::Render()
+Entity::Entity(const char * name) : entityName(name)
 {
-	bool ret = true;
+	transform = new Transform();
+}
 
-	return ret;
+Entity::~Entity()
+{
+	delete transform;
 }

@@ -15,7 +15,7 @@ typedef struct
 
 typedef struct 
 {
-	float x = 0, y = 0, z = 0;
+	float x = 1, y = 1, z = 1;
 }Scale;
 
 class Transform :
@@ -25,9 +25,11 @@ public:
 	Transform();
 	~Transform();
 
+	float* getModelMatrix() const;
+
 //members
 
-	Position positon;
+	Position position;
 	Rotation rotation;
 	Scale scale;
 };

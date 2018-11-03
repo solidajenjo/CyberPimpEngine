@@ -15,6 +15,7 @@ class ModuleModelLoader;
 class ModuleEditor;
 class ModuleCamera;
 class ModuleProgram;
+class ModuleWorld;
 
 class Application
 {
@@ -36,6 +37,7 @@ public:
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
+	ModuleWorld* world = nullptr;
 
 	bool exit = false;
 	ImGuiTextBuffer* consoleBuffer = nullptr;

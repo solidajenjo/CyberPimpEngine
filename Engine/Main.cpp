@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 			{
 				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
-				App->editor->viewPort->Init(); //Post glew setup initialization!!
+				
 			}
 
 			break;

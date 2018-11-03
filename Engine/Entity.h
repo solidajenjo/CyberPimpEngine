@@ -9,12 +9,20 @@ class Entity
 		World instantiable object
 	*/
 public:
-	Entity(char* name) : name(name) {};
-	~Entity() {};
+	Entity(const char* name);
+	
+	~Entity();
 
-	bool Render();
+	virtual bool Init() {
+		return true;
+	};
+
+	virtual bool Render() const
+	{
+		return true;
+	};
 //members
-	char* name;
+	const char* entityName;
 	Transform* transform;
 };
 

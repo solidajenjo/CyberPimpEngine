@@ -20,6 +20,7 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
+	bool ret = true;
 	LOG("Creating Renderer context");
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -47,20 +48,51 @@ bool ModuleRender::Init()
     SDL_GetWindowSize(App->window->window, &width, &height);
     glViewport(0, 0, width, height);
 
-	return true;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+	GLuint colorRenderbuffer;
+	glGenRenderbuffers(1, &colorRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+
+	GLuint depthRenderbuffer;
+	glGenRenderbuffers(1, &depthRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+
+	// generate texture
+	glGenTextures(1, &texColorBuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->screenWidth, App->window->screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// attach it to currently bound framebuffer object
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE) {
+		LOG("Failed to make complete framebuffer object %x", status);
+		ret = false;
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return ret;
 }
 
 update_status ModuleRender::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glViewport(0, 0, viewPortWidth, viewPortHeight);
 	return UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleRender::Update()
 {
-
 	return UPDATE_CONTINUE;
 }
 
@@ -76,6 +108,8 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
+	glDeleteFramebuffers(1, &framebuffer);
+	glDeleteTextures(1, &texColorBuffer);
 
 	//Destroy window
 
@@ -84,8 +118,34 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
-    glViewport(0, 0, width, height); 
 	App->window->screenWidth = width;
 	App->window->screenHeight = height;
+}
+
+void ModuleRender::RecalcFrameBufferTexture() const
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer->framebuffer); //Draw to frame buffer
+
+	/*
+	GLuint colorRenderbuffer;
+	glGenRenderbuffers(1, &colorRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, App->renderer->viewPortWidth, App->renderer->viewPortHeight);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+
+	GLuint depthRenderbuffer;
+	glGenRenderbuffers(1, &depthRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, App->renderer->viewPortWidth, App->renderer->viewPortHeight);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+	*/
+	glBindTexture(GL_TEXTURE_2D, App->renderer->texColorBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->renderer->viewPortWidth, App->renderer->viewPortHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, App->renderer->texColorBuffer, 0);
+
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear texture frame buffer
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
