@@ -130,5 +130,5 @@ unsigned int ModuleModelLoader::GenerateMaterialData(aiMaterial * materials)
 		LOG("Failed retrieving texture name.");
 		return -1;
 	}
-	return App->textures->Load("Baker_house.png");
+	return App->textures->Load(file.C_Str());
 }

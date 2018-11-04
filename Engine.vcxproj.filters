@@ -173,6 +173,12 @@
     <ClCompile Include="Engine\Entity.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorCamera.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorConfig.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\imgui\imconfig.h">
@@ -645,6 +651,12 @@
     </ClInclude>
     <ClInclude Include="Resources\Assimp\include\assimp\XMLTools.h">
       <Filter>Utilities\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorCamera.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorConfig.h">
+      <Filter>EditorModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

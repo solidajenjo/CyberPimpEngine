@@ -35,6 +35,7 @@ bool ModuleRender::Init()
 	glewInit();
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -42,7 +43,7 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 
 	glClearDepth(1.0f);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 
     int width, height;
     SDL_GetWindowSize(App->window->window, &width, &height);
@@ -125,26 +126,12 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 void ModuleRender::RecalcFrameBufferTexture() const
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer->framebuffer); //Draw to frame buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, App->renderer->framebuffer); 
 
-	/*
-	GLuint colorRenderbuffer;
-	glGenRenderbuffers(1, &colorRenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, App->renderer->viewPortWidth, App->renderer->viewPortHeight);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
-
-	GLuint depthRenderbuffer;
-	glGenRenderbuffers(1, &depthRenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, App->renderer->viewPortWidth, App->renderer->viewPortHeight);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-	*/
 	glBindTexture(GL_TEXTURE_2D, App->renderer->texColorBuffer);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->renderer->viewPortWidth, App->renderer->viewPortHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, App->renderer->texColorBuffer, 0);
 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear texture frame buffer
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

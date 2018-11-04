@@ -12,7 +12,7 @@
 
 bool EntityMesh::Render() const
 {	
-	transform->rotation.y += 0.02f;
+	//transform->rotation.y += 0.02f;
 	//transform->rotation.x += 0.02f;
 	//transform->rotation.z += 0.02f;
 	glUseProgram(App->program->program);
@@ -24,7 +24,7 @@ bool EntityMesh::Render() const
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 		"proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 	glActiveTexture(GL_TEXTURE0);
-
+	glUniform1f(glGetUniformLocation(App->program->program, "uvMultiplier"), 1);
 	glBindTexture(GL_TEXTURE_2D, mesh.texture);
 	glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0); 
 	glBindVertexArray(mesh.VAO);

@@ -10,6 +10,8 @@
 #include "SubModuleEditorConsole.h"
 #include "SubModuleEditorWorldInspector.h"
 #include "SubModuleEditorViewPort.h"
+#include "SubModuleEditorConfig.h"
+#include "SubModuleEditorCamera.h"
 
 #include "SDL.h"
 
@@ -39,6 +41,8 @@ bool ModuleEditor::Init()
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
 	subModules.push_back(viewPort = new SubModuleEditorViewPort("Scene"));
+	subModules.push_back(config = new SubModuleEditorConfig("Config"));
+	subModules.push_back(camera = new SubModuleEditorCamera("Camera"));
 	App->consoleBuffer = new ImGuiTextBuffer();
 
 	return true;

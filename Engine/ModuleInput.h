@@ -3,8 +3,20 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Point.h"
+#include "SDL_scancode.h"
 
-typedef unsigned __int8 Uint8;
+#define NUM_MOUSE_BUTTONS 5
+
+//typedef unsigned __int8 Uint8;
+
+enum KeyState
+{
+	KEY_IDLE = 0,
+	KEY_DOWN,
+	KEY_REPEAT,
+	KEY_UP
+};
 
 class ModuleInput : public Module
 {
@@ -14,11 +26,32 @@ public:
 	~ModuleInput();
 
 	bool Init();
-	update_status Update();
+	bool Start();
+	update_status PreUpdate();
 	bool CleanUp();
 
+	// Check key states (includes mouse and joy buttons)
+	KeyState GetKey(int id) const
+	{
+		return keyboard[id];
+	}
+
+	KeyState GetMouseButtonDown(int id) const
+	{
+		return mouse_buttons[id - 1];
+	}
+
+
+	// Get mouse / axis position
+	const iPoint& GetMouseMotion() const;
+	const iPoint& GetMousePosition() const;
+	int wheelAmount = 0;
+
 private:
-	const Uint8 *keyboard = NULL;
+	KeyState*	keyboard;
+	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	iPoint mouse_motion;
+	iPoint mouse;
 };
 
 #endif
