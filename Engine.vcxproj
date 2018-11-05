@@ -13,7 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
-    <ProjectName>Cyber Pimp Engine</ProjectName>
+    <ProjectName>Draconis Engine</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -51,7 +52,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>.\Resources\SDL\libx86;.\Resources\DevIL\lib\x86;.\Resources\Assimp\lib\x86;./Resources/glew-2.1.0/lib/Release/Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\Resources\SDL\libx86;.\Resources\DevIL\lib\x86;.\Resources\Assimp\lib\x86;.\Resources\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;assimp.lib;ILUT.lib;ILU.lib;DevIL.lib;glew32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
     <ClInclude Include="Engine\SubModuleEditorViewPort.h" />
     <ClInclude Include="Engine\SubModuleEditorWorldInspector.h" />
+    <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Resources\Assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="Resources\Assimp\include\assimp\anim.h" />

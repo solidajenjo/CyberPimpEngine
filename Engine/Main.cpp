@@ -4,7 +4,7 @@
 #include "ModuleEditor.h"
 #include "SubModuleEditorViewPort.h"
 #include "Globals.h"
-
+#include "Time.h"
 #include "SDL.h"
 
 enum main_states
@@ -22,21 +22,26 @@ int main(int argc, char ** argv)
 {
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-
+	Time time;
 	while (state != MAIN_EXIT)
 	{	
 		switch (state)
 		{
 		case MAIN_CREATION:
 
+			time.StartMS();
 			LOG("Application Creation --------------");
 			App = new Application();
 			state = MAIN_START;
+			time.StopMS();
+			LOG("Application creation took %d ms\n", time.ReadMS());
 			break;
 
 		case MAIN_START:
 
 			LOG("Application Init --------------");
+			time.StartMS();
+			time.StartUS();
 			if (App->Init() == false)
 			{
 				LOG("Application Init exits with error -----");
@@ -48,7 +53,9 @@ int main(int argc, char ** argv)
 				LOG("Application Update --------------");
 				
 			}
-
+			time.StopMS();
+			time.StopUS();
+			LOG("Application Init took %d ms <-> %d microSeconds \n", time.ReadMS(), time.ReadUS());
 			break;
 
 		case MAIN_UPDATE:
