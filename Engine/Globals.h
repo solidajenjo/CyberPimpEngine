@@ -18,5 +18,5 @@ enum update_status
 #define WINDOWED_FULLSCREEN true
 #define RESIZABLE_WINDOW true
 #define VSYNC true
-#define TITLE "CyberPimp Engine"
+#define TITLE "Draconis Engine"
 #define OPENGL_VERSION "#version 330"

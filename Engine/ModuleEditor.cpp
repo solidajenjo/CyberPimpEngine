@@ -64,11 +64,12 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
 
-	ImGui::Begin("DockSpace Demo", &bDock, window_flags);
+	ImGui::Begin("DockSpace", &bDock, window_flags);
 	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
 	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 	ImGui::End();
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(250, 250));
 	return UPDATE_CONTINUE;
 }
 
@@ -81,6 +82,7 @@ update_status ModuleEditor::Update()
 
 update_status ModuleEditor::PostUpdate()
 {
+	ImGui::PopStyleVar();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	return UPDATE_CONTINUE;
