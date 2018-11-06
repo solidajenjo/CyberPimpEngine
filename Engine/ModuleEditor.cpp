@@ -65,6 +65,8 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::SetNextWindowViewport(viewport->ID);
 
 	ImGui::Begin("DockSpace", &bDock, window_flags);
+	//ImGui::Image("draconisLogo.png", ImGui::GetWindowContentRegionMax());
+	ImGui::GetWindowDrawList()->AddImage("draconisLogo.png", ImVec2(0,0), ImGui::GetWindowSize());
 	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
 	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 	ImGui::End();
