@@ -658,6 +658,9 @@
     <ClInclude Include="Engine\SubModuleEditorConfig.h">
       <Filter>EditorModules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Time.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">

@@ -142,7 +142,7 @@ void ModuleCamera::yaw(float amount)
 
 void ModuleCamera::pitch(float amount)
 {
-	Quat rotMat = math::Quat::RotateAxisAngle(right, amount);
+	Quat rotMat = math::Quat::RotateAxisAngle(right, amount * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized())); //TODO: reduce amount when vertical 
 	float3 newForward = rotMat * forward;
 	float newPitch = newForward.AngleBetweenNorm(float3(newForward.x, 0.f, newForward.z).Normalized()); //angle between the new forward & his XZ projection
 	if (newPitch < 1.2f)

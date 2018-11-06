@@ -31,7 +31,7 @@ void SubModuleEditorConfig::lineListPlotter(const std::list<float>& valList)
 	unsigned bottom = pos.y + 500;
 	std::list<float>::const_iterator it = valList.cbegin();
 	pos.y = bottom - *it * 4;
-	LOG("%d", bottom);
+	//LOG("%d", bottom);
 	for (; it != valList.end(); ++it)
 	{		
 		if (cont++ < valList.size() - 1)
@@ -48,5 +48,5 @@ void SubModuleEditorConfig::lineListPlotter(const std::list<float>& valList)
 		}
 	}
 	pos = ImGui::GetCursorScreenPos();
-	LOG("END");
+	//LOG("END");
 }

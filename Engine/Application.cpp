@@ -8,6 +8,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
 #include "ModuleWorld.h"
+#include "Module.h"
 
 using namespace std;
 
