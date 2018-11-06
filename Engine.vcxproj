@@ -14,7 +14,7 @@
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
     <ProjectName>Draconis Engine</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -90,6 +90,7 @@
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorConfig.h" />
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
+    <ClInclude Include="Engine\SubModuleEditorToolBar.h" />
     <ClInclude Include="Engine\SubModuleEditorViewPort.h" />
     <ClInclude Include="Engine\SubModuleEditorWorldInspector.h" />
     <ClInclude Include="Engine\Time.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp" />
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorToolBar.cpp" />
     <ClCompile Include="Engine\SubModuleEditorViewPort.cpp" />
     <ClCompile Include="Engine\SubModuleEditorWorldInspector.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />

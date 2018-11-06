@@ -179,6 +179,9 @@
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorToolBar.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\imgui\imconfig.h">
@@ -660,6 +663,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Time.h">
       <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorToolBar.h">
+      <Filter>EditorModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

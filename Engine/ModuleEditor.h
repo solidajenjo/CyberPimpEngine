@@ -11,6 +11,7 @@ class SubModuleEditorWorldInspector;
 class SubModuleEditorViewPort;
 class SubModuleEditorConfig;
 class SubModuleEditorCamera;
+class SubModuleEditorToolBar;
 
 class ModuleEditor :
 	public Module
@@ -35,8 +36,10 @@ public:
 	SubModuleEditorViewPort* viewPort;
 	SubModuleEditorConfig* config;
 	SubModuleEditorCamera* camera;
+	SubModuleEditorToolBar* toolBar;
 
-	bool bDock = false;
+	bool bDock;
+	unsigned logo;
 };
 
 #endif

@@ -14,4 +14,5 @@ public:
 
 	unsigned Load(const char* path);
 
+	std::vector<unsigned> textures;
 };

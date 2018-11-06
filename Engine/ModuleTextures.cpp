@@ -30,8 +30,10 @@ bool ModuleTextures::Init()
 }
 
 // Called before quitting
-bool ModuleTextures::CleanUp()
+bool ModuleTextures::CleanUp() //can be called to reset stored textures
 {
+	for (unsigned i = 0; i < textures.size(); ++i)
+		glDeleteTextures(textures.size(), &textures[0]); //clean textures
 	return true;
 }
 
@@ -86,7 +88,7 @@ unsigned ModuleTextures::Load(const char* path)
 		ilDeleteImages(1, &imageId);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-
+		textures.push_back(textureId);
 		return textureId;
 	}
 

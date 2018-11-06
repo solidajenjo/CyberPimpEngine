@@ -11709,6 +11709,7 @@ void ImGui::DockSpace(ImGuiID id, const ImVec2& size_arg, ImGuiDockNodeFlags doc
     if (node->Windows.Size > 0 || node->IsSplitNode())
         PushStyleColor(ImGuiCol_ChildBg, IM_COL32(0, 0, 0, 0));
     PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
+	ImGui::SetNextWindowBgAlpha(0.1f);
     Begin(title, NULL, window_flags);
     PopStyleVar();
     if (node->Windows.Size > 0 || node->IsSplitNode())
