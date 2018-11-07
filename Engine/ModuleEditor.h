@@ -12,6 +12,7 @@ class SubModuleEditorViewPort;
 class SubModuleEditorConfig;
 class SubModuleEditorCamera;
 class SubModuleEditorToolBar;
+class ModuleTextures;
 
 class ModuleEditor :
 	public Module
@@ -30,6 +31,10 @@ public:
 
 	std::vector<SubModuleEditor*> subModules;
 
+	bool bDock;
+	unsigned logo;
+	unsigned backgroundTex;
+
 	SubModuleEditorMenu* menu;
 	SubModuleEditorConsole* console;
 	SubModuleEditorWorldInspector* worldInspector;
@@ -37,9 +42,7 @@ public:
 	SubModuleEditorConfig* config;
 	SubModuleEditorCamera* camera;
 	SubModuleEditorToolBar* toolBar;
-
-	bool bDock;
-	unsigned logo;
+	ModuleTextures* textures;	
 };
 
 #endif

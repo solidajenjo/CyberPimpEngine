@@ -19,7 +19,7 @@ SubModuleEditorWorldInspector::~SubModuleEditorWorldInspector()
 void SubModuleEditorWorldInspector::Show()
 {
 	if (enabled)
-	{
+	{		
 		ImGui::Begin(editorModuleName, &enabled);
 		if (ImGui::TreeNode("World"))
 		{
