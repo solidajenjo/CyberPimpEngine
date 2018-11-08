@@ -42,13 +42,13 @@ bool ModuleEditor::Init()
 	subModules.push_back(menu = new SubModuleEditorMenu("Menu"));
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
-	subModules.push_back(viewPort = new SubModuleEditorViewPort("Scene"));
+	subModules.push_back(viewPort = new SubModuleEditorViewPort("ViewPort"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
 	subModules.push_back(camera = new SubModuleEditorCamera("Camera"));	
 	App->consoleBuffer = new ImGuiTextBuffer();
 
 	toolBar = new SubModuleEditorToolBar("ToolBar");
-	textures = new ModuleTextures();
+	textures = new ModuleTextures(); //game render independent especially when the game module is wiped
 	return true;
 }
 

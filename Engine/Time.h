@@ -8,6 +8,8 @@ public:
 
 	Time() : ms(0), us(0), startTime_ms(0), startTicks_us(0), started_ms(false), started_us(false){};
 
+	~Time() {};
+
 	void StartMS() //start milliseconds timer
 	{
 		started_ms = true;
@@ -27,6 +29,11 @@ public:
 		ms = SDL_GetTicks() - startTime_ms;
 	}
 
+	void ResetMS()
+	{
+		startTime_ms = SDL_GetTicks();
+	}
+
 	void StartUS() //start microseconds timer
 	{
 		started_us = true;
@@ -34,7 +41,7 @@ public:
 		us = 0;
 	}
 
-	Uint64 ReadUS() const //read microseconds timer
+	float ReadUS() const //read microseconds timer
 	{
 		if (started_us)
 			return (SDL_GetPerformanceCounter() - startTicks_us)  / (double)SDL_GetPerformanceFrequency() * 1000;
@@ -46,7 +53,13 @@ public:
 		us = (double) (SDL_GetPerformanceCounter() - startTicks_us)  / (double)SDL_GetPerformanceFrequency() * 1000;
 	}
 
-	Uint64 ms, us, startTime_ms, startTicks_us;
+	void ResetUS()
+	{
+		startTicks_us = SDL_GetPerformanceCounter();
+	}
+
+	Uint64 ms, startTime_ms, startTicks_us;
+	float us;
 	bool started_ms, started_us;
 };
 

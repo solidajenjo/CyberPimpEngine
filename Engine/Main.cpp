@@ -40,7 +40,6 @@ int main(int argc, char ** argv)
 		case MAIN_START:
 
 			LOG("Application Init --------------");
-			time.StartMS();
 			time.StartUS();
 			if (App->Init() == false)
 			{
@@ -53,15 +52,16 @@ int main(int argc, char ** argv)
 				LOG("Application Update --------------");
 				
 			}
-			time.StopMS();
 			time.StopUS();
-			LOG("Application Init took %d ms <-> %d microSeconds \n", time.ReadMS(), time.ReadUS());
+			LOG("Application Init took %.3f milliseconds \n", time.ReadUS());
 			break;
 
 		case MAIN_UPDATE:
 		{
+			//time.StartUS();
 			int update_return = App->Update();
-
+			//time.StopUS();
+			//LOG("Application Update took %.3f milliseconds \n", time.ReadUS());
 			if (update_return == UPDATE_ERROR)
 			{
 				LOG("Application Update exits with error -----");

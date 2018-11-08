@@ -13,6 +13,8 @@ public:
 	{
 	}
 
+	virtual ~Module() {}; //force call to descendant destructor to avoid partial destruction
+
 	virtual bool Init() 
 	{
 		return true; 

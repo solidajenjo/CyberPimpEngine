@@ -8,6 +8,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
 #include "ModuleWorld.h"
+#include "ModuleTime.h"
 #include "Module.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ Application::Application()
 	modules.push_back(world = new ModuleWorld());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
+	modules.push_back(appTime = new ModuleTime());
 	modules.push_back(program = new ModuleProgram("default.vs", "default.fs"));
 }
 

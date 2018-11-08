@@ -1,52 +1,61 @@
 #include "SubModuleEditorConfig.h"
 #include "Application.h"
+#include "ModuleTime.h"
 #include "imgui.h"
-#include "SDL.h"
+#include <vector>
+#include <numeric>
 
 
 void SubModuleEditorConfig::Show()
 {
 	if (enabled)
-	{		
-		if (SDL_GetTicks() >= nextSecond)
+	{	
+		ImGui::Begin(editorModuleName, &enabled);	
+		time[f] = App->appTime->realDeltaTime;
+		if (time[f] > 0.f)
+			fps[f] = 1000.f / time[f];
+		deltaTimeAcc += time[f];
+		fpsAcc += fps[f];
+		if (App->appTime->framesPassed > 100) //wait until the editor gets stable
 		{
-			fpsList.emplace_back(frameCounter * 5);
-			fpsList.pop_front();
-			nextSecond = SDL_GetTicks() + 200;
-			frameCounter = 0;
+			if (fps[f] > maxFps)
+				maxFps = fps[f];
+			if (time[f] > maxDelta)
+				maxDelta = time[f];
+			if (fps[f] < minFps)
+				minFps = fps[f];
+			if (time[f] < minDelta)
+				minDelta = time[f];
 		}
-		ImGui::Begin("Configuration", &enabled);
-		lineListPlotter(fpsList);
-		++frameCounter;
-		ImGui::Text("FPS updated every 200 ms");
+		f++;
+		if (f == fps.size())
+			f = 0;
+		if (ImGui::CollapsingHeader("Time Module"))
+		{
+			ImGui::PlotLines("", &time[0], time.size(), f, "Delta Time", .0f, 60.0f, ImVec2(ImGui::GetWindowContentRegionMax().x, 60));
+			ImGui::PlotLines("", &fps[0], fps.size(), f, "FPS", .0f, 100.0f, ImVec2(ImGui::GetWindowContentRegionMax().x, 60));
+
+			float timeAvg = deltaTimeAcc / App->appTime->framesPassed;
+			float fpsAvg = fpsAcc / App->appTime->framesPassed;
+			ImGui::Columns(2);
+			ImGui::Text("Average Delta Time %.3f", timeAvg);
+			ImGui::Text("Average FPS %.3f", fpsAvg);
+			ImGui::Text("Real clock %.0f", App->appTime->realClock);
+			ImGui::Text("Game clock %.0f", App->appTime->gameClock);
+			ImGui::PushItemWidth(ImGui::GetColumnWidth() * .95f);
+			ImGui::InputFloat("", &App->appTime->gameClockMultiplier, 0.1f, 10.f);
+			ImGui::PopItemWidth();
+			ImGui::NextColumn();
+			ImGui::Text("Min Delta Time %.3f", minDelta);
+			ImGui::Text("Max Delta Time %.3f", maxDelta);
+			ImGui::Text("Min FPS        %.3f", minFps);
+			ImGui::Text("Max FPS        %.3f", maxFps);
+			ImGui::Text("Game time scale");
+			ImGui::Columns(1);
+		}
 		ImGui::End();
 	}
 }
 
-void SubModuleEditorConfig::lineListPlotter(const std::list<float>& valList)
-{
-	unsigned cont = 0; 
-	int w = 1;
-	ImVec2 pos = ImVec2(ImGui::GetWindowPos().x + 10, ImGui::GetWindowPos().y + 27);
-	unsigned bottom = pos.y + 500;
-	std::list<float>::const_iterator it = valList.cbegin();
-	pos.y = bottom - *it * 4;
-	//LOG("%d", bottom);
-	for (; it != valList.end(); ++it)
-	{		
-		if (cont++ < valList.size() - 1)
-		{
-			unsigned nextX = cont * 4;
-			unsigned nextY = bottom - *it * 4;
-			ImGui::GetWindowDrawList()->AddLine(pos, ImVec2(nextX, nextY), IM_COL32(100, 100, 100, 255));
-			pos.x = nextX;
-			pos.y = nextY;
-		}
-		else if (it == valList.cbegin())
-		{
-			pos.y = bottom - *it;
-		}
-	}
-	pos = ImGui::GetCursorScreenPos();
-	//LOG("END");
-}
+
+

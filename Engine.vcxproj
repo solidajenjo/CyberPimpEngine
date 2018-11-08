@@ -85,6 +85,7 @@
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleModelLoader.h" />
     <ClInclude Include="Engine\ModuleProgram.h" />
+    <ClInclude Include="Engine\ModuleTime.h" />
     <ClInclude Include="Engine\ModuleWorld.h" />
     <ClInclude Include="Engine\SubModuleEditorCamera.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleModelLoader.cpp" />
     <ClCompile Include="Engine\ModuleProgram.cpp" />
+    <ClCompile Include="Engine\ModuleTime.cpp" />
     <ClCompile Include="Engine\ModuleWorld.cpp" />
     <ClCompile Include="Engine\SubModuleEditorCamera.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
