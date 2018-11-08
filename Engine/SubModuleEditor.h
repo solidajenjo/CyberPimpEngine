@@ -4,10 +4,10 @@
 class SubModuleEditor
 {
 public:
-	SubModuleEditor(char* editorModuleName) : editorModuleName(editorModuleName) {};
+	SubModuleEditor(char* editorModuleName) : editorModuleName(editorModuleName) {}; //TODO: No usar char*
 	~SubModuleEditor() {};
 
-	virtual void Show() = 0 ;
+	virtual void Show() = 0 ; //TODO: constante
 
 	bool enabled = true;
 	char* editorModuleName;

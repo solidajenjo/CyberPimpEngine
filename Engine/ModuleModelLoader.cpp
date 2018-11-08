@@ -7,7 +7,7 @@
 #include "postprocess.h"
 #include "scene.h"
 #include "material.h"
-#include "mesh.h"
+#include "mesh.h" //TODO: Modificar los directorios include
 #include "SDL.h"#include <string>
 
 
@@ -19,14 +19,15 @@ ModuleModelLoader::ModuleModelLoader()
 ModuleModelLoader::~ModuleModelLoader()
 {
 	//clean on destroy
-	for (unsigned i = 0; i < meshes.size(); ++i)
+	for (unsigned i = 0; i < meshes.size(); ++i) //TODO: mejor iterador
 		glDeleteVertexArrays(1, &meshes[i]);
-	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(0); //TODO: Que hace esto aqui?
 	glDisableVertexAttribArray(1);
 }
 
-std::vector<EntityMesh*> ModuleModelLoader::Load(char * geometryPath)
+std::vector<EntityMesh*> ModuleModelLoader::Load(char * geometryPath) //TODO: crea dos veces el vector pasar por referencia
 {
+	//TODO: ASERT cuando recibe punteros
 	LOG("Load model %s", geometryPath);
 	std::vector<EntityMesh*> retMeshes;
 	const aiScene* scene = aiImportFile(geometryPath, aiProcess_Triangulate);
@@ -42,7 +43,7 @@ std::vector<EntityMesh*> ModuleModelLoader::Load(char * geometryPath)
 		}
 		if (tex == 0) 
 		{
-			LOG("Failed loading texures.");
+			LOG("Failed loading texures."); //TDOD: use aiGetErrorString
 			return retMeshes;
 		}
 		for (unsigned i = 0; i < scene->mNumMeshes; ++i)
@@ -88,7 +89,7 @@ unsigned int ModuleModelLoader::GenerateMeshData(aiMesh * mesh, unsigned &vio)
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
 		void* bufferCoords = glMapBufferRange(GL_ARRAY_BUFFER, offset + sizeof(GLfloat) * 2 * i, sizeof(GLfloat) * 2, GL_MAP_WRITE_BIT);
-		memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2);
+		memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2); //TODO: castear puntero a void
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 	}
 

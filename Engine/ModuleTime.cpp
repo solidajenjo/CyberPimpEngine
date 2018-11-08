@@ -3,7 +3,7 @@
 
 ModuleTime::~ModuleTime()
 {
-	delete time;
+	delete time; //TODO: Comprobar que no sea null
 }
 
 bool ModuleTime::Init()

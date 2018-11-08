@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
-#include "SDL.h"
+#include "SDL.h" //TODO: NO incluir todo. Consistencia con las variables. Clase framebuffer
 #include "GL/glew.h"
 #include "imgui.h"
 
@@ -57,7 +57,7 @@ bool ModuleRender::Init()
 	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
-
+	
 	GLuint depthRenderbuffer;
 	glGenRenderbuffers(1, &depthRenderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
@@ -70,7 +70,7 @@ bool ModuleRender::Init()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->screenWidth, App->window->screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+	
 	// attach it to currently bound framebuffer object
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -119,7 +119,7 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
-	App->window->screenWidth = width;
+	App->window->screenWidth = width; //todo: no llamar window desde aqui
 	App->window->screenHeight = height;
 }
 

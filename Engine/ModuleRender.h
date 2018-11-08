@@ -19,7 +19,7 @@ public:
 	void RecalcFrameBufferTexture() const;
 
 public:
-	void* context;
+	void* context; //TODO: <-- ?
 
 	unsigned int framebuffer;
 	unsigned int texColorBuffer;
