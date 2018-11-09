@@ -7,14 +7,6 @@
 #include "sdl/include/SDL_video.h" //TODO: NO incluir todo. Consistencia con las variables. Clase framebuffer
 #include "glew-2.1.0/include/GL/glew.h"
 
-ModuleRender::ModuleRender()
-{
-}
-
-// Destructor
-ModuleRender::~ModuleRender()
-{
-}
 
 // Called before render is available
 bool ModuleRender::Init()

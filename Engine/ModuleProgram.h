@@ -8,6 +8,7 @@ class ModuleProgram :
 	public Module
 {
 public:
+
 	ModuleProgram(std::string vsName, std::string fsName) : vsName(vsName), fsName(fsName) {};	
 
 	bool Init() override;

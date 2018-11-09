@@ -14,12 +14,6 @@
 #include "SubModuleEditorToolBar.h"
 
 
-
-
-ModuleEditor::~ModuleEditor()
-{
-}
-
 bool ModuleEditor::Init()
 {
 
@@ -109,8 +103,8 @@ bool ModuleEditor::CleanUp()
 	}
 
 	RELEASE (menu);
-	delete toolBar;
-	delete textures;
+	RELEASE (toolBar);
+	RELEASE (textures);
 
 	return true;
 }

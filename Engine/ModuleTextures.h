@@ -10,7 +10,6 @@ class ModuleTextures : public Module
 {
 public:
 	ModuleTextures();
-	~ModuleTextures();
 
 	bool CleanUp() override;
 

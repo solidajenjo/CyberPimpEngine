@@ -18,8 +18,6 @@ class ModuleEditor :
 {
 public:
 
-	~ModuleEditor();
-	
 	bool Init() override;
 	update_status PreUpdate() override;
 	update_status Update() override;

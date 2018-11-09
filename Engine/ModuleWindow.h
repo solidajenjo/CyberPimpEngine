@@ -11,10 +11,6 @@ class ModuleWindow : public Module
 {
 public:
 
-	ModuleWindow();
-
-	// Destructor
-	virtual ~ModuleWindow() override;
 
 	// Called before quitting
 	bool Init() override;

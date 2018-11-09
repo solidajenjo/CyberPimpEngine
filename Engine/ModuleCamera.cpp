@@ -8,15 +8,6 @@
 #include "ModuleProgram.h"
 #include "ModuleRender.h"
 
-
-ModuleCamera::ModuleCamera()
-{
-}
-
-
-ModuleCamera::~ModuleCamera()
-{
-}
 bool ModuleCamera::Init()
 {
 	//View

@@ -3,15 +3,6 @@
 #include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
 
-ModuleWindow::ModuleWindow()
-{
-}
-
-// Destructor
-ModuleWindow::~ModuleWindow()
-{
-}
-
 // Called before render is available
 bool ModuleWindow::Init()
 {
