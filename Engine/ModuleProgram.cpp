@@ -1,27 +1,17 @@
 #include "ModuleProgram.h"
+#include "glew-2.1.0/include/GL/glew.h"
 #include <vector>
 
-
-ModuleProgram::ModuleProgram(char * vsName, char * fsName)
-{
-	this->vsName = vsName;
-	this->fsName = fsName;
-}
-
-
-ModuleProgram::~ModuleProgram()
-{
-}
 
 bool ModuleProgram::Init()
 {
 	LOG("Shader Program Creation");
 	program = glCreateProgram();
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-	char* vSource = readFile(vsName);
+	char* vSource = readFile(vsName.c_str());
 	glShaderSource(vs, 1, &vSource, 0);
 	glCompileShader(vs);
-	free((void*)vSource);
+	free(vSource);
 	GLint isCompiled = 0;
 	glGetShaderiv(vs, GL_COMPILE_STATUS, &isCompiled);
 	if (isCompiled == GL_FALSE)
@@ -38,10 +28,10 @@ bool ModuleProgram::Init()
 	
 
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-	char* fSource = readFile(fsName);
+	char* fSource = readFile(fsName.c_str());
 	glShaderSource(fs, 1, &fSource, 0);
 	glCompileShader(fs);
-	free((void*)fSource);
+	free(fSource);
 	isCompiled = 0;
 	glGetShaderiv(fs, GL_COMPILE_STATUS, &isCompiled);
 	if (isCompiled == GL_FALSE)
@@ -96,11 +86,11 @@ bool ModuleProgram::CleanUp()
 	return true;
 }
 
-char * ModuleProgram::readFile(char * name)
+char* ModuleProgram::readFile(std::string name)
 {
 	char* data = nullptr;
 	FILE* file = nullptr;
-	fopen_s(&file, name, "rb");
+	fopen_s(&file, name.c_str(), "rb");
 	if (file)
 	{
 		fseek(file, 0, SEEK_END);

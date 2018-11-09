@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Application.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 
 void log(const char file[], int line, const char* format, ...)
 {

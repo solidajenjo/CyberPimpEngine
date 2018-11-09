@@ -2,8 +2,9 @@
 #define _MODULE_WINDOW_H
 
 #include "Module.h"
-#include "SDL.h"
 
+struct SDL_Window;
+struct SDL_Surface;
 class Application;
 
 class ModuleWindow : public Module
@@ -13,22 +14,23 @@ public:
 	ModuleWindow();
 
 	// Destructor
-	virtual ~ModuleWindow();
+	virtual ~ModuleWindow() override;
 
 	// Called before quitting
-	bool Init();
+	bool Init() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
-public:
+//members
+
 	//The window we'll be rendering to
-	SDL_Window* window = NULL;
+	SDL_Window* window = nullptr;
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+	SDL_Surface* screen_surface = nullptr;
 
-	int screenWidth, screenHeight;
+	int screenWidth = 0, screenHeight = 0;
 };
 
 #endif 

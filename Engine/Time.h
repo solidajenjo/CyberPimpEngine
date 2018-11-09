@@ -1,14 +1,10 @@
 #ifndef _TIME_H_
 #define _TIME_H_
-#include "SDL.h"
+#include "SDL/include/SDL_timer.h"
 
 class Time
 {
 public:
-
-	Time() : ms(0), us(0), startTime_ms(0), startTicks_us(0), started_ms(false), started_us(false){};
-
-	~Time() {};
 
 	void StartMS() //start milliseconds timer
 	{
@@ -44,13 +40,13 @@ public:
 	float ReadUS() const //read microseconds timer
 	{
 		if (started_us)
-			return (SDL_GetPerformanceCounter() - startTicks_us)  / (double)SDL_GetPerformanceFrequency() * 1000;
+			return (SDL_GetPerformanceCounter() - startTicks_us)  / (float)SDL_GetPerformanceFrequency() * 1000.f;
 		else
 			return us;
 	}
 	void StopUS() { //start microseconds timer
 		started_us = false;
-		us = (double) (SDL_GetPerformanceCounter() - startTicks_us)  / (double)SDL_GetPerformanceFrequency() * 1000;
+		us = (double) (SDL_GetPerformanceCounter() - startTicks_us)  / (float)SDL_GetPerformanceFrequency() * 1000.f;
 	}
 
 	void ResetUS()
@@ -58,9 +54,9 @@ public:
 		startTicks_us = SDL_GetPerformanceCounter();
 	}
 
-	Uint64 ms, startTime_ms, startTicks_us;
-	float us;
-	bool started_ms, started_us;
+	Uint64 ms = 0, startTime_ms = 0, startTicks_us = 0;
+	float us = 0.f;
+	bool started_ms = false, started_us = false;
 };
 
 #endif

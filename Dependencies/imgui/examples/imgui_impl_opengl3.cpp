@@ -53,8 +53,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
+#include "imgui/imgui.h"
+#include "imgui/examples/imgui_impl_opengl3.h"
 #include <stdio.h>
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
 #include <stddef.h>     // intptr_t
@@ -80,7 +80,7 @@
 // Helper libraries are often used for this purpose! Here we are supporting a few common ones: gl3w, glew, glad.
 // You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
 
-#include "GL/glew.h"
+#include "glew-2.1.0/include/GL/glew.h"
 
 #endif
 

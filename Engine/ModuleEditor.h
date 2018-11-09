@@ -10,7 +10,6 @@ class SubModuleEditorConsole;
 class SubModuleEditorWorldInspector;
 class SubModuleEditorViewPort;
 class SubModuleEditorConfig;
-class SubModuleEditorCamera;
 class SubModuleEditorToolBar;
 class ModuleTextures;
 
@@ -18,31 +17,30 @@ class ModuleEditor :
 	public Module
 {
 public:
-	ModuleEditor();
+
 	~ModuleEditor();
 	
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 
 //members
 
 	std::vector<SubModuleEditor*> subModules;
 
-	bool bDock;
-	unsigned logo;
-	unsigned backgroundTex;
+	bool bDock = true;
+	unsigned logo = 0;
+	unsigned backgroundTex = 0;
 
-	SubModuleEditorMenu* menu;
-	SubModuleEditorConsole* console;
-	SubModuleEditorWorldInspector* worldInspector;
-	SubModuleEditorViewPort* viewPort;
-	SubModuleEditorConfig* config;
-	SubModuleEditorCamera* camera;
-	SubModuleEditorToolBar* toolBar;
-	ModuleTextures* textures;	
+	SubModuleEditorMenu* menu = nullptr;
+	SubModuleEditorConsole* console = nullptr;
+	SubModuleEditorWorldInspector* worldInspector = nullptr;
+	SubModuleEditorViewPort* viewPort = nullptr;
+	SubModuleEditorConfig* config = nullptr;
+	SubModuleEditorToolBar* toolBar = nullptr;
+	ModuleTextures* textures = nullptr; //independent of game textures - Handles editor textures
 };
 
 #endif

@@ -1,10 +1,10 @@
-#include "GL/glew.h"
+#include "glew-2.1.0/include/GL/glew.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
-#include "il.h"
-#include "ilut.h"
-#include "ilu.h"
+#include "DevIL/include/IL/il.h"
+#include "DevIL/include/IL/ilut.h"
+#include "DevIL/include/IL/ilu.h"
 
 
 using namespace std;
@@ -16,18 +16,6 @@ ModuleTextures::ModuleTextures()
 	ilutInit();
 }
 
-// Destructor
-ModuleTextures::~ModuleTextures()
-{
-}
-
-// Called before render is available
-bool ModuleTextures::Init()
-{
-	bool ret = true;
-
-	return ret;
-}
 
 // Called before quitting
 bool ModuleTextures::CleanUp() //can be called to reset stored textures
@@ -38,13 +26,13 @@ bool ModuleTextures::CleanUp() //can be called to reset stored textures
 }
 
 // Load new texture from file path
-unsigned ModuleTextures::Load(const char* path)
+unsigned ModuleTextures::Load(std::string path)
 {
 	ILuint imageId;
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
 
-	if (ilLoadImage(path))
+	if (ilLoadImage(path.c_str()))
 	{
 		GLuint textureId = 0;
 		glGenTextures(1, &textureId);

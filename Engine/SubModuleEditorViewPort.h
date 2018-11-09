@@ -6,11 +6,13 @@
 class SubModuleEditorViewPort : public SubModuleEditor
 {
 public:
-	SubModuleEditorViewPort(char* editorModuleName);
-	~SubModuleEditorViewPort();
+	SubModuleEditorViewPort(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 
+//members
+
+	float height = 0, width = 0;
 };
 
 #endif

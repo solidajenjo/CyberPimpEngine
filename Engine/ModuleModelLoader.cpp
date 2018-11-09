@@ -1,33 +1,23 @@
-#include "GL/glew.h"
-#include "EntityMesh.h"
+#include "glew-2.1.0/include/GL/glew.h"
 #include "ModuleModelLoader.h"
 #include "Application.h"
 #include "ModuleTextures.h"
-#include "cimport.h"
-#include "postprocess.h"
-#include "scene.h"
-#include "material.h"
-#include "mesh.h" //TODO: Modificar los directorios include
-#include "SDL.h"#include <string>
+#include "Assimp/include/assimp/cimport.h"
+#include "Assimp/include/assimp/postprocess.h"
+#include "Assimp/include/assimp/scene.h"
+#include "Assimp/include/assimp/material.h"
+#include "Assimp/include/assimp/mesh.h"
+#include <string>
 
-
-ModuleModelLoader::ModuleModelLoader()
-{
+bool ModuleModelLoader::CleanUp()
+{	
+	glDeleteVertexArrays(meshes.size(), &meshes[0]); //clean vertex Arrays 
 }
 
-
-ModuleModelLoader::~ModuleModelLoader()
-{
-	//clean on destroy
-	for (unsigned i = 0; i < meshes.size(); ++i) //TODO: mejor iterador
-		glDeleteVertexArrays(1, &meshes[i]);
-	glDisableVertexAttribArray(0); //TODO: Que hace esto aqui?
-	glDisableVertexAttribArray(1);
-}
-
-std::vector<EntityMesh*> ModuleModelLoader::Load(char * geometryPath) //TODO: crea dos veces el vector pasar por referencia
+void ModuleModelLoader::Load(std::string geometryPath) //TODO: crea dos veces el vector pasar por referencia
 {
 	//TODO: ASERT cuando recibe punteros
+	/*
 	LOG("Load model %s", geometryPath);
 	std::vector<EntityMesh*> retMeshes;
 	const aiScene* scene = aiImportFile(geometryPath, aiProcess_Triangulate);
@@ -61,7 +51,8 @@ std::vector<EntityMesh*> ModuleModelLoader::Load(char * geometryPath) //TODO: cr
 		}
 	}
 	aiReleaseImport(scene);
-	return retMeshes;
+	return retMeshes;*/
+	return;
 }
 
 unsigned int ModuleModelLoader::GenerateMeshData(aiMesh * mesh, unsigned &vio)
@@ -88,8 +79,8 @@ unsigned int ModuleModelLoader::GenerateMeshData(aiMesh * mesh, unsigned &vio)
 	float offset = sizeof(GLfloat) * mesh->mNumVertices * 3;
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
-		void* bufferCoords = glMapBufferRange(GL_ARRAY_BUFFER, offset + sizeof(GLfloat) * 2 * i, sizeof(GLfloat) * 2, GL_MAP_WRITE_BIT);
-		memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2); //TODO: castear puntero a void
+		float* bufferCoords = (float*) glMapBufferRange(GL_ARRAY_BUFFER, offset + sizeof(GLfloat) * 2 * i, sizeof(GLfloat) * 2, GL_MAP_WRITE_BIT);
+		memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include <vector>
+#include <string>
 
 struct aiMesh;
 struct aiMaterial;
@@ -11,12 +12,15 @@ class ModuleModelLoader :
 	public Module
 {
 public:
-	ModuleModelLoader();
-	~ModuleModelLoader();
 
-	std::vector<EntityMesh*> Load(char * geometryPath); //return Mesh references
+	bool CleanUp() override;
+
+	void Load(std::string geometryPath /*mesh hierarchy reference*/); //TODO: return Mesh references
 	unsigned GenerateMeshData(aiMesh* meshes, unsigned &vio);
 	unsigned GenerateMaterialData(aiMaterial* materials);
-	std::vector<unsigned> meshes;
+
+//members
+
+	std::vector<unsigned> meshes; //default ctor init
 };
 

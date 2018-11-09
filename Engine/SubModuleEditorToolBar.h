@@ -6,12 +6,11 @@
 class SubModuleEditorToolBar : public SubModuleEditor
 {
 public:
-	SubModuleEditorToolBar(char* editorModuleName);
-	~SubModuleEditorToolBar();
+	SubModuleEditorToolBar(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
 
-	void Show() ;
+	void Show();
 
-	unsigned toolBarHeight;
+	unsigned toolBarHeight = 50;
 };
 
 #endif

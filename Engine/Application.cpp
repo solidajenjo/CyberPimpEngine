@@ -7,7 +7,6 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
-#include "ModuleWorld.h"
 #include "ModuleTime.h"
 #include "Module.h"
 
@@ -21,7 +20,6 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(renderer = new ModuleRender());
-	modules.push_back(world = new ModuleWorld());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(appTime = new ModuleTime());

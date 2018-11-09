@@ -1,18 +1,8 @@
 #include "SubModuleEditorToolBar.h"
 #include "Application.h"
 #include "ModuleTextures.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include <vector>
-
-
-SubModuleEditorToolBar::SubModuleEditorToolBar(char* editorModuleName) : SubModuleEditor(editorModuleName), toolBarHeight(50)
-{	
-}
-
-
-SubModuleEditorToolBar::~SubModuleEditorToolBar()
-{
-}
 
 void SubModuleEditorToolBar::Show()
 {

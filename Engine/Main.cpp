@@ -5,7 +5,7 @@
 #include "SubModuleEditorViewPort.h"
 #include "Globals.h"
 #include "Time.h"
-#include "SDL.h"
+#include "SDL/include/SDL.h"
 
 enum main_states
 {
@@ -58,10 +58,7 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
-			//time.StartUS();
 			int update_return = App->Update();
-			//time.StopUS();
-			//LOG("Application Update took %.3f milliseconds \n", time.ReadUS());
 			if (update_return == UPDATE_ERROR)
 			{
 				LOG("Application Update exits with error -----");

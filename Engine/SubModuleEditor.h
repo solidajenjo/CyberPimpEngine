@@ -1,16 +1,17 @@
 #ifndef _SUB_MODULE_EDITOR_H
 #define _SUB_MODULE_EDITOR_H
+#include <string>
 
 class SubModuleEditor
 {
 public:
-	SubModuleEditor(char* editorModuleName) : editorModuleName(editorModuleName) {}; //TODO: No usar char*
-	~SubModuleEditor() {};
+	SubModuleEditor(std::string editorModuleName) : editorModuleName(editorModuleName) {};
+	virtual ~SubModuleEditor() {};
 
-	virtual void Show() = 0 ; //TODO: constante
+	virtual void Show() = 0 ; //No const posible -> ImGui::Begin modifies enabled;
 
 	bool enabled = true;
-	char* editorModuleName;
+	std::string editorModuleName;
 };
 
 #endif;

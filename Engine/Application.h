@@ -15,7 +15,6 @@ class ModuleModelLoader;
 class ModuleEditor;
 class ModuleCamera;
 class ModuleProgram;
-class ModuleWorld;
 class ModuleTime;
 
 class Application
@@ -38,7 +37,6 @@ public:
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
-	ModuleWorld* world = nullptr;
 	ModuleTime* appTime = nullptr;
 
 	bool exit = false;

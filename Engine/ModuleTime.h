@@ -9,18 +9,23 @@ class ModuleTime :
 	public Module
 {
 public:
-	ModuleTime() : deltaTime(0.f), realDeltaTime(0.f), gameClock(0.f), gameClockMultiplier(1.f), realClock(0.f), framesPassed(0) {};
+	
 	~ModuleTime();
 
-	bool Init();
-	update_status Update();
+	bool Init() override;
+	update_status Update() override;
 	
 
 //members
 
-	float deltaTime, realDeltaTime, gameClock, gameClockMultiplier, realClock;
-	UINT64 framesPassed;
-	Time* time;
+	float deltaTime = 0.f, 
+		realDeltaTime = 0.f, 
+		gameClock = 0.f, 
+		gameClockMultiplier = 1.f,
+		realClock = 0.f;
+
+	int framesPassed = 0;
+	Time* time = nullptr;
 };
 
 #endif

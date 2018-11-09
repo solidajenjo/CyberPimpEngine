@@ -1,5 +1,8 @@
-#pragma once
-#include<vector>
+#ifndef _MODULE_TEXTURES_H
+#define _MODULE_TEXTURES_H
+
+#include <vector>
+#include <string>
 #include "Module.h"
 #include "Globals.h"
 
@@ -9,10 +12,13 @@ public:
 	ModuleTextures();
 	~ModuleTextures();
 
-	bool Init();
-	bool CleanUp();
+	bool CleanUp() override;
 
-	unsigned Load(const char* path);
+	unsigned Load(std::string path);
 
-	std::vector<unsigned> textures;
+//members
+
+	std::vector<unsigned> textures; //TODO: Store texture info
 };
+
+#endif

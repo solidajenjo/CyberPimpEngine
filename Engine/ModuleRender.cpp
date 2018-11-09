@@ -4,9 +4,8 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
-#include "SDL.h" //TODO: NO incluir todo. Consistencia con las variables. Clase framebuffer
-#include "GL/glew.h"
-#include "imgui.h"
+#include "sdl/include/SDL_video.h" //TODO: NO incluir todo. Consistencia con las variables. Clase framebuffer
+#include "glew-2.1.0/include/GL/glew.h"
 
 ModuleRender::ModuleRender()
 {
@@ -115,12 +114,6 @@ bool ModuleRender::CleanUp()
 	//Destroy window
 
 	return true;
-}
-
-void ModuleRender::WindowResized(unsigned width, unsigned height)
-{
-	App->window->screenWidth = width; //todo: no llamar window desde aqui
-	App->window->screenHeight = height;
 }
 
 void ModuleRender::RecalcFrameBufferTexture() const

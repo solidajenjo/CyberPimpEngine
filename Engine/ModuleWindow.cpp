@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL/include/SDL.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -27,8 +28,8 @@ bool ModuleWindow::Init()
 		//Create window
 		SDL_DisplayMode DM;
 		SDL_GetCurrentDisplayMode(0, &DM);
-		screenWidth = DM.w;
-		screenHeight = DM.h;
+		screenWidth = DM.w * 0.9f;
+		screenHeight = DM.h * 0.9f;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
@@ -51,9 +52,6 @@ bool ModuleWindow::Init()
 		{
 			//Get window surface			
 			screen_surface = SDL_GetWindowSurface(window);
-			if (WINDOWED_FULLSCREEN) {
-				SDL_MaximizeWindow(window);
-			}
 		}
 	}
 

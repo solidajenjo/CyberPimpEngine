@@ -10,21 +10,21 @@ public:
 	ModuleRender();
 	~ModuleRender();
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
-	void WindowResized(unsigned width, unsigned height);
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 	void RecalcFrameBufferTexture() const;
 
-public:
-	void* context; //TODO: <-- ?
+//members
 
-	unsigned int framebuffer;
-	unsigned int texColorBuffer;
-	unsigned int viewPortWidth;
-	unsigned int viewPortHeight;
+	void* context; // Opaque typedef void* openGL handler
+
+	unsigned int framebuffer = 0;
+	unsigned int texColorBuffer = 0;
+	unsigned int viewPortWidth = 0;
+	unsigned int viewPortHeight = 0;
 };
 
 #endif

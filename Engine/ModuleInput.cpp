@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "SDL.h"
+#include "SDL/include/SDL.h"
 
 
 #define MAX_KEYS 300
@@ -37,11 +37,6 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called before the first frame
-bool ModuleInput::Start()
-{
-	return true;
-}
 
 // Called each loop iteration
 update_status ModuleInput::PreUpdate()
@@ -86,18 +81,6 @@ update_status ModuleInput::PreUpdate()
 		{
 		case SDL_QUIT:
 			App->exit = true;
-			break;
-
-		case SDL_WINDOWEVENT:
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-			{
-				App->renderer->WindowResized(event.window.data1, event.window.data2);
-			}
-			if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
-			{
-				LOG("Maximized window");
-				SDL_MaximizeWindow(App->window->window);
-			}
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:

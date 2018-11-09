@@ -6,9 +6,8 @@
 class SubModuleEditorWorldInspector : public SubModuleEditor
 {
 public:
-	SubModuleEditorWorldInspector(char* editorModuleName);
-	~SubModuleEditorWorldInspector();
-
+	SubModuleEditorWorldInspector(std::string  editorModuleName) : SubModuleEditor(editorModuleName) {};
+	
 	void Show();
 
 };

@@ -6,8 +6,7 @@
 class SubModuleEditorConsole : public SubModuleEditor
 {
 public:
-	SubModuleEditorConsole(char* editorModuleName);
-	~SubModuleEditorConsole();
+	SubModuleEditorConsole(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 

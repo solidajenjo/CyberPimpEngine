@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__)
+#define RELEASE(p) {if (p != nullptr) delete p;}
 
 void log(const char file[], int line, const char* format, ...);
 
@@ -15,8 +16,6 @@ enum update_status
 
 // Configuration -----------
 #define FULLSCREEN false
-#define WINDOWED_FULLSCREEN true
 #define RESIZABLE_WINDOW true
-#define VSYNC true
 #define TITLE "Draconis Engine"
 #define OPENGL_VERSION "#version 330"
