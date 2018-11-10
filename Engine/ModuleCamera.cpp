@@ -5,8 +5,14 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleEditor.h"
+#include "SubModuleEditorViewPort.h"
 #include "ModuleTime.h"
 
+void ModuleCamera::RecalculateFrustum()
+{
+	RecalculateFrustum(frustum.front, frustum.up);
+}
 
 void ModuleCamera::RecalculateFrustum(float3 front, float3 up)
 {		
@@ -30,6 +36,9 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
+	if (!App->editor->viewPort->cursorIn)
+		return UPDATE_CONTINUE;
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		float movementScale = 1.f;
@@ -84,16 +93,44 @@ update_status ModuleCamera::Update()
 	//TODO: Set geometry center as target
 
 	bool focus = false;
+	float orbitFocus = 0.f;
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN)
+	{
+		focusLerp = 0.f;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{			
 		iPoint mouseMotion = App->input->GetMouseMotion();
-		Quat orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), mouseMotion.y * rotSpeed * App->appTime->realDeltaTime);
+		float pitchAngle = frustum.front.AngleBetween(float3(frustum.front.x, 0.f, frustum.front.z));
+		Quat orbitMat;
+		if (pitchAngle < 1.2f)
+			orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), mouseMotion.y * rotSpeed * 0.5f * App->appTime->realDeltaTime);
+		else
+			if (frustum.front.y > 0) // is looking up?
+				orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), -0.01f);//unlock 
+			else
+				orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), 0.01f);//unlock
+
+		
 		camPos = target + orbitMat * (camPos - target);
 		RecalculateFrustum(frustum.front, frustum.up);
 		focus = true;
-		if (focusLerp > 1.0f)
-			focusLerp = 0.f;
+
+		float angleToTarget = RadToDeg(frustum.front.AngleBetween(target - camPos));
+		LOG("%.3f", angleToTarget);
+		if (focusLerp > 1.0f && angleToTarget <= 1.0f)
+		{			
+			focusLerp = 1.f;
+		}
+		else
+		{
+			orbitFocus = 0.1f;
+		}
+		
+
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		focusLerp = 0.f;
@@ -101,8 +138,10 @@ update_status ModuleCamera::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
 	{
+		LOG("FLERP %.3f", focusLerp);
 		if (focusLerp < 1.f)
-			focusLerp += 0.05f;
+			focusLerp += 0.05f + orbitFocus;
+;
 
 		if (focus) //adjust distance with target if needed
 		{

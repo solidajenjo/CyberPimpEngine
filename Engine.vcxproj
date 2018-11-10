@@ -138,6 +138,9 @@
     <ClInclude Include="Dependencies\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Engine\Application.h" />
+    <ClInclude Include="Engine\Component.h" />
+    <ClInclude Include="Engine\ComponentMesh.h" />
+    <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\ModuleCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="Engine\ModuleTextures.h" />
     <ClInclude Include="Engine\ModuleWindow.h" />
     <ClInclude Include="Engine\SubModuleEditor.h" />
+    <ClInclude Include="Engine\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dependencies\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
@@ -217,6 +221,7 @@
     <ClCompile Include="Dependencies\imgui\imgui_demo.cpp" />
     <ClCompile Include="Dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\MathGeoLib\include\Geometry\KDTree.inl" />

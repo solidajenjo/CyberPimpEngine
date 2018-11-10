@@ -15,6 +15,7 @@ public:
 
 	void yaw(float amount);
 	void pitch(float amount);
+	void RecalculateFrustum(); //window events updater
 	void RecalculateFrustum(float3 front, float3 up);
 
 //members
@@ -25,7 +26,6 @@ public:
 	float zoomSpeed = 15.f, moveSpeed = 5.f , rotSpeed = 0.2f;
 	float focusLerp = 0.f;
 	float aspectRatio = 1.f;
-	bool gizmosEnabled = true;
 	float3 target = float3(0.f, 0.f, 0.f);
 
 	Frustum frustum;

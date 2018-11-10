@@ -8,6 +8,6 @@ uniform sampler2D texture0;
 
 void main()
 {
-	//color = texture2D(texture0, uv0 * uvMultiplier);
-	color = vec4(1,1,1,1);
+	color = texture2D(texture0, uv0);
+	//color = vec4(1,1,1,1);
 }

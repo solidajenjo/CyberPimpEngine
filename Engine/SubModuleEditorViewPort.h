@@ -13,6 +13,7 @@ public:
 //members
 
 	float height = 0, width = 0;
+	bool cursorIn = false;
 };
 
 #endif

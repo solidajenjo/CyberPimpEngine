@@ -1,10 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleRender.h"
-#include "ModuleWindow.h"
+#include "ModuleModelLoader.h"
+#include "ModuleCamera.h"
+#include "ModuleEditor.h"
+#include "ModuleFrameBuffer.h"
+#include "SubModuleEditorViewPort.h"
 #include "SDL/include/SDL.h"
-
 
 #define MAX_KEYS 300
 
@@ -82,6 +84,14 @@ update_status ModuleInput::PreUpdate()
 		case SDL_QUIT:
 			App->exit = true;
 			break;
+
+		case SDL_DROPFILE:
+		{
+			char* file = event.drop.file;
+			App->modelLoader->Load(std::string(file));
+			SDL_free(file);
+			break;
+		}
 
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;

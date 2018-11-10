@@ -5,25 +5,25 @@
 #include <vector>
 #include <string>
 
-struct aiMesh;
+struct aiScene;
+struct aiNode;
 struct aiMaterial;
 
-class EntityMesh;
+class ComponentMesh;
+class GameObject;
 
 class ModuleModelLoader :
 	public Module
 {
 public:
 
-	bool CleanUp() override;
+	void Load(std::string geometryPath); //TODO: store root gameobject on scene module
 
-	void Load(std::string geometryPath /*mesh hierarchy reference*/); //TODO: return Mesh references
-	unsigned GenerateMeshData(aiMesh* meshes, unsigned &vio);
+private:
+
+	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture);
 	unsigned GenerateMaterialData(aiMaterial* materials);
 
-//members
-
-	std::vector<unsigned> meshes; //default ctor init
 };
 
 #endif

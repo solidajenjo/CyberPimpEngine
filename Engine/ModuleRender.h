@@ -3,6 +3,9 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include <vector>
+
+class ComponentMesh;
 
 class ModuleRender : public Module
 {
@@ -18,7 +21,7 @@ public:
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
-
+	std::vector<ComponentMesh*> renderizables;  //The owner of the component should clean this
 };
 
 #endif

@@ -4,8 +4,11 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
-#include "sdl/include/SDL_video.h" //TODO: NO incluir todo. Consistencia con las variables. Clase framebuffer
+#include "GameObject.h"
+#include "Transform.h"
+#include "sdl/include/SDL_video.h" 
 #include "glew-2.1.0/include/GL/glew.h"
+#include "ComponentMesh.h"
 
 
 // Called before render is available
@@ -71,4 +74,32 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::Render() const
 {
+	float4x4 view = App->camera->frustum.ViewMatrix();
+	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+		"view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+		"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
+
+	for (std::vector<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
+	{
+		if (*it == nullptr)
+		{
+			LOG("Missing mesh. Couldn't render.");
+		}
+		else
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, (*it)->texture);
+			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
+			
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"model"), 1, GL_TRUE, (*it)->owner->transform->GetModelMatrix());
+			//(*it)->owner->transform->rotation.z += 0.01f;
+			glBindVertexArray((*it)->VAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->VIndex);
+			glDrawElements(GL_TRIANGLES, (*it)->nIndices, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+	}
+	glBindVertexArray(0);
 }

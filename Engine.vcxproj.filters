@@ -170,6 +170,9 @@
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Transform.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -418,6 +421,18 @@
     <ClInclude Include="Engine\ModuleFrameBuffer.h">
       <Filter>EngineModules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Transform.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentMesh.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -446,6 +461,9 @@
     </Filter>
     <Filter Include="Utilities\Assimp">
       <UniqueIdentifier>{eb0768c9-9f81-41da-95e2-cce74a79b5f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{78004adb-9dc2-4971-8ee5-567b21aef679}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

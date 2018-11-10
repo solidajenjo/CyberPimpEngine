@@ -37,7 +37,7 @@ void SubModuleEditorConfig::Show()
 		}
 		if (ImGui::CollapsingHeader("Time Module"))
 		{
-			ImGui::PlotLines("", &time[0], time.size(), f, "Real Delta Time", .0f, 60.0f, ImVec2(ImGui::GetWindowContentRegionMax().x, 60));
+			ImGui::PlotLines("", &time[0], time.size(), f, "Real Delta Time", .0f, .1f, ImVec2(ImGui::GetWindowContentRegionMax().x, 60));
 			ImGui::PlotLines("", &fps[0], fps.size(), f, "FPS", .0f, 100.0f, ImVec2(ImGui::GetWindowContentRegionMax().x, 60));
 			
 			ImGui::Columns(2);
