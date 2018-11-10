@@ -93,6 +93,7 @@ update_status ModuleEditor::PostUpdate()
 
 bool ModuleEditor::CleanUp()
 {
+	LOG("Cleaning Module Editor");
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -102,9 +103,8 @@ bool ModuleEditor::CleanUp()
 			delete (*it);
 	}
 
-	RELEASE (menu);
 	RELEASE (toolBar);
 	RELEASE (textures);
-
+	LOG("Cleaning Module Editor. Done");
 	return true;
 }

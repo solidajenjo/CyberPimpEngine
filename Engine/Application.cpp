@@ -7,6 +7,7 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
+#include "ModuleFrameBuffer.h"
 #include "ModuleTime.h"
 #include "Module.h"
 
@@ -19,6 +20,7 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(modelLoader = new ModuleModelLoader());
+	modules.push_back(frameBuffer = new ModuleFrameBuffer());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
@@ -57,6 +59,11 @@ update_status Application::Update()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 
+	if (ret == UPDATE_ERROR || ret == UPDATE_STOP)
+	{
+		RELEASE(consoleBuffer); //Deactivate imgui console buffer
+		consoleBuffer = nullptr; //Notice deactivation to log
+	}
 	return ret;
 }
 
@@ -64,9 +71,11 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for(list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	{
 		ret = (*it)->CleanUp();
-
+	}
+	RELEASE(consoleBuffer);
 	return ret;
 }
 

@@ -52,6 +52,7 @@ bool ModuleWindow::Init()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
+	LOG("Cleaning Module Window");
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
@@ -62,6 +63,7 @@ bool ModuleWindow::CleanUp()
 
 	//Quit SDL subsystems
 	SDL_Quit();
+	LOG("Cleaning Module Window. Done");
 	return true;
 }
 

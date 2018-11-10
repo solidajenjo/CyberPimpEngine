@@ -5,121 +5,124 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleProgram.h"
-#include "ModuleRender.h"
+#include "ModuleTime.h"
+
+
+void ModuleCamera::RecalculateFrustum(float3 front, float3 up)
+{		
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.pos = camPos;
+	frustum.front = front.Normalized();
+	frustum.up = up.Normalized();
+	float3::Orthonormalize(frustum.front, frustum.up);
+	frustum.nearPlaneDistance = zNear;
+	frustum.farPlaneDistance = zFar;
+	frustum.verticalFov = (vFov * math::pi / 2) / 180.f;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);		
+}
+
 
 bool ModuleCamera::Init()
 {
-	//View
-	camPos.x = 0;
-	camPos.y = 5;
-	camPos.z = 10;
-	float3 target(0,0,0);
-	float3 eye(camPos);
-	
-	up = float3(0, 1, 0);
-	LookAt(target, eye);
+	RecalculateFrustum(-float3::unitZ, float3::unitY);
 	return true;
-}
-
-void ModuleCamera::LookAt(float3 target, float3 eye) 
-{
-	forward = math::float3(target - eye); forward.Normalize();
-	right = math::float3(forward.Cross(up)); right.Normalize();
-	up = math::float3(right.Cross(forward));
-
-	view[0][0] = right.x; view[0][1] = right.y; view[0][2] = right.z;
-	view[1][0] = up.x; view[1][1] = up.y; view[1][2] = up.z;
-	view[2][0] = -forward.x; view[2][1] = -forward.y; view[2][2] = -forward.z;
-	view[0][3] = -right.Dot(camPos); view[1][3] = -up.Dot(camPos); view[2][3] = forward.Dot(camPos);
-	view[3][0] = 0; view[3][1] = 0; view[3][2] = 0; view[3][3] = 1;
-
-	pitchAmount = forward.AngleBetweenNorm(float3(forward.x, 0.f, forward.z).Normalized());
-}
-
-
-update_status ModuleCamera::PreUpdate()
-{
-
-	float aspect = (float)App->renderer->viewPortWidth / (float)App->renderer->viewPortHeight;
-	if (aspect != oldAspectRatio || vFov != oldFOV || zFar != oldZFar || zNear != oldZNear) //projection changes -> update
-	{
-		Frustum frustum;
-		frustum.type = FrustumType::PerspectiveFrustum;
-		frustum.pos = float3::zero;
-		frustum.front = -float3::unitZ;
-		frustum.up = float3::unitY;
-		frustum.nearPlaneDistance = zNear;
-		frustum.farPlaneDistance = zFar;
-		frustum.verticalFov = (vFov * math::pi / 2) / 180.f;
-		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) *aspect);
-		proj = frustum.ProjectionMatrix();
-		oldAspectRatio = aspect;
-		oldFOV = vFov;
-		oldZFar = zFar;
-		oldZNear = zNear;
-		App->renderer->RecalcFrameBufferTexture();
-
-
-	}
-	return UPDATE_CONTINUE;
 }
 
 update_status ModuleCamera::Update()
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
+		float movementScale = 1.f;
+
+		target = frustum.front;
+
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+			movementScale = 2.f;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
+		{
+			camPos = camPos + float3(0.f, movementScale * moveSpeed * App->appTime->realDeltaTime, 0.f);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
+		{
+			camPos = camPos + float3(0.f, -moveSpeed * movementScale * App->appTime->realDeltaTime, 0.f);
+		}
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			camPos = camPos + right * moveSpeed;
+			camPos = camPos + frustum.WorldRight() * moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			camPos = camPos - right * moveSpeed;
+			camPos = camPos - frustum.WorldRight() * moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
-			camPos = camPos + forward * moveSpeed;
+			camPos = camPos + frustum.front * moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			camPos = camPos - forward * moveSpeed;
+			camPos = camPos - frustum.front * moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
-
-		iPoint mouseMotion = App->input->GetMouseMotion();
-		pitch(-mouseMotion.y * rotSpeed);
-		yaw(mouseMotion.x * rotSpeed);
-		LookAt(camPos + forward, camPos);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
-	{
-		iPoint mouseMotion = App->input->GetMouseMotion();
-		Quat yawRotMat = Quat::RotateY(-mouseMotion.x * rotSpeed);
-		camPos = yawRotMat * camPos;
-		forward = yawRotMat * forward;
-		up = yawRotMat * up;
 		
-		Quat pitchRotMat = Quat::RotateAxisAngle(right, mouseMotion.y * rotSpeed * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized())); // rotSpeed * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized()) reduce rotation speed when near the vertical
-		float3 newUp = pitchRotMat * up;
-		if (newUp.AngleBetweenNorm(float3(newUp.x, 0.f, newUp.z).Normalized()) > 0.1f) //angle between the new up & his XZ projection
-		{
-			up = newUp;
-			camPos = pitchRotMat * camPos;
-			forward = pitchRotMat * forward;
-		}
-		LookAt(float3(0.f,0.f,0.f), camPos); //TODO: Get geometry center
+		iPoint mouseMotion = App->input->GetMouseMotion();
 
-		//TODO: Roll control 
+		if (abs(mouseMotion.y) > 100)
+			mouseMotion.y = 50 * (-mouseMotion.y / mouseMotion.y); //keep direction with division
+
+		float pitchAngle = frustum.front.AngleBetween(float3(frustum.front.x, 0.f, frustum.front.z));
+		if (pitchAngle < 1.2f) //lock needed?
+			pitch(-mouseMotion.y * rotSpeed * App->appTime->realDeltaTime); //not locking
+		else
+			if (frustum.front.y > 0) // is looking up?
+				pitch(-0.01f); //unlock 
+			else
+				pitch(0.01f); //unlock
+		yaw(mouseMotion.x * rotSpeed * App->appTime->realDeltaTime);
+		RecalculateFrustum(frustum.front, frustum.up);
 	}
 
+	//TODO: Set geometry center as target
+
+	bool focus = false;
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	{			
+		iPoint mouseMotion = App->input->GetMouseMotion();
+		Quat orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), mouseMotion.y * rotSpeed * App->appTime->realDeltaTime);
+		camPos = target + orbitMat * (camPos - target);
+		RecalculateFrustum(frustum.front, frustum.up);
+		focus = true;
+		if (focusLerp > 1.0f)
+			focusLerp = 0.f;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	{
+		focusLerp = 0.f;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
+	{
+		if (focusLerp < 1.f)
+			focusLerp += 0.05f;
+
+		if (focus) //adjust distance with target if needed
+		{
+			
+		}
+		if ((target - camPos).AngleBetween(frustum.front) > 0.f) //should rotate?
+		{
+			Quat currentLookingQuat = Quat::LookAt(frustum.front, (frustum.front * 2.f).Normalized(), frustum.up, float3::unitY); //curent quat
+			Quat lookMat = Quat::LookAt(frustum.front, (target - camPos).Normalized(), frustum.up, float3::unitY); //target rotation
+			lookMat = currentLookingQuat.Lerp(lookMat, focusLerp); //smooth look at
+			RecalculateFrustum(lookMat * frustum.front, lookMat * frustum.up);
+		}
+	}
 	if (App->input->wheelAmount != 0)
 	{
-		camPos = camPos + forward * zoomSpeed * App->input->wheelAmount;
-		LookAt(camPos + forward, camPos);
+		
+		camPos = camPos + frustum.front * zoomSpeed * App->input->wheelAmount * App->appTime->realDeltaTime;	
+		RecalculateFrustum(frustum.front, frustum.up);
 	}
 
-	
 
 	return UPDATE_CONTINUE;
 }
@@ -127,22 +130,18 @@ update_status ModuleCamera::Update()
 
 void ModuleCamera::yaw(float amount)
 {
+	
 	Quat rotMat = math::Quat::RotateY(amount);
-	forward = rotMat * forward;
-	up = rotMat * up;
+	RecalculateFrustum(rotMat * frustum.front, rotMat * frustum.up);
+	
 }
 
 void ModuleCamera::pitch(float amount)
 {
-	Quat rotMat = math::Quat::RotateAxisAngle(right, amount * up.AngleBetweenNorm(float3(up.x, 0.f, up.z).Normalized())); //TODO: reduce amount when vertical 
-	float3 newForward = rotMat * forward;
-	float newPitch = newForward.AngleBetweenNorm(float3(newForward.x, 0.f, newForward.z).Normalized()); //angle between the new forward & his XZ projection
-	if (newPitch < 1.2f)
-	{
-		forward = newForward;
-		up = rotMat * up;
-		pitchAmount = newPitch;
-	}
+	
+	Quat rotMat = math::Quat::RotateAxisAngle(frustum.WorldRight(), amount);
+	RecalculateFrustum(rotMat * frustum.front, rotMat * frustum.up);
+
 }
 
 

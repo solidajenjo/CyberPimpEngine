@@ -6,6 +6,9 @@
 class SubModuleEditorMenu : public SubModuleEditor
 {
 public:
+
+	~SubModuleEditorMenu() {};
+
 	SubModuleEditorMenu(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();

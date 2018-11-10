@@ -16,7 +16,7 @@ bool ModuleTime::Init()
 
 update_status ModuleTime::Update()
 {
-	realDeltaTime = time->ReadMS();
+	realDeltaTime = time->ReadMS() / 1000.f;
 	realClock += realDeltaTime;
 	deltaTime = realDeltaTime * gameClockMultiplier;
 	gameClock += deltaTime;

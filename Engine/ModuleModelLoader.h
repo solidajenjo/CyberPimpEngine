@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULE_MODEL_LOADER_H
+#define _MODULE_MODEL_LOADER_H
+
 #include "Module.h"
 #include <vector>
 #include <string>
@@ -24,3 +26,4 @@ public:
 	std::vector<unsigned> meshes; //default ctor init
 };
 
+#endif

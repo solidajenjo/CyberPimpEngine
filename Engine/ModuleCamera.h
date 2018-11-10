@@ -9,32 +9,26 @@ class ModuleCamera :
 	public Module
 {
 public:
-	ModuleCamera();
-	~ModuleCamera();
 
 	bool Init() override;
-	update_status PreUpdate() override;
 	update_status Update() override;
 
 	void yaw(float amount);
 	void pitch(float amount);
-	void LookAt(float3 target, float3 eye);
+	void RecalculateFrustum(float3 front, float3 up);
 
 //members
 
-	math::float3 camPos = float3::zero;
+	math::float3 camPos = float3(0.f, 1.f, 10.f);
 
-	math::float4x4 proj = float4x4::identity;
-	math::float4x4 view = float4x4::identity;
+	float vFov = 90.f, zNear = 0.1f, zFar = 100.f;
+	float zoomSpeed = 15.f, moveSpeed = 5.f , rotSpeed = 0.2f;
+	float focusLerp = 0.f;
+	float aspectRatio = 1.f;
+	bool gizmosEnabled = true;
+	float3 target = float3(0.f, 0.f, 0.f);
 
-	math::float3 forward = float3::zero;
-	math::float3 right = float3::zero;
-	math::float3 up = float3::zero;
-
-	float vFov = 90, oldFOV = 90, zNear = 0.1f, oldZNear = 0.1f, zFar = 100.f, oldZFar = 100.f, pitchAmount = 0.f;
-	float zoomSpeed = 0.1f, moveSpeed = 0.1f , rotSpeed = 0.01f;
-	float oldAspectRatio = 0;
-
+	Frustum frustum;
 };
 
 #endif;

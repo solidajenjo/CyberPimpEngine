@@ -1,8 +1,8 @@
 #ifndef _SUB_MODULE_EDITOR_CONFIG_H
 #define _SUB_MODULE_EDITOR_CONFIG_H
 
-#define SUB_SAMPLE_TIME 500.f
-#define SUB_SAMPLE_MULTIPLIER 1000.f / SUB_SAMPLE_TIME
+#define SUB_SAMPLE_TIME .500f
+#define SUB_SAMPLE_MULTIPLIER 1.f / SUB_SAMPLE_TIME
 
 #include "SubModuleEditor.h"
 #include <vector>

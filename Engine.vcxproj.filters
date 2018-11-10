@@ -167,6 +167,9 @@
     <ClCompile Include="Dependencies\MathGeoLib\include\Time\Clock.cpp">
       <Filter>Utilities\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleFrameBuffer.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -411,6 +414,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\imgui.h">
       <Filter>Utilities\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleFrameBuffer.h">
+      <Filter>EngineModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

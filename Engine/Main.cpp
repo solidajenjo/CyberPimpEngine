@@ -89,6 +89,7 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
+	App = nullptr; //Notice to log to not imgui print
 	LOG("Bye :)\n");
 	return main_return;
 }

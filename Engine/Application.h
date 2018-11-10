@@ -16,6 +16,7 @@ class ModuleEditor;
 class ModuleCamera;
 class ModuleProgram;
 class ModuleTime;
+class ModuleFrameBuffer;
 
 class Application
 {
@@ -38,6 +39,7 @@ public:
 	ModuleCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
 	ModuleTime* appTime = nullptr;
+	ModuleFrameBuffer* frameBuffer = nullptr;
 
 	bool exit = false;
 	ImGuiTextBuffer* consoleBuffer = nullptr;

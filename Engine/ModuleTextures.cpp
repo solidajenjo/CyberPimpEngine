@@ -20,8 +20,10 @@ ModuleTextures::ModuleTextures()
 // Called before quitting
 bool ModuleTextures::CleanUp() //can be called to reset stored textures
 {
-	for (unsigned i = 0; i < textures.size(); ++i)
+	LOG("Cleaning Module Textures");
+	if (textures.size() > 0)
 		glDeleteTextures(textures.size(), &textures[0]); //clean textures
+	LOG("Cleaning Module Textures. Done");
 	return true;
 }
 

@@ -11,7 +11,11 @@
 
 bool ModuleModelLoader::CleanUp()
 {	
-	glDeleteVertexArrays(meshes.size(), &meshes[0]); //clean vertex Arrays 
+	LOG("Cleaning Module Model Loader");
+	if (meshes.size() > 0)
+		glDeleteVertexArrays(meshes.size(), &meshes[0]); //clean vertex Arrays 
+	LOG("Cleaning Module Model Loader. Done");
+	return true;
 }
 
 void ModuleModelLoader::Load(std::string geometryPath) //TODO: crea dos veces el vector pasar por referencia

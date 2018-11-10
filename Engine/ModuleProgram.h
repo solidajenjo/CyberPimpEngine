@@ -12,13 +12,14 @@ public:
 	ModuleProgram(std::string vsName, std::string fsName) : vsName(vsName), fsName(fsName) {};	
 
 	bool Init() override;
-	void useProgram();
+	void UseProgram() const;
+	void StopUseProgram() const;
 	bool CleanUp() override;
 	
 //members
 
 	unsigned program = 0;
-	std::string vsName, fsName;
+	std::string vsName = "", fsName = "";
 
 	//TODO: multi program funcionality
 private:

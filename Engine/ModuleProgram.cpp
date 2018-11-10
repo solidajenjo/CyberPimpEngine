@@ -74,15 +74,22 @@ bool ModuleProgram::Init()
 	return true;
 }
 
-void ModuleProgram::useProgram()
+void ModuleProgram::UseProgram() const
 {
 	glUseProgram(program);
 	
 }
 
+void ModuleProgram::StopUseProgram() const
+{
+	glUseProgram(0);
+}
+
 bool ModuleProgram::CleanUp()
 {
+	LOG("Cleaning Module Program");
 	glDeleteProgram(program);
+	LOG("Cleaning Module Program. Done");
 	return true;
 }
 

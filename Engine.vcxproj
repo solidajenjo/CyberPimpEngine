@@ -141,6 +141,7 @@
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\ModuleCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
+    <ClInclude Include="Engine\ModuleFrameBuffer.h" />
     <ClInclude Include="Engine\ModuleModelLoader.h" />
     <ClInclude Include="Engine\ModuleProgram.h" />
     <ClInclude Include="Engine\ModuleTime.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Engine\ModuleCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
+    <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />
     <ClCompile Include="Engine\ModuleModelLoader.cpp" />
     <ClCompile Include="Engine\ModuleProgram.cpp" />
     <ClCompile Include="Engine\ModuleTime.cpp" />

@@ -109,8 +109,10 @@ update_status ModuleInput::PreUpdate()
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
+	LOG("Cleaning Module Input");
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	LOG("Cleaning Module Input.Done");
 	return true;
 }
 
