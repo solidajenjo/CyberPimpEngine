@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 #include "Assimp/include/assimp/cimport.h"
 #include "Assimp/include/assimp/postprocess.h"
 #include "Assimp/include/assimp/scene.h"
@@ -25,6 +26,8 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 	}
 	else
 	{
+		App->scene->CleanUp(); //clean possible previous gameobjects;
+		App->renderer->CleanUp(); //clean possible previous meshes;
 		unsigned tex;
 
 		for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -40,7 +43,8 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex);
 		if (retGameObject != nullptr)
 		{
-			LOG("Model loaded.");
+			LOG("Model loaded.");			
+			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
 		}
 		else
 		{
@@ -62,7 +66,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture));
 	}
 
-	if (node->mNumMeshes == 1) //is a leaf of the tree
+	if (node->mNumMeshes == 1) //is a mesh -  otherwise is anything i don't care for now
 	{
 		unsigned meshPointer = *node->mMeshes;
 		aiMesh* mesh = scene->mMeshes[meshPointer];
@@ -77,25 +81,29 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 			indices.push_back(face.mIndices[1]);
 			indices.push_back(face.mIndices[2]);
 		}
-
 		GLuint vbo, vao, vio;
 		glGenVertexArrays(1, &vao);
 		glGenBuffers(1, &vbo);
 		glGenBuffers(1, &vio);
-
 		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * mesh->mNumVertices * 5, NULL, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * mesh->mNumVertices * 3, mesh->mVertices);
-
 		float offset = sizeof(GLfloat) * mesh->mNumVertices * 3;
-		for (unsigned i = 0; i < mesh->mNumVertices; ++i)
+		if (mesh->mNumUVComponents[0] == 0) //for now only channel 0 matters
 		{
-			float* bufferCoords = (float*)glMapBufferRange(GL_ARRAY_BUFFER, offset + sizeof(GLfloat) * 2 * i, sizeof(GLfloat) * 2, GL_MAP_WRITE_BIT);
-			memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2);
-			glUnmapBuffer(GL_ARRAY_BUFFER);
+			LOG("No texture coords found. Skipping %s", node->mName.C_Str());
 		}
-
+		else
+		{
+			for (unsigned i = 0; i < mesh->mNumVertices; ++i)
+			{
+				float* bufferCoords = (float*)glMapBufferRange(GL_ARRAY_BUFFER, offset + sizeof(GLfloat) * 2 * i, sizeof(GLfloat) * 2, GL_MAP_WRITE_BIT);
+				memcpy(bufferCoords, &mesh->mTextureCoords[0][i].x, sizeof(GLfloat) * 2);
+				glUnmapBuffer(GL_ARRAY_BUFFER);
+			}
+			LOG("%s Texture coords OK.", node->mName.C_Str());
+		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, &indices[0], GL_STATIC_DRAW);
 
@@ -133,13 +141,28 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		compMesh->VIndex = vio;
 		compMesh->texture = texture;
 		compMesh->owner = newGO;
-
-		//TODO:Get & Set mesh transform
 		
+		aiMatrix4x4 transform = node->mTransformation;
+		aiNode* nodeIterator = node;
+		while (nodeIterator->mParent != nullptr) //crawl up the hierarchy to get the real world transform of the mesh
+		{			
+			transform = transform * nodeIterator->mParent->mTransformation;
+			nodeIterator = nodeIterator->mParent;
+		}
+		newGO->transform->SetModelMatrix(transform);
+
 		App->renderer->renderizables.push_back(compMesh);
 
 		newGO->components.push_back(compMesh);
+		LOG("%s mesh created.", node->mName.C_Str());
+		LOG("  |");
+		LOG("  | - %d vertices", compMesh->nVertices);
+		LOG("  | - %d faces", compMesh->nIndices / 3);
 		
+	}
+	else
+	{
+		LOG("%s is not a mesh. Skipping.", node->mName.C_Str()); 
 	}
 	return newGO;
 }
@@ -147,11 +170,15 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 unsigned int ModuleModelLoader::GenerateMaterialData(aiMaterial * materials)
 {
 	assert(materials != nullptr);
-
 	aiString file;
 	aiReturn ret = materials->GetTexture(aiTextureType_DIFFUSE, 0, &file, nullptr, nullptr);	
+	if (file.C_Str()[0] == 0)
+	{
+		LOG("Texture data not found. Load it Manually.");
+		return -1;
+	}
 	if (ret != AI_SUCCESS) {
-		LOG("Failed retrieving texture name.");
+		LOG("Failed retrieving texture %s.", file.C_Str());
 		return -1;
 	}
 	return App->textures->Load(file.C_Str());

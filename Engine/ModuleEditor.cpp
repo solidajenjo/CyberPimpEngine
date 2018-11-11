@@ -36,6 +36,7 @@ bool ModuleEditor::Init()
 
 	toolBar = new SubModuleEditorToolBar("ToolBar");
 	textures = new ModuleTextures(); 
+
 	return true;
 }
 
@@ -53,7 +54,7 @@ update_status ModuleEditor::PreUpdate()
 	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, toolBar->toolBarHeight));
-	ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y/* - toolBar->toolBarHeight*/));
+	ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y * .95f/* - toolBar->toolBarHeight*/));
 	ImGui::SetNextWindowViewport(viewport->ID);
 	ImGui::SetNextWindowBgAlpha(0.f);	
 	ImGui::Begin("DockSpace", &bDock, window_flags);	

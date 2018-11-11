@@ -9,7 +9,13 @@ void SubModuleEditorConsole::Show()
 	{		
 		ImGui::Begin(editorModuleName.c_str(), &enabled);
 		ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(0.108f, 0.93f, 0.1f));
-		ImGui::TextWrapped(App->consoleBuffer->begin());
+		
+		ImGui::TextUnformatted(App->consoleBuffer->begin());
+		if (lastSize != App->consoleBuffer->size())
+		{
+			lastSize = App->consoleBuffer->size();
+			ImGui::SetScrollHereY(1.0f);
+		}
 		ImGui::PopStyleColor();
 		ImGui::End();
 	}

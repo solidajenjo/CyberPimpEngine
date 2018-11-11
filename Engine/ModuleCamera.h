@@ -22,7 +22,7 @@ public:
 
 	math::float3 camPos = float3(0.f, 1.f, 10.f);
 
-	float vFov = 90.f, zNear = 0.1f, zFar = 100.f;
+	float vFov = 90.f, zNear = 0.1f, zFar = 400.f;
 	float zoomSpeed = 15.f, moveSpeed = 5.f , rotSpeed = 0.2f;
 	float focusLerp = 0.f;
 	float aspectRatio = 1.f;

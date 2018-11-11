@@ -3,6 +3,7 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
+#include "Assimp/include/assimp/types.h"
 
 class GameObject;
 
@@ -12,21 +13,29 @@ public:
 	Transform(GameObject* go);
 
 	void Rotate(float3 rotations);
-	void Translate(float3 direction, float amount);
-	void Scale(float3 axis, float amount);
-	float* GetModelMatrix();
+	void Translate(float3 translation);
+	void Scale(float3 scalation);
+
+	void SetPosition(float3 newPosition);
+	void SetRotation(float3 newRotation);
+	void SetScale(float3 newScale);
+	void SetTransform(float3 pos, float3 rot, float3 scl);
+	void SetModelMatrix(aiMatrix4x4 mMatrix);
+
+	//TODO: Create getters
+	float* GetModelMatrix(); //returns pointer to [0][0] of the model matrix
 	
 private:
 
-	void PropagateModelMatrix(float4x4 modelParent);
-	void PropagateModelMatrix();
+	void PropagateTransform(float3 pos, float3 rot, float3 scl);
+	void PropagateTransform();
 	void RecalcModelMatrix();
 //members
 	float3 position = float3(0.f, 0.f, 0.f); 
 	float3 rotation = float3(0.f, 0.f, 0.f);
 	float3 scale = float3(1.f, 1.f, 1.f);
 
-	float4x4 modelMatrix = float4x4::zero;
+	aiMatrix4x4 modelMatrix;// = aiMatrix4x4();  // identity matrix
 	
 	GameObject* owner = nullptr;
 };

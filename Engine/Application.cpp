@@ -9,6 +9,7 @@
 #include "ModuleProgram.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 #include "Module.h"
 
 using namespace std;
@@ -25,6 +26,7 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(appTime = new ModuleTime());
+	modules.push_back(scene = new ModuleScene());
 	modules.push_back(program = new ModuleProgram("default.vs", "default.fs"));
 }
 

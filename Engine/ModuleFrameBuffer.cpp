@@ -57,8 +57,8 @@ update_status ModuleFrameBuffer::Update()
 				"view"), 1, GL_TRUE, &view[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 				"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
-
-
+			glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
+			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, .2f, .2f);
 			glLineWidth(1.0f);
 			float d = 200.0f;
 			glBegin(GL_LINES);
@@ -69,6 +69,24 @@ update_status ModuleFrameBuffer::Update()
 				glVertex3f(-d, 0.0f, i);
 				glVertex3f(d, 0.0f, i);
 			}
+			glEnd();
+
+			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f); // x Axis
+			glBegin(GL_LINES);
+			glVertex3f(0.f, 0.1f, 0.f);
+			glVertex3f(d, 0.1f, 0.f);
+			glEnd();
+
+			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f); // z Axis
+			glBegin(GL_LINES);
+			glVertex3f(0.f, 0.1f, d);
+			glVertex3f(0.f, 0.1f, 0.f);
+			glEnd();
+
+			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f); // z Axis
+			glBegin(GL_LINES);
+			glVertex3f(0.f, 0.1f, 0.f);
+			glVertex3f(0.f, d, 0.f);
 			glEnd();
 
 		}

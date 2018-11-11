@@ -10,6 +10,9 @@ public:
 
 	void Show();
 
+//members
+
+	unsigned lastSize = 0;
 };
 
 #endif

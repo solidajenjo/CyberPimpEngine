@@ -65,10 +65,8 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Cleaning Module Renderer");
-
-	//Probably something should be done in the future
-
-	LOG("Cleaning Module Program. Done");
+	renderizables.resize(0); //the meshes are cleanend by their owner gameobjects
+	LOG("Cleaning Module Render. Done");
 	return true;
 }
 
@@ -79,7 +77,7 @@ void ModuleRender::Render() const
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 		"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
-
+	glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
 	for (std::vector<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
 	{
 		if (*it == nullptr)
