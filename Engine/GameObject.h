@@ -6,7 +6,7 @@
 #include <string>
 #include "Transform.h"
 #include "Component.h"
-
+#include "MathGeoLib/include/Geometry/OBB.h"
 
 class GameObject
 {
@@ -20,6 +20,7 @@ public:
 	~GameObject()
 	{
 		RELEASE(transform);
+		RELEASE(oBoundingBox);
 		for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 		{
 			RELEASE(*it);
@@ -37,6 +38,7 @@ public:
 	std::vector<GameObject*> children; 
 	std::vector<Component*> components;
 
+	OBB* oBoundingBox = nullptr;
 	bool enabled = true;
 	std::string name = "";
 };

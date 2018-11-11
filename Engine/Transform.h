@@ -23,7 +23,7 @@ public:
 	void SetModelMatrix(aiMatrix4x4 mMatrix);
 
 	//TODO: Create getters
-	float* GetModelMatrix(); //returns pointer to [0][0] of the model matrix
+	float4x4 GetModelMatrix(); //returns pointer the model matrix[0][0]
 	
 private:
 
@@ -35,7 +35,7 @@ private:
 	float3 rotation = float3(0.f, 0.f, 0.f);
 	float3 scale = float3(1.f, 1.f, 1.f);
 
-	aiMatrix4x4 modelMatrix;// = aiMatrix4x4();  // identity matrix
+	float4x4 modelMatrix;// = aiMatrix4x4();  // identity matrix
 	
 	GameObject* owner = nullptr;
 };

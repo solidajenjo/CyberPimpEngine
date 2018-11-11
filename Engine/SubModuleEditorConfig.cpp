@@ -130,11 +130,11 @@ void SubModuleEditorConfig::Show()
 			ImGui::Separator();
 
 			ImGui::SliderFloat("FOV", &App->camera->vFov, 10, 180);
-			ImGui::InputFloat("Z Near", &App->camera->zNear);
-			ImGui::InputFloat("Z Far", &App->camera->zFar);
-			ImGui::InputFloat("Movement speed", &App->camera->moveSpeed, 0.01f, 0.5f);
-			ImGui::InputFloat("Rotation speed", &App->camera->rotSpeed, 0.01f, 0.5f);
-			ImGui::InputFloat("Zoom speed", &App->camera->zoomSpeed, 0.01f, 0.5f);
+			ImGui::SliderFloat("Z Near", &App->camera->zNear, 0.01f, 2000.f);
+			ImGui::SliderFloat("Z Far", &App->camera->zFar, 0.01f, 2000.f);
+			ImGui::SliderFloat("Movement speed", &App->camera->moveSpeed, 0.01f, 50.f);
+			ImGui::SliderFloat("Rotation speed", &App->camera->rotSpeed, 0.01f, 50.f);
+			ImGui::SliderFloat("Zoom speed", &App->camera->zoomSpeed, 0.01f, 50.f);
 		}
 		ImGui::End();
 	}

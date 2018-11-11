@@ -5,6 +5,8 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "glew-2.1.0/include/GL/glew.h"
 
@@ -47,7 +49,7 @@ update_status ModuleFrameBuffer::Update()
 		
 		App->program->UseProgram();
 		App->renderer->Render();
-		if (App->editor->gizmosEnabled)
+		if (App->editor->gizmosEnabled)  //TODO: Consider relocate this in a more apropiated place
 		{
 			math::float4x4 model = float4x4::identity;
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
@@ -89,13 +91,32 @@ update_status ModuleFrameBuffer::Update()
 			glVertex3f(0.f, d, 0.f);
 			glEnd();
 
+			for (std::vector<GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
+			{
+				if ((*it)->oBoundingBox != nullptr)
+				{					
+					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+						"model"), 1, GL_TRUE, &(*it)->children[0]->transform->GetModelMatrix()[0][0]);
+					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
+					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f);
+					glBegin(GL_LINES);
+					for (unsigned i = 0; i < (*it)->oBoundingBox->NumEdges(); ++i)
+					{
+						float3 a = (*it)->oBoundingBox->Edge(i).a;
+						float3 b = (*it)->oBoundingBox->Edge(i).b;
+						glVertex3f(a.x, a.y, a.z);
+						glVertex3f(b.x, b.y, b.z);
+					}
+					glEnd();
+				}
+			}
 		}
 		App->program->StopUseProgram();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	else // if on pre was 0 and still 0 something went wrong. Abort
 	{
-		LOG("Unexpected framebuffer status in Module Framebuffer. Aborting.");
+		LOG("Wrong framebuffer status in Module Framebuffer. Aborting.");
 		return UPDATE_ERROR;
 
 	}

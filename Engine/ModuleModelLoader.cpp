@@ -9,6 +9,8 @@
 #include "Assimp/include/assimp/scene.h"
 #include "Assimp/include/assimp/material.h"
 #include "Assimp/include/assimp/mesh.h"
+#include "MathGeoLib/include/Geometry/OBB.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "ComponentMesh.h"
@@ -39,11 +41,17 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 			LOG("Failed loading texures -> %s", aiGetErrorString()); 
 			return;
 		}
-
-		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex);
+		float3 min = float3::zero;
+		float3 max = float3::zero;
+		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex, min, max);
 		if (retGameObject != nullptr)
 		{
 			LOG("Model loaded.");			
+			//create global model bounding box
+			OBB* oBoundingBox = new OBB(); //The gameobject handles this
+			oBoundingBox->SetFrom(AABB(min, max));
+			retGameObject->oBoundingBox = oBoundingBox;
+			
 			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
 		}
 		else
@@ -54,22 +62,42 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 	aiReleaseImport(scene);	
 }
 
-GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture)
+GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture, float3 &min, float3 &max)
 {
 	assert(node != nullptr);
 	assert(scene != nullptr);
 	LOG("Model node -> %s", node->mName.C_Str());
 	GameObject* newGO = new GameObject();
 	newGO->name = std::string(node->mName.C_Str());
+	
+	//process model
 	for (unsigned i = 0; i < node->mNumChildren; ++i)
 	{
-		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture));
+		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture, min, max));
 	}
 
 	if (node->mNumMeshes == 1) //is a mesh -  otherwise is anything i don't care for now
 	{
 		unsigned meshPointer = *node->mMeshes;
 		aiMesh* mesh = scene->mMeshes[meshPointer];
+
+		for (unsigned i = 0; i < mesh->mNumVertices; ++i) { //TODO: Find a better way to do this. Not enough time for now :(
+			if (mesh->mVertices[i].x > max.x)
+				max.x = mesh->mVertices[i].x;
+			if (mesh->mVertices[i].x < min.x)
+				min.x = mesh->mVertices[i].x;
+
+			if (mesh->mVertices[i].y > max.y)
+				max.y = mesh->mVertices[i].y;
+			if (mesh->mVertices[i].y < min.y)
+				min.y = mesh->mVertices[i].y;
+
+			if (mesh->mVertices[i].z > max.z)
+				max.z = mesh->mVertices[i].z;
+			if (mesh->mVertices[i].z < min.z)
+				min.z = mesh->mVertices[i].z;
+		}
+
 
 		std::vector<unsigned> indices;
 		for (unsigned i = 0; i < mesh->mNumFaces; ++i)
@@ -164,6 +192,8 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 	{
 		LOG("%s is not a mesh. Skipping.", node->mName.C_Str()); 
 	}
+	
+	//TODO:Create sub meshes BBs
 	return newGO;
 }
 

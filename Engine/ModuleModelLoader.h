@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <vector>
 #include <string>
+#include "MathGeoLib/include/Math/float3.h"
 
 struct aiScene;
 struct aiNode;
@@ -21,7 +22,7 @@ public:
 
 private:
 
-	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture);
+	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture, float3 &min, float3 &max);
 	unsigned GenerateMaterialData(aiMaterial* materials);
 
 };

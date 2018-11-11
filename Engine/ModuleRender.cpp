@@ -91,13 +91,15 @@ void ModuleRender::Render() const
 			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
 			
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-				"model"), 1, GL_TRUE, (*it)->owner->transform->GetModelMatrix());
+				"model"), 1, GL_TRUE, &(*it)->owner->transform->GetModelMatrix()[0][0]);
 			//(*it)->owner->transform->rotation.z += 0.01f;
 			glBindVertexArray((*it)->VAO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->VIndex);
 			glDrawElements(GL_TRIANGLES, (*it)->nIndices, GL_UNSIGNED_INT, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
+		
 	}
+	
 	glBindVertexArray(0);
 }
