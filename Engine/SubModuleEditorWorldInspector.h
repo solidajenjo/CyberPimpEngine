@@ -3,6 +3,8 @@
 
 #include "SubModuleEditor.h"
 
+class GameObject;
+
 class SubModuleEditorWorldInspector : public SubModuleEditor
 {
 public:
@@ -10,6 +12,9 @@ public:
 	
 	void Show();
 
+private:
+
+	void drawNode(GameObject* gObj) const;
 };
 
 #endif
