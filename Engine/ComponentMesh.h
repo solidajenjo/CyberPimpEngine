@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "MathGeoLib/include/Math/float3.h"
+#include "glew-2.1.0/include/GL/glew.h"
 
 #include "Component.h"
 
@@ -12,6 +13,10 @@ class ComponentMesh : public Component
 {
 public:
 
+	~ComponentMesh() {
+		if (VAO != 0)
+			glDeleteVertexArrays(1, &VAO);
+	}
 //members
 
 	unsigned VAO = 0;
@@ -23,7 +28,6 @@ public:
 
 	GameObject* owner = nullptr;
 
-	//TODO:Release openGL memory on destroy
 };
 
 #endif

@@ -11,7 +11,7 @@ public:
 	virtual void Show() = 0 ; //No const posible -> ImGui::Begin modifies enabled;
 
 	bool enabled = true;
-	std::string editorModuleName;
+	std::string editorModuleName = "";
 };
 
 #endif;

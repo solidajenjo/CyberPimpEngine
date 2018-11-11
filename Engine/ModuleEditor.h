@@ -31,6 +31,7 @@ public:
 	bool bDock = true;
 	unsigned logo = 0;
 	unsigned backgroundTex = 0;
+	unsigned checkersTex = 0;
 	bool gizmosEnabled = true;
 
 	SubModuleEditorMenu* menu = nullptr;

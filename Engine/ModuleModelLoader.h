@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "MathGeoLib/include/Math/float3.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 
 struct aiScene;
 struct aiNode;
@@ -18,12 +19,17 @@ class ModuleModelLoader :
 {
 public:
 
-	void Load(std::string geometryPath); //TODO: store root gameobject on scene module
+	void Load(std::string geometryPath);
 
 private:
 
-	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture, float3 &min, float3 &max);
+	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture);
 	unsigned GenerateMaterialData(aiMaterial* materials);
+
+//memebers
+
+	std::vector<float3> allVertices;
+	
 
 };
 

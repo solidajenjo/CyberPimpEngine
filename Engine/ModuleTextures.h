@@ -17,7 +17,7 @@ public:
 
 //members
 
-	std::vector<unsigned> textures; //TODO: Store texture info
+	std::vector<unsigned> textures; 
 };
 
 #endif

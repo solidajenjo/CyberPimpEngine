@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "MathGeoLib/include/MathGeoLib.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 
 class ModuleCamera :
 	public Module
@@ -28,7 +29,14 @@ public:
 	float aspectRatio = 1.f;
 	float3 target = float3(0.f, 0.f, 0.f);
 
+	float adjustingDistance = false;
+	AABB lastLoaded = AABB();
+
 	Frustum frustum;
+
+private:
+
+	bool movementStart = false;
 };
 
 #endif;

@@ -13,7 +13,7 @@ public:
 	
 	bool Init() override;
 	update_status Update() override;
-	bool CleanUp() override; //clean when a new module is loaded & on exit
+	bool CleanUp() override; //clean when a new model is loaded & on exit
 
 //members
 

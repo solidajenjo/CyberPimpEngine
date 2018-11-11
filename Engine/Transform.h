@@ -31,11 +31,14 @@ private:
 	void PropagateTransform();
 	void RecalcModelMatrix();
 //members
+
+public: //TODO: Make private when the getters are done
+
 	float3 position = float3(0.f, 0.f, 0.f); 
 	float3 rotation = float3(0.f, 0.f, 0.f);
 	float3 scale = float3(1.f, 1.f, 1.f);
 
-	float4x4 modelMatrix;// = aiMatrix4x4();  // identity matrix
+	float4x4 modelMatrix = float4x4::identity;
 	
 	GameObject* owner = nullptr;
 };

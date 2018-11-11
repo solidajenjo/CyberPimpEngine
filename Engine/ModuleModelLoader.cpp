@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "Assimp/include/assimp/cimport.h"
 #include "Assimp/include/assimp/postprocess.h"
@@ -10,14 +11,13 @@
 #include "Assimp/include/assimp/material.h"
 #include "Assimp/include/assimp/mesh.h"
 #include "MathGeoLib/include/Geometry/OBB.h"
-#include "MathGeoLib/include/Geometry/AABB.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "ComponentMesh.h"
 #include <string>
 
 
-void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other assets
+void ModuleModelLoader::Load(std::string geometryPath)
 {
 	assert(geometryPath != "");
 	
@@ -30,6 +30,7 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 	{
 		App->scene->CleanUp(); //clean possible previous gameobjects;
 		App->renderer->CleanUp(); //clean possible previous meshes;
+		allVertices.resize(0);
 		unsigned tex;
 
 		for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -41,17 +42,23 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 			LOG("Failed loading texures -> %s", aiGetErrorString()); 
 			return;
 		}
-		float3 min = float3::zero;
-		float3 max = float3::zero;
-		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex, min, max);
+		
+		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex);
 		if (retGameObject != nullptr)
 		{
 			LOG("Model loaded.");			
 			//create global model bounding box
 			OBB* oBoundingBox = new OBB(); //The gameobject handles this
-			oBoundingBox->SetFrom(AABB(min, max));
-			retGameObject->oBoundingBox = oBoundingBox;
-			
+			AABB lastLoaded = AABB();
+			lastLoaded.SetFrom(&allVertices[0], allVertices.size());
+			oBoundingBox->SetFrom(lastLoaded);
+
+			retGameObject->oBoundingBox = oBoundingBox;  //TODO: Test with hierarchies
+
+			App->camera->adjustingDistance = true;
+			App->camera->target = lastLoaded.CenterPoint();
+			App->camera->lastLoaded = lastLoaded;
+
 			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
 		}
 		else
@@ -62,7 +69,7 @@ void ModuleModelLoader::Load(std::string geometryPath)//TODO: Test with other as
 	aiReleaseImport(scene);	
 }
 
-GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture, float3 &min, float3 &max)
+GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture)
 {
 	assert(node != nullptr);
 	assert(scene != nullptr);
@@ -73,31 +80,13 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 	//process model
 	for (unsigned i = 0; i < node->mNumChildren; ++i)
 	{
-		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture, min, max));
+		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture));
 	}
 
-	if (node->mNumMeshes == 1) //is a mesh -  otherwise is anything i don't care for now
+	if (node->mNumChildren == 0 && node->mNumMeshes >= 1) //is a mesh -  otherwise is anything i don't care for now
 	{
 		unsigned meshPointer = *node->mMeshes;
 		aiMesh* mesh = scene->mMeshes[meshPointer];
-
-		for (unsigned i = 0; i < mesh->mNumVertices; ++i) { //TODO: Find a better way to do this. Not enough time for now :(
-			if (mesh->mVertices[i].x > max.x)
-				max.x = mesh->mVertices[i].x;
-			if (mesh->mVertices[i].x < min.x)
-				min.x = mesh->mVertices[i].x;
-
-			if (mesh->mVertices[i].y > max.y)
-				max.y = mesh->mVertices[i].y;
-			if (mesh->mVertices[i].y < min.y)
-				min.y = mesh->mVertices[i].y;
-
-			if (mesh->mVertices[i].z > max.z)
-				max.z = mesh->mVertices[i].z;
-			if (mesh->mVertices[i].z < min.z)
-				min.z = mesh->mVertices[i].z;
-		}
-
 
 		std::vector<unsigned> indices;
 		for (unsigned i = 0; i < mesh->mNumFaces; ++i)
@@ -109,6 +98,11 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 			indices.push_back(face.mIndices[1]);
 			indices.push_back(face.mIndices[2]);
 		}
+		for (unsigned i = 0; i < mesh->mNumVertices; ++i)
+		{
+			allVertices.push_back(float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
+		}
+
 		GLuint vbo, vao, vio;
 		glGenVertexArrays(1, &vao);
 		glGenBuffers(1, &vbo);
@@ -178,6 +172,18 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 			nodeIterator = nodeIterator->mParent;
 		}
 		newGO->transform->SetModelMatrix(transform);
+		
+		aiVector3D pos;
+		aiVector3D scl;
+		aiQuaternion rot;
+
+		node->mTransformation.Decompose(scl, rot, pos);
+
+		Quat q(rot.x, rot.y, rot.z, rot.w); //Quat to translate from black math voodoo to human understable
+
+		newGO->transform->SetPosition(float3(pos.x, pos.y, pos.z));
+		newGO->transform->SetRotation(q.ToEulerXYZ());		
+		newGO->transform->SetScale(float3(scl.x, scl.y, scl.z));
 
 		App->renderer->renderizables.push_back(compMesh);
 

@@ -2,7 +2,16 @@
 #include "Application.h"
 #include "ModuleTime.h"
 #include "ModuleCamera.h"
+#include "ModuleTextures.h"
+#include "ModuleRender.h"
+#include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "imgui/imgui.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
+#include "glew-2.1.0/include/GL/glew.h"
+#include "Assimp/include/assimp/version.h"
+
 #include <vector>
 
 
@@ -135,6 +144,140 @@ void SubModuleEditorConfig::Show()
 			ImGui::SliderFloat("Movement speed", &App->camera->moveSpeed, 0.01f, 50.f);
 			ImGui::SliderFloat("Rotation speed", &App->camera->rotSpeed, 0.01f, 50.f);
 			ImGui::SliderFloat("Zoom speed", &App->camera->zoomSpeed, 0.01f, 50.f);
+		}
+		if (ImGui::CollapsingHeader("Textures Module"))
+		{
+			if (ImGui::Button("Clean"))
+			{
+				App->textures->CleanUp();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Use checkers texture"))
+			{
+				for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
+					(*it2)->texture = App->editor->checkersTex;
+			}
+			
+			for (std::vector<unsigned>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
+			{
+				std::string tNum = "Texture " + std::to_string(*it);
+				if (ImGui::TreeNode(tNum.c_str()))
+				{
+					ImGui::Image((void*)(intptr_t)*it, ImVec2(ImGui::GetWindowWidth() * .9f, ImGui::GetWindowWidth() *.9f), ImVec2(0, 1), ImVec2(1, 0));
+					int w = 0, h = 0;
+					int miplevel = 0;
+					for (; w  != 1 && h != 1; ++miplevel)
+					{						
+						glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
+						glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
+						std::string s = "MIPMAP " + std::to_string(miplevel) + " " + std::to_string(w) + "x" + std::to_string(h);
+						ImGui::TextWrapped(s.c_str());
+					}
+					if (ImGui::Button("Apply"))
+					{
+						for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
+							(*it2)->texture = *it;
+					}					
+					ImGui::TreePop();
+				}
+			}
+		}
+		if (ImGui::CollapsingHeader("Render Module"))
+		{
+			for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
+			{
+				if (ImGui::TreeNode(((*it2)->owner->name + " mesh").c_str()))
+				{
+					int boxHeight = 16, boxWidth;
+					ImGui::Text("Position");
+					ImGui::Columns(3);
+					ImVec2 pos = ImGui::GetCursorScreenPos();
+					boxWidth = ImGui::GetColumnWidth() - 10;
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("X: %.3f", (*it2)->owner->transform->position.x);
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Y: %.3f", (*it2)->owner->transform->position.y);
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Z: %.3f", (*it2)->owner->transform->position.z);
+					ImGui::Columns(1);
+					ImGui::Separator();
+					ImGui::Separator();
+					ImGui::Separator();
+
+					ImGui::Text("Rotation");
+					ImGui::Columns(3);
+					pos = ImGui::GetCursorScreenPos();
+					boxWidth = ImGui::GetColumnWidth() - 10;
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("X: %.3f", RadToDeg((*it2)->owner->transform->rotation.x));
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Y: %.3f", RadToDeg((*it2)->owner->transform->rotation.y));
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Z: %.3f", RadToDeg((*it2)->owner->transform->rotation.z));
+					ImGui::Columns(1);
+					ImGui::Separator();
+					ImGui::Separator();
+					ImGui::Separator();					
+
+					ImGui::Text("Scale");
+					ImGui::Columns(3);
+					pos = ImGui::GetCursorScreenPos();
+					boxWidth = ImGui::GetColumnWidth() - 10;
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("X: %.3f", (*it2)->owner->transform->scale.x);
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Y: %.3f", (*it2)->owner->transform->scale.y);
+					ImGui::NextColumn();
+					pos = ImGui::GetCursorScreenPos();
+					ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
+					ImGui::Text("Z: %.3f", (*it2)->owner->transform->scale.z);
+					ImGui::Columns(1);
+					ImGui::Separator();
+					ImGui::Separator();
+					ImGui::Separator();
+
+					std::string meshInfo = "Vertices: " + std::to_string((*it2)->nVertices) + "\nFaces: " + std::to_string((*it2)->nIndices / 3);
+					ImGui::TextWrapped(meshInfo.c_str());
+					ImGui::Indent(5.f);
+					if (ImGui::TreeNode("Current texture"))
+					{
+						ImGui::Image((void*)(intptr_t)(*it2)->texture, ImVec2(ImGui::GetWindowWidth() * .7f, ImGui::GetWindowWidth() *.7f), ImVec2(0, 1), ImVec2(1, 0));
+						ImGui::TreePop();
+					}
+					ImGui::TreePop();
+				}				
+			}
+			
+		}
+		if (ImGui::CollapsingHeader("Scene Module"))
+		{
+			if (ImGui::Button("Clear scene"))
+			{
+				App->renderer->CleanUp();
+				App->scene->CleanUp();
+			}
+		}
+		if (ImGui::CollapsingHeader("System"))
+		{
+			if (ImGui::TreeNode("Memory"))
+			{
+				ImGui::TextWrapped("Memory data placeholder. Out of time :(");//TODO: Put memory statistics
+				ImGui::TreePop();
+			}
+			std::string dependenciesVersions = "Open GL version 3.3\nSDL Version 2.0.9 \nImGui Version " + std::string(ImGui::GetVersion()) + "\nDevIL Version 1.8.0\nGlew Version 2.1.0\nAssimp version "
+				+ std::to_string(aiGetVersionMajor()) + "." + std::to_string(aiGetVersionMinor());
+
+			ImGui::TextWrapped(dependenciesVersions.c_str());
 		}
 		ImGui::End();
 	}

@@ -5,7 +5,9 @@
 
 float4x4 Transform::GetModelMatrix()
 {	
-	return modelMatrix;
+	//return modelMatrix; Temporary disabled 
+	float4x4 mM = float4x4::identity;
+	return  mM;
 }
 
 
@@ -27,17 +29,17 @@ void Transform::Scale(float3 scalation)
 
 void Transform::SetPosition(float3 newPosition)
 {
-
+	position = newPosition;
 }
 
 void Transform::SetRotation(float3 newRotation)
 {
-	
+	rotation = newRotation;
 }
 
 void Transform::SetScale(float3 newScale)
 {
-	
+	scale = newScale;
 }
 
 void Transform::SetTransform(float3 pos, float3 rot, float3 scl)

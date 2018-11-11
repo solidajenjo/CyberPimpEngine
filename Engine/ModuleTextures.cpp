@@ -23,6 +23,7 @@ bool ModuleTextures::CleanUp() //can be called to reset stored textures
 	LOG("Cleaning Module Textures");
 	if (textures.size() > 0)
 		glDeleteTextures(textures.size(), &textures[0]); //clean textures
+	textures.resize(0);
 	LOG("Cleaning Module Textures. Done");
 	return true;
 }
@@ -30,6 +31,7 @@ bool ModuleTextures::CleanUp() //can be called to reset stored textures
 // Load new texture from file path
 unsigned ModuleTextures::Load(std::string path)
 {
+	LOG("Loading texture -> %s", path.c_str());
 	ILuint imageId;
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
@@ -64,17 +66,10 @@ unsigned ModuleTextures::Load(std::string path)
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, data);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-		/*if (mipmaps)
-		{*/
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		/*}
-		else
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-		*/
+	
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	
 		ilDeleteImages(1, &imageId);
 
 		glBindTexture(GL_TEXTURE_2D, 0);

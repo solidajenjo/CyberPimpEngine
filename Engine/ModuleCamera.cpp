@@ -36,6 +36,29 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
+	if (adjustingDistance) {
+		if (!movementStart)
+		{
+			camPos = target + frustum.front;
+			movementStart = true;
+		}
+		bool getAway;
+		Quat lookMat = Quat::LookAt(frustum.front, (target - camPos).Normalized(), frustum.up, float3::unitY); //target rotation			
+		RecalculateFrustum(lookMat * frustum.front, lookMat * frustum.up);
+		
+		getAway = !frustum.Contains(lastLoaded);
+		
+		if (getAway)
+		{
+			camPos -= frustum.front * lastLoaded.Size().Length() * 0.1f;
+			return UPDATE_CONTINUE;
+		}
+		else
+		{
+			adjustingDistance = false;
+			movementStart = false;
+		}
+	}
 	if (!App->editor->viewPort->cursorIn)
 		return UPDATE_CONTINUE;
 
@@ -118,7 +141,6 @@ update_status ModuleCamera::Update()
 		focus = true;
 
 		float angleToTarget = RadToDeg(frustum.front.AngleBetween(target - camPos));
-		LOG("%.3f", angleToTarget);
 		if (focusLerp > 1.0f && angleToTarget <= 1.0f)
 		{			
 			focusLerp = 1.f;
@@ -138,7 +160,6 @@ update_status ModuleCamera::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
 	{
-		LOG("FLERP %.3f", focusLerp);
 		if (focusLerp < 1.f)
 			focusLerp += 0.05f + orbitFocus;
 ;

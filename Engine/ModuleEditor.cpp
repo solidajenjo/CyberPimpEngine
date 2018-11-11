@@ -62,6 +62,7 @@ update_status ModuleEditor::PreUpdate()
 		{
 			backgroundTex = textures->Load("editorBackground.png");
 			logo = textures->Load("editorHeaderLogo.png");
+			checkersTex = textures->Load("checkers.png");
 		}
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();

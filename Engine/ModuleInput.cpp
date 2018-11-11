@@ -88,7 +88,13 @@ update_status ModuleInput::PreUpdate()
 		case SDL_DROPFILE:
 		{
 			char* file = event.drop.file;
-			App->modelLoader->Load(std::string(file));
+			std::string strFile(file);
+			std::size_t found = strFile.find("fbx");
+			if (found != std::string::npos)
+				App->modelLoader->Load(std::string(file));
+			else
+				App->textures->Load(strFile.c_str());
+
 			SDL_free(file);
 			break;
 		}
