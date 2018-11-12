@@ -40,7 +40,6 @@ void ModuleModelLoader::Load(std::string geometryPath)
 		if (tex == 0) 
 		{
 			LOG("Failed loading texures -> %s", aiGetErrorString()); 
-			return;
 		}
 		
 		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex);

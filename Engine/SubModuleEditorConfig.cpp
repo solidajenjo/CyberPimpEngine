@@ -166,7 +166,7 @@ void SubModuleEditorConfig::Show()
 					ImGui::Image((void*)(intptr_t)*it, ImVec2(ImGui::GetWindowWidth() * .9f, ImGui::GetWindowWidth() *.9f), ImVec2(0, 1), ImVec2(1, 0));
 					int w = 0, h = 0;
 					int miplevel = 0;
-					for (; w  != 1 && h != 1; ++miplevel)
+					for (; w  > 1 && h > 1; ++miplevel)
 					{						
 						glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
 						glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
