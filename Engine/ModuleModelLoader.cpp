@@ -59,6 +59,7 @@ void ModuleModelLoader::Load(std::string geometryPath)
 			App->camera->lastLoaded = lastLoaded;
 
 			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
+			retGameObject->transform->PropagateTransform(); //propagate transform through the hierarchy
 		}
 		else
 		{
@@ -82,7 +83,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		newGO->children.push_back(GenerateMeshData(node->mChildren[i], scene, texture));
 	}
 
-	if (node->mNumChildren == 0 && node->mNumMeshes >= 1) //is a mesh -  otherwise is anything i don't care for now
+	if (node->mNumMeshes >= 1) //is a mesh -  otherwise is anything i don't care for now
 	{
 		unsigned meshPointer = *node->mMeshes;
 		aiMesh* mesh = scene->mMeshes[meshPointer];
@@ -162,16 +163,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		compMesh->VIndex = vio;
 		compMesh->texture = texture;
 		compMesh->owner = newGO;
-		
-		aiMatrix4x4 transform = node->mTransformation;
-		aiNode* nodeIterator = node;
-		while (nodeIterator->mParent != nullptr) //crawl up the hierarchy to get the real world transform of the mesh
-		{			
-			transform = transform * nodeIterator->mParent->mTransformation;
-			nodeIterator = nodeIterator->mParent;
-		}
-		newGO->transform->SetModelMatrix(transform);
-		
+
 		aiVector3D pos;
 		aiVector3D scl;
 		aiQuaternion rot;
@@ -183,7 +175,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		newGO->transform->SetPosition(float3(pos.x, pos.y, pos.z));
 		newGO->transform->SetRotation(q.ToEulerXYZ());		
 		newGO->transform->SetScale(float3(scl.x, scl.y, scl.z));
-
+		newGO->transform->SetModelMatrix(node->mTransformation);
 		App->renderer->renderizables.push_back(compMesh);
 
 		newGO->components.push_back(compMesh);

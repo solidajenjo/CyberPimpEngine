@@ -96,7 +96,7 @@ update_status ModuleFrameBuffer::Update()
 				if ((*it)->oBoundingBox != nullptr)
 				{					
 					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-						"model"), 1, GL_TRUE, &(*it)->children[0]->transform->GetModelMatrix()[0][0]);
+						"model"), 1, GL_TRUE, (*it)->children[0]->transform->GetModelMatrix());
 					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f);
 					glBegin(GL_LINES);

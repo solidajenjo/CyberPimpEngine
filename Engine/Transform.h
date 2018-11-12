@@ -23,12 +23,13 @@ public:
 	void SetModelMatrix(aiMatrix4x4 mMatrix);
 
 	//TODO: Create getters
-	float4x4 GetModelMatrix(); //returns pointer the model matrix[0][0]
-	
+	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
+	void PropagateTransform();
+
 private:
 
-	void PropagateTransform(float3 pos, float3 rot, float3 scl);
-	void PropagateTransform();
+	void PropagateTransform(const float4x4 &mMatrix);
+	
 	void RecalcModelMatrix();
 //members
 
@@ -38,7 +39,8 @@ public: //TODO: Make private when the getters are done
 	float3 rotation = float3(0.f, 0.f, 0.f);
 	float3 scale = float3(1.f, 1.f, 1.f);
 
-	float4x4 modelMatrix = float4x4::identity;
+	float4x4 modelMatrixLocal = float4x4::identity;
+	float4x4 modelMatrixGlobal = float4x4::identity;
 	
 	GameObject* owner = nullptr;
 };

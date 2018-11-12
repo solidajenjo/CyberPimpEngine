@@ -3,11 +3,9 @@
 #include "MathGeoLib/include/Math/MathFunc.h"
 #include "GameObject.h"
 
-float4x4 Transform::GetModelMatrix()
+float* Transform::GetModelMatrix()
 {	
-	//return modelMatrix; Temporary disabled 
-	float4x4 mM = float4x4::identity;
-	return  mM;
+	return &modelMatrixGlobal[0][0]; 
 }
 
 
@@ -49,25 +47,25 @@ void Transform::SetTransform(float3 pos, float3 rot, float3 scl)
 
 void Transform::SetModelMatrix(aiMatrix4x4 mMatrix)
 {
-	modelMatrix[0][0] = mMatrix.a1;
-	modelMatrix[0][1] = mMatrix.a2;
-	modelMatrix[0][2] = mMatrix.a3;
-	modelMatrix[0][3] = mMatrix.a4;
+	modelMatrixLocal[0][0] = mMatrix.a1;
+	modelMatrixLocal[0][1] = mMatrix.a2;
+	modelMatrixLocal[0][2] = mMatrix.a3;
+	modelMatrixLocal[0][3] = mMatrix.a4;
+			   
+	modelMatrixLocal[1][0] = mMatrix.b1;
+	modelMatrixLocal[1][1] = mMatrix.b2;
+	modelMatrixLocal[1][2] = mMatrix.b3;
+	modelMatrixLocal[1][3] = mMatrix.b4;
+			   
+	modelMatrixLocal[2][0] = mMatrix.c1;
+	modelMatrixLocal[2][1] = mMatrix.c2;
+	modelMatrixLocal[2][2] = mMatrix.c3;
+	modelMatrixLocal[2][3] = mMatrix.c4;
 
-	modelMatrix[1][0] = mMatrix.b1;
-	modelMatrix[1][1] = mMatrix.b2;
-	modelMatrix[1][2] = mMatrix.b3;
-	modelMatrix[1][3] = mMatrix.b4;
-
-	modelMatrix[2][0] = mMatrix.c1;
-	modelMatrix[2][1] = mMatrix.c2;
-	modelMatrix[2][2] = mMatrix.c3;
-	modelMatrix[2][3] = mMatrix.c4;
-
-	modelMatrix[3][0] = mMatrix.d1;
-	modelMatrix[3][1] = mMatrix.d2;
-	modelMatrix[3][2] = mMatrix.d3;
-	modelMatrix[3][3] = mMatrix.d4;
+	modelMatrixLocal[3][0] = mMatrix.d1;
+	modelMatrixLocal[3][1] = mMatrix.d2;
+	modelMatrixLocal[3][2] = mMatrix.d3;
+	modelMatrixLocal[3][3] = mMatrix.d4;
 
 }
 
@@ -79,11 +77,17 @@ void Transform::RecalcModelMatrix()
 }
 
 
-void Transform::PropagateTransform(float3 pos, float3 rot, float3 scl) //get parent transform
-{	
+void Transform::PropagateTransform(const float4x4& mMatrix) //get parent model Matrix
+{
+
+	modelMatrixGlobal = mMatrix.Mul(modelMatrixLocal);// (mMatrix);
 }
 
-void Transform::PropagateTransform()
+void Transform::PropagateTransform() 
 {	
-	
+	for (std::vector<GameObject*>::iterator it = owner->children.begin(); it != owner->children.end(); ++it)
+	{
+		(*it)->transform->PropagateTransform(modelMatrixGlobal); //Propagate to son
+		(*it)->transform->PropagateTransform(); //Propagate from son to below
+	}
 }
