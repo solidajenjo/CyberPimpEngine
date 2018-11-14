@@ -30,7 +30,6 @@ void ModuleModelLoader::Load(std::string geometryPath)
 	{
 		App->scene->CleanUp(); //clean possible previous gameobjects;
 		App->renderer->CleanUp(); //clean possible previous meshes;
-		allVertices.resize(0);
 		unsigned tex;
 
 		for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -41,22 +40,15 @@ void ModuleModelLoader::Load(std::string geometryPath)
 		{
 			LOG("Failed loading texures -> %s", aiGetErrorString()); 
 		}
-		
+		allCorners.resize(0);
 		GameObject* retGameObject = GenerateMeshData(scene->mRootNode, scene, tex);
+
 		if (retGameObject != nullptr)
 		{
 			LOG("Model loaded.");			
-			//create global model bounding box
-			OBB* oBoundingBox = new OBB(); //The gameobject handles this
-			AABB lastLoaded = AABB();
-			lastLoaded.SetFrom(&allVertices[0], allVertices.size());
-			oBoundingBox->SetFrom(lastLoaded);
-
-			retGameObject->oBoundingBox = oBoundingBox;  //TODO: Test with hierarchies
 
 			App->camera->adjustingDistance = true;
-			App->camera->target = lastLoaded.CenterPoint();
-			App->camera->lastLoaded = lastLoaded;
+			
 			informParent(retGameObject);
 			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
 			retGameObject->transform->PropagateTransform(); //propagate transform through the hierarchy
@@ -98,10 +90,11 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 			indices.push_back(face.mIndices[1]);
 			indices.push_back(face.mIndices[2]);
 		}
-		for (unsigned i = 0; i < mesh->mNumVertices; ++i)
-		{
-			allVertices.push_back(float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
-		}
+
+		newGO->aaBB = new AABB();
+		newGO->aaBB->SetFrom((float3*)mesh->mVertices, mesh->mNumVertices);
+		allCorners.push_back(float3(newGO->aaBB->MaxX(), newGO->aaBB->MaxY(), newGO->aaBB->MaxZ()));
+		allCorners.push_back(float3(newGO->aaBB->MinX(), newGO->aaBB->MinY(), newGO->aaBB->MinZ()));
 
 		GLuint vbo, vao, vio;
 		glGenVertexArrays(1, &vao);
@@ -183,7 +176,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		LOG("  |");
 		LOG("  | - %d vertices", compMesh->nVertices);
 		LOG("  | - %d faces", compMesh->nIndices / 3);
-		
+		App->scene->sceneGameObjects.push_back(newGO);
 	}
 	else
 	{

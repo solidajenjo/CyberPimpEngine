@@ -21,31 +21,35 @@ void SubModuleEditorWorldInspector::Show()
 
 void SubModuleEditorWorldInspector::drawNode(GameObject* gObj)
 {
-	//TODO: Repeated names causes chaos
-
 	assert(gObj != nullptr);
 
 	ImGuiTreeNodeFlags flags;
 	if (gObj->children.size() == 0)
-		flags = ImGuiTreeNodeFlags_Leaf;
+		flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_Leaf;
 	else
-		flags = ImGuiTreeNodeFlags_None;
+		flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-	if (ImGui::TreeNodeEx(gObj->name.c_str(), flags))
+	ImGui::PushID(&gObj);
+	if (gObj->selected)
 	{
-		if (ImGui::IsItemClicked()) {
-			LOG(gObj->name.c_str());
-			gObj->selected = !gObj->selected;
-			if (gObj->selected && selected != gObj)
-			{
-				selected != nullptr ? selected->selected = false : 1;
-				selected = gObj;
-			}
-			else if (!gObj->selected && selected == gObj)
-			{
-				selected = nullptr;
-			}
+		flags |= ImGuiTreeNodeFlags_Selected;
+	}
+	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
+	if (ImGui::IsItemClicked())
+	{
+		gObj->selected = !gObj->selected;
+		if (gObj->selected && selected != gObj)
+		{
+			selected != nullptr ? selected->selected = false : 1;
+			selected = gObj;
 		}
+		else if (!gObj->selected && selected == gObj)
+		{
+			selected = nullptr;
+		}
+	}
+	if (node_open)
+	{
 		if (gObj->children.size() > 0)
 		{
 			for (std::vector<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
@@ -53,4 +57,6 @@ void SubModuleEditorWorldInspector::drawNode(GameObject* gObj)
 		}
 		ImGui::TreePop();
 	}
+	ImGui::PopID();
+
 }

@@ -6,7 +6,7 @@
 #include <string>
 #include "Transform.h"
 #include "Component.h"
-#include "MathGeoLib/include/Geometry/OBB.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 
 class GameObject
 {
@@ -20,11 +20,8 @@ public:
 	~GameObject()
 	{
 		RELEASE(transform);
-		RELEASE(oBoundingBox);
-		for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-		{
-			RELEASE(*it);
-		}
+		RELEASE(aaBB);
+
 		for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 		{
 			RELEASE(*it);
@@ -34,11 +31,12 @@ public:
 	
 	Transform* transform = nullptr;
 
-	GameObject* parent = nullptr;
-	std::vector<GameObject*> children; 
+	GameObject* parent = nullptr; //Released by scene module
+
+	std::vector<GameObject*> children; //Released by scene module (each one)
 	std::vector<Component*> components;
 
-	OBB* oBoundingBox = nullptr;
+	AABB* aaBB = nullptr;
 	bool enabled = true, selected = false;
 	std::string name = "";
 };

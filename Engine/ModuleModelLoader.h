@@ -29,8 +29,7 @@ private:
 
 //memebers
 
-	std::vector<float3> allVertices;
-	
+	std::vector<float3> allCorners; //store all bounding boxes corners to form global bounding box
 
 };
 

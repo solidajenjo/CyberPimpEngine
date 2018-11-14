@@ -16,10 +16,11 @@ update_status ModuleScene::Update()
 bool ModuleScene::CleanUp()
 {
 	LOG("Cleaning scene GameObjects.");
-	for (std::vector<GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
+	for (std::vector<GameObject*>::reverse_iterator it = sceneGameObjects.rbegin(); it != sceneGameObjects.rend(); ++it) //must be cleaned backwards because dependencies
 	{
 		RELEASE(*it);
 	}
 	sceneGameObjects.resize(0);
+	LOG("Cleaning scene GameObjects. Done");
 	return true;
 }

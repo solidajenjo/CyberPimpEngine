@@ -93,17 +93,17 @@ update_status ModuleFrameBuffer::Update()
 
 			for (std::vector<GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
 			{
-				if ((*it)->oBoundingBox != nullptr)
+				if ((*it)->aaBB != nullptr)
 				{					
 					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-						"model"), 1, GL_TRUE, (*it)->children[0]->transform->GetModelMatrix());
+						"model"), 1, GL_TRUE, (*it)->transform->GetModelMatrix());
 					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f);
 					glBegin(GL_LINES);
-					for (unsigned i = 0; i < (*it)->oBoundingBox->NumEdges(); ++i)
+					for (unsigned i = 0; i < (*it)->aaBB->NumEdges(); ++i)
 					{
-						float3 a = (*it)->oBoundingBox->Edge(i).a;
-						float3 b = (*it)->oBoundingBox->Edge(i).b;
+						float3 a = (*it)->aaBB->Edge(i).a;
+						float3 b = (*it)->aaBB->Edge(i).b;
 						glVertex3f(a.x, a.y, a.z);
 						glVertex3f(b.x, b.y, b.z);
 					}
