@@ -19,7 +19,7 @@ void SubModuleEditorWorldInspector::Show()
 	}
 }
 
-void SubModuleEditorWorldInspector::drawNode(GameObject* gObj) const
+void SubModuleEditorWorldInspector::drawNode(GameObject* gObj)
 {
 	//TODO: Repeated names causes chaos
 
@@ -33,6 +33,19 @@ void SubModuleEditorWorldInspector::drawNode(GameObject* gObj) const
 
 	if (ImGui::TreeNodeEx(gObj->name.c_str(), flags))
 	{
+		if (ImGui::IsItemClicked()) {
+			LOG(gObj->name.c_str());
+			gObj->selected = !gObj->selected;
+			if (gObj->selected && selected != gObj)
+			{
+				selected != nullptr ? selected->selected = false : 1;
+				selected = gObj;
+			}
+			else if (!gObj->selected && selected == gObj)
+			{
+				selected = nullptr;
+			}
+		}
 		if (gObj->children.size() > 0)
 		{
 			for (std::vector<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)

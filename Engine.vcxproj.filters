@@ -176,6 +176,9 @@
     <ClCompile Include="Engine\ModuleScene.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorInspector.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -651,6 +654,15 @@
     </ClInclude>
     <ClInclude Include="Engine\ModuleScene.h">
       <Filter>EngineModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorInspector.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\examples\imgui_impl_sdl.h">
+      <Filter>Utilities\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui\examples\imgui_impl_opengl3.h">
+      <Filter>Utilities\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -57,7 +57,7 @@ void ModuleModelLoader::Load(std::string geometryPath)
 			App->camera->adjustingDistance = true;
 			App->camera->target = lastLoaded.CenterPoint();
 			App->camera->lastLoaded = lastLoaded;
-
+			informParent(retGameObject);
 			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
 			retGameObject->transform->PropagateTransform(); //propagate transform through the hierarchy
 		}
@@ -209,4 +209,13 @@ unsigned int ModuleModelLoader::GenerateMaterialData(aiMaterial * materials)
 		return -1;
 	}
 	return App->textures->Load(file.C_Str());
+}
+
+void ModuleModelLoader::informParent(GameObject * parent)
+{
+	for (std::vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
+	{
+		(*it)->parent = parent;
+		informParent((*it));
+	}
 }

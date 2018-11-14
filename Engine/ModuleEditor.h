@@ -8,6 +8,7 @@ class SubModuleEditor;
 class SubModuleEditorMenu;
 class SubModuleEditorConsole;
 class SubModuleEditorWorldInspector;
+class SubModuleEditorInspector;
 class SubModuleEditorViewPort;
 class SubModuleEditorConfig;
 class SubModuleEditorToolBar;
@@ -37,6 +38,7 @@ public:
 	SubModuleEditorMenu* menu = nullptr;
 	SubModuleEditorConsole* console = nullptr;
 	SubModuleEditorWorldInspector* worldInspector = nullptr;
+	SubModuleEditorInspector* inspector = nullptr;
 	SubModuleEditorViewPort* viewPort = nullptr;
 	SubModuleEditorConfig* config = nullptr;
 	SubModuleEditorToolBar* toolBar = nullptr;

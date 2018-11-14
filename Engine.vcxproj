@@ -147,6 +147,8 @@
     <ClInclude Include="Dependencies\Assimp\include\assimp\version.h" />
     <ClInclude Include="Dependencies\Assimp\include\assimp\Vertex.h" />
     <ClInclude Include="Dependencies\Assimp\include\assimp\XMLTools.h" />
+    <ClInclude Include="Dependencies\imgui\examples\imgui_impl_opengl3.h" />
+    <ClInclude Include="Dependencies\imgui\examples\imgui_impl_sdl.h" />
     <ClInclude Include="Dependencies\imgui\imgui.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Geometry\AABB.h" />
@@ -222,6 +224,7 @@
     <ClInclude Include="Engine\ModuleTime.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorConfig.h" />
+    <ClInclude Include="Engine\SubModuleEditorInspector.h" />
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
     <ClInclude Include="Engine\SubModuleEditorToolBar.h" />
     <ClInclude Include="Engine\SubModuleEditorViewPort.h" />
@@ -280,6 +283,7 @@
     <ClCompile Include="Engine\ModuleTime.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorInspector.cpp" />
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />
     <ClCompile Include="Engine\SubModuleEditorToolBar.cpp" />
     <ClCompile Include="Engine\SubModuleEditorViewPort.cpp" />

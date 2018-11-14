@@ -73,6 +73,28 @@ void Transform::SetModelMatrix(aiMatrix4x4 mMatrix)
 
 void Transform::RecalcModelMatrix()
 {
+	float4x4 t = float4x4::identity;
+	t[0][3] = position.x;
+	t[1][3] = position.y;
+	t[2][3] = position.z;
+
+	float4x4 r = float4x4::identity;
+	r = Quat::FromEulerXYZ(DegToRad(rotation.x), DegToRad(rotation.y), DegToRad(rotation.z)).ToFloat4x4() * r;
+
+	float4x4 s = float4x4::identity;
+
+	s[0][0] *= scale.x;
+	s[1][1] *= scale.y;
+	s[2][2] *= scale.z;
+
+	modelMatrixLocal = t.Mul(s.Mul(r));
+
+	if (owner->parent != nullptr)
+		modelMatrixGlobal = owner->parent->transform->modelMatrixGlobal.Mul(modelMatrixLocal); //set relative to parent transform
+	else
+		modelMatrixGlobal = modelMatrixLocal; //no parent
+
+	PropagateTransform();
 
 }
 
@@ -80,7 +102,7 @@ void Transform::RecalcModelMatrix()
 void Transform::PropagateTransform(const float4x4& mMatrix) //get parent model Matrix
 {
 
-	modelMatrixGlobal = mMatrix.Mul(modelMatrixLocal);// (mMatrix);
+	modelMatrixGlobal = mMatrix.Mul(modelMatrixLocal);
 }
 
 void Transform::PropagateTransform() 

@@ -2712,6 +2712,7 @@ bool ImGui::InputScalarN(const char* label, ImGuiDataType data_type, void* v, in
     PushID(label);
     PushMultiItemsWidths(components);
     size_t type_size = GDataTypeInfo[data_type].Size;
+
     for (int i = 0; i < components; i++)
     {
         PushID(i);

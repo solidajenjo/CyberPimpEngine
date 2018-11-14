@@ -7,6 +7,8 @@
 #include "ModuleFrameBuffer.h"
 #include "SubModuleEditorViewPort.h"
 #include "SDL/include/SDL.h"
+#include "imgui/imgui.h"
+#include "imgui/examples/imgui_impl_sdl.h"
 
 #define MAX_KEYS 300
 
@@ -48,6 +50,7 @@ update_status ModuleInput::PreUpdate()
 	mouse_motion = { 0, 0 };
 	wheelAmount = 0;
 	
+	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for (int i = 0; i < MAX_KEYS; ++i)
@@ -79,6 +82,7 @@ update_status ModuleInput::PreUpdate()
 
 	while (SDL_PollEvent(&event) != 0)
 	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:

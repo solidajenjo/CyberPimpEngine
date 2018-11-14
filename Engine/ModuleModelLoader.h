@@ -25,6 +25,7 @@ private:
 
 	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture);
 	unsigned GenerateMaterialData(aiMaterial* materials);
+	void informParent(GameObject* parent); //tell to everyone in hierarchy who is his parent
 
 //memebers
 

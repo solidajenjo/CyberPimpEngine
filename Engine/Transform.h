@@ -25,12 +25,12 @@ public:
 	//TODO: Create getters
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
 	void PropagateTransform();
+	void RecalcModelMatrix();
 
 private:
 
 	void PropagateTransform(const float4x4 &mMatrix);
-	
-	void RecalcModelMatrix();
+		
 //members
 
 public: //TODO: Make private when the getters are done

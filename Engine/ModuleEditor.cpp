@@ -9,6 +9,7 @@
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
 #include "SubModuleEditorWorldInspector.h"
+#include "SubModuleEditorInspector.h"
 #include "SubModuleEditorViewPort.h"
 #include "SubModuleEditorConfig.h"
 #include "SubModuleEditorToolBar.h"
@@ -30,6 +31,7 @@ bool ModuleEditor::Init()
 	subModules.push_back(menu = new SubModuleEditorMenu("Menu"));
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
+	subModules.push_back(inspector = new SubModuleEditorInspector("Inspector"));
 	subModules.push_back(viewPort = new SubModuleEditorViewPort("ViewPort"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
 	App->consoleBuffer = new ImGuiTextBuffer();

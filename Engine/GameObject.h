@@ -39,7 +39,7 @@ public:
 	std::vector<Component*> components;
 
 	OBB* oBoundingBox = nullptr;
-	bool enabled = true;
+	bool enabled = true, selected = false;
 	std::string name = "";
 };
 
