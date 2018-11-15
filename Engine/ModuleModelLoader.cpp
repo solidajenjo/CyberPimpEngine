@@ -77,14 +77,15 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		aiMesh* mesh = scene->mMeshes[meshPointer];
 
 		std::vector<unsigned> indices;
+		indices.resize(mesh->mNumFaces * 3);
 		for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 		{
 			aiFace face = mesh->mFaces[i];
 			assert(scene->mMeshes[meshPointer]->mFaces[i].mNumIndices == 3);
 
-			indices.push_back(face.mIndices[0]);
-			indices.push_back(face.mIndices[1]);
-			indices.push_back(face.mIndices[2]);
+			indices[i * 3] = face.mIndices[0];
+			indices[(i * 3) + 1] = (face.mIndices[1]);
+			indices[(i * 3) + 2] = (face.mIndices[2]);
 		}
 
 		newGO->aaBB = new AABB();
@@ -145,8 +146,9 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		ComponentMesh* compMesh = new ComponentMesh();
 		compMesh->nVertices = scene->mMeshes[meshPointer]->mNumVertices;
 		compMesh->nIndices = scene->mMeshes[meshPointer]->mNumFaces * 3;
+		compMesh->vertices.resize(scene->mMeshes[meshPointer]->mNumVertices);
 		for (unsigned i = 0; i < scene->mMeshes[meshPointer]->mNumVertices; ++i)
-			compMesh->vertices.push_back(float3(scene->mMeshes[meshPointer]->mVertices[i].x, scene->mMeshes[meshPointer]->mVertices[i].y, scene->mMeshes[meshPointer]->mVertices[i].z));
+			compMesh->vertices[i] = (float3(scene->mMeshes[meshPointer]->mVertices[i].x, scene->mMeshes[meshPointer]->mVertices[i].y, scene->mMeshes[meshPointer]->mVertices[i].z));
 
 		compMesh->VAO = vao;
 		compMesh->VIndex = vio;
@@ -164,7 +166,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		newGO->transform->SetPosition(float3(pos.x, pos.y, pos.z));
 		newGO->transform->SetRotation(q.ToEulerXYZ());		
 		newGO->transform->SetScale(float3(scl.x, scl.y, scl.z));
-		newGO->transform->SetModelMatrix(node->mTransformation);
+		newGO->transform->RecalcModelMatrix();
 		App->renderer->insertRenderizable(compMesh);
 
 		newGO->components.push_back(compMesh);

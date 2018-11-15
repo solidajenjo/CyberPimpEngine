@@ -83,8 +83,8 @@ void Transform::RecalcModelMatrix()
 	t[2][3] = position.z;
 
 	float4x4 r = float4x4::identity;
-	r = Quat::FromEulerXYZ(DegToRad(rotation.x), DegToRad(rotation.y), DegToRad(rotation.z)).ToFloat4x4() * r;
-
+	r = Quat::FromEulerXZY(DegToRad(rotation.x), DegToRad(rotation.z), DegToRad(rotation.y)).ToFloat4x4() * r;
+	//IMGUIZMO
 	float4x4 s = float4x4::identity;
 
 	s[0][0] *= scale.x;
