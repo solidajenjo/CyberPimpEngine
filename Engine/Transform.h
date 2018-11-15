@@ -3,7 +3,6 @@
 
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
-#include "Assimp/include/assimp/types.h"
 #include "Component.h"
 
 class GameObject;
@@ -21,7 +20,6 @@ public:
 	void SetRotation(float3 newRotation);
 	void SetScale(float3 newScale);
 	void SetTransform(float3 pos, float3 rot, float3 scl);
-	void SetModelMatrix(aiMatrix4x4 mMatrix);
 
 	//TODO: Create getters
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]

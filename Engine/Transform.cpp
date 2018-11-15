@@ -49,31 +49,6 @@ void Transform::SetTransform(float3 pos, float3 rot, float3 scl)
 	
 }
 
-void Transform::SetModelMatrix(aiMatrix4x4 mMatrix)
-{
-	modelMatrixLocal[0][0] = mMatrix.a1;
-	modelMatrixLocal[0][1] = mMatrix.a2;
-	modelMatrixLocal[0][2] = mMatrix.a3;
-	modelMatrixLocal[0][3] = mMatrix.a4;
-			   
-	modelMatrixLocal[1][0] = mMatrix.b1;
-	modelMatrixLocal[1][1] = mMatrix.b2;
-	modelMatrixLocal[1][2] = mMatrix.b3;
-	modelMatrixLocal[1][3] = mMatrix.b4;
-			   
-	modelMatrixLocal[2][0] = mMatrix.c1;
-	modelMatrixLocal[2][1] = mMatrix.c2;
-	modelMatrixLocal[2][2] = mMatrix.c3;
-	modelMatrixLocal[2][3] = mMatrix.c4;
-
-	modelMatrixLocal[3][0] = mMatrix.d1;
-	modelMatrixLocal[3][1] = mMatrix.d2;
-	modelMatrixLocal[3][2] = mMatrix.d3;
-	modelMatrixLocal[3][3] = mMatrix.d4;
-
-}
-
-
 
 void Transform::RecalcModelMatrix()
 {
@@ -85,6 +60,7 @@ void Transform::RecalcModelMatrix()
 	float4x4 r = float4x4::identity;
 	r = Quat::FromEulerXZY(DegToRad(rotation.x), DegToRad(rotation.z), DegToRad(rotation.y)).ToFloat4x4() * r;
 	//IMGUIZMO
+	//TODO: Get Rid of recursivity
 	float4x4 s = float4x4::identity;
 
 	s[0][0] *= scale.x;
@@ -108,19 +84,19 @@ void Transform::EditorDraw()
 	ImGui::Text(selected->name.c_str());
 
 	ImGui::PushID(1);
-	if (ImGui::InputFloat3("Position", &position.x))
+	if (ImGui::DragFloat3("Position", &position.x, 0.1f))
 	{
 		RecalcModelMatrix();
 	}
 	ImGui::PopID();
 	ImGui::PushID(2);
-	if (ImGui::SliderFloat3("Rotation", &rotation.x, -360.f, 360.f))
+	if (ImGui::DragFloat3("Rotation", &rotation.x, 0.1f))
 	{
 		RecalcModelMatrix();
 	}
 	ImGui::PopID();
 	ImGui::PushID(3);
-	if (ImGui::InputFloat3("Scale", &scale.x))
+	if (ImGui::DragFloat3("Scale", &scale.x, 0.1f))
 	{
 		RecalcModelMatrix();
 	}
