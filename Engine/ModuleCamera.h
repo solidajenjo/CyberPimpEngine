@@ -29,9 +29,6 @@ public:
 	float aspectRatio = 1.f;
 	float3 target = float3(0.f, 0.f, 0.f);
 
-	float adjustingDistance = false;
-	AABB lastLoaded = AABB();
-
 	Frustum frustum;
 
 private:

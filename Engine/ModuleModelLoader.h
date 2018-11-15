@@ -19,7 +19,7 @@ class ModuleModelLoader :
 {
 public:
 
-	void Load(std::string geometryPath);
+	void Load(const std::string &geometryPath);
 
 private:
 

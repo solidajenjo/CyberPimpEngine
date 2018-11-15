@@ -13,6 +13,7 @@ class SubModuleEditorViewPort;
 class SubModuleEditorConfig;
 class SubModuleEditorToolBar;
 class ModuleTextures;
+class GameObject;
 
 class ModuleEditor :
 	public Module
@@ -43,6 +44,8 @@ public:
 	SubModuleEditorConfig* config = nullptr;
 	SubModuleEditorToolBar* toolBar = nullptr;
 	ModuleTextures* textures = nullptr; //independent of game textures - Handles editor textures
+	GameObject* rotationGizmo = nullptr;
+
 };
 
 #endif

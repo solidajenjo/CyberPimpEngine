@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include <vector>
+#include <list>
 
 class ComponentMesh;
 
@@ -18,10 +18,15 @@ public:
 	bool CleanUp() override;
 
 	void Render() const;
+
+	const std::list<ComponentMesh*>* getRenderizables() const; //read only getter
+	void insertRenderizable(ComponentMesh* newMesh);
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
-	std::vector<ComponentMesh*> renderizables;  //The owner of the component should clean this
+
+private:
+	std::list<ComponentMesh*> renderizables;  //The owner of the component should clean this
 };
 
 #endif

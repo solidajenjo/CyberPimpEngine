@@ -78,9 +78,9 @@ void ModuleRender::Render() const
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 		"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
 	glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
-	for (std::vector<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
+	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
 	{
-		if (*it == nullptr)
+		if (*it == nullptr) 
 		{
 			LOG("Missing mesh. Couldn't render.");
 		}
@@ -102,4 +102,14 @@ void ModuleRender::Render() const
 	}
 	
 	glBindVertexArray(0);
+}
+
+const std::list<ComponentMesh*>* ModuleRender::getRenderizables() const
+{
+	return &renderizables;
+}
+
+void ModuleRender::insertRenderizable(ComponentMesh * newMesh)
+{
+	renderizables.push_back(newMesh);
 }

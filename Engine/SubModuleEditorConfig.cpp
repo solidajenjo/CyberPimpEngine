@@ -12,7 +12,7 @@
 #include "glew-2.1.0/include/GL/glew.h"
 #include "Assimp/include/assimp/version.h"
 
-#include <vector>
+#include <list>
 
 
 void SubModuleEditorConfig::Show()
@@ -151,12 +151,6 @@ void SubModuleEditorConfig::Show()
 			{
 				App->textures->CleanUp();
 			}
-			ImGui::SameLine();
-			if (ImGui::Button("Use checkers texture"))
-			{
-				for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
-					(*it2)->texture = App->editor->checkersTex;
-			}
 			
 			for (std::vector<unsigned>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
 			{
@@ -175,19 +169,14 @@ void SubModuleEditorConfig::Show()
 							std::string s = "MIPMAP " + std::to_string(miplevel) + " " + std::to_string(w) + "x" + std::to_string(h);
 							ImGui::TextWrapped(s.c_str());
 						}
-					}
-					if (ImGui::Button("Apply"))
-					{
-						for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
-							(*it2)->texture = *it;
-					}					
+					}			
 					ImGui::TreePop();
 				}
 			}
 		}
 		if (ImGui::CollapsingHeader("Render Module"))
 		{
-			for (std::vector<ComponentMesh*>::iterator it2 = App->renderer->renderizables.begin(); it2 != App->renderer->renderizables.end(); ++it2)
+			for (std::list<ComponentMesh*>::const_iterator it2 = App->renderer->getRenderizables()->begin(); it2 != App->renderer->getRenderizables()->end(); ++it2)
 			{
 				if (ImGui::TreeNode(((*it2)->owner->name + " mesh").c_str()))
 				{

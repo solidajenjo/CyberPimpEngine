@@ -91,14 +91,15 @@ update_status ModuleFrameBuffer::Update()
 			glVertex3f(0.f, d, 0.f);
 			glEnd();
 
-			for (std::vector<GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
+			for (std::vector<GameObject*>::const_iterator it = App->scene->getSceneGameObjects()->begin(); it != App->scene->getSceneGameObjects()->end(); ++it)
 			{
-				if ((*it)->aaBB != nullptr)
+				if ((*it)->selected && (*it)->aaBB != nullptr)
 				{					
 					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 						"model"), 1, GL_TRUE, (*it)->transform->GetModelMatrix());
 					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f);
+					glLineWidth(5);
 					glBegin(GL_LINES);
 					for (unsigned i = 0; i < (*it)->aaBB->NumEdges(); ++i)
 					{

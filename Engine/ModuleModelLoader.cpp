@@ -17,7 +17,7 @@
 #include <string>
 
 
-void ModuleModelLoader::Load(std::string geometryPath)
+void ModuleModelLoader::Load(const std::string &geometryPath)
 {
 	assert(geometryPath != "");
 	
@@ -28,8 +28,6 @@ void ModuleModelLoader::Load(std::string geometryPath)
 	}
 	else
 	{
-		App->scene->CleanUp(); //clean possible previous gameobjects;
-		App->renderer->CleanUp(); //clean possible previous meshes;
 		unsigned tex;
 
 		for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -46,11 +44,9 @@ void ModuleModelLoader::Load(std::string geometryPath)
 		if (retGameObject != nullptr)
 		{
 			LOG("Model loaded.");			
-
-			App->camera->adjustingDistance = true;
-			
+		
 			informParent(retGameObject);
-			App->scene->sceneGameObjects.push_back(retGameObject); //scene handles all the gameobjects -> must clean them
+			App->scene->insertGameObject(retGameObject); //scene handles all the gameobjects -> must clean them
 			retGameObject->transform->PropagateTransform(); //propagate transform through the hierarchy
 		}
 		else
@@ -169,14 +165,13 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* node, const aiScene* sce
 		newGO->transform->SetRotation(q.ToEulerXYZ());		
 		newGO->transform->SetScale(float3(scl.x, scl.y, scl.z));
 		newGO->transform->SetModelMatrix(node->mTransformation);
-		App->renderer->renderizables.push_back(compMesh);
+		App->renderer->insertRenderizable(compMesh);
 
 		newGO->components.push_back(compMesh);
 		LOG("%s mesh created.", node->mName.C_Str());
 		LOG("  |");
 		LOG("  | - %d vertices", compMesh->nVertices);
-		LOG("  | - %d faces", compMesh->nIndices / 3);
-		App->scene->sceneGameObjects.push_back(newGO);
+		LOG("  | - %d faces", compMesh->nIndices / 3);		
 	}
 	else
 	{

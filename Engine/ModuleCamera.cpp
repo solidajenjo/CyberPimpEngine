@@ -36,29 +36,6 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
-	if (adjustingDistance) {
-		if (!movementStart)
-		{
-			camPos = target + frustum.front;
-			movementStart = true;
-		}
-		bool getAway;
-		Quat lookMat = Quat::LookAt(frustum.front, (target - camPos).Normalized(), frustum.up, float3::unitY); //target rotation			
-		RecalculateFrustum(lookMat * frustum.front, lookMat * frustum.up);
-		
-		getAway = !frustum.Contains(lastLoaded);
-		
-		if (getAway)
-		{
-			camPos -= frustum.front * lastLoaded.Size().Length() * 0.1f;
-			return UPDATE_CONTINUE;
-		}
-		else
-		{
-			adjustingDistance = false;
-			movementStart = false;
-		}
-	}
 	if (!App->editor->viewPort->cursorIn)
 		return UPDATE_CONTINUE;
 

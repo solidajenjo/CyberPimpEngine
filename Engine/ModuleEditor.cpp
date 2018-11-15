@@ -5,6 +5,8 @@
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
+#include "ModuleModelLoader.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
@@ -64,7 +66,7 @@ update_status ModuleEditor::PreUpdate()
 		{
 			backgroundTex = textures->Load("editorBackground.png");
 			logo = textures->Load("editorHeaderLogo.png");
-			checkersTex = textures->Load("checkers.png");
+			checkersTex = textures->Load("checkers.png");			
 		}
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();
@@ -109,6 +111,7 @@ bool ModuleEditor::CleanUp()
 
 	RELEASE (toolBar);
 	RELEASE (textures);
+	RELEASE (rotationGizmo);
 	LOG("Cleaning Module Editor. Done");
 	return true;
 }
