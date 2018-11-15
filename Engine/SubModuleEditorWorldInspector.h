@@ -12,13 +12,6 @@ public:
 	
 	void Show();
 
-//members
-
-	GameObject* selected = nullptr;
-
-private:
-
-	void drawNode(GameObject* gObj);
 };
 
 #endif

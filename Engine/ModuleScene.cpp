@@ -22,6 +22,7 @@ bool ModuleScene::CleanUp()
 	}
 	sceneGameObjects.resize(0);
 	LOG("Cleaning scene GameObjects. Done");
+	selected = nullptr;
 	return true;
 }
 
@@ -77,7 +78,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 	{
 		if (gObj->children.size() > 0)
 		{
-			for (std::vector<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
+			for (std::list<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
 				drawNode(*it);
 		}
 		ImGui::TreePop();
@@ -94,7 +95,7 @@ const std::vector<GameObject*>* ModuleScene::getSceneGameObjects() const
 void ModuleScene::flattenHierarchy(GameObject* go)
 {
 	sceneGameObjects.push_back(go);
-	for (std::vector<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 		flattenHierarchy(*it);
 
 }

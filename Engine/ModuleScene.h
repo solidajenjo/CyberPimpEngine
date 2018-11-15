@@ -22,6 +22,10 @@ public:
 
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
 
+	//members
+
+	GameObject* selected;
+
 private:
 
 	void flattenHierarchy(GameObject* go);
@@ -30,8 +34,6 @@ private:
 
 	std::vector<GameObject*> sceneGameObjects; //handles all game objects
 	std::vector<GameObject*> sceneGameObjectsHierarchy; // handles hierarchy stored game objects, no need to release needed because the data is the same as sceneGameObjects
-
-	GameObject* selected;
 };
 
 #endif

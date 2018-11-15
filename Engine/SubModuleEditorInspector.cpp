@@ -1,39 +1,30 @@
 #include "SubModuleEditorInspector.h"
-#include "SubModuleEditorWorldInspector.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "GameObject.h"
-
+#include <list>
 
 void SubModuleEditorInspector::Show()
 {
 	if (enabled)
 	{		
 		ImGui::Begin(editorModuleName.data(), &enabled);
-		if (App->editor->worldInspector->selected != nullptr)
+		if (App->scene->selected != nullptr)
 		{
-			GameObject* selected = App->editor->worldInspector->selected;
-			ImGui::Text(selected->name.c_str());
-					
-			ImGui::PushID(1);
-			if (ImGui::InputFloat3("Position", &selected->transform->position.x))
+			App->scene->selected->transform->EditorDraw();
+			ImGui::Separator();
+			ImGui::Separator();
+			ImGui::Separator();			
+			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{
-				selected->transform->RecalcModelMatrix();
+				if (ImGui::Button("Remove"))
+				{
+					//delete component
+				}
+				(*it)->EditorDraw();
 			}
-			ImGui::PopID();
-			ImGui::PushID(2);
-			if (ImGui::SliderFloat3("Rotation", &selected->transform->rotation.x, -360.f, 360.f))
-			{
-				selected->transform->RecalcModelMatrix();
-			}
-			ImGui::PopID();
-			ImGui::PushID(3);
-			if (ImGui::InputFloat3("Scale", &selected->transform->scale.x))
-			{
-				selected->transform->RecalcModelMatrix();
-			}
-			ImGui::PopID();
 
 		}
 		ImGui::End();

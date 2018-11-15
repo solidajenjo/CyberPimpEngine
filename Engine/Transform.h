@@ -4,10 +4,11 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "Assimp/include/assimp/types.h"
+#include "Component.h"
 
 class GameObject;
 
-class Transform
+class Transform : public Component
 {
 public:
 	Transform(GameObject* go);
@@ -26,6 +27,8 @@ public:
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
 	void PropagateTransform();
 	void RecalcModelMatrix();
+
+	void EditorDraw() override;
 
 private:
 

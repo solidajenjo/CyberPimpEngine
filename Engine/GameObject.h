@@ -2,7 +2,7 @@
 #define _GAMEOBJECT_H_
 
 #include "Globals.h"
-#include <vector>
+#include <list>
 #include <string>
 #include "Transform.h"
 #include "Component.h"
@@ -22,7 +22,7 @@ public:
 		RELEASE(transform);
 		RELEASE(aaBB);
 
-		for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 		{
 			RELEASE(*it);
 		}
@@ -33,8 +33,8 @@ public:
 
 	GameObject* parent = nullptr; //Released by scene module
 
-	std::vector<GameObject*> children; //Released by scene module (each one)
-	std::vector<Component*> components;
+	std::list<GameObject*> children; //Released by scene module (each one)
+	std::list<Component*> components;
 
 	AABB* aaBB = nullptr;
 	bool enabled = true, selected = false;

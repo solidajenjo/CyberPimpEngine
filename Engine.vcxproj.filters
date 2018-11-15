@@ -179,6 +179,9 @@
     <ClCompile Include="Engine\SubModuleEditorInspector.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ComponentMesh.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">

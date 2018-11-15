@@ -17,6 +17,9 @@ public:
 		if (VAO != 0)
 			glDeleteVertexArrays(1, &VAO);
 	}
+
+	void EditorDraw() override;
+
 //members
 
 	unsigned VAO = 0;

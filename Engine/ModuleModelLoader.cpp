@@ -201,7 +201,7 @@ unsigned int ModuleModelLoader::GenerateMaterialData(aiMaterial * materials)
 
 void ModuleModelLoader::informParent(GameObject * parent)
 {
-	for (std::vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
+	for (std::list<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
 	{
 		(*it)->parent = parent;
 		informParent((*it));

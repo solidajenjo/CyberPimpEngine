@@ -2,6 +2,10 @@
 #include "MathGeoLib/include/Math/Quat.h"
 #include "MathGeoLib/include/Math/MathFunc.h"
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "imgui/imgui.h"
 
 float* Transform::GetModelMatrix()
 {	
@@ -98,6 +102,31 @@ void Transform::RecalcModelMatrix()
 
 }
 
+void Transform::EditorDraw()
+{
+	GameObject* selected = App->scene->selected;
+	ImGui::Text(selected->name.c_str());
+
+	ImGui::PushID(1);
+	if (ImGui::InputFloat3("Position", &position.x))
+	{
+		RecalcModelMatrix();
+	}
+	ImGui::PopID();
+	ImGui::PushID(2);
+	if (ImGui::SliderFloat3("Rotation", &rotation.x, -360.f, 360.f))
+	{
+		RecalcModelMatrix();
+	}
+	ImGui::PopID();
+	ImGui::PushID(3);
+	if (ImGui::InputFloat3("Scale", &scale.x))
+	{
+		RecalcModelMatrix();
+	}
+	ImGui::PopID();
+}
+
 
 void Transform::PropagateTransform(const float4x4& mMatrix) //get parent model Matrix
 {
@@ -107,7 +136,7 @@ void Transform::PropagateTransform(const float4x4& mMatrix) //get parent model M
 
 void Transform::PropagateTransform() 
 {	
-	for (std::vector<GameObject*>::iterator it = owner->children.begin(); it != owner->children.end(); ++it)
+	for (std::list<GameObject*>::iterator it = owner->children.begin(); it != owner->children.end(); ++it)
 	{
 		(*it)->transform->PropagateTransform(modelMatrixGlobal); //Propagate to son
 		(*it)->transform->PropagateTransform(); //Propagate from son to below
