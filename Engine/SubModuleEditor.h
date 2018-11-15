@@ -5,7 +5,7 @@
 class SubModuleEditor
 {
 public:
-	SubModuleEditor(std::string editorModuleName) : editorModuleName(editorModuleName) {};
+	SubModuleEditor(const std::string& editorModuleName) : editorModuleName(editorModuleName) {};
 	virtual ~SubModuleEditor() {};
 
 	virtual void Show() = 0 ; //No const posible -> ImGui::Begin modifies enabled;

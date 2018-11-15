@@ -16,7 +16,7 @@ public:
 	bool CleanUp() override; //clean when a new model is loaded & on exit
 
 	void insertGameObject(GameObject* newGO);
-	void destroyGameObject(GameObject* newGO);
+	void destroyGameObject(GameObject* destroyableGO);
 	void showHierarchy(); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
 	void drawNode(GameObject* gObj);
 

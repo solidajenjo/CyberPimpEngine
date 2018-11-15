@@ -111,5 +111,6 @@ const std::list<ComponentMesh*>* ModuleRender::getRenderizables() const
 
 void ModuleRender::insertRenderizable(ComponentMesh * newMesh)
 {
+	assert(newMesh != nullptr);
 	renderizables.push_back(newMesh);
 }

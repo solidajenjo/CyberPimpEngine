@@ -93,7 +93,7 @@ bool ModuleProgram::CleanUp()
 	return true;
 }
 
-char* ModuleProgram::readFile(std::string name)
+char* ModuleProgram::readFile(const std::string& name)
 {
 	char* data = nullptr;
 	FILE* file = nullptr;

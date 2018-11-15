@@ -13,7 +13,7 @@ public:
 
 	bool CleanUp() override;
 
-	unsigned Load(std::string path);
+	unsigned Load(const std::string& path);
 
 //members
 

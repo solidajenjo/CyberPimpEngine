@@ -9,7 +9,7 @@ public:
 
 	~SubModuleEditorMenu() {};
 
-	SubModuleEditorMenu(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorMenu(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 };

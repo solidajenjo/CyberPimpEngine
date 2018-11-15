@@ -29,7 +29,7 @@ bool ModuleTextures::CleanUp() //can be called to reset stored textures
 }
 
 // Load new texture from file path
-unsigned ModuleTextures::Load(std::string path)
+unsigned ModuleTextures::Load(const std::string& path)
 {
 	LOG("Loading texture -> %s", path.c_str());
 	ILuint imageId;

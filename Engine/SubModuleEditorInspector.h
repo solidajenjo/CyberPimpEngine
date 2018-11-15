@@ -6,7 +6,7 @@
 class SubModuleEditorInspector : public SubModuleEditor
 {
 public:
-	SubModuleEditorInspector(std::string  editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorInspector(const std::string&  editorModuleName) : SubModuleEditor(editorModuleName) {};
 	
 	void Show();
 

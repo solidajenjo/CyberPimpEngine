@@ -9,7 +9,7 @@ class ModuleProgram :
 {
 public:
 
-	ModuleProgram(std::string vsName, std::string fsName) : vsName(vsName), fsName(fsName) {};	
+	ModuleProgram(const std::string& vsName, const std::string& fsName) : vsName(vsName), fsName(fsName) {};	
 
 	bool Init() override;
 	void UseProgram() const;
@@ -24,7 +24,7 @@ public:
 	//TODO: multi program funcionality
 private:
 
-	char* readFile(std::string name);  //Should be cleaned by the caller
+	char* readFile(const std::string& name);  //Should be cleaned by the caller
 	
 };
 

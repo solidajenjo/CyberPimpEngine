@@ -6,7 +6,7 @@
 class SubModuleEditorToolBar : public SubModuleEditor
 {
 public:
-	SubModuleEditorToolBar(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorToolBar(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 

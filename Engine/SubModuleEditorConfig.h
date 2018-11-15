@@ -10,7 +10,7 @@
 class SubModuleEditorConfig : public SubModuleEditor
 {
 public:
-	SubModuleEditorConfig(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorConfig(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 	

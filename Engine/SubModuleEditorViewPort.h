@@ -6,7 +6,7 @@
 class SubModuleEditorViewPort : public SubModuleEditor
 {
 public:
-	SubModuleEditorViewPort(std::string editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorViewPort(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
 

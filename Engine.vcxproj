@@ -306,8 +306,6 @@
     <None Include="Dependencies\MathGeoLib\include\Geometry\KDTree.inl" />
     <None Include="Dependencies\MathGeoLib\include\Geometry\QuadTree.inl" />
     <None Include="Dependencies\MathGeoLib\include\Math\Matrix.inl" />
-    <None Include="Game\axis.fs" />
-    <None Include="Game\axis.vs" />
     <None Include="Game\default.fs" />
     <None Include="Game\default.vs" />
   </ItemGroup>

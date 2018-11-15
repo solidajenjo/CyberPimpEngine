@@ -28,12 +28,14 @@ bool ModuleScene::CleanUp()
 
 void ModuleScene::insertGameObject(GameObject * newGO)
 {
+	assert(newGO != nullptr);
 	sceneGameObjectsHierarchy.push_back(newGO);
 	flattenHierarchy(newGO);
 }
 
-void ModuleScene::destroyGameObject(GameObject * newGO)
+void ModuleScene::destroyGameObject(GameObject * destroyableGO)
 {
+	assert(destroyableGO != nullptr);
 }
 
 void ModuleScene::showHierarchy()

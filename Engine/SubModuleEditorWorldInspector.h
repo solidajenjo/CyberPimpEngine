@@ -8,7 +8,7 @@ class GameObject;
 class SubModuleEditorWorldInspector : public SubModuleEditor
 {
 public:
-	SubModuleEditorWorldInspector(std::string  editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorWorldInspector(const std::string&  editorModuleName) : SubModuleEditor(editorModuleName) {};
 	
 	void Show();
 

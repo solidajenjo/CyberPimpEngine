@@ -701,12 +701,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\axis.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\axis.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Game\default.fs">
       <Filter>Shaders</Filter>
     </None>
