@@ -109,6 +109,32 @@ update_status ModuleFrameBuffer::Update()
 						glVertex3f(b.x, b.y, b.z);
 					}
 					glEnd();
+
+					float3 position = App->scene->selected->transform->modelMatrixGlobal.Row3(3);
+					float3 front = App->scene->selected->transform->front;
+					float3 up = App->scene->selected->transform->up;
+					float3 right = App->scene->selected->transform->right;
+					
+					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f); // x Axis
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(front.x, front.y, front.z);
+					
+					glEnd();
+
+					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f); // z Axis
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(up.x, up.y, up.z);
+					
+					glEnd();
+					
+					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f); // y vector
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(right.x, right.y, right.z);
+					
+					glEnd();
 				}
 			}
 		}

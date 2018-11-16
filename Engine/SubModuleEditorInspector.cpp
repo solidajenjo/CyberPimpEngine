@@ -13,7 +13,7 @@ void SubModuleEditorInspector::Show()
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		if (App->scene->selected != nullptr)
 		{
-			App->scene->selected->transform->EditorDraw();
+			App->scene->selected->transform->EditorDraw();			
 			ImGui::Separator();
 			ImGui::Separator();
 			ImGui::Separator();			

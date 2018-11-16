@@ -6,6 +6,9 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "Transform.h"
 #include "SubModuleEditorViewPort.h"
 #include "ModuleTime.h"
 
@@ -38,6 +41,11 @@ update_status ModuleCamera::Update()
 {
 	if (!App->editor->viewPort->cursorIn)
 		return UPDATE_CONTINUE;
+
+	if (App->scene->selected != nullptr) // if something is selected mark as target
+	{
+		target = App->scene->selected->transform->modelMatrixGlobal.Col3(3); 
+	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{

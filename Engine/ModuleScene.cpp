@@ -1,5 +1,6 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
+
 #include "imgui/imgui.h"
 
 bool ModuleScene::Init()
@@ -69,7 +70,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 		if (gObj->selected && selected != gObj)
 		{
 			selected != nullptr ? selected->selected = false : 1;
-			selected = gObj;
+			selected = gObj;			
 		}
 		else if (!gObj->selected && selected == gObj)
 		{
