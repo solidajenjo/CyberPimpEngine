@@ -182,6 +182,9 @@
     <ClCompile Include="Engine\ComponentMesh.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ComponentMaterial.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -666,6 +669,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\imgui\examples\imgui_impl_opengl3.h">
       <Filter>Utilities\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentMaterial.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

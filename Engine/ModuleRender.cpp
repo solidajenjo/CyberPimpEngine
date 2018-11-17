@@ -9,6 +9,7 @@
 #include "sdl/include/SDL_video.h" 
 #include "glew-2.1.0/include/GL/glew.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 
 // Called before render is available
@@ -77,7 +78,7 @@ void ModuleRender::Render() const
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 		"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
-	glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
+	
 	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
 	{
 		if (*it == nullptr) 
@@ -86,13 +87,19 @@ void ModuleRender::Render() const
 		}
 		else
 		{
+			if ((*it)->material->texture > 0) //Has textures?
+				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
+			else
+				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
+
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, (*it)->texture);
+			glBindTexture(GL_TEXTURE_2D, (*it)->material->texture);			
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), (*it)->material->color.x, (*it)->material->color.y, (*it)->material->color.z, 1.0f); // material color
 			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
 			
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 				"model"), 1, GL_TRUE, (*it)->owner->transform->GetModelMatrix());
-			//(*it)->owner->transform->rotation.z += 0.01f;
+			
 			glBindVertexArray((*it)->VAO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->VIndex);
 			glDrawElements(GL_TRIANGLES, (*it)->nIndices, GL_UNSIGNED_INT, 0);

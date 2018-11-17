@@ -15,6 +15,7 @@
 #include "SubModuleEditorViewPort.h"
 #include "SubModuleEditorConfig.h"
 #include "SubModuleEditorToolBar.h"
+#include "GameObject.h"
 
 
 bool ModuleEditor::Init()

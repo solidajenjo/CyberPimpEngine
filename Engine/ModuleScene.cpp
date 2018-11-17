@@ -6,6 +6,8 @@
 bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
+	root = new GameObject();
+	root->name = "Scene";
 	return true;
 }
 
@@ -22,6 +24,7 @@ bool ModuleScene::CleanUp()
 		RELEASE(*it);
 	}
 	sceneGameObjects.resize(0);
+	root->children.clear();
 	LOG("Cleaning scene GameObjects. Done");
 	selected = nullptr;
 	return true;
@@ -30,7 +33,7 @@ bool ModuleScene::CleanUp()
 void ModuleScene::insertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);
-	sceneGameObjectsHierarchy.push_back(newGO);
+	root->children.push_back(newGO);
 	flattenHierarchy(newGO);
 }
 
@@ -42,7 +45,7 @@ void ModuleScene::destroyGameObject(GameObject * destroyableGO)
 void ModuleScene::showHierarchy()
 {
 
-	for (std::vector<GameObject*>::const_iterator it = sceneGameObjectsHierarchy.begin(); it != sceneGameObjectsHierarchy.end(); ++it)
+	for (std::list<GameObject*>::const_iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
 		drawNode(*it);
 	}
@@ -63,6 +66,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 	{
 		flags |= ImGuiTreeNodeFlags_Selected;
 	}
+	ImGui::PushID(&gObj->name);
 	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
 	if (ImGui::IsItemClicked())
 	{
@@ -86,6 +90,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 		}
 		ImGui::TreePop();
 	}
+	ImGui::PopID();
 	ImGui::PopID();
 
 }

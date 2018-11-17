@@ -12,6 +12,7 @@ struct aiNode;
 struct aiMaterial;
 
 class ComponentMesh;
+class ComponentMaterial;
 class GameObject;
 
 class ModuleModelLoader :
@@ -23,13 +24,11 @@ public:
 
 private:
 
-	GameObject* GenerateMeshData(aiNode* node, const aiScene* scene, unsigned texture);
-	unsigned GenerateMaterialData(aiMaterial* materials);
+	GameObject* GenerateMeshData(aiNode* rootNode, const aiScene* scene, const std::vector<ComponentMaterial*>& materials);
+	void GenerateMaterialData(const aiMaterial* material, std::vector<ComponentMaterial*>& materialContainer);
 
 //memebers
-
 	std::vector<float3> allCorners; //store all bounding boxes corners to form global bounding box
-
 };
 
 #endif

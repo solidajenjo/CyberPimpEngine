@@ -13,7 +13,7 @@ float* Transform::GetModelMatrix()
 }
 
 
-Transform::Transform(GameObject* go) : owner(go)
+Transform::Transform(GameObject* go) : Component("Transform"), owner(go)
 {
 }
 
@@ -52,21 +52,35 @@ void Transform::Scale(const float3& scalation)
 void Transform::SetPosition(const float3& newPosition)
 {
 	position = newPosition;
+	tMat[0][3] = position.x;
+	tMat[1][3] = position.y;
+	tMat[2][3] = position.z;
+	PropagateTransform();
 }
 
 void Transform::SetRotation(const float3& newRotation)
 {
 	rotation = newRotation;
+	rotQuat = Quat::FromEulerXZY(rotation.x, rotation.z, rotation.y);
+	PropagateTransform();
 }
 
 void Transform::SetScale(const float3& newScale)
 {
 	scale = newScale;
+	sMat[0][0] = scale.x;
+	sMat[1][1] = scale.y;
+	sMat[2][2] = scale.z;
+	PropagateTransform();
 }
 
 void Transform::SetTransform(const float3& pos, const float3& rot, const float3& scl)
 {
-	
+	position = pos;
+	rotation = rot;
+	scale = scl;
+	RecalcModelMatrix();
+	PropagateTransform();
 }
 
 
@@ -79,9 +93,9 @@ void Transform::RecalcModelMatrix()
 	rotQuat = Quat::FromEulerXZY(rotation.x, rotation.z, rotation.y);
 	//IMGUIZMO
 	//TODO: Get Rid of recursivity
-	sMat[0][0] *= scale.x;
-	sMat[1][1] *= scale.y;
-	sMat[2][2] *= scale.z;
+	sMat[0][0] = scale.x;
+	sMat[1][1] = scale.y;
+	sMat[2][2] = scale.z;
 
 	modelMatrixLocal = tMat.Mul(sMat.Mul(rotQuat));
 

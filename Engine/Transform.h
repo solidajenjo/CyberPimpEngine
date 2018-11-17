@@ -10,7 +10,6 @@ class GameObject;
 
 class Transform : public Component
 {
-	friend class ModuleModelLoader; //recalc the modelMatrix permission
 
 public:
 	Transform(GameObject* go);
@@ -52,6 +51,7 @@ public:
 	float4x4 modelMatrixGlobal = float4x4::identity;
 	
 	GameObject* owner = nullptr;
+
 };
 
 #endif

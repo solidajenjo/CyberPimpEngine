@@ -60,7 +60,7 @@ update_status ModuleFrameBuffer::Update()
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 				"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
 			glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
-			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, .2f, .2f);
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, .2f, .2f, 1.f);
 			glLineWidth(1.0f);
 			float d = 200.0f;
 			glBegin(GL_LINES);
@@ -73,19 +73,19 @@ update_status ModuleFrameBuffer::Update()
 			}
 			glEnd();
 
-			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f); // x Axis
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // x Axis
 			glBegin(GL_LINES);
 			glVertex3f(0.f, 0.1f, 0.f);
 			glVertex3f(d, 0.1f, 0.f);
 			glEnd();
 
-			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f); // z Axis
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // z Axis
 			glBegin(GL_LINES);
 			glVertex3f(0.f, 0.1f, d);
 			glVertex3f(0.f, 0.1f, 0.f);
 			glEnd();
 
-			glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f); // z Axis
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // z Axis
 			glBegin(GL_LINES);
 			glVertex3f(0.f, 0.1f, 0.f);
 			glVertex3f(0.f, d, 0.f);
@@ -98,8 +98,8 @@ update_status ModuleFrameBuffer::Update()
 					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 						"model"), 1, GL_TRUE, (*it)->transform->GetModelMatrix());
 					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
-					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f);
-					glLineWidth(5);
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f, 1.f);
+					glLineWidth(2);
 					glBegin(GL_LINES);
 					for (unsigned i = 0; i < (*it)->aaBB->NumEdges(); ++i)
 					{
@@ -115,21 +115,21 @@ update_status ModuleFrameBuffer::Update()
 					float3 up = App->scene->selected->transform->up;
 					float3 right = App->scene->selected->transform->right;
 					
-					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f); // x Axis
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
 					glBegin(GL_LINES);
 					glVertex3f(position.x, position.y, position.z);
 					glVertex3f(front.x, front.y, front.z);
 					
 					glEnd();
 
-					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f); // z Axis
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // up vector
 					glBegin(GL_LINES);
 					glVertex3f(position.x, position.y, position.z);
 					glVertex3f(up.x, up.y, up.z);
 					
 					glEnd();
 					
-					glUniform3f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f); // y vector
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // right vector
 					glBegin(GL_LINES);
 					glVertex3f(position.x, position.y, position.z);
 					glVertex3f(right.x, right.y, right.z);

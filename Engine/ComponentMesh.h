@@ -8,11 +8,13 @@
 #include "Component.h"
 
 class GameObject;
+class ComponentMaterial;
 
 class ComponentMesh : public Component
 {
 public:
 
+	ComponentMesh() : Component("Mesh") {}
 	~ComponentMesh() {
 		if (VAO != 0)
 			glDeleteVertexArrays(1, &VAO);
@@ -25,10 +27,10 @@ public:
 	unsigned VAO = 0;
 	unsigned VIndex = 0;
 	unsigned nVertices = 0;
-	unsigned nIndices = 0;
-	unsigned texture = 0;
+	unsigned nIndices = 0;	
 	std::vector<float3> vertices;
 
+	ComponentMaterial* material;
 	GameObject* owner = nullptr;
 
 };

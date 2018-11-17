@@ -16,14 +16,36 @@ void SubModuleEditorInspector::Show()
 			App->scene->selected->transform->EditorDraw();			
 			ImGui::Separator();
 			ImGui::Separator();
-			ImGui::Separator();			
+			ImGui::Separator();	
+			bool firstMesh = false;
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
-			{
-				if (ImGui::Button("Remove"))
+			{							
+				if ((*it)->type != "Mesh")
 				{
-					//delete component
+					if (ImGui::Button("Remove"))
+					{
+						//delete component
+					}
+					(*it)->EditorDraw();
 				}
-				(*it)->EditorDraw();
+				else if (!firstMesh) //if it's a mesh a different behaviour needed when multi-mesh gameobjects
+				{
+					firstMesh = true;
+					ImGui::PushID(this);
+					if (ImGui::Button("Remove"))
+					{
+						//delete component
+					}
+					if (ImGui::CollapsingHeader("Mesh"))
+					{
+						for (std::list<Component*>::const_iterator it2 = App->scene->selected->components.begin(); it2 != App->scene->selected->components.end(); ++it2)
+						{
+							if ((*it2)->type == "Mesh")
+								(*it2)->EditorDraw();
+						}
+					}
+					ImGui::PopID();
+				}
 			}
 
 		}

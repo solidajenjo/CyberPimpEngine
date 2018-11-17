@@ -33,7 +33,7 @@ private:
 	//members
 
 	std::vector<GameObject*> sceneGameObjects; //handles all game objects
-	std::vector<GameObject*> sceneGameObjectsHierarchy; // handles hierarchy stored game objects, no need to release needed because the data is the same as sceneGameObjects
+	GameObject* root = nullptr; 
 };
 
 #endif

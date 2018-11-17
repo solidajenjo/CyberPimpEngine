@@ -14,11 +14,12 @@
 
 #include <list>
 
+#define WIDGET_WIDTHS 128
 
 void SubModuleEditorConfig::Show()
 {
 	if (enabled)
-	{					
+	{			
 		ImGui::Begin(editorModuleName.c_str(), &enabled);	
 		frames++;
 		timer -= App->appTime->realDeltaTime;
@@ -158,7 +159,13 @@ void SubModuleEditorConfig::Show()
 				std::string tNum = "Texture " + std::to_string(*it);
 				if (ImGui::TreeNode(tNum.c_str()))
 				{
-					ImGui::Image((void*)(intptr_t)*it, ImVec2(ImGui::GetWindowWidth() * .9f, ImGui::GetWindowWidth() *.9f), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((void*)(intptr_t)*it, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+					{
+						unsigned texNum = *it;
+						ImGui::SetDragDropPayload("TEX_NUM", &texNum, sizeof(unsigned));
+						ImGui::EndDragDropSource();
+					}
 					ImGui::PushID(id);
 					if (ImGui::TreeNode("MipMaps"))
 					{
