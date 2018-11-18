@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleModelLoader.h"
-#include "ModuleCamera.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleFrameBuffer.h"
 #include "SubModuleEditorViewPort.h"

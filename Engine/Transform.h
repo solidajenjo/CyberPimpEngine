@@ -26,6 +26,8 @@ public:
 
 	//TODO: Create getters
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
+	float3 getGlobalPosition();
+	void UpdateAABB() const;
 	void PropagateTransform();
 	void NewAttachment();
 	void EditorDraw() override;

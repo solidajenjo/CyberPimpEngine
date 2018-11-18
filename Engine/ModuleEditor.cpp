@@ -6,6 +6,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleFrameBuffer.h"
 #include "ModuleModelLoader.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
@@ -13,6 +14,7 @@
 #include "SubModuleEditorWorldInspector.h"
 #include "SubModuleEditorInspector.h"
 #include "SubModuleEditorViewPort.h"
+#include "SubModuleEditorGameViewPort.h"
 #include "SubModuleEditorConfig.h"
 #include "SubModuleEditorToolBar.h"
 #include "GameObject.h"
@@ -35,7 +37,8 @@ bool ModuleEditor::Init()
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
 	subModules.push_back(inspector = new SubModuleEditorInspector("Inspector"));
-	subModules.push_back(viewPort = new SubModuleEditorViewPort("ViewPort"));
+	subModules.push_back(viewPort = new SubModuleEditorViewPort("Viewport"));
+	subModules.push_back(gameViewPort = new SubModuleEditorGameViewPort("Game Viewport"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
 	App->consoleBuffer = new ImGuiTextBuffer();
 
@@ -68,6 +71,7 @@ update_status ModuleEditor::PreUpdate()
 			backgroundTex = textures->Load("editorBackground.png");
 			logo = textures->Load("editorHeaderLogo.png");
 			checkersTex = textures->Load("checkers.png");			
+			noCamTex = textures->Load("noCam.png");		
 		}
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();
@@ -77,7 +81,7 @@ update_status ModuleEditor::PreUpdate()
 		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);
 	ImGui::End();
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(250, 250));	
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(500, 500));	
 	return UPDATE_CONTINUE;
 }
 

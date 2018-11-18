@@ -4,7 +4,10 @@
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "ComponentCamera.h"
 #include <list>
+
 
 void SubModuleEditorInspector::Show()
 {
@@ -22,7 +25,17 @@ void SubModuleEditorInspector::Show()
 			ImGui::Separator();
 			ImGui::Separator();
 			ImGui::Separator();	
-			bool firstMesh = false;
+			bool firstMesh = false; //only one mesh drawing per gameobject
+			//TODO: Let change gameobject name
+			if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
+				if (selectedNewComponent == CAMERA_COMPONENT)
+				{
+					ComponentCamera* newCam = new ComponentCamera(false);
+					newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
+					newCam->owner = App->scene->selected;
+					App->scene->selected->components.push_back(newCam);
+				}
+			}
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{							
 				if ((*it)->type != "Mesh")

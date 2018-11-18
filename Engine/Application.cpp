@@ -4,7 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
 #include "ModuleFrameBuffer.h"
@@ -19,7 +19,7 @@ Application::Application()
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(editor = new ModuleEditor());
-	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(camera = new ModuleEditorCamera());
 	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(frameBuffer = new ModuleFrameBuffer());
 	modules.push_back(renderer = new ModuleRender());

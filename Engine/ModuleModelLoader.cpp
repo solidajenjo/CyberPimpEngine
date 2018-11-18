@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
-#include "ModuleCamera.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleScene.h"
 #include "Assimp/include/assimp/cimport.h"
 #include "Assimp/include/assimp/postprocess.h"
@@ -53,7 +53,7 @@ void ModuleModelLoader::Load(const std::string &geometryPath)
 			retGameObject->transform->SetPosition(float3(pos.x, pos.y, pos.z));
 			Quat q(rot.x, rot.y, rot.z, rot.w); //Quat to translate from black math voodoo to human understable
 			retGameObject->transform->SetTransform(float3(pos.x, pos.y, pos.z), q.ToEulerXYZ(), float3(scl.x, scl.y, scl.z));
-
+			retGameObject->transform->PropagateTransform();
 			App->scene->insertGameObject(retGameObject); //scene handles all the gameobjects -> must clean them
 			
 		}

@@ -6,6 +6,7 @@
 #include <list>
 
 class ComponentMesh;
+class ComponentCamera;
 
 class ModuleRender : public Module
 {
@@ -17,7 +18,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	void Render() const;
+	void Render(ComponentCamera* camera) const;
 
 	const std::list<ComponentMesh*>* getRenderizables() const; //read only getter
 	void insertRenderizable(ComponentMesh* newMesh);

@@ -1,11 +1,12 @@
 #include "SubModuleEditorConfig.h"
 #include "Application.h"
 #include "ModuleTime.h"
-#include "ModuleCamera.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleFramebuffer.h"
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -66,85 +67,19 @@ void SubModuleEditorConfig::Show()
 			ImGui::Text("Game time scale");
 			ImGui::Columns(1);
 		}
-		if (ImGui::CollapsingHeader("Camera Module"))
+		if (ImGui::CollapsingHeader("Editor Camera"))
 		{
-			int boxHeight = 16, boxWidth;
-
-			ImGui::Text("Position");
-			ImGui::Columns(3);
-			ImVec2 pos = ImGui::GetCursorScreenPos();
-			boxWidth = ImGui::GetColumnWidth() - 10;
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("X: %.3f", App->camera->camPos.x);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Y: %.3f", App->camera->camPos.y);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Z: %.3f", App->camera->camPos.z);
-			ImGui::Columns(1);
-			ImGui::Separator();
-			ImGui::Separator();
-			ImGui::Separator();
-
-			ImGui::Text("Forward vector");
-			ImGui::Columns(3);
-			pos = ImGui::GetCursorScreenPos();
-			boxWidth = ImGui::GetColumnWidth() - 10;
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("X: %.3f", App->camera->frustum.front.x);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Y: %.3f", App->camera->frustum.front.y);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Z: %.3f", App->camera->frustum.front.z);
-			ImGui::Columns(1);
-			ImGui::Text("Up vector");
-			ImGui::Columns(3);
-			pos = ImGui::GetCursorScreenPos();
-			boxWidth = ImGui::GetColumnWidth() - 10;
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("X: %.3f", App->camera->frustum.up.x);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Y: %.3f", App->camera->frustum.up.y);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Z: %.3f", App->camera->frustum.up.z);
-			ImGui::Columns(1);
-			ImGui::Text("Right vector");
-			ImGui::Columns(3);
-			pos = ImGui::GetCursorScreenPos();
-			boxWidth = ImGui::GetColumnWidth() - 10;
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("X: %.3f", App->camera->frustum.WorldRight().x);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Y: %.3f", App->camera->frustum.WorldRight().y);
-			ImGui::NextColumn();
-			pos = ImGui::GetCursorScreenPos();
-			ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(pos.x - 2, pos.y), ImVec2(pos.x + boxWidth, pos.y + boxHeight), IM_COL32(100, 100, 100, 255));
-			ImGui::Text("Z: %.3f", App->camera->frustum.WorldRight().z);
-			ImGui::Columns(1);
-
-			ImGui::Separator();
-			ImGui::Separator();
-			ImGui::Separator();
-
-			ImGui::SliderFloat("FOV", &App->camera->vFov, 10, 180);
-			ImGui::SliderFloat("Z Near", &App->camera->zNear, 0.01f, 2000.f);
-			ImGui::SliderFloat("Z Far", &App->camera->zFar, 0.01f, 2000.f);
-			ImGui::SliderFloat("Movement speed", &App->camera->moveSpeed, 0.01f, 50.f);
-			ImGui::SliderFloat("Rotation speed", &App->camera->rotSpeed, 0.01f, 50.f);
-			ImGui::SliderFloat("Zoom speed", &App->camera->zoomSpeed, 0.01f, 50.f);
+			ImGui::SliderFloat("FOV", &App->camera->editorCamera.vFov, 10, 180);
+			ImGui::SliderFloat("Z Near", &App->camera->editorCamera.zNear, 0.01f, 2000.f);
+			ImGui::SliderFloat("Z Far", &App->camera->editorCamera.zFar, 0.01f, 2000.f);
+			ImGui::SliderFloat("Movement speed", &App->camera->editorCamera.moveSpeed, 0.01f, 50.f);
+			ImGui::SliderFloat("Rotation speed", &App->camera->editorCamera.rotSpeed, 0.01f, 50.f);
+			ImGui::SliderFloat("Zoom speed", &App->camera->editorCamera.zoomSpeed, 0.01f, 50.f);
+			App->camera->editorCamera.RecalculateFrustum();
+		}
+		if (ImGui::CollapsingHeader("FrameBuffer Module"))
+		{
+			ImGui::Checkbox("Frustum culling", &App->frameBuffer->frustumCulling);
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))
 		{

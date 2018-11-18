@@ -10,6 +10,7 @@ class SubModuleEditorConsole;
 class SubModuleEditorWorldInspector;
 class SubModuleEditorInspector;
 class SubModuleEditorViewPort;
+class SubModuleEditorGameViewPort;
 class SubModuleEditorConfig;
 class SubModuleEditorToolBar;
 class ModuleTextures;
@@ -34,6 +35,7 @@ public:
 	unsigned logo = 0;
 	unsigned backgroundTex = 0;
 	unsigned checkersTex = 0;
+	unsigned noCamTex = 0;
 	bool gizmosEnabled = true;
 
 	SubModuleEditorMenu* menu = nullptr;
@@ -41,6 +43,7 @@ public:
 	SubModuleEditorWorldInspector* worldInspector = nullptr;
 	SubModuleEditorInspector* inspector = nullptr;
 	SubModuleEditorViewPort* viewPort = nullptr;
+	SubModuleEditorGameViewPort* gameViewPort = nullptr;
 	SubModuleEditorConfig* config = nullptr;
 	SubModuleEditorToolBar* toolBar = nullptr;
 	ModuleTextures* textures = nullptr; //independent of game textures - Handles editor textures

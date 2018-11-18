@@ -3,6 +3,11 @@
 
 #include <string>
 
+enum ComponentTypes
+{
+	CAMERA_COMPONENT = 0
+};
+
 class Component
 {
 public:

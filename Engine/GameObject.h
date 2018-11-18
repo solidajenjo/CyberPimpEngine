@@ -29,13 +29,7 @@ public:
 		}
 	}
 
-	unsigned generateID()
-	{
-		static unsigned s_id = 0;
-		return ++s_id;
-	}
-
-//members
+	//members
 	
 	Transform* transform = nullptr;
 
@@ -45,10 +39,19 @@ public:
 	std::list<Component*> components;
 
 	AABB* aaBB = nullptr;
+	AABB* aaBBGlobal = nullptr;
 	bool enabled = true, selected = false;
 	std::string name = "";
 
 	unsigned id = 0u; //unique game object id
+
+private:
+
+	unsigned generateID()
+	{
+		static unsigned s_id = 0;
+		return ++s_id;
+	}
 
 };
 

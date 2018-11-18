@@ -3,6 +3,9 @@
 
 #include "SubModuleEditor.h"
 #include "ModuleTextures.h"
+
+class ModuleFrameBuffer;
+
 class SubModuleEditorGameViewPort : public SubModuleEditor
 {
 public:
@@ -13,7 +16,6 @@ public:
 //members
 
 	float height = 0, width = 0;
-	bool cursorIn = false;
 };
 
 #endif

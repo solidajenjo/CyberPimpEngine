@@ -20,9 +20,6 @@
     <ClCompile Include="Engine\log.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ModuleCamera.cpp">
-      <Filter>EngineModules</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ModuleEditor.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
@@ -188,6 +185,12 @@
     <ClCompile Include="Engine\SubModuleEditorGameViewPort.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleEditorCamera.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentCamera.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -210,9 +213,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Globals.h">
       <Filter>Declarations</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ModuleCamera.h">
-      <Filter>EngineModules</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ModuleEditor.h">
       <Filter>EngineModules</Filter>
@@ -678,6 +678,12 @@
     </ClInclude>
     <ClInclude Include="Engine\SubModuleEditorGameViewPort.h">
       <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleEditorCamera.h">
+      <Filter>EngineModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentCamera.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

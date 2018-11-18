@@ -5,6 +5,7 @@
 #include <vector>
 
 class GameObject;
+class ComponentCamera;
 
 class ModuleScene :
 	public Module
@@ -24,7 +25,8 @@ public:
 	bool isRoot(const GameObject* go) const;
 	//members
 
-	GameObject* selected;
+	GameObject* selected = nullptr;
+	ComponentCamera* sceneCamera = nullptr;
 
 private:
 

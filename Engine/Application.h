@@ -13,7 +13,7 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleModelLoader;
 class ModuleEditor;
-class ModuleCamera;
+class ModuleEditorCamera;
 class ModuleProgram;
 class ModuleTime;
 class ModuleScene;
@@ -37,7 +37,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleModelLoader* modelLoader = nullptr;
 	ModuleEditor* editor = nullptr;
-	ModuleCamera* camera = nullptr;
+	ModuleEditorCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
 	ModuleTime* appTime = nullptr;
 	ModuleFrameBuffer* frameBuffer = nullptr;

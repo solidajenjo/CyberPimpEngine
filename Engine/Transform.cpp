@@ -1,5 +1,9 @@
 #include "Transform.h"
 #include "MathGeoLib/include/Math/MathFunc.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/OBB.h"
+#include "MathGeoLib/include/Math/float4.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleEditor.h"
@@ -10,6 +14,11 @@
 float* Transform::GetModelMatrix()
 {	
 	return &modelMatrixGlobal[0][0]; 
+}
+
+float3 Transform::getGlobalPosition()
+{
+	return modelMatrixGlobal.Col3(3);
 }
 
 
@@ -116,9 +125,21 @@ void Transform::EditorDraw()
 	ImGui::PopID();
 }
 
+void Transform::UpdateAABB() const
+{
+	//update AABB
+	if (owner->aaBB != nullptr)
+	{
+		OBB obb;
+		RELEASE(owner->aaBBGlobal);
+		owner->aaBBGlobal = new AABB();
+		obb.SetFrom(*owner->aaBB, modelMatrixGlobal);		
+		owner->aaBBGlobal->SetNegativeInfinity();
+		owner->aaBBGlobal->Enclose(obb);
+	}
+}
 void Transform::PropagateTransform() // update & propagate transform matrix
-{	
-
+{
 	if (owner->parent != nullptr)
 	{
 		modelMatrixGlobal = owner->parent->transform->modelMatrixGlobal.Mul(modelMatrixLocal);
@@ -127,11 +148,12 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 	{
 		modelMatrixGlobal = modelMatrixLocal;
 	}
-	
+
+	UpdateAABB();
 	front = -modelMatrixGlobal.Col3(2);
 	up = modelMatrixGlobal.Col3(1);
 	right = modelMatrixGlobal.Col3(0);
-
+	
 	//propagate down 
 	std::queue<GameObject*> stackGO; //Top to bottom propagation
 	stackGO.push(this->owner);
@@ -147,6 +169,7 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 			(*it)->transform->front = -(*it)->transform->modelMatrixGlobal.Col3(2);
 			(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
 			(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);
+			(*it)->transform->UpdateAABB();
 		}
 	}
 

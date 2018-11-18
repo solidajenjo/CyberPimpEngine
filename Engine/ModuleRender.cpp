@@ -3,11 +3,15 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
-#include "ModuleCamera.h"
+#include "ModuleFrameBuffer.h"
+#include "ModuleScene.h"
+#include "ModuleEditorCamera.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "sdl/include/SDL_video.h" 
 #include "glew-2.1.0/include/GL/glew.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 
@@ -71,14 +75,14 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::Render() const
+void ModuleRender::Render(ComponentCamera* camera) const
 {
-	float4x4 view = App->camera->frustum.ViewMatrix();
+	assert(camera != nullptr);
+	float4x4 view = camera->frustum.ViewMatrix();
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-		"proj"), 1, GL_TRUE, &App->camera->frustum.ProjectionMatrix()[0][0]);
-	
+		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
 	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
 	{
 		if (*it == nullptr) 
@@ -87,27 +91,36 @@ void ModuleRender::Render() const
 		}
 		else
 		{
-			if ((*it)->material->texture > 0) //Has textures?
-				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
-			else
-				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
+			bool render = true;
+			if (App->frameBuffer->frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects(*(*it)->owner->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains(*(*it)->owner->aaBBGlobal))
+			{
+				render = false;
+			}
+			if(render)
+			{
+				if ((*it)->material->texture > 0) //Has textures?
+					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
+				else
+					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, (*it)->material->texture);			
-			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), (*it)->material->color.x, (*it)->material->color.y, (*it)->material->color.z, 1.0f); // material color
-			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, (*it)->material->texture);			
+				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), (*it)->material->color.x, (*it)->material->color.y, (*it)->material->color.z, 1.0f); // material color
+				glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
 			
-			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-				"model"), 1, GL_TRUE, (*it)->owner->transform->GetModelMatrix());
+				glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+					"model"), 1, GL_TRUE, (*it)->owner->transform->GetModelMatrix());
 			
-			glBindVertexArray((*it)->VAO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->VIndex);
-			glDrawElements(GL_TRIANGLES, (*it)->nIndices, GL_UNSIGNED_INT, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+				glBindVertexArray((*it)->VAO);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it)->VIndex);
+				glDrawElements(GL_TRIANGLES, (*it)->nIndices, GL_UNSIGNED_INT, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			}			
+			glEnd();
+	
 		}
 		
 	}
-	
 	glBindVertexArray(0);
 }
 

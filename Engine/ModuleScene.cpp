@@ -26,6 +26,7 @@ bool ModuleScene::CleanUp()
 	root->children.clear();
 	LOG("Cleaning scene GameObjects. Done");
 	selected = nullptr;
+	sceneCamera = nullptr;
 	return true;
 }
 
