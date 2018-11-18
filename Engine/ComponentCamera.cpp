@@ -1,5 +1,6 @@
 #include "ComponentCamera.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "Application.h"
 #include "MathGeoLib/include/Math/MathConstants.h"
 #include "MathGeoLib/include/Math/Quat.h"
@@ -26,13 +27,15 @@ void ComponentCamera::EditorDraw()
 			}
 			if (mainCamera)
 			{
-				App->scene->sceneCamera = this;
+				App->scene->sceneCamera = this; 
 			}
 			else
 			{
-				App->scene->sceneCamera = nullptr;
+				owner->children.remove(App->editor->skyBox);
 			}
 		}
+		ImGui::SameLine();
+		ImGui::Checkbox("SkyBox", &App->editor->skyBox->enabled);
 		ImGui::SliderFloat("FOV", &vFov, 10, 180);
 		ImGui::SliderFloat("Z Near", &zNear, 0.01f, 2000.f);
 		ImGui::SliderFloat("Z Far", &zFar, 0.01f, 2000.f);
@@ -44,6 +47,7 @@ void ComponentCamera::EditorDraw()
 void ComponentCamera::RecalculateFrustum()
 {
 	RecalculateFrustum(frustum.front, frustum.up);
+	
 }
 
 void ComponentCamera::RecalculateFrustum(float3 front, float3 up)

@@ -31,6 +31,7 @@ public:
 	void PropagateTransform();
 	void NewAttachment();
 	void EditorDraw() override;
+	//TODO: create a set global position
 
 private:
 

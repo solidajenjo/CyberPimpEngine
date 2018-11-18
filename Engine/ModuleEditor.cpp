@@ -72,6 +72,8 @@ update_status ModuleEditor::PreUpdate()
 			logo = textures->Load("editorHeaderLogo.png");
 			checkersTex = textures->Load("checkers.png");			
 			noCamTex = textures->Load("noCam.png");		
+			App->modelLoader->Load("skybox.fbx");
+			App->scene->SetSkyBox();
 		}
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();
@@ -116,7 +118,7 @@ bool ModuleEditor::CleanUp()
 
 	RELEASE (toolBar);
 	RELEASE (textures);
-	RELEASE (rotationGizmo);
+	RELEASE (skyBox);
 	LOG("Cleaning Module Editor. Done");
 	return true;
 }

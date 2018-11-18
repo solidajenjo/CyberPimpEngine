@@ -1,4 +1,6 @@
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "Application.h"
 #include "GameObject.h"
 #include "imgui/imgui.h"
 
@@ -128,6 +130,16 @@ const std::vector<GameObject*>* ModuleScene::getSceneGameObjects() const
 bool ModuleScene::isRoot(const GameObject * go) const
 {
 	return go == root;
+}
+
+void ModuleScene::SetSkyBox()
+{
+	if (App->editor->skyBox == nullptr)
+	{
+		App->editor->skyBox = *sceneGameObjects.begin();
+		sceneGameObjects.clear();
+		root->children.clear();
+	}
 }
 
 void ModuleScene::flattenHierarchy(GameObject* go) //TODO:Remove recursivity

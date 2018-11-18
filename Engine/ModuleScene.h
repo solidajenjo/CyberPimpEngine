@@ -23,6 +23,7 @@ public:
 
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
 	bool isRoot(const GameObject* go) const;
+	void SetSkyBox();
 	//members
 
 	GameObject* selected = nullptr;
