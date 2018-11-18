@@ -1,6 +1,5 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
-
 #include "imgui/imgui.h"
 
 bool ModuleScene::Init()
@@ -34,6 +33,7 @@ void ModuleScene::insertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);
 	root->children.push_back(newGO);
+	newGO->parent = root;
 	flattenHierarchy(newGO);
 }
 
@@ -44,11 +44,7 @@ void ModuleScene::destroyGameObject(GameObject * destroyableGO)
 
 void ModuleScene::showHierarchy()
 {
-
-	for (std::list<GameObject*>::const_iterator it = root->children.begin(); it != root->children.end(); ++it)
-	{
-		drawNode(*it);
-	}
+	drawNode(root);
 }
 
 void ModuleScene::drawNode(GameObject* gObj)
@@ -68,6 +64,34 @@ void ModuleScene::drawNode(GameObject* gObj)
 	}
 	ImGui::PushID(&gObj->name);
 	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->id, sizeof(unsigned));
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
+		{
+			assert(payload->DataSize == sizeof(int));
+			unsigned movedId = *(unsigned*)payload->Data;
+			GameObject* movedGO = nullptr;
+			for (std::vector<GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
+			{
+				if ((*it)->id == movedId)
+				{
+					movedGO = *it;
+					break;
+				}
+			}
+			movedGO->parent->children.remove(movedGO);
+
+			movedGO->parent = gObj;
+
+			gObj->children.push_back(movedGO);			
+			movedGO->transform->NewAttachment();
+		}
+	}
 	if (ImGui::IsItemClicked())
 	{
 		gObj->selected = !gObj->selected;
@@ -100,7 +124,12 @@ const std::vector<GameObject*>* ModuleScene::getSceneGameObjects() const
 	return &sceneGameObjects;
 }
 
-void ModuleScene::flattenHierarchy(GameObject* go)
+bool ModuleScene::isRoot(const GameObject * go) const
+{
+	return go == root;
+}
+
+void ModuleScene::flattenHierarchy(GameObject* go) //TODO:Remove recursivity
 {
 	sceneGameObjects.push_back(go);
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)

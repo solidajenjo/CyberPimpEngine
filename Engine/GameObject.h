@@ -15,6 +15,7 @@ public:
 	GameObject()
 	{
 		transform = new Transform(this); //notice transform who owns it
+		id = generateID();
 	}
 
 	~GameObject()
@@ -27,6 +28,13 @@ public:
 			RELEASE(*it);
 		}
 	}
+
+	unsigned generateID()
+	{
+		static unsigned s_id = 0;
+		return ++s_id;
+	}
+
 //members
 	
 	Transform* transform = nullptr;
@@ -39,6 +47,10 @@ public:
 	AABB* aaBB = nullptr;
 	bool enabled = true, selected = false;
 	std::string name = "";
+
+	unsigned id = 0u; //unique game object id
+
 };
+
 
 #endif

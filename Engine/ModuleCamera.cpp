@@ -83,17 +83,7 @@ update_status ModuleCamera::Update()
 		
 		iPoint mouseMotion = App->input->GetMouseMotion();
 
-		if (abs(mouseMotion.y) > 100)
-			mouseMotion.y = 50 * (-mouseMotion.y / mouseMotion.y); //keep direction with division
-
-		float pitchAngle = frustum.front.AngleBetween(float3(frustum.front.x, 0.f, frustum.front.z));
-		if (pitchAngle < 1.2f) //lock needed?
-			pitch(-mouseMotion.y * rotSpeed * App->appTime->realDeltaTime); //not locking
-		else
-			if (frustum.front.y > 0) // is looking up?
-				pitch(-0.01f); //unlock 
-			else
-				pitch(0.01f); //unlock
+		pitch(-mouseMotion.y * rotSpeed * App->appTime->realDeltaTime);
 		yaw(mouseMotion.x * rotSpeed * App->appTime->realDeltaTime);
 		RecalculateFrustum(frustum.front, frustum.up);
 	}
@@ -110,17 +100,7 @@ update_status ModuleCamera::Update()
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{			
 		iPoint mouseMotion = App->input->GetMouseMotion();
-		float pitchAngle = frustum.front.AngleBetween(float3(frustum.front.x, 0.f, frustum.front.z));
-		Quat orbitMat;
-		if (pitchAngle < 1.2f)
-			orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), mouseMotion.y * rotSpeed * 0.5f * App->appTime->realDeltaTime);
-		else
-			if (frustum.front.y > 0) // is looking up?
-				orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), -0.01f);//unlock 
-			else
-				orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), 0.01f);//unlock
-
-		
+		Quat orbitMat = Quat::RotateY(-mouseMotion.x * rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(frustum.WorldRight(), mouseMotion.y * rotSpeed * 0.5f * App->appTime->realDeltaTime);
 		camPos = target + orbitMat * (camPos - target);
 		RecalculateFrustum(frustum.front, frustum.up);
 		focus = true;

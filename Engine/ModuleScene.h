@@ -21,7 +21,7 @@ public:
 	void drawNode(GameObject* gObj);
 
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
-
+	bool isRoot(const GameObject* go) const;
 	//members
 
 	GameObject* selected;

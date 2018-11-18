@@ -7,6 +7,7 @@
 #include "Component.h"
 
 class GameObject;
+class ModuleScene;
 
 class Transform : public Component
 {
@@ -14,9 +15,9 @@ class Transform : public Component
 public:
 	Transform(GameObject* go);
 
-	void Rotate(const float3& rotations);
-	void Translate(const float3& translation);
-	void Scale(const float3& scalation);
+	void Rotate(const float3& rotations); //in local coords
+	void Translate(const float3& translation); //in parent's coords
+	void Scale(const float3& scalation); //in local coords
 
 	void SetPosition(const float3& newPosition); //Sets the local position relative to his parent
 	void SetRotation(const float3& newRotation); //Sets the local rotation relative to his parent provided by newRotation in rads
@@ -26,7 +27,7 @@ public:
 	//TODO: Create getters
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
 	void PropagateTransform();
-
+	void NewAttachment();
 	void EditorDraw() override;
 
 private:
@@ -36,10 +37,9 @@ private:
 public:
 	//members
 	Quat rotQuat = Quat::identity;
-	float4x4 tMat = float4x4::identity;
-	float4x4 sMat = float4x4::identity;
 	
 	float3 position = float3(0.f, 0.f, 0.f); 
+	float3 localPosition = float3(0.f, 0.f, 0.f); 
 	float3 rotation = float3(0.f, 0.f, 0.f);
 	float3 scale = float3(1.f, 1.f, 1.f);
 

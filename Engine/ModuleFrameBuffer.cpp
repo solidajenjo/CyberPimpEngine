@@ -93,28 +93,34 @@ update_status ModuleFrameBuffer::Update()
 
 			for (std::vector<GameObject*>::const_iterator it = App->scene->getSceneGameObjects()->begin(); it != App->scene->getSceneGameObjects()->end(); ++it)
 			{
-				if ((*it)->selected && (*it)->aaBB != nullptr)
+				if ((*it)->selected)
 				{					
+					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 						"model"), 1, GL_TRUE, (*it)->transform->GetModelMatrix());
-					glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
-					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f, 1.f);
-					glLineWidth(2);
-					glBegin(GL_LINES);
-					for (unsigned i = 0; i < (*it)->aaBB->NumEdges(); ++i)
+					if ((*it)->aaBB != nullptr)
 					{
-						float3 a = (*it)->aaBB->Edge(i).a;
-						float3 b = (*it)->aaBB->Edge(i).b;
-						glVertex3f(a.x, a.y, a.z);
-						glVertex3f(b.x, b.y, b.z);
+						glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f, 1.f);
+						glLineWidth(2);
+						glBegin(GL_LINES);
+						for (unsigned i = 0; i < (*it)->aaBB->NumEdges(); ++i)
+						{
+							float3 a = (*it)->aaBB->Edge(i).a;
+							float3 b = (*it)->aaBB->Edge(i).b;
+							glVertex3f(a.x, a.y, a.z);
+							glVertex3f(b.x, b.y, b.z);
+						}
+						glEnd();
 					}
-					glEnd();
-
-					float3 position = App->scene->selected->transform->modelMatrixGlobal.Row3(3);
-					float3 front = App->scene->selected->transform->front;
-					float3 up = App->scene->selected->transform->up;
-					float3 right = App->scene->selected->transform->right;
+					float4x4 idMat = float4x4::identity;
+					glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+						"model"), 1, GL_TRUE, &idMat[0][0]);
+					float3 position = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
+					float3 front = position + App->scene->selected->transform->front;
+					float3 up = position + App->scene->selected->transform->up;
+					float3 right = position + App->scene->selected->transform->right;
 					
+					glClear(GL_DEPTH_BUFFER_BIT);
 					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
 					glBegin(GL_LINES);
 					glVertex3f(position.x, position.y, position.z);
@@ -134,6 +140,33 @@ update_status ModuleFrameBuffer::Update()
 					glVertex3f(position.x, position.y, position.z);
 					glVertex3f(right.x, right.y, right.z);
 					
+					glEnd();
+
+					position = App->scene->selected->parent->transform->modelMatrixGlobal.Col3(3);
+					front = position + App->scene->selected->parent->transform->front;
+					up = position + App->scene->selected->parent->transform->up;
+					right = position + App->scene->selected->parent->transform->right;
+
+					glClear(GL_DEPTH_BUFFER_BIT);
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(front.x, front.y, front.z);
+
+					glEnd();
+
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // up vector
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(up.x, up.y, up.z);
+
+					glEnd();
+
+					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // right vector
+					glBegin(GL_LINES);
+					glVertex3f(position.x, position.y, position.z);
+					glVertex3f(right.x, right.y, right.z);
+
 					glEnd();
 				}
 			}

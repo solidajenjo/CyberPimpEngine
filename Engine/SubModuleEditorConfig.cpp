@@ -166,6 +166,7 @@ void SubModuleEditorConfig::Show()
 						ImGui::SetDragDropPayload("TEX_NUM", &texNum, sizeof(unsigned));
 						ImGui::EndDragDropSource();
 					}
+
 					ImGui::PushID(id);
 					if (ImGui::TreeNode("MipMaps"))
 					{

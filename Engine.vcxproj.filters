@@ -185,6 +185,9 @@
     <ClCompile Include="Engine\ComponentMaterial.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorGameViewPort.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -672,6 +675,9 @@
     </ClInclude>
     <ClInclude Include="Engine\ComponentMaterial.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorGameViewPort.h">
+      <Filter>EditorModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
