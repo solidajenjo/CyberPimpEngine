@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+class ComponentMesh;
+
 class ModuleFrameBuffer : public Module
 {
 public:
@@ -32,6 +34,7 @@ public:
 	unsigned int gameDepthRenderbuffer = 0;
 
 	bool frustumCulling = true;
+	ComponentMesh* skyBox = nullptr;
 };
 
 #endif

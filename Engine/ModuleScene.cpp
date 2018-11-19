@@ -1,5 +1,7 @@
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
+#include "ModuleFrameBuffer.h"
+#include "ModuleRender.h"
+#include "ModuleTextures.h"
 #include "Application.h"
 #include "GameObject.h"
 #include "imgui/imgui.h"
@@ -134,11 +136,16 @@ bool ModuleScene::isRoot(const GameObject * go) const
 
 void ModuleScene::SetSkyBox()
 {
-	if (App->editor->skyBox == nullptr)
-	{
-		App->editor->skyBox = *sceneGameObjects.begin();
-		sceneGameObjects.clear();
+	if (App->frameBuffer->skyBox == nullptr)
+	{		
+		assert(sceneGameObjects.size() == 2);
+		assert(sceneGameObjects.back()->components.size() == 1);
+		App->frameBuffer->skyBox = (ComponentMesh*)sceneGameObjects.back()->components.front(); //store the skybox mesh on framebuffer module on start. Released there
+		sceneGameObjects.front()->components.clear();
+		sceneGameObjects.clear(); 
 		root->children.clear();
+		App->textures->textures.clear();
+		App->renderer->renderizables.clear(); //Clear renderizables, render skybox on demand only
 	}
 }
 

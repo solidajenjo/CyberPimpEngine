@@ -10,6 +10,8 @@ class ComponentCamera;
 
 class ModuleRender : public Module
 {
+	friend class ModuleScene;
+
 public:
 
 	bool Init() override;

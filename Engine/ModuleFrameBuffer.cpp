@@ -7,6 +7,9 @@
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "glew-2.1.0/include/GL/glew.h"
 
@@ -56,15 +59,37 @@ update_status ModuleFrameBuffer::PreUpdate()
 // Called every draw update
 update_status ModuleFrameBuffer::Update()
 {
-	if (framebuffer != 0)
+	assert(framebuffer != 0);
+	if (framebuffer != 0) //render editor
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glViewport(0, 0, viewPortWidth, viewPortHeight);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
 		//render scene to frameBuffer
-		
+
 		App->program->UseProgram();
 		App->renderer->Render(&App->camera->editorCamera);
+		assert(skyBox != nullptr);
+		if (App->camera->editorCamera.useSkyBox && skyBox != nullptr) //draw skybox
+		{
+			math::float4x4 model = float4x4::identity;
+			model = model.FromTRS(App->camera->editorCamera.camPos, float4x4::identity.RotateX(-math::pi /2), float3(100.f, 100.f, 100.f));
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"model"), 1, GL_TRUE, &model[0][0]);
+			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"view"), 1, GL_TRUE, &view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"proj"), 1, GL_TRUE, &App->camera->editorCamera.frustum.ProjectionMatrix()[0][0]);
+			glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
+			glBindTexture(GL_TEXTURE_2D, skyBox->material->texture);
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), skyBox->material->color.x, skyBox->material->color.y, skyBox->material->color.z, 1.0f); // material color
+			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
+			glBindVertexArray(skyBox->VAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox->VIndex);
+			glDrawElements(GL_TRIANGLES, skyBox->nIndices, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
 		if (App->editor->gizmosEnabled)  //TODO: Consider relocate this in a more apropiated place
 		{
 			math::float4x4 model = float4x4::identity;
@@ -106,9 +131,9 @@ update_status ModuleFrameBuffer::Update()
 			glVertex3f(0.f, 0.1f, 0.f);
 			glVertex3f(0.f, d, 0.f);
 			glEnd();
-			
+
 			if (App->scene->selected != nullptr)
-			{					
+			{
 				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
 				glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 					"model"), 1, GL_TRUE, App->scene->selected->transform->GetModelMatrix());
@@ -133,27 +158,27 @@ update_status ModuleFrameBuffer::Update()
 				float3 front = position + App->scene->selected->transform->front;
 				float3 up = position + App->scene->selected->transform->up;
 				float3 right = position + App->scene->selected->transform->right;
-					
+
 				glClear(GL_DEPTH_BUFFER_BIT);
 				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
 				glBegin(GL_LINES);
 				glVertex3f(position.x, position.y, position.z);
 				glVertex3f(front.x, front.y, front.z);
-					
+
 				glEnd();
 
 				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // up vector
 				glBegin(GL_LINES);
 				glVertex3f(position.x, position.y, position.z);
 				glVertex3f(up.x, up.y, up.z);
-					
+
 				glEnd();
-					
+
 				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // right vector
 				glBegin(GL_LINES);
 				glVertex3f(position.x, position.y, position.z);
 				glVertex3f(right.x, right.y, right.z);
-					
+
 				glEnd();
 
 				position = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
@@ -182,7 +207,7 @@ update_status ModuleFrameBuffer::Update()
 				glVertex3f(right.x, right.y, right.z);
 
 				glEnd();
-				
+
 			}
 
 			if (App->scene->sceneCamera != nullptr)
@@ -204,23 +229,40 @@ update_status ModuleFrameBuffer::Update()
 				glEnd();
 			}
 		}
-		if (App->scene->sceneCamera != nullptr)
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, gameFramebuffer);
-			glViewport(0, 0, gameViewPortWidth, gameViewPortHeight);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			App->scene->sceneCamera->Update();
-			App->renderer->Render(App->scene->sceneCamera);
-		}
-		App->program->StopUseProgram();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	else // if on pre was 0 and still 0 something went wrong. Abort
+	assert(gameFramebuffer != 0);
+	if (gameFramebuffer != 0 && App->scene->sceneCamera != nullptr)  //render game
 	{
-		LOG("Wrong framebuffer status in Module Framebuffer. Aborting.");
-		return UPDATE_ERROR;
-
+		glBindFramebuffer(GL_FRAMEBUFFER, gameFramebuffer);
+		glViewport(0, 0, gameViewPortWidth, gameViewPortHeight);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		assert(skyBox != nullptr);
+		if (App->scene->sceneCamera->useSkyBox && skyBox != nullptr) //draw skybox
+		{
+			math::float4x4 model = float4x4::identity;
+			model = model.FromTRS(App->scene->sceneCamera->owner->transform->modelMatrixGlobal.Col3(3), float4x4::identity.RotateX(-math::pi / 2), float3(100.f, 100.f, 100.f));
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"model"), 1, GL_TRUE, &model[0][0]);
+			float4x4 view = App->scene->sceneCamera->frustum.ViewMatrix();
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"view"), 1, GL_TRUE, &view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
+				"proj"), 1, GL_TRUE, &App->scene->sceneCamera->frustum.ProjectionMatrix()[0][0]);
+			glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 0);
+			glBindTexture(GL_TEXTURE_2D, skyBox->material->texture);
+			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), skyBox->material->color.x, skyBox->material->color.y, skyBox->material->color.z, 1.0f); // material color
+			glUniform1i(glGetUniformLocation(App->program->program, "texture0"), 0);
+			glBindVertexArray(skyBox->VAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox->VIndex);
+			glDrawElements(GL_TRIANGLES, skyBox->nIndices, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+		App->scene->sceneCamera->Update();
+		App->renderer->Render(App->scene->sceneCamera);
 	}
+	App->program->StopUseProgram();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 	return UPDATE_CONTINUE;
 }
 
@@ -249,6 +291,8 @@ bool ModuleFrameBuffer::CleanUp()
 	glDeleteTextures(1, &texColorBuffer);
 	glDeleteFramebuffers(1, &gameFramebuffer);
 	glDeleteTextures(1, &gameTexColorBuffer);
+	glDeleteTextures(1, &skyBox->material->texture);
+	RELEASE(skyBox);
 	LOG("Cleaning Module Framebuffer. Done");
 	return true;
 }

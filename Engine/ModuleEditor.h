@@ -47,8 +47,6 @@ public:
 	SubModuleEditorConfig* config = nullptr;
 	SubModuleEditorToolBar* toolBar = nullptr;
 	ModuleTextures* textures = nullptr; //independent of game textures - Handles editor textures
-	GameObject* skyBox = nullptr;
-
 };
 
 #endif

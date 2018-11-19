@@ -118,7 +118,6 @@ bool ModuleEditor::CleanUp()
 
 	RELEASE (toolBar);
 	RELEASE (textures);
-	RELEASE (skyBox);
 	LOG("Cleaning Module Editor. Done");
 	return true;
 }

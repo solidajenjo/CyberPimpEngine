@@ -31,11 +31,11 @@ void ComponentCamera::EditorDraw()
 			}
 			else
 			{
-				owner->children.remove(App->editor->skyBox);
+				App->scene->sceneCamera = nullptr;
 			}
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("SkyBox", &App->editor->skyBox->enabled);
+		ImGui::Checkbox("SkyBox", &useSkyBox);
 		ImGui::SliderFloat("FOV", &vFov, 10, 180);
 		ImGui::SliderFloat("Z Near", &zNear, 0.01f, 2000.f);
 		ImGui::SliderFloat("Z Far", &zFar, 0.01f, 2000.f);
