@@ -685,6 +685,15 @@
     <ClInclude Include="Engine\ComponentCamera.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_extras.hpp">
+      <Filter>Utilities\PCG Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_random.hpp">
+      <Filter>Utilities\PCG Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_uint128.hpp">
+      <Filter>Utilities\PCG Random</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -716,6 +725,9 @@
     </Filter>
     <Filter Include="GameObjects">
       <UniqueIdentifier>{78004adb-9dc2-4971-8ee5-567b21aef679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\PCG Random">
+      <UniqueIdentifier>{20611897-1811-4feb-a7bb-34bb05eafd7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

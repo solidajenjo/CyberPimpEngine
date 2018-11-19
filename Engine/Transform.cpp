@@ -26,7 +26,7 @@ Transform::Transform(GameObject* go) : Component("Transform"), owner(go)
 {
 }
 
-void Transform::Rotate(const float3& rotations)
+void Transform::Rotate(const float3& rotations)  //TODO: Hace cosas raras
 {
 	//modelMatrixLocal = Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z) * modelMatrixLocal; //rotate in parent's coords
 	modelMatrixLocal = modelMatrixLocal * Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z); //rotate in local coords
@@ -131,11 +131,8 @@ void Transform::UpdateAABB() const
 	if (owner->aaBB != nullptr)
 	{
 		OBB obb;
-		RELEASE(owner->aaBBGlobal);
-		owner->aaBBGlobal = new AABB();
-		obb.SetFrom(*owner->aaBB, modelMatrixGlobal);		
-		owner->aaBBGlobal->SetNegativeInfinity();
-		owner->aaBBGlobal->Enclose(obb);
+		owner->aaBBGlobal = AABB(*owner->aaBB);
+		owner->aaBBGlobal.TransformAsAABB(modelMatrixGlobal);
 	}
 }
 void Transform::PropagateTransform() // update & propagate transform matrix

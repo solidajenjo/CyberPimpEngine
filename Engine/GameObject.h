@@ -39,7 +39,7 @@ public:
 	std::list<Component*> components;
 
 	AABB* aaBB = nullptr;
-	AABB* aaBBGlobal = nullptr;
+	AABB aaBBGlobal = AABB();
 	bool enabled = true, selected = false;
 	std::string name = "";
 
