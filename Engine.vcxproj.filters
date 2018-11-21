@@ -191,6 +191,9 @@
     <ClCompile Include="Engine\ComponentCamera.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\crossguid\src\guid.cpp">
+      <Filter>Utilities\crossGUID</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -240,9 +243,6 @@
     </ClInclude>
     <ClInclude Include="Engine\SubModuleEditorConfig.h">
       <Filter>EditorModules</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Time.h">
-      <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Engine\SubModuleEditorToolBar.h">
       <Filter>EditorModules</Filter>
@@ -685,14 +685,11 @@
     <ClInclude Include="Engine\ComponentCamera.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_extras.hpp">
-      <Filter>Utilities\PCG Random</Filter>
+    <ClInclude Include="Dependencies\crossguid\include\crossguid\guid.hpp">
+      <Filter>Utilities\crossGUID</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_random.hpp">
-      <Filter>Utilities\PCG Random</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_uint128.hpp">
-      <Filter>Utilities\PCG Random</Filter>
+    <ClInclude Include="Engine\TimeClock.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -726,8 +723,8 @@
     <Filter Include="GameObjects">
       <UniqueIdentifier>{78004adb-9dc2-4971-8ee5-567b21aef679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utilities\PCG Random">
-      <UniqueIdentifier>{20611897-1811-4feb-a7bb-34bb05eafd7a}</UniqueIdentifier>
+    <Filter Include="Utilities\crossGUID">
+      <UniqueIdentifier>{4a432189-b567-4d29-ab70-a11d23e8eeef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

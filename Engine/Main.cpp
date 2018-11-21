@@ -4,7 +4,7 @@
 #include "ModuleEditor.h"
 #include "SubModuleEditorViewPort.h"
 #include "Globals.h"
-#include "Time.h"
+#include "TimeClock.h"
 #include "SDL/include/SDL.h"
 
 enum main_states
@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
 {
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-	Time time;
+	TimeClock time;
 	while (state != MAIN_EXIT)
 	{	
 		switch (state)

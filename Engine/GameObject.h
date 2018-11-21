@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Component.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "crossguid/include/crossguid/guid.hpp"
 
 class GameObject
 {
@@ -15,8 +16,11 @@ public:
 	GameObject()
 	{
 		transform = new Transform(this); //notice transform who owns it
-		id = generateID();
+		xg::Guid guid = xg::newGuid();
+		gameObjectUUID = guid.str();
 	}
+
+	GameObject(std::string gameObjectUUID, Transform* transform) : gameObjectUUID(gameObjectUUID), transform(transform) {};
 
 	~GameObject()
 	{
@@ -43,15 +47,7 @@ public:
 	bool enabled = true, selected = false;
 	std::string name = "";
 
-	unsigned id = 0u; //unique game object id
-
-private:
-
-	unsigned generateID()
-	{
-		static unsigned s_id = 0;
-		return ++s_id;
-	}
+	std::string gameObjectUUID = ""; //unique game object id
 
 };
 

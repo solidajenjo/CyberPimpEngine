@@ -71,19 +71,18 @@ void ModuleScene::drawNode(GameObject* gObj)
 	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
-		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->id, sizeof(unsigned));
+		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * gObj->gameObjectUUID.size());
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
 		{
-			assert(payload->DataSize == sizeof(int));
-			unsigned movedId = *(unsigned*)payload->Data;
+			std::string movedId = *(std::string*)payload->Data;
 			GameObject* movedGO = nullptr;
 			for (std::vector<GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 			{
-				if ((*it)->id == movedId)
+				if ((*it)->gameObjectUUID == movedId)
 				{
 					movedGO = *it;
 					break;
@@ -92,7 +91,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 			movedGO->parent->children.remove(movedGO);
 
 			movedGO->parent = gObj;
-
+			LOG("Moved gameobject %s", gObj->gameObjectUUID.c_str());
 			gObj->children.push_back(movedGO);			
 			movedGO->transform->NewAttachment();
 		}

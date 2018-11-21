@@ -154,7 +154,7 @@ update_status ModuleFrameBuffer::Update()
 				float4x4 idMat = float4x4::identity;
 				glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 					"model"), 1, GL_TRUE, &idMat[0][0]);
-				float3 position = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
+				float3 position = App->scene->selected->transform->getGlobalPosition();
 				float3 front = position + App->scene->selected->transform->front;
 				float3 up = position + App->scene->selected->transform->up;
 				float3 right = position + App->scene->selected->transform->right;
@@ -181,7 +181,7 @@ update_status ModuleFrameBuffer::Update()
 
 				glEnd();
 
-				position = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
+				position = App->scene->selected->transform->getGlobalPosition();
 				front = position + App->scene->selected->transform->front;
 				up = position + App->scene->selected->transform->up;
 				right = position + App->scene->selected->transform->right;
@@ -240,7 +240,7 @@ update_status ModuleFrameBuffer::Update()
 		if (App->scene->sceneCamera->useSkyBox && skyBox != nullptr) //draw skybox
 		{
 			math::float4x4 model = float4x4::identity;
-			model = model.FromTRS(App->scene->sceneCamera->owner->transform->modelMatrixGlobal.Col3(3), float4x4::identity.RotateX(-math::pi / 2), float3(100.f, 100.f, 100.f));
+			model = model.FromTRS(App->scene->sceneCamera->owner->transform->getGlobalPosition(), float4x4::identity.RotateX(-math::pi / 2), float3(100.f, 100.f, 100.f));
 			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
 				"model"), 1, GL_TRUE, &model[0][0]);
 			float4x4 view = App->scene->sceneCamera->frustum.ViewMatrix();

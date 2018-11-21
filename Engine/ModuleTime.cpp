@@ -1,5 +1,5 @@
 #include "ModuleTime.h"
-#include "Time.h"
+#include "TimeClock.h"
 
 ModuleTime::~ModuleTime()
 {
@@ -9,7 +9,7 @@ ModuleTime::~ModuleTime()
 bool ModuleTime::Init()
 {
 	LOG("Init Time module");
-	time = new Time();
+	time = new TimeClock();
 	time->StartMS();
 	return true;
 }

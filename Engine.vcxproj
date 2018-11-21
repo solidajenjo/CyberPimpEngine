@@ -147,6 +147,7 @@
     <ClInclude Include="Dependencies\Assimp\include\assimp\version.h" />
     <ClInclude Include="Dependencies\Assimp\include\assimp\Vertex.h" />
     <ClInclude Include="Dependencies\Assimp\include\assimp\XMLTools.h" />
+    <ClInclude Include="Dependencies\crossguid\include\crossguid\guid.hpp" />
     <ClInclude Include="Dependencies\imgui\examples\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\imgui\examples\imgui_impl_sdl.h" />
     <ClInclude Include="Dependencies\imgui\imgui.h" />
@@ -210,9 +211,6 @@
     <ClInclude Include="Dependencies\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Time\Clock.h" />
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_extras.hpp" />
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_random.hpp" />
-    <ClInclude Include="Dependencies\pcg-cpp-0.98\include\pcg_uint128.hpp" />
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\ComponentCamera.h" />
@@ -235,7 +233,7 @@
     <ClInclude Include="Engine\SubModuleEditorToolBar.h" />
     <ClInclude Include="Engine\SubModuleEditorViewPort.h" />
     <ClInclude Include="Engine\SubModuleEditorWorldInspector.h" />
-    <ClInclude Include="Engine\Time.h" />
+    <ClInclude Include="Engine\TimeClock.h" />
     <ClInclude Include="Engine\Module.h" />
     <ClInclude Include="Engine\ModuleInput.h" />
     <ClInclude Include="Engine\ModuleRender.h" />
@@ -245,6 +243,7 @@
     <ClInclude Include="Engine\Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Dependencies\crossguid\src\guid.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Geometry\Capsule.cpp" />

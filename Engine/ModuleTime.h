@@ -3,7 +3,7 @@
 
 #include "Module.h"
 
-class Time;
+class TimeClock;
 
 class ModuleTime :
 	public Module
@@ -25,7 +25,7 @@ public:
 		realClock = 0.f;
 
 	int framesPassed = 0;
-	Time* time = nullptr;
+	TimeClock* time = nullptr;
 };
 
 #endif
