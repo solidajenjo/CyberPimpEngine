@@ -218,6 +218,7 @@
     <ClInclude Include="Engine\ComponentMesh.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Globals.h" />
+    <ClInclude Include="Engine\MaterialImporter.h" />
     <ClInclude Include="Engine\ModuleEditorCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleFrameBuffer.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Engine\ModuleProgram.h" />
     <ClInclude Include="Engine\ModuleScene.h" />
     <ClInclude Include="Engine\ModuleTime.h" />
+    <ClInclude Include="Engine\SceneImporter.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorConfig.h" />
     <ClInclude Include="Engine\SubModuleEditorGameViewPort.h" />
@@ -282,6 +284,7 @@
     <ClCompile Include="Engine\ComponentMesh.cpp" />
     <ClCompile Include="Engine\log.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
+    <ClCompile Include="Engine\MaterialImporter.cpp" />
     <ClCompile Include="Engine\ModuleEditorCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />
@@ -289,6 +292,7 @@
     <ClCompile Include="Engine\ModuleProgram.cpp" />
     <ClCompile Include="Engine\ModuleScene.cpp" />
     <ClCompile Include="Engine\ModuleTime.cpp" />
+    <ClCompile Include="Engine\SceneImporter.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp" />
     <ClCompile Include="Engine\SubModuleEditorGameViewPort.cpp" />

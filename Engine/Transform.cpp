@@ -75,8 +75,10 @@ void Transform::SetTransform(const float3& pos, const float3& rot, const float3&
 {
 	position = pos;
 	rotation = rot;
-	scale = scl;
-	RecalcModelMatrix();
+	scale = scl;	
+	if (owner == nullptr)
+		return;
+	RecalcModelMatrix();	
 	PropagateTransform();
 }
 

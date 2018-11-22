@@ -194,6 +194,12 @@
     <ClCompile Include="Dependencies\crossguid\src\guid.cpp">
       <Filter>Utilities\crossGUID</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SceneImporter.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\MaterialImporter.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -691,6 +697,12 @@
     <ClInclude Include="Engine\TimeClock.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\SceneImporter.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\MaterialImporter.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -725,6 +737,9 @@
     </Filter>
     <Filter Include="Utilities\crossGUID">
       <UniqueIdentifier>{4a432189-b567-4d29-ab70-a11d23e8eeef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{e4f0bb64-7d87-49a2-b3aa-4d51ee9e7206}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

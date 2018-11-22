@@ -18,14 +18,15 @@
 #include <stack>
 #include <algorithm>
 #include <string>
-
+#include "SceneImporter.h"
 
 
 
 void ModuleModelLoader::Load(const std::string &geometryPath)
 {
 	assert(geometryPath != "");
-	
+	SceneImporter si;
+	si.Import(geometryPath, geometryPath);
 	LOG("Load model %s", geometryPath.c_str());	
 	const aiScene* scene = aiImportFile(geometryPath.c_str(), aiProcess_Triangulate);
 	std::vector<ComponentMaterial*> materials;
@@ -99,16 +100,16 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* rootNode, const aiScene*
 				unsigned meshPointer = *node->mMeshes + i;
 				aiMesh* mesh = scene->mMeshes[meshPointer];
 
-				std::vector<unsigned> indices;				
-				indices.resize(mesh->mNumFaces * 3);
+				ComponentMesh* compMesh = new ComponentMesh();
+				compMesh->indices.resize(mesh->mNumFaces * 3);
 				for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 				{
 					aiFace face = mesh->mFaces[i];
 					assert(scene->mMeshes[meshPointer]->mFaces[i].mNumIndices == 3);
 
-					indices[i * 3] = face.mIndices[0];
-					indices[(i * 3) + 1] = (face.mIndices[1]);
-					indices[(i * 3) + 2] = (face.mIndices[2]);
+					compMesh->indices[i * 3] = face.mIndices[0];
+					compMesh->indices[(i * 3) + 1] = face.mIndices[1];
+					compMesh->indices[(i * 3) + 2] = face.mIndices[2];
 				}
 				AABB aaBB;
 				aaBB.SetFrom((float3*)mesh->mVertices, mesh->mNumVertices);
@@ -139,7 +140,7 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* rootNode, const aiScene*
 					LOG("%s Texture coords OK.", node->mName.C_Str());
 				}
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, &indices[0], GL_STATIC_DRAW);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, &compMesh->indices[0], GL_STATIC_DRAW);
 
 				glEnableVertexAttribArray(0);
 				glEnableVertexAttribArray(1);
@@ -165,7 +166,6 @@ GameObject* ModuleModelLoader::GenerateMeshData(aiNode* rootNode, const aiScene*
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				glBindVertexArray(0);
 
-				ComponentMesh* compMesh = new ComponentMesh();
 				compMesh->nVertices = scene->mMeshes[meshPointer]->mNumVertices;
 				compMesh->nIndices = scene->mMeshes[meshPointer]->mNumFaces * 3;
 				compMesh->vertices.resize(scene->mMeshes[meshPointer]->mNumVertices);

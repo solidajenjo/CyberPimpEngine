@@ -29,6 +29,7 @@ public:
 	unsigned nVertices = 0;
 	unsigned nIndices = 0;	
 	std::vector<float3> vertices;
+	std::vector<unsigned> indices;
 
 	ComponentMaterial* material;
 	GameObject* owner = nullptr;
