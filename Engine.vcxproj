@@ -216,9 +216,11 @@
     <ClInclude Include="Engine\ComponentCamera.h" />
     <ClInclude Include="Engine\ComponentMaterial.h" />
     <ClInclude Include="Engine\ComponentMesh.h" />
+    <ClInclude Include="Engine\debugdraw.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\MaterialImporter.h" />
+    <ClInclude Include="Engine\ModuleDebugDraw.h" />
     <ClInclude Include="Engine\ModuleEditorCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleFrameBuffer.h" />
@@ -243,6 +245,8 @@
     <ClInclude Include="Engine\ModuleWindow.h" />
     <ClInclude Include="Engine\SubModuleEditor.h" />
     <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="Engine\Util\debug_draw.hpp" />
+    <ClInclude Include="Engine\Util\par_shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dependencies\crossguid\src\guid.cpp" />
@@ -285,6 +289,7 @@
     <ClCompile Include="Engine\log.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Engine\MaterialImporter.cpp" />
+    <ClCompile Include="Engine\ModuleDebugDraw.cpp" />
     <ClCompile Include="Engine\ModuleEditorCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />

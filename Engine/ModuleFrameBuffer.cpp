@@ -6,11 +6,14 @@
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleDebugDraw.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "debugdraw.h"
 #include "MathGeoLib/include/MathGeoLib.h"
+#include "Util/par_shapes.h"
 #include "glew-2.1.0/include/GL/glew.h"
 
 
@@ -66,7 +69,8 @@ update_status ModuleFrameBuffer::Update()
 		glViewport(0, 0, viewPortWidth, viewPortHeight);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
 		//render scene to frameBuffer
-
+		ComponentMesh torus = ComponentMesh(par_shapes_create_torus(12, 4, .5f));
+		torus.Render(&App->camera->editorCamera, App->program->program, 0.5f, 0.5f, 0.5f);
 		App->program->UseProgram();
 		App->renderer->Render(&App->camera->editorCamera);
 		assert(skyBox != nullptr);
@@ -90,124 +94,14 @@ update_status ModuleFrameBuffer::Update()
 			glDrawElements(GL_TRIANGLES, skyBox->nIndices, GL_UNSIGNED_INT, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
+		dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
 		if (App->editor->gizmosEnabled)  //TODO: Consider relocate this in a more apropiated place
 		{
-			math::float4x4 model = float4x4::identity;
-			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-				"model"), 1, GL_TRUE, &model[0][0]);
-			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
-			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-				"view"), 1, GL_TRUE, &view[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-				"proj"), 1, GL_TRUE, &App->camera->editorCamera.frustum.ProjectionMatrix()[0][0]);
-			glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
-			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, .2f, .2f, 1.f);
-			glLineWidth(1.0f);
-			float d = 200.0f;
-			glBegin(GL_LINES);
-			for (float i = -d; i <= d; i += 1.0f)
-			{
-				glVertex3f(i, 0.0f, -d);
-				glVertex3f(i, 0.0f, d);
-				glVertex3f(-d, 0.0f, i);
-				glVertex3f(d, 0.0f, i);
-			}
-			glEnd();
-
-			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // x Axis
-			glBegin(GL_LINES);
-			glVertex3f(0.f, 0.1f, 0.f);
-			glVertex3f(d, 0.1f, 0.f);
-			glEnd();
-
-			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // z Axis
-			glBegin(GL_LINES);
-			glVertex3f(0.f, 0.1f, d);
-			glVertex3f(0.f, 0.1f, 0.f);
-			glEnd();
-
-			glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // z Axis
-			glBegin(GL_LINES);
-			glVertex3f(0.f, 0.1f, 0.f);
-			glVertex3f(0.f, d, 0.f);
-			glEnd();
-
+			App->debugDraw->Draw(&App->camera->editorCamera, framebuffer, viewPortWidth, viewPortHeight);
+			
 			if (App->scene->selected != nullptr)
 			{
-				glUniform1i(glGetUniformLocation(App->program->program, "useColor"), 1);
-				glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-					"model"), 1, GL_TRUE, App->scene->selected->transform->GetModelMatrix());
-				if (App->scene->selected->aaBB != nullptr)
-				{
-					glUniform4f(glGetUniformLocation(App->program->program, "colorU"), .2f, 1.f, 2.f, 1.f);
-					glLineWidth(2);
-					glBegin(GL_LINES);
-					for (unsigned i = 0; i < App->scene->selected->aaBB->NumEdges(); ++i)
-					{
-						float3 a = App->scene->selected->aaBB->Edge(i).a;
-						float3 b = App->scene->selected->aaBB->Edge(i).b;
-						glVertex3f(a.x, a.y, a.z);
-						glVertex3f(b.x, b.y, b.z);
-					}
-					glEnd();
-				}
-				float4x4 idMat = float4x4::identity;
-				glUniformMatrix4fv(glGetUniformLocation(App->program->program,
-					"model"), 1, GL_TRUE, &idMat[0][0]);
-				float3 position = App->scene->selected->transform->getGlobalPosition();
-				float3 front = position + App->scene->selected->transform->front;
-				float3 up = position + App->scene->selected->transform->up;
-				float3 right = position + App->scene->selected->transform->right;
-
-				glClear(GL_DEPTH_BUFFER_BIT);
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(front.x, front.y, front.z);
-
-				glEnd();
-
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // up vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(up.x, up.y, up.z);
-
-				glEnd();
-
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // right vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(right.x, right.y, right.z);
-
-				glEnd();
-
-				position = App->scene->selected->transform->getGlobalPosition();
-				front = position + App->scene->selected->transform->front;
-				up = position + App->scene->selected->transform->up;
-				right = position + App->scene->selected->transform->right;
-
-				glClear(GL_DEPTH_BUFFER_BIT);
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 0.f, 1.f, 1.f); // front vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(front.x, front.y, front.z);
-
-				glEnd();
-
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 0.f, 1.f, 0.f, 1.f); // up vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(up.x, up.y, up.z);
-
-				glEnd();
-
-				glUniform4f(glGetUniformLocation(App->program->program, "colorU"), 1.f, 0.f, 0.f, 1.f); // right vector
-				glBegin(GL_LINES);
-				glVertex3f(position.x, position.y, position.z);
-				glVertex3f(right.x, right.y, right.z);
-
-				glEnd();
-
+				dd::aabb(App->scene->selected->aaBBGlobal.minPoint, App->scene->selected->aaBBGlobal.maxPoint, dd::colors::Coral);
 			}
 
 			if (App->scene->sceneCamera != nullptr)
@@ -233,6 +127,7 @@ update_status ModuleFrameBuffer::Update()
 	assert(gameFramebuffer != 0);
 	if (gameFramebuffer != 0 && App->scene->sceneCamera != nullptr)  //render game
 	{
+		App->program->UseProgram();
 		glBindFramebuffer(GL_FRAMEBUFFER, gameFramebuffer);
 		glViewport(0, 0, gameViewPortWidth, gameViewPortHeight);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

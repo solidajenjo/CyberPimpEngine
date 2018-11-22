@@ -25,8 +25,8 @@
 void ModuleModelLoader::Load(const std::string &geometryPath)
 {
 	assert(geometryPath != "");
-	SceneImporter si;
-	si.Import(geometryPath, geometryPath);
+	//SceneImporter si;
+	//si.Import(geometryPath, geometryPath);
 	LOG("Load model %s", geometryPath.c_str());	
 	const aiScene* scene = aiImportFile(geometryPath.c_str(), aiProcess_Triangulate);
 	std::vector<ComponentMaterial*> materials;
