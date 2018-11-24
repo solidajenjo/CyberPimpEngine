@@ -135,6 +135,7 @@ bool ModuleScene::isRoot(const GameObject * go) const
 
 void ModuleScene::SetSkyBox()
 {
+	/*
 	if (App->frameBuffer->skyBox == nullptr)
 	{		
 		assert(sceneGameObjects.size() == 2);
@@ -146,6 +147,7 @@ void ModuleScene::SetSkyBox()
 		App->textures->textures.clear();
 		App->renderer->renderizables.clear(); //Clear renderizables, render skybox on demand only
 	}
+	*/
 }
 
 void ModuleScene::flattenHierarchy(GameObject* go) //TODO:Remove recursivity

@@ -48,6 +48,7 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>.\Engine;.\Dependencies\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,6 +66,7 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>.\Engine;.\Dependencies\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -211,6 +213,8 @@
     <ClInclude Include="Dependencies\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Dependencies\SDL\include\SDL_filesystem.h" />
+    <ClInclude Include="Dependencies\SDL\include\SDL_rwops.h" />
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\ComponentCamera.h" />
@@ -224,13 +228,13 @@
     <ClInclude Include="Engine\ModuleEditorCamera.h" />
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleFrameBuffer.h" />
-    <ClInclude Include="Engine\ModuleModelLoader.h" />
     <ClInclude Include="Engine\ModuleProgram.h" />
     <ClInclude Include="Engine\ModuleScene.h" />
     <ClInclude Include="Engine\ModuleTime.h" />
     <ClInclude Include="Engine\SceneImporter.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorConfig.h" />
+    <ClInclude Include="Engine\SubModuleEditorFileInspector.h" />
     <ClInclude Include="Engine\SubModuleEditorGameViewPort.h" />
     <ClInclude Include="Engine\SubModuleEditorInspector.h" />
     <ClInclude Include="Engine\SubModuleEditorMenu.h" />
@@ -293,13 +297,13 @@
     <ClCompile Include="Engine\ModuleEditorCamera.cpp" />
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />
-    <ClCompile Include="Engine\ModuleModelLoader.cpp" />
     <ClCompile Include="Engine\ModuleProgram.cpp" />
     <ClCompile Include="Engine\ModuleScene.cpp" />
     <ClCompile Include="Engine\ModuleTime.cpp" />
     <ClCompile Include="Engine\SceneImporter.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp" />
+    <ClCompile Include="Engine\SubModuleEditorFileInspector.cpp" />
     <ClCompile Include="Engine\SubModuleEditorGameViewPort.cpp" />
     <ClCompile Include="Engine\SubModuleEditorInspector.cpp" />
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp" />

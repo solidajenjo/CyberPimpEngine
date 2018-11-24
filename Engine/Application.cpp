@@ -5,7 +5,6 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ModuleEditorCamera.h"
-#include "ModuleModelLoader.h"
 #include "ModuleProgram.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleTime.h"
@@ -21,8 +20,8 @@ Application::Application()
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(camera = new ModuleEditorCamera());
-	modules.push_back(modelLoader = new ModuleModelLoader());
 	modules.push_back(frameBuffer = new ModuleFrameBuffer());
+	modules.push_back(gameFrameBuffer = new ModuleFrameBuffer());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
 	modules.push_back(textures = new ModuleTextures());

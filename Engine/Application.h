@@ -11,7 +11,6 @@ class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
-class ModuleModelLoader;
 class ModuleEditor;
 class ModuleEditorCamera;
 class ModuleProgram;
@@ -36,12 +35,12 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleTextures* textures = nullptr;
 	ModuleInput* input = nullptr;
-	ModuleModelLoader* modelLoader = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleEditorCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
 	ModuleTime* appTime = nullptr;
 	ModuleFrameBuffer* frameBuffer = nullptr;
+	ModuleFrameBuffer* gameFrameBuffer = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
 

@@ -19,8 +19,8 @@ void SubModuleEditorGameViewPort::Show()
 		{					
 			width = size.x;
 			height = size.y;
-			App->frameBuffer->gameViewPortWidth = viewPortRegion.x;
-			App->frameBuffer->gameViewPortHeight = viewPortRegion.y;			
+			App->gameFrameBuffer->viewPortWidth = viewPortRegion.x;
+			App->gameFrameBuffer->viewPortHeight = viewPortRegion.y;			
 		}
 		if (App->scene->sceneCamera == nullptr)
 		{
@@ -35,7 +35,7 @@ void SubModuleEditorGameViewPort::Show()
 			App->scene->sceneCamera->RecalculateFrustum();
 			App->frameBuffer->RecalcFrameBufferTexture();
 
-			ImGui::Image((void*)(intptr_t)App->frameBuffer->gameTexColorBuffer, viewPortRegion, ImVec2(1, 1), ImVec2(0, 0));
+			ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, viewPortRegion, ImVec2(1, 1), ImVec2(0, 0));
 		}
 		ImGui::End();
 	}

@@ -23,9 +23,6 @@
     <ClCompile Include="Engine\ModuleEditor.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ModuleModelLoader.cpp">
-      <Filter>EngineModules</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\SubModuleEditorMenu.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
@@ -203,6 +200,9 @@
     <ClCompile Include="Engine\ModuleDebugDraw.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SubModuleEditorFileInspector.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -227,9 +227,6 @@
       <Filter>Declarations</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ModuleEditor.h">
-      <Filter>EngineModules</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ModuleModelLoader.h">
       <Filter>EngineModules</Filter>
     </ClInclude>
     <ClInclude Include="Engine\SubModuleEditorMenu.h">
@@ -718,6 +715,15 @@
     <ClInclude Include="Engine\Util\par_shapes.h">
       <Filter>Utilities\Par_shapes</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\SubModuleEditorFileInspector.h">
+      <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SDL\include\SDL_filesystem.h">
+      <Filter>Utilities\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\SDL\include\SDL_rwops.h">
+      <Filter>Utilities\SDL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -761,6 +767,9 @@
     </Filter>
     <Filter Include="Utilities\Par_shapes">
       <UniqueIdentifier>{6d0bd658-982e-4e63-97e7-50d1d5b71bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\SDL">
+      <UniqueIdentifier>{3c7601e3-7f5c-4065-9670-1c154740f0a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

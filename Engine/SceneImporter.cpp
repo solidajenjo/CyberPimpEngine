@@ -26,11 +26,16 @@ bool SceneImporter::Import(const std::string file, const std::string & output_fi
 	bytes.resize(sizeof(unsigned)); //reserve space to store num nodes
 	std::stack<aiNode*> stackNode;
 	std::stack<unsigned> stackParent;
-	stackNode.push(rootNode);
-	stackParent.push(0u);
+	
 	unsigned id = 0u;
 	unsigned numNodes = 0u;
 	unsigned bytesPointer = sizeof(unsigned); //reserve to store the amount of nodes
+	for (unsigned i = 0; i < rootNode->mNumChildren; ++i) //skip rootnode
+	{
+		stackNode.push(rootNode->mChildren[i]);
+		stackParent.push(id);
+	}
+
 	while (!stackNode.empty())
 	{
 		//process model
@@ -118,25 +123,31 @@ bool SceneImporter::Import(const std::string file, const std::string & output_fi
 
 	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &numNodes);
 
-	SDL_RWops *rw = SDL_RWFromFile("Library/System/cubeMap.dmd", "w");
-	if (SDL_RWwrite(rw, &bytes[0], sizeof(char), bytes.size()) != bytes.size())
+	unsigned ext = file.find("fbx") - 1;
+	unsigned nameBegin = ext;
+	while (file[nameBegin] != '\\' && file[nameBegin] != '/' && nameBegin > 0)
 	{
-		LOG("Failed importing %s", file.c_str());
+		--nameBegin;
+	}
+	std::string importedFileName = "Library/Meshes/" + file.substr(nameBegin, ext) + ".dmd";
+	SDL_RWops *rw = SDL_RWFromFile(importedFileName.c_str(), "w");	
+	if (rw == nullptr || SDL_RWwrite(rw, &bytes[0], sizeof(char), bytes.size()) != bytes.size())
+	{
+		LOG("Failed importing %s -> %s", file.c_str(), SDL_GetError());
 		SDL_RWclose(rw);
 		return false;
 	}
 	LOG("Succesfully imported %s", file.c_str());
 	SDL_RWclose(rw);
-	Load(file);
 	return true;
 }
 
 GameObject* SceneImporter::Load(const std::string file) const
 {
-	SDL_RWops *rw = SDL_RWFromFile("Library/System/cubeMap.dmd", "r");
+	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "r");
 	if (rw == nullptr)
 	{
-		LOG("Couldn't load %s", file.c_str());
+		LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 		SDL_RWclose(rw);
 		return nullptr;
 	}
@@ -156,6 +167,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 		unsigned nodeHeader[4]; //nameSize - nMeshes - parent - id
 		if (SDL_RWread(rw, &nodeHeader, sizeof(unsigned), 4) != 4)
 		{
+			LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 			SDL_RWclose(rw);
 			return nullptr;
 		}
@@ -164,6 +176,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 
 		if (SDL_RWread(rw, &buffer, sizeof(char), nodeHeader[0]) != nodeHeader[0])
 		{
+			LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 			SDL_RWclose(rw);
 			return nullptr;
 		}
@@ -174,6 +187,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 
 		if (SDL_RWread(rw, &node.transform, sizeof(Transform), 1) != 1)
 		{
+			LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 			SDL_RWclose(rw);
 			return nullptr;
 		}
@@ -189,6 +203,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 			
 			if (SDL_RWread(rw, &nElements, sizeof(unsigned), 3) != 3)
 			{
+				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
@@ -199,16 +214,19 @@ GameObject* SceneImporter::Load(const std::string file) const
 			
 			if (SDL_RWread(rw, &node.vertices[j][0], sizeof(float), nElements[0] * 3) != nElements[0] * 3)
 			{
+				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
 			if (SDL_RWread(rw, &node.indices[j][0], sizeof(unsigned), nElements[1]) != nElements[1])
 			{
+				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
 			if (SDL_RWread(rw, &node.coords[j][0], sizeof(float), nElements[2]) != nElements[2])
 			{
+				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}

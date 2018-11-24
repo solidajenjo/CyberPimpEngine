@@ -12,7 +12,6 @@ public:
 
 	bool Init() override;
 	update_status PreUpdate() override;
-	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	bool RecalcFrameBufferTexture();
@@ -25,13 +24,6 @@ public:
 	unsigned int viewPortHeight = 0;
 	unsigned int colorRenderbuffer = 0;
 	unsigned int depthRenderbuffer = 0;
-
-	unsigned int gameFramebuffer = 0;
-	unsigned int gameTexColorBuffer = 0;
-	unsigned int gameViewPortHeight = 0;
-	unsigned int gameViewPortWidth = 0;
-	unsigned int gameColorRenderbuffer = 0;
-	unsigned int gameDepthRenderbuffer = 0;
 
 	bool frustumCulling = true;
 	ComponentMesh* skyBox = nullptr;

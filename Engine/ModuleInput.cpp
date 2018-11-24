@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleModelLoader.h"
 #include "ModuleEditorCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleFrameBuffer.h"
@@ -94,11 +93,11 @@ update_status ModuleInput::PreUpdate()
 			char* file = event.drop.file;
 			std::string strFile(file);
 			std::size_t found = strFile.find("fbx");
-			if (found != std::string::npos)
-				App->modelLoader->Load(std::string(file));
+			/*if (found != std::string::npos)
+				//App->modelLoader->Load(std::string(file));
 			else
 				App->textures->Load(strFile.c_str());
-
+				*/
 			SDL_free(file);
 			break;
 		}

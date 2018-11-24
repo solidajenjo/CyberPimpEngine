@@ -7,7 +7,6 @@
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleFrameBuffer.h"
-#include "ModuleModelLoader.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
@@ -17,8 +16,11 @@
 #include "SubModuleEditorGameViewPort.h"
 #include "SubModuleEditorConfig.h"
 #include "SubModuleEditorToolBar.h"
+#include "SubModuleEditorFileInspector.h"
 #include "GameObject.h"
-
+#include "ModuleDebugDraw.h"
+#include "ModuleEditorCamera.h"
+#include "debugdraw.h"
 
 bool ModuleEditor::Init()
 {
@@ -40,6 +42,7 @@ bool ModuleEditor::Init()
 	subModules.push_back(viewPort = new SubModuleEditorViewPort("Viewport"));
 	subModules.push_back(gameViewPort = new SubModuleEditorGameViewPort("Game Viewport"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
+	subModules.push_back(files = new SubModuleEditorFileInspector("Files"));
 	App->consoleBuffer = new ImGuiTextBuffer();
 
 	toolBar = new SubModuleEditorToolBar("ToolBar");
@@ -72,7 +75,6 @@ update_status ModuleEditor::PreUpdate()
 			logo = textures->Load("editorHeaderLogo.png");
 			checkersTex = textures->Load("checkers.png");			
 			noCamTex = textures->Load("noCam.png");		
-			App->modelLoader->Load("skybox.fbx");
 			App->scene->SetSkyBox();
 		}
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
@@ -92,6 +94,11 @@ update_status ModuleEditor::Update()
 	for (std::vector<SubModuleEditor*>::iterator it = subModules.begin(); it != subModules.end(); ++it)
 	{
 		(*it)->Show();
+	}	
+	if (gizmosEnabled)
+	{
+		dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
+		App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 	}
 	return UPDATE_CONTINUE;
 }
