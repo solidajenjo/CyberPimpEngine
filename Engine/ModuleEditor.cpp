@@ -86,6 +86,7 @@ update_status ModuleEditor::PreUpdate()
 		ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);
 	ImGui::End();
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(500, 500));	
+	App->frameBuffer->PreUpdate();
 	return UPDATE_CONTINUE;
 }
 
@@ -108,6 +109,7 @@ update_status ModuleEditor::PostUpdate()
 	ImGui::PopStyleVar();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	App->frameBuffer->PostUpdate();
 	return UPDATE_CONTINUE;
 }
 

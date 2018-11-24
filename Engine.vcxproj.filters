@@ -188,9 +188,6 @@
     <ClCompile Include="Engine\ComponentCamera.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\crossguid\src\guid.cpp">
-      <Filter>Utilities\crossGUID</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\SceneImporter.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -202,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="Engine\SubModuleEditorFileInspector.cpp">
       <Filter>EditorModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\crossguid\src\guid.cpp">
+      <Filter>Utilities\crossGUID</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -691,9 +691,6 @@
     <ClInclude Include="Engine\ComponentCamera.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\crossguid\include\crossguid\guid.hpp">
-      <Filter>Utilities\crossGUID</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\TimeClock.h">
       <Filter>Utilities</Filter>
     </ClInclude>
@@ -723,6 +720,66 @@
     </ClInclude>
     <ClInclude Include="Dependencies\SDL\include\SDL_rwops.h">
       <Filter>Utilities\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\crossguid\include\crossguid\guid.hpp">
+      <Filter>Utilities\crossGUID</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\allocators.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\document.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\encodedstream.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\encodings.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\filereadstream.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\filewritestream.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\fwd.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\istreamwrapper.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\memorybuffer.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\memorystream.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\ostreamwrapper.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\pointer.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\prettywriter.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\rapidjson.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\reader.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\schema.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\stream.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\stringbuffer.h">
+      <Filter>Utilities\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\writer.h">
+      <Filter>Utilities\JSON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -770,6 +827,9 @@
     </Filter>
     <Filter Include="Utilities\SDL">
       <UniqueIdentifier>{3c7601e3-7f5c-4065-9670-1c154740f0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\JSON">
+      <UniqueIdentifier>{e35bd86e-d2ab-46b6-a2b0-a9907643dae0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

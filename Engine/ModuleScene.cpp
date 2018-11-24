@@ -1,9 +1,9 @@
+#include "GameObject.h"
 #include "ModuleScene.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "Application.h"
-#include "GameObject.h"
 #include "imgui/imgui.h"
 
 bool ModuleScene::Init()
