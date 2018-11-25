@@ -28,6 +28,8 @@ public:
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
 
+	bool frustumCulling = true;
+
 private:
 	std::list<ComponentMesh*> renderizables;  //The owner of the component should clean this
 };

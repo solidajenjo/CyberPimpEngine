@@ -17,44 +17,22 @@
 #include "glew-2.1.0/include/GL/glew.h"
 
 
-// Called before render is available
-bool ModuleFrameBuffer::Init()
+void ModuleFrameBuffer::Start()
 {
-	bool ret = true;		
-
-	return ret;
-}
-
-update_status ModuleFrameBuffer::PreUpdate()
-{
-	if (framebuffer != 0)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	}
-	else //post glew initialization required
+	if (framebuffer == 0)
 	{
 		glGenFramebuffers(1, &framebuffer);
 		glGenRenderbuffers(1, &colorRenderbuffer);
 		glGenRenderbuffers(1, &depthRenderbuffer);
 		// generate textures
 		glGenTextures(1, &texColorBuffer);
-	}
-	
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleFrameBuffer::PostUpdate()
-{
-	if (framebuffer != 0)
-	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	return UPDATE_CONTINUE;
 }
+
+
 
 // Called before quitting
 bool ModuleFrameBuffer::CleanUp()
@@ -62,9 +40,6 @@ bool ModuleFrameBuffer::CleanUp()
 	LOG("Cleaning Module Framebuffer");
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteTextures(1, &texColorBuffer);
-	if (skyBox != nullptr) //TODO:Move SkyBox to camera component
-		glDeleteTextures(1, &skyBox->material->texture);
-	RELEASE(skyBox);
 	LOG("Cleaning Module Framebuffer. Done");
 	return true;
 }
@@ -94,7 +69,22 @@ bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 		LOG("Failed to make complete framebuffer object %x", status);
 		ret = false;
 	}
-
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return ret;
+}
+
+void ModuleFrameBuffer::Bind() const
+{
+	if (framebuffer != 0)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glViewport(0, 0, viewPortWidth, viewPortHeight);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+}
+
+void ModuleFrameBuffer::UnBind() const
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

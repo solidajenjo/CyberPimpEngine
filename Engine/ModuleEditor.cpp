@@ -18,9 +18,7 @@
 #include "SubModuleEditorToolBar.h"
 #include "SubModuleEditorFileInspector.h"
 #include "GameObject.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleEditorCamera.h"
-#include "debugdraw.h"
 
 bool ModuleEditor::Init()
 {
@@ -80,7 +78,7 @@ update_status ModuleEditor::PreUpdate()
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosX(imageXPos);
-		ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
+		//ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::SetCursorPos(cornerPos);
 		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);
@@ -95,12 +93,7 @@ update_status ModuleEditor::Update()
 	for (std::vector<SubModuleEditor*>::iterator it = subModules.begin(); it != subModules.end(); ++it)
 	{
 		(*it)->Show();
-	}	
-	if (gizmosEnabled)
-	{
-		dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
-		App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
-	}
+	}		
 	return UPDATE_CONTINUE;
 }
 

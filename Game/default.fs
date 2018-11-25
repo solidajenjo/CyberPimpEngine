@@ -13,6 +13,6 @@ void main()
 	if (useColor == 1)
 		color = colorU;
 	else
-		color = texture2D(texture0, uv0) * colorU;
-	//color = vec4(1,1,1,1);
+		//color = texture2D(texture0, uv0) * colorU;
+	color = vec4(1,1,1,1);
 }

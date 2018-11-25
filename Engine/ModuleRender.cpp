@@ -43,6 +43,9 @@ bool ModuleRender::Init()
 
 	glClearDepth(1.0f);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
+
+	App->frameBuffer->Start();
+	App->gameFrameBuffer->Start();
 	return ret;
 }
 
@@ -92,7 +95,7 @@ void ModuleRender::Render(ComponentCamera* camera) const
 		else
 		{
 			bool render = true;
-			if (!(*it)->owner->enabled || (App->frameBuffer->frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects((*it)->owner->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains((*it)->owner->aaBBGlobal)))
+			if (!(*it)->owner->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects((*it)->owner->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains((*it)->owner->aaBBGlobal)))
 			{
 				render = false;
 			}

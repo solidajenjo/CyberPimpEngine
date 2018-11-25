@@ -49,11 +49,11 @@ update_status ModuleEditorCamera::Update()
 		}
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
@@ -67,7 +67,7 @@ update_status ModuleEditorCamera::Update()
 		iPoint mouseMotion = App->input->GetMouseMotion();
 
 		editorCamera.pitch(-mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
-		editorCamera.yaw(mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime);
+		editorCamera.yaw(-mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime);
 		editorCamera.RecalculateFrustum();
 	}
 
@@ -83,7 +83,7 @@ update_status ModuleEditorCamera::Update()
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{			
 		iPoint mouseMotion = App->input->GetMouseMotion();
-		Quat orbitMat = Quat::RotateY(-mouseMotion.x * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime);
+		Quat orbitMat = Quat::RotateY(mouseMotion.x * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime);
 		editorCamera.camPos = editorCamera.target + orbitMat * (editorCamera.camPos - editorCamera.target);
 		editorCamera.RecalculateFrustum();
 		focus = true;

@@ -10,12 +10,12 @@ class ModuleFrameBuffer : public Module
 {
 public:
 
-	bool Init() override;
-	update_status PreUpdate() override;
-	update_status PostUpdate() override;
 	bool CleanUp() override;
-	bool RecalcFrameBufferTexture();
-
+	void Start();
+	bool RecalcFrameBufferTexture();	
+	void Bind() const;
+	void UnBind() const;	
+	
 //members
 
 	unsigned int framebuffer = 0;
@@ -25,8 +25,6 @@ public:
 	unsigned int colorRenderbuffer = 0;
 	unsigned int depthRenderbuffer = 0;
 
-	bool frustumCulling = true;
-	ComponentMesh* skyBox = nullptr;
 };
 
 #endif

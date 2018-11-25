@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ComponentCamera.h"
 #include "imgui/imgui.h"
@@ -12,6 +13,7 @@ void SubModuleEditorGameViewPort::Show()
 {
 	if (enabled)
 	{	
+		
 		ImGui::Begin("Game");
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30); //padding
@@ -20,7 +22,13 @@ void SubModuleEditorGameViewPort::Show()
 			width = size.x;
 			height = size.y;
 			App->gameFrameBuffer->viewPortWidth = viewPortRegion.x;
-			App->gameFrameBuffer->viewPortHeight = viewPortRegion.y;			
+			App->gameFrameBuffer->viewPortHeight = viewPortRegion.y;	
+			if (App->scene->sceneCamera != nullptr)
+			{
+				App->scene->sceneCamera->aspectRatio = viewPortRegion.x / viewPortRegion.y;
+				App->scene->sceneCamera->RecalculateFrustum();
+			}
+			App->gameFrameBuffer->RecalcFrameBufferTexture();
 		}
 		if (App->scene->sceneCamera == nullptr)
 		{
@@ -32,12 +40,14 @@ void SubModuleEditorGameViewPort::Show()
 		else
 		{
 			App->scene->sceneCamera->aspectRatio = viewPortRegion.x / viewPortRegion.y;
-			App->scene->sceneCamera->RecalculateFrustum();
-			App->frameBuffer->RecalcFrameBufferTexture();
-
-			ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, viewPortRegion, ImVec2(1, 1), ImVec2(0, 0));
-		}
+			App->scene->sceneCamera->RecalculateFrustum();			
+			App->gameFrameBuffer->Bind();
+			App->renderer->Render(App->scene->sceneCamera);
+			App->gameFrameBuffer->UnBind();
+			ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
+		}		
 		ImGui::End();
+		
 	}
 }
 

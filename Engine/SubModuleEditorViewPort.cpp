@@ -2,8 +2,14 @@
 #include "Application.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleEditorCamera.h"
 #include "imgui/imgui.h"
+#include "ModuleDebugDraw.h"
+#include "ModuleProgram.h"
+#include "debugdraw.h"
+#include "ComponentCamera.h"
+#include "ModuleRender.h"
 
 
 void SubModuleEditorViewPort::Show()
@@ -25,8 +31,17 @@ void SubModuleEditorViewPort::Show()
 			App->camera->editorCamera.RecalculateFrustum();
 			App->frameBuffer->RecalcFrameBufferTexture();
 		}
-		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(1,1), ImVec2(0,0));									
 		
+		App->frameBuffer->Bind();
+		if (App->editor->gizmosEnabled)
+		{
+			dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
+			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
+			
+		}
+		App->renderer->Render(&App->camera->editorCamera);
+		App->frameBuffer->UnBind();
+		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));	
 		ImGui::End();
 	}
 }

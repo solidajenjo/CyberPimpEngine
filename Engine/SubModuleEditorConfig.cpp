@@ -77,9 +77,9 @@ void SubModuleEditorConfig::Show()
 			ImGui::SliderFloat("Zoom speed", &App->camera->editorCamera.zoomSpeed, 0.01f, 50.f);
 			App->camera->editorCamera.RecalculateFrustum();
 		}
-		if (ImGui::CollapsingHeader("FrameBuffer Module"))
+		if (ImGui::CollapsingHeader("Render Module"))
 		{
-			ImGui::Checkbox("Frustum culling", &App->frameBuffer->frustumCulling);
+			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))
 		{

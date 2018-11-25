@@ -100,7 +100,11 @@ void SubModuleEditorFileInspector::Show()
 					}
 					else if (std::find(textureFormats.begin(), textureFormats.end(), extension) != textureFormats.end()) //is a texture format
 					{
-
+						
+					}
+					else
+					{
+						LOG("Not importable file.");
 					}
 					//register result					
 					char fileName[4096];
