@@ -4,6 +4,7 @@
 #include "SubModuleEditor.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include <string>
+#include <list>
 
 class SubModuleEditorFileInspector : public SubModuleEditor
 {
@@ -15,6 +16,8 @@ public:
 	std::string runningPath = "";
 	std::string path = "Assets";
 	std::string fileSystemRegistry = "Library/System/FileSystemRegistry.json";
+
+	std::list<std::string> textureFormats;
 
 	rapidjson::Document document;
 };

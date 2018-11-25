@@ -9,7 +9,7 @@
 #include "MathGeoLib/include/Math/Quat.h"
 #include <stack>
 
-bool SceneImporter::Import(const std::string file, const std::string & output_file) const
+bool SceneImporter::Import(const std::string file) const
 {
 	LOG("Load model %s", file.c_str());
 	const aiScene* scene = aiImportFile(file.c_str(), aiProcess_Triangulate);
@@ -84,7 +84,8 @@ bool SceneImporter::Import(const std::string file, const std::string & output_fi
 				unsigned nVertices = mesh->mNumVertices;
 				unsigned nIndices = mesh->mNumFaces * 3;
 				unsigned nCoords = mesh->mNumVertices * 2;
-
+				if (mesh->mTextureCoords[0] == nullptr)
+					nCoords = 0;
 				writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nVertices);
 				writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nIndices);
 				writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nCoords);
@@ -103,17 +104,16 @@ bool SceneImporter::Import(const std::string file, const std::string & output_fi
 					indices[(j * 3) + 1] = face.mIndices[1];
 					indices[(j * 3) + 2] = face.mIndices[2];
 				}				
-				writeToBuffer(bytes, bytesPointer, sizeof(unsigned) * indices.size(), &indices[0]);
-
+				writeToBuffer(bytes, bytesPointer, sizeof(unsigned) * indices.size(), &indices[0]);				
 				std::vector<float> coords = std::vector<float>(nCoords);
 				coords.resize(nCoords);
-				for (unsigned j = 0; j < nVertices; ++j)
+				for (unsigned j = 0; j < nVertices && nCoords > 0; ++j)
 				{
 					coords[j * 2] = mesh->mTextureCoords[0][j].x;
 					coords[(j * 2) + 1] = mesh->mTextureCoords[0][j].y;
 				}
-
-				writeToBuffer(bytes, bytesPointer, sizeof(float) * coords.size(), &coords[0]);
+				if (nCoords > 0)
+					writeToBuffer(bytes, bytesPointer, sizeof(float) * coords.size(), &coords[0]);
 			}
 		}
 	}
@@ -123,7 +123,7 @@ bool SceneImporter::Import(const std::string file, const std::string & output_fi
 
 	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &numNodes);
 
-	unsigned ext = file.find("fbx") - 1;
+	unsigned ext = file.find("FBX") - 1;
 	unsigned nameBegin = ext;
 	while (file[nameBegin] != '\\' && file[nameBegin] != '/' && nameBegin > 0)
 	{

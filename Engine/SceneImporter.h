@@ -28,7 +28,7 @@ private:
 
 public:
 
-	bool Import(const std::string file, const std::string & output_file) const;
+	bool Import(const std::string file) const;
 	GameObject* Load(const std::string file) const;
 
 private:
