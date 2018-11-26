@@ -85,9 +85,9 @@ ComponentMesh::ComponentMesh(Primitives primitive) : Component("Mesh")
 ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vector<unsigned>& indices, const std::vector<float>& texCoords) : Component("Mesh")
 {
 	
-	nVertices = vertices.size();
+	nVertices = vertices.size() / 3.f;
 	meshVertices.resize(nVertices);
-	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices);
+	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices * 3);
 	nCoords = texCoords.size();
 	if (nCoords > 0)
 	{
@@ -149,10 +149,13 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 			"view"), 1, GL_TRUE, &view[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
 			"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
-
-		for (unsigned i = 0u; i < nVertices; ++i)
+		
+		if (meshNormals.size() > 0)
 		{
-			dd::vertexNormal(meshVertices[i], meshNormals[i], normalLength);
+			for (unsigned i = 0u; i < nVertices; ++i)
+			{
+				dd::vertexNormal(meshVertices[i], meshNormals[i], normalLength);
+			}
 		}
 		glBindVertexArray(0);
 	}

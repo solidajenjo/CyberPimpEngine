@@ -245,11 +245,14 @@ GameObject* SceneImporter::Load(const std::string file) const
 		GameObject* newGO = new GameObject(node->name);
 		newGO->transform = new Transform(node->transform);
 		newGO->transform->owner = newGO;
+		newGO->transform->RecalcModelMatrix();
 		newGO->parent = gameObjects[node->parent];
 		for (unsigned j = 0u; j < node->nMeshes; ++j)
 		{
 			ComponentMesh* newMesh = new ComponentMesh(node->vertices[j], node->indices[j], node->coords[j]);
 			newGO->InsertComponent(newMesh);
+			newGO->aaBB.SetNegativeInfinity();
+			newGO->aaBB.SetFrom(&newMesh->meshVertices[0], newMesh->nVertices);
 			newMesh->SendToGPU();
 			App->renderer->insertRenderizable(newMesh);
 			gameObjects[node->parent]->InsertChild(newGO);
@@ -257,7 +260,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 			gameObjects[node->id] = newGO;
 		}
 
-		//RELEASE(node);
+		//RELEASE(node); TODO:CLEAN HERE!!
 	}		
 	gameObjects[0]->name = "Root";
 	return gameObjects[0];

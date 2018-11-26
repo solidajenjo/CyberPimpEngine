@@ -26,6 +26,14 @@ Transform::Transform(GameObject* go) : Component("Transform"), owner(go)
 {
 }
 
+Transform::Transform(const Transform & other) : Component("Transform")
+{ 
+	position = other.position;
+	localPosition = other.localPosition;
+	rotation = other.rotation;
+	scale = other.scale;
+}
+
 void Transform::Rotate(const float3& rotations)  //TODO: Hace cosas raras
 {
 	//modelMatrixLocal = Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z) * modelMatrixLocal; //rotate in parent's coords

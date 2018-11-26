@@ -14,6 +14,7 @@ class Transform : public Component
 
 public:
 	Transform(GameObject* go);
+	Transform(const Transform &other);
 
 	void Rotate(const float3& rotations); //in local coords
 	void Translate(const float3& translation); //in parent's coords
@@ -32,9 +33,6 @@ public:
 	void NewAttachment();
 	void EditorDraw() override;
 	//TODO: create a set global position
-
-private:
-
 	void RecalcModelMatrix();
 
 public:
