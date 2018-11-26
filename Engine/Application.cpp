@@ -11,7 +11,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "Module.h"
-
+#include "Brofiler/ProfilerCore/Brofiler.h"
 using namespace std;
 
 Application::Application()
@@ -52,6 +52,7 @@ bool Application::Init()
 
 update_status Application::Update()
 {
+	BROFILER_FRAME("Main Loop");
 	update_status ret = UPDATE_CONTINUE;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)

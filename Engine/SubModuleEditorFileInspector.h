@@ -14,7 +14,7 @@ public:
 	void Show();
 
 	std::string runningPath = "";
-	std::string path = "Assets";
+	std::string path = "Library";
 	std::string fileSystemRegistry = "Library/System/FileSystemRegistry.json";
 
 	std::list<std::string> textureFormats;
