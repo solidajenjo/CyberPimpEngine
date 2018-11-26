@@ -5,6 +5,15 @@
 
 bool ModuleProgram::Init()
 {
+	bool ret = true;
+	ret = ret && Compile(ModuleProgram::Shaders::DEFAULT, "default.vs", "default.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::PHONG_FLAT, "PhongFlat.vs", "PhongFlat.fs");
+	return ret;
+}
+
+bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string fsName)
+{
+	unsigned program;
 	LOG("Shader Program Creation");
 	program = glCreateProgram();
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
@@ -71,13 +80,17 @@ bool ModuleProgram::Init()
 	glDeleteShader(vs);
 	glDeleteShader(fs);
 	LOG("Shader Program Created");
-	return true;
-}
 
-void ModuleProgram::UseProgram() const
-{
-	glUseProgram(program);
-	
+	switch (shaderType)
+	{
+	case Shaders::DEFAULT:
+		default = program;
+		break;
+	case Shaders::PHONG_FLAT:
+		phongFlat = program;
+		break;
+	}
+	return true;
 }
 
 void ModuleProgram::StopUseProgram() const
@@ -88,7 +101,8 @@ void ModuleProgram::StopUseProgram() const
 bool ModuleProgram::CleanUp()
 {
 	LOG("Cleaning Module Program");
-	glDeleteProgram(program);
+	glDeleteProgram(default);
+	glDeleteProgram(phongFlat);
 	LOG("Cleaning Module Program. Done");
 	return true;
 }

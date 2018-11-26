@@ -1014,6 +1014,7 @@ par_shapes_mesh* par_shapes_create_cube()
         *tris++ = quad[3];
         *tris++ = quad[0];
     }
+	par_shapes__compute_welded_normals(mesh);
     return mesh;
 }
 

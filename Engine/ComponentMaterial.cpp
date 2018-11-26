@@ -1,4 +1,6 @@
 #include "ComponentMaterial.h"
+#include "Application.h"
+#include "ModuleProgram.h"
 #include "imgui/imgui.h"
 
 #define WIDGET_WIDTHS 128
@@ -6,6 +8,7 @@
 ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component("Material")
 {
 	color = float4(r, g, b, a);
+	program = App->program->phongFlat;
 }
 
 void ComponentMaterial::EditorDraw()
@@ -21,6 +24,9 @@ void ComponentMaterial::EditorDraw()
 	}
 	ImGui::ColorPicker4("Color", &color[0]);
 	ImGui::TextWrapped("Texture");
+	ImGui::SliderFloat("Ambient", &ambient, 0.f, 1.f);
+	ImGui::SliderFloat("Diffuse", &diffuse, 0.f, 1.f);
+	ImGui::SliderFloat("Specular", &specular, 0.f, 1.f);
 
 	if (texture != 0)
 	{

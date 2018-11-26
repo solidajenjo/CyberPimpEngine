@@ -203,6 +203,9 @@
     <ClCompile Include="Dependencies\crossguid\src\guid.cpp">
       <Filter>Utilities\crossGUID</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -850,6 +853,12 @@
     </None>
     <None Include="Dependencies\Assimp\include\assimp\config.h.in">
       <Filter>Utilities\Assimp</Filter>
+    </None>
+    <None Include="Game\PhongFlat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\PhongFlat.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

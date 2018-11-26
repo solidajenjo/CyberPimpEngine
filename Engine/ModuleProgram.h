@@ -9,19 +9,23 @@ class ModuleProgram :
 {
 public:
 
-	ModuleProgram(const std::string& vsName, const std::string& fsName) : vsName(vsName), fsName(fsName) {};	
+	enum class Shaders
+	{
+		DEFAULT,
+		PHONG_FLAT
+	};
 
 	bool Init() override;
-	void UseProgram() const;
+
+	bool Compile(Shaders shaderType, std::string vsName, std::string fsName);
 	void StopUseProgram() const;
 	bool CleanUp() override;
 	
 //members
 
-	unsigned program = 0;
-	std::string vsName = "", fsName = "";
+	unsigned default = 0;
+	unsigned phongFlat = 0;
 
-	//TODO: multi program funcionality
 private:
 
 	char* readFile(const std::string& name);  //Should be cleaned by the caller

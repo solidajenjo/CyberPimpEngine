@@ -10,9 +10,6 @@ uniform vec4 colorU;
 
 void main()
 {
-	if (useColor == 1)
-		color = colorU;
-	else
-		//color = texture2D(texture0, uv0) * colorU;
-	color = vec4(1,1,1,1);
+	color = vec4(0.5, 0.5, 0.2, 1.0);
+	
 }

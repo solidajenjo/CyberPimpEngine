@@ -13,7 +13,7 @@ class GameObject
 {
 public:
 
-	GameObject()
+	GameObject(std::string name) : name(name)
 	{
 		transform = new Transform(this); //notice transform who owns it
 		xg::Guid guid = xg::newGuid();
@@ -25,13 +25,14 @@ public:
 	~GameObject()
 	{
 		RELEASE(transform);
-		RELEASE(aaBB);
 
 		for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 		{
 			RELEASE(*it);
 		}
 	}
+
+	void InsertComponent(Component* newComponent);
 
 	//members
 	
@@ -42,7 +43,7 @@ public:
 	std::list<GameObject*> children; //Released by scene module (each one)
 	std::list<Component*> components;
 
-	AABB* aaBB = nullptr;
+	AABB aaBB = AABB();
 	AABB aaBBGlobal = AABB();
 	bool enabled = true, selected = false;
 	std::string name = "";

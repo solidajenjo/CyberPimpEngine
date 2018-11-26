@@ -309,6 +309,7 @@
     <ClCompile Include="Engine\ComponentCamera.cpp" />
     <ClCompile Include="Engine\ComponentMaterial.cpp" />
     <ClCompile Include="Engine\ComponentMesh.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\log.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Engine\MaterialImporter.cpp" />
@@ -348,6 +349,8 @@
     <None Include="Dependencies\MathGeoLib\include\Math\Matrix.inl" />
     <None Include="Game\default.fs" />
     <None Include="Game\default.vs" />
+    <None Include="Game\PhongFlat.fs" />
+    <None Include="Game\PhongFlat.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

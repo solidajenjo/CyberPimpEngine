@@ -3,6 +3,9 @@
 
 #include <string>
 
+
+class GameObject;
+
 enum ComponentTypes
 {
 	CAMERA_COMPONENT = 0
@@ -19,6 +22,7 @@ public:
 	//members
 
 	std::string type = "";
+	GameObject* owner = nullptr;
 };
 
 #endif

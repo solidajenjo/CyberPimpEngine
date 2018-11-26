@@ -80,6 +80,14 @@ void SubModuleEditorConfig::Show()
 		if (ImGui::CollapsingHeader("Render Module"))
 		{
 			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);
+			static bool wireframe = false;
+			if (ImGui::Checkbox("Wireframe", &wireframe)) 
+			{
+				if (wireframe)
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				else
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))
 		{

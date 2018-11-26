@@ -17,11 +17,11 @@ public:
 
 //members
 
-	GameObject* owner = nullptr;
-
 	std::string name;
 	unsigned texture = 0;
+	unsigned program = 0;
 	float4 color = float4(1.f, 1.f, 1.f, 1.f);
+	float diffuse = 0.f, ambient = 0.f, specular = 0.f;
 	char nameBuff[4096];
 };
 

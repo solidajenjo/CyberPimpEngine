@@ -30,7 +30,7 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.target = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
 		float movementScale = 1.f;
 

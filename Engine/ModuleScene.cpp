@@ -9,7 +9,7 @@
 bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
-	root = new GameObject();
+	root = new GameObject("Root");;
 	root->name = "Scene";
 	return true;
 }

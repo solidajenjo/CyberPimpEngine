@@ -5,6 +5,8 @@
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ComponentCamera.h"
+#include "GameObject.h"
+#include "Transform.h"
 #include "imgui/imgui.h"
 
 #define IMAGE_SIZE 500 
@@ -40,6 +42,9 @@ void SubModuleEditorGameViewPort::Show()
 		else
 		{
 			App->scene->sceneCamera->aspectRatio = viewPortRegion.x / viewPortRegion.y;
+			App->scene->sceneCamera->camPos = App->scene->sceneCamera->owner->transform->getGlobalPosition();
+			App->scene->sceneCamera->frustum.front = App->scene->sceneCamera->owner->transform->front;
+			App->scene->sceneCamera->frustum.up = App->scene->sceneCamera->owner->transform->up;
 			App->scene->sceneCamera->RecalculateFrustum();			
 			App->gameFrameBuffer->Bind();
 			App->renderer->Render(App->scene->sceneCamera);

@@ -16,8 +16,17 @@ class ComponentMesh : public Component
 {
 public:
 
+	enum class Primitives
+	{
+		CUBE,
+		SPHERE,
+		TORUS,
+		CYLINDER,
+		PLANE
+	};
+
 	ComponentMesh() : Component("Mesh") {}
-	ComponentMesh(par_shapes_mesh_s* mesh);
+	ComponentMesh(Primitives primitive);
 	ComponentMesh(const std::vector<float> &vertices, const std::vector<unsigned> &indices, const std::vector<float> &texCoords);
 
 	~ComponentMesh() {
@@ -27,7 +36,7 @@ public:
 
 	void EditorDraw() override;
 
-	void Render(const ComponentCamera* camera, const unsigned program, float r, float g, float b) const;
+	void Render(const ComponentCamera* camera) const;
 
 	void SendToGPU();
 	void ReleaseFromGPU();
@@ -40,12 +49,14 @@ public:
 	unsigned nCoords = 0;
 	unsigned nIndices = 0;	
 	std::vector<float3> meshVertices;
+	std::vector<float3> meshNormals;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
 
 	ComponentMaterial* material;
-	GameObject* owner = nullptr;
-
+	bool showNormals = false;
+	float normalLength = 2.f;
+	
 };
 
 #endif

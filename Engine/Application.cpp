@@ -28,7 +28,7 @@ Application::Application()
 	modules.push_back(gameFrameBuffer = new ModuleFrameBuffer());				
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(renderer = new ModuleRender());			
-	modules.push_back(program = new ModuleProgram("default.vs", "default.fs"));
+	modules.push_back(program = new ModuleProgram());	
 	modules.push_back(debugDraw = new ModuleDebugDraw());
 }
 

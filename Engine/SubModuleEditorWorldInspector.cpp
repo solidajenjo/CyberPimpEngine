@@ -12,8 +12,7 @@ void SubModuleEditorWorldInspector::Show()
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		if(ImGui::Button("New"))
 		{
-			GameObject* newGO = new GameObject();
-			newGO->name = "EMPTY";
+			GameObject* newGO = new GameObject("Empty");
 			newGO->transform->PropagateTransform();
 			App->scene->insertGameObject(newGO);
 		}

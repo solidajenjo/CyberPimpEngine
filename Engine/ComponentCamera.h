@@ -34,8 +34,6 @@ public:
 
 	Frustum frustum;
 
-	GameObject* owner = nullptr;
-
 	bool mainCamera = false;
 	bool useSkyBox = true;
 	

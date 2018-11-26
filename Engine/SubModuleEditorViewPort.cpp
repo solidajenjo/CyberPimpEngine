@@ -9,6 +9,8 @@
 #include "ModuleProgram.h"
 #include "debugdraw.h"
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
+#include "GameObject.h"
 #include "ModuleRender.h"
 
 
@@ -33,15 +35,81 @@ void SubModuleEditorViewPort::Show()
 		}
 		
 		App->frameBuffer->Bind();
+		App->renderer->Render(&App->camera->editorCamera);
 		if (App->editor->gizmosEnabled)
 		{
 			dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
+			if (App->scene->sceneCamera != nullptr && App->scene->selected == App->scene->sceneCamera->owner)
+			{
+				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);
+			}
+			if (App->scene->selected != nullptr)
+			{
+				dd::aabb(App->scene->selected->aaBBGlobal.minPoint, App->scene->selected->aaBBGlobal.maxPoint, dd::colors::Yellow);				
+			}
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 			
-		}
-		App->renderer->Render(&App->camera->editorCamera);
+		}		
 		App->frameBuffer->UnBind();
-		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));	
+		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
+		if (ImGui::BeginPopupContextItem("Editor"))
+		{
+			if (ImGui::TreeNodeEx("Add primitive"))
+			{				
+				if (ImGui::Button("Cube", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
+				{
+					GameObject* newGO = new GameObject("Cube");
+					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CUBE);
+					App->renderer->insertRenderizable(newMesh);
+					newMesh->SendToGPU();
+					newGO->InsertComponent(newMesh);
+					App->scene->insertGameObject(newGO);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Sphere", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
+				{
+					GameObject* newGO = new GameObject("Sphere");
+					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::SPHERE);
+					App->renderer->insertRenderizable(newMesh);
+					newMesh->SendToGPU();
+					newGO->InsertComponent(newMesh);
+					App->scene->insertGameObject(newGO);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Torus", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
+				{
+					GameObject* newGO = new GameObject("Torus");
+					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::TORUS);
+					App->renderer->insertRenderizable(newMesh);
+					newMesh->SendToGPU();
+					newGO->InsertComponent(newMesh);
+					App->scene->insertGameObject(newGO);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Cylinder", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
+				{
+					GameObject* newGO = new GameObject("Cylinder");
+					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CYLINDER);
+					App->renderer->insertRenderizable(newMesh);
+					newMesh->SendToGPU();
+					newGO->InsertComponent(newMesh);
+					App->scene->insertGameObject(newGO);
+					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::Button("Plane", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
+				{
+					GameObject* newGO = new GameObject("Plane");
+					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::PLANE);
+					App->renderer->insertRenderizable(newMesh);
+					newMesh->SendToGPU();
+					newGO->InsertComponent(newMesh);
+					App->scene->insertGameObject(newGO);
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::TreePop();
+			}
+			ImGui::EndPopup();
+		}
 		ImGui::End();
 	}
 }
