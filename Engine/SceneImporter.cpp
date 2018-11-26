@@ -117,12 +117,9 @@ bool SceneImporter::Import(const std::string file) const
 			}
 		}
 	}
-	memcpy(&bytes[0], &numNodes, sizeof(unsigned));  //store the amount of nodes of the model
 	
-	bytesPointer = 0; //write number of nodes at the begining
-
-	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &numNodes);
-
+	writeToBuffer(bytes, 0, sizeof(unsigned), &numNodes); //store the amount of nodes of the model
+	
 	unsigned ext = file.find("FBX") - 1;
 	unsigned nameBegin = ext;
 	while (file[nameBegin] != '\\' && file[nameBegin] != '/' && nameBegin > 0)
