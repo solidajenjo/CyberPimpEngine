@@ -108,7 +108,7 @@ void SubModuleEditorFileInspector::Show()
 						LOG("Not importable file.");
 					}
 					//register result					
-					rapidjson::Value fileNameV(filename.c_str(), document.GetAllocator());
+					rapidjson::Value fileNameV(file.c_str(), document.GetAllocator());
 					if (imported)
 						document.AddMember(fileNameV, "Imported", document.GetAllocator());
 					else
@@ -136,9 +136,12 @@ void SubModuleEditorFileInspector::Show()
 						PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(0.108f, 0.5f, 0.1f));
 						PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(0.108f, 0.5f, 0.1f));	
 						Button(filename.c_str());
+						filename = filename;
 						if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
-						{							
-							ImGui::SetDragDropPayload("IMPORTED_OK", &filename, sizeof(char) * filename.size());
+						{	
+							char buffer[4096];
+							sprintf(buffer, filename.c_str());
+							ImGui::SetDragDropPayload("IMPORTED_OK", &buffer, sizeof(char) * 4096);
 							ImGui::EndDragDropSource();
 						}
 					}

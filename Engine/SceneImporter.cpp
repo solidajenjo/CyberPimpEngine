@@ -9,6 +9,7 @@
 #include "MathGeoLib/include/Math/Quat.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ModuleRender.h"
 #include <stack>
 
 bool SceneImporter::Import(const std::string file) const
@@ -134,7 +135,6 @@ bool SceneImporter::Import(const std::string file) const
 	if (rw == nullptr || SDL_RWwrite(rw, &bytes[0], sizeof(char), bytes.size()) != bytes.size())
 	{
 		LOG("Failed importing %s -> %s", file.c_str(), SDL_GetError());
-		SDL_RWclose(rw);
 		return false;
 	}
 	LOG("Succesfully imported %s", file.c_str());
@@ -145,11 +145,11 @@ bool SceneImporter::Import(const std::string file) const
 
 GameObject* SceneImporter::Load(const std::string file) const
 {
-	SDL_RWops *rw = SDL_RWFromFile(file.c_str(), "r");
+	std::string path = "Library/Meshes/" + file;
+	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "r");
 	if (rw == nullptr)
 	{
 		LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
-		SDL_RWclose(rw);
 		return nullptr;
 	}
 	unsigned numNodes;
@@ -250,7 +250,10 @@ GameObject* SceneImporter::Load(const std::string file) const
 		{
 			ComponentMesh* newMesh = new ComponentMesh(node->vertices[j], node->indices[j], node->coords[j]);
 			newGO->InsertComponent(newMesh);
+			newMesh->SendToGPU();
+			App->renderer->insertRenderizable(newMesh);
 			gameObjects[node->parent]->InsertChild(newGO);
+			newGO->transform->PropagateTransform();
 			gameObjects[node->id] = newGO;
 		}
 

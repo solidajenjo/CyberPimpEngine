@@ -57,17 +57,12 @@ void SubModuleEditorViewPort::Show()
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_OK"))
 			{
-				void* data = (void*)payload->Data;
+				char buffer[4096];
+				char* bBegin = (char*)payload->Data;
+				memcpy(&buffer[0], bBegin, 4096);
 				SceneImporter si;
-				char filename[4096];				
-				memcpy(&filename[0], data, payload->DataSize);				
-				unsigned i = 4;
-				char fileNameClean[4096];
-				while (filename[++i] > 0);
-				memcpy(&fileNameClean[0], &filename[4], i - 4);
-				fileNameClean[i - 4] = 0;
-				GameObject* loaded = si.Load(std::string(fileNameClean) + ".dmd");
-				App->scene->insertGameObject(nullptr);
+				GameObject* loaded = si.Load(std::string(buffer) + ".dmd");
+				App->scene->insertGameObject(loaded);
 			}
 		}
 		if (ImGui::BeginPopupContextItem("Editor"))

@@ -145,7 +145,6 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 		glUseProgram(App->program->default);
 		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
 			"model"), 1, GL_TRUE, owner->transform->GetModelMatrix());
-
 		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
 			"view"), 1, GL_TRUE, &view[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
@@ -172,8 +171,11 @@ void ComponentMesh::SendToGPU()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);	
 	glBufferData(GL_ARRAY_BUFFER, totalSize, NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, offsetTexCoords, &meshVertices[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(float) * 2 * nVertices, &meshTexCoords[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(float3) * nVertices, &meshNormals[0]);
+	if (meshTexCoords.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(float) * meshTexCoords.size(), &meshTexCoords[0]);
+	
+	if (meshNormals.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(float3) * meshNormals.size(), &meshNormals[0]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * nIndices, &meshIndices[0], GL_STATIC_DRAW);
 

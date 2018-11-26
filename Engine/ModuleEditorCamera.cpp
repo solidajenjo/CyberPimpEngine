@@ -88,7 +88,7 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.RecalculateFrustum();
 		focus = true;
 
-		float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos));
+		float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos)); //TODO: No orbita al target
 		if (focusLerp > 1.0f && angleToTarget <= 1.0f)
 		{			
 			focusLerp = 1.f;
@@ -110,12 +110,7 @@ update_status ModuleEditorCamera::Update()
 	{
 		if (focusLerp < 1.f)
 			focusLerp += 0.05f + orbitFocus;
-;
 
-		if (focus) //adjust distance with target if needed
-		{
-			
-		}
 		if ((editorCamera.target - editorCamera.camPos).AngleBetween(editorCamera.frustum.front) > 0.f) //should rotate?
 		{
 			Quat currentLookingQuat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.frustum.front * 2.f).Normalized(), editorCamera.frustum.up, float3::unitY); //curent quat
