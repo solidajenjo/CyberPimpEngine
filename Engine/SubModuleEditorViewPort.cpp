@@ -12,6 +12,7 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ModuleRender.h"
+#include "SceneImporter.h"
 
 
 void SubModuleEditorViewPort::Show()
@@ -52,6 +53,23 @@ void SubModuleEditorViewPort::Show()
 		}		
 		App->frameBuffer->UnBind();
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_OK"))
+			{
+				void* data = (void*)payload->Data;
+				SceneImporter si;
+				char filename[4096];				
+				memcpy(&filename[0], data, payload->DataSize);				
+				unsigned i = 4;
+				char fileNameClean[4096];
+				while (filename[++i] > 0);
+				memcpy(&fileNameClean[0], &filename[4], i - 4);
+				fileNameClean[i - 4] = 0;
+				GameObject* loaded = si.Load(std::string(fileNameClean) + ".dmd");
+				App->scene->insertGameObject(nullptr);
+			}
+		}
 		if (ImGui::BeginPopupContextItem("Editor"))
 		{
 			if (ImGui::TreeNodeEx("Add primitive"))

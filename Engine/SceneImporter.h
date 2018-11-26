@@ -12,7 +12,7 @@ class GameObject;
 
 class SceneImporter
 {
-private:
+public:
 
 	struct Node
 	{						
@@ -25,8 +25,6 @@ private:
 		std::vector<std::vector<float>> coords;
 		std::vector<std::vector<unsigned>> indices;
 	};
-
-public:
 
 	bool Import(const std::string file) const;
 	GameObject* Load(const std::string file) const;

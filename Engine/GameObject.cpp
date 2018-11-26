@@ -12,3 +12,9 @@ void GameObject::InsertComponent(Component * newComponent)
 	}
 	components.push_back(newComponent);
 }
+
+void GameObject::InsertChild(GameObject * child)
+{
+	children.push_back(child);
+	child->parent = this;
+}

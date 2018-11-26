@@ -33,6 +33,7 @@ public:
 	}
 
 	void InsertComponent(Component* newComponent);
+	void InsertChild(GameObject* child);
 
 	//members
 	

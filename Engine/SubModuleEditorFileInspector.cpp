@@ -63,6 +63,7 @@ void SubModuleEditorFileInspector::Show()
 		for (std::filesystem::path pathIt : directory_iterator(path))
 		{
 			std::string file = relative(pathIt).string();
+			std::string filename = pathIt.filename().string();
 			PushID(file.c_str());
 			if (std::filesystem::is_directory(pathIt))
 			{	
@@ -107,9 +108,7 @@ void SubModuleEditorFileInspector::Show()
 						LOG("Not importable file.");
 					}
 					//register result					
-					char fileName[4096];
-					sprintf(&fileName[0], "%s", file.c_str());
-					rapidjson::Value fileNameV(&fileName[0], document.GetAllocator());
+					rapidjson::Value fileNameV(filename.c_str(), document.GetAllocator());
 					if (imported)
 						document.AddMember(fileNameV, "Imported", document.GetAllocator());
 					else
@@ -135,15 +134,21 @@ void SubModuleEditorFileInspector::Show()
 					if (status == "Imported")
 					{
 						PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(0.108f, 0.5f, 0.1f));
-						PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(0.108f, 0.5f, 0.1f));						
+						PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(0.108f, 0.5f, 0.1f));	
+						Button(filename.c_str());
+						if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+						{							
+							ImGui::SetDragDropPayload("IMPORTED_OK", &filename, sizeof(char) * filename.size());
+							ImGui::EndDragDropSource();
+						}
 					}
 					else
 					{
 						PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(0.9f, 0.1f, 0.1f));
 						PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(0.9f, 0.1f, 0.1f));						
+						Button(filename.c_str());
 					}
-					
-					Button(pathIt.filename().string().c_str());
+										
 					if (BeginPopupContextItem("item context menu"))
 					{
 						if (Button("Re-import"))

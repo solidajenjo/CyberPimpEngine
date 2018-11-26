@@ -89,11 +89,17 @@ ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vect
 	meshVertices.resize(nVertices);
 	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices);
 	nCoords = texCoords.size();
-	meshTexCoords.resize(nCoords);
-	memcpy(&meshTexCoords[0], &texCoords[0], sizeof(float) * nCoords);
+	if (nCoords > 0)
+	{
+		meshTexCoords.resize(nCoords);
+		memcpy(&meshTexCoords[0], &texCoords[0], sizeof(float) * nCoords);
+	}
 	nIndices = indices.size();
-	meshIndices.resize(nIndices);
-	memcpy(&meshIndices[0], &indices[0], sizeof(unsigned) * nIndices);
+	if (nIndices > 0)
+	{
+		meshIndices.resize(nIndices);
+		memcpy(&meshIndices[0], &indices[0], sizeof(unsigned) * nIndices);
+	}
 	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
 }
 

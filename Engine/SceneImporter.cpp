@@ -7,6 +7,8 @@
 #include "Application.h"
 #include "SDL/include/SDL_rwops.h"
 #include "MathGeoLib/include/Math/Quat.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
 #include <stack>
 
 bool SceneImporter::Import(const std::string file) const
@@ -117,8 +119,9 @@ bool SceneImporter::Import(const std::string file) const
 			}
 		}
 	}
-	
-	writeToBuffer(bytes, 0, sizeof(unsigned), &numNodes); //store the amount of nodes of the model
+
+	bytesPointer = 0;
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &numNodes); //store the amount of nodes of the model
 	
 	unsigned ext = file.find("FBX") - 1;
 	unsigned nameBegin = ext;
@@ -136,6 +139,7 @@ bool SceneImporter::Import(const std::string file) const
 	}
 	LOG("Succesfully imported %s", file.c_str());
 	SDL_RWclose(rw);
+	
 	return true;
 }
 
@@ -156,11 +160,12 @@ GameObject* SceneImporter::Load(const std::string file) const
 	}
 
 	LOG("Loading %s -> Num nodes %d", file.c_str(), numNodes);
-	std::vector<Node> model(numNodes + 1); //0 is root
+	std::vector<Node*> model;
+	model.resize(numNodes + 1); //0 is root
 	
 	for (unsigned i = 0u; i < numNodes; ++i)
 	{
-		Node node;
+		Node* node = new Node();
 		unsigned nodeHeader[4]; //nameSize - nMeshes - parent - id
 		if (SDL_RWread(rw, &nodeHeader, sizeof(unsigned), 4) != 4)
 		{
@@ -177,24 +182,24 @@ GameObject* SceneImporter::Load(const std::string file) const
 			SDL_RWclose(rw);
 			return nullptr;
 		}
-		node.name = std::string(buffer);
-		node.nMeshes = nodeHeader[1];
-		node.parent = nodeHeader[2];
-		node.id = nodeHeader[3];
+		node->name = std::string(buffer);
+		node->nMeshes = nodeHeader[1];
+		node->parent = nodeHeader[2];
+		node->id = nodeHeader[3];
 
-		if (SDL_RWread(rw, &node.transform, sizeof(Transform), 1) != 1)
+		if (SDL_RWread(rw, &node->transform, sizeof(Transform), 1) != 1)
 		{
 			LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 			SDL_RWclose(rw);
 			return nullptr;
 		}
 
-		LOG("Node %s Parent: %d Id: %d Meshes: %d", node.name.c_str(), node.parent, node.id, node.nMeshes);
-		node.vertices.resize(node.nMeshes);
-		node.indices.resize(node.nMeshes);
-		node.coords.resize(node.nMeshes);
+		LOG("Node %s Parent: %d Id: %d Meshes: %d", node->name.c_str(), node->parent, node->id, node->nMeshes);
+		node->vertices.resize(node->nMeshes);
+		node->indices.resize(node->nMeshes);
+		node->coords.resize(node->nMeshes);
 
-		for (unsigned j = 0u; j < node.nMeshes; ++j) 
+		for (unsigned j = 0u; j < node->nMeshes; ++j) 
 		{
 			unsigned nElements[3]; //nVertices - nIndices - nCoords
 			
@@ -205,33 +210,54 @@ GameObject* SceneImporter::Load(const std::string file) const
 				return nullptr;
 			}
 			
-			node.vertices[j].resize(nElements[0] * 3);
-			node.indices[j].resize(nElements[1]);
-			node.coords[j].resize(nElements[2]);
+			node->vertices[j].resize(nElements[0] * 3);
+			node->indices[j].resize(nElements[1]);
+			node->coords[j].resize(nElements[2]);
 			
-			if (SDL_RWread(rw, &node.vertices[j][0], sizeof(float), nElements[0] * 3) != nElements[0] * 3)
+			if (nElements[0] > 0 && SDL_RWread(rw, &node->vertices[j][0], sizeof(float), nElements[0] * 3) != nElements[0] * 3)
 			{
 				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
-			if (SDL_RWread(rw, &node.indices[j][0], sizeof(unsigned), nElements[1]) != nElements[1])
+			if (nElements[1] > 0 && SDL_RWread(rw, &node->indices[j][0], sizeof(unsigned), nElements[1]) != nElements[1])
 			{
 				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
-			if (SDL_RWread(rw, &node.coords[j][0], sizeof(float), nElements[2]) != nElements[2])
+			if (nElements[2] > 0 && SDL_RWread(rw, &node->coords[j][0], sizeof(float), nElements[2]) != nElements[2])
 			{
 				LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
 				SDL_RWclose(rw);
 				return nullptr;
 			}
 		}
-		model[node.id] = node;
+		model[nodeHeader[3]] = node;
 	}
 	SDL_RWclose(rw);
-	return nullptr;
+
+	std::vector<GameObject*> gameObjects(numNodes + 1, new GameObject("")); //build gameObjects
+
+	for (unsigned i = 1u; i < model.size(); ++i)
+	{
+		Node* node = model[i];
+		GameObject* newGO = new GameObject(node->name);
+		newGO->transform = new Transform(node->transform);
+		newGO->transform->owner = newGO;
+		newGO->parent = gameObjects[node->parent];
+		for (unsigned j = 0u; j < node->nMeshes; ++j)
+		{
+			ComponentMesh* newMesh = new ComponentMesh(node->vertices[j], node->indices[j], node->coords[j]);
+			newGO->InsertComponent(newMesh);
+			gameObjects[node->parent]->InsertChild(newGO);
+			gameObjects[node->id] = newGO;
+		}
+
+		//RELEASE(node);
+	}		
+	gameObjects[0]->name = "Root";
+	return gameObjects[0];
 }
 
 void SceneImporter::writeToBuffer(std::vector<char> &buffer, unsigned & pointer, const unsigned size, const void * data) const
