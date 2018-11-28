@@ -22,12 +22,11 @@ void ComponentMaterial::EditorDraw()
 	{
 		name = std::string(nameBuff);
 	}
-	ImGui::ColorPicker4("Color", &color[0]);
-	ImGui::TextWrapped("Texture");
+	ImGui::ColorEdit4("Color", &color[0]);
 	ImGui::SliderFloat("Ambient", &ambient, 0.f, 1.f);
 	ImGui::SliderFloat("Diffuse", &diffuse, 0.f, 1.f);
 	ImGui::SliderFloat("Specular", &specular, 0.f, 1.f);
-
+	ImGui::TextWrapped("Texture");
 	if (texture != 0)
 	{
 		ImGui::Image((void*)(intptr_t)texture, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));

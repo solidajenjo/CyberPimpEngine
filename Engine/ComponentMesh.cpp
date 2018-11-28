@@ -45,6 +45,7 @@ ComponentMesh::ComponentMesh(Primitives primitive) : Component("Mesh")
 	nVertices = mesh->npoints;
 	nCoords = mesh-> npoints * 2;
 	nIndices = mesh->ntriangles * 3;	
+	nNormals = mesh->npoints;
 	meshVertices.resize(nVertices);
 	for (unsigned i = 0u; i < nVertices; ++i)
 	{
@@ -113,8 +114,7 @@ void ComponentMesh::EditorDraw()
 
 void ComponentMesh::Render(const ComponentCamera * camera) const
 {
-	glUseProgram(material->program);
-	owner->transform->PropagateTransform();
+	glUseProgram(material->program);	
 	math::float4x4 model = float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(material->program,
 		"model"), 1, GL_TRUE, owner->transform->GetModelMatrix());
@@ -123,7 +123,13 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(material->program,
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
-		//glBindTexture(GL_TEXTURE_2D, skyBox->material->texture); //TODO:USE TEXTURE
+	if (material->texture > 0)
+	{
+		glUniform1i(glGetUniformLocation(material->program, "useTex"), 1);
+		glBindTexture(GL_TEXTURE_2D, material->texture);
+	}
+	else
+		glUniform1i(glGetUniformLocation(material->program, "useTex"), 0);
 	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->color.x, material->color.y, material->color.z, 1.0f); // TODO:Use material color
 	float3 lightPos = float3(0.f, 0.f, 10.f);
 	

@@ -78,7 +78,7 @@ update_status ModuleEditor::PreUpdate()
 		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
 		ImVec2 cornerPos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosX(imageXPos);
-		//ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::SetCursorPos(cornerPos);
 		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);

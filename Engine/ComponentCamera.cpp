@@ -17,7 +17,7 @@ ComponentCamera::ComponentCamera(bool mainCamera) : Component("Camera")
 void ComponentCamera::EditorDraw()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader(type.c_str()))
+	if (ImGui::CollapsingHeader(type))
 	{
 		if (ImGui::Checkbox("Main Camera", &mainCamera))
 		{

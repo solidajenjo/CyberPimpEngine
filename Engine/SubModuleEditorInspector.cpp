@@ -28,7 +28,7 @@ void SubModuleEditorInspector::Show()
 			bool firstMesh = false; //only one mesh drawing per gameobject
 			//TODO: Let change gameobject name
 			if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
-				if (selectedNewComponent == CAMERA_COMPONENT)
+				if (selectedNewComponent == (int)Component::ComponentTypes::CAMERA_COMPONENT)
 				{
 					ComponentCamera* newCam = new ComponentCamera(false);
 					newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
@@ -38,7 +38,7 @@ void SubModuleEditorInspector::Show()
 			}
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{							
-				if ((*it)->type != "Mesh")
+				if (strcmp((*it)->type, "Mesh") != 0)
 				{
 					if (ImGui::Button("Remove"))
 					{
@@ -58,7 +58,7 @@ void SubModuleEditorInspector::Show()
 					{
 						for (std::list<Component*>::const_iterator it2 = App->scene->selected->components.begin(); it2 != App->scene->selected->components.end(); ++it2)
 						{
-							if ((*it2)->type == "Mesh")
+							if (strcmp((*it2)->type, "Mesh") == 0)
 								(*it2)->EditorDraw();
 						}
 					}

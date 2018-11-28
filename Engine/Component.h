@@ -6,22 +6,27 @@
 
 class GameObject;
 
-enum ComponentTypes
-{
-	CAMERA_COMPONENT = 0
-};
-
 class Component
 {
 public:
 
-	Component(std::string type) : type(type) {}
+	enum class ComponentTypes
+	{
+		CAMERA_COMPONENT = 0,
+		MESH_COMPONENT,
+		MATERIAL_COMPONENT
+	};
+
+
+	Component(std::string type_str) {
+		sprintf_s(type, type_str.c_str());
+	}
 	virtual ~Component() {};
 	virtual void EditorDraw() = 0; //descendants should implement his own inspector handler draw
 
 	//members
 
-	std::string type = "";
+	char type[25] = "" ;
 	GameObject* owner = nullptr;
 };
 

@@ -138,10 +138,11 @@ void Transform::EditorDraw()
 void Transform::UpdateAABB() const
 {
 	//update AABB
-	OBB obb;
-	owner->aaBBGlobal = AABB(owner->aaBB);
-	owner->aaBBGlobal.TransformAsAABB(modelMatrixGlobal);
-	
+	if (owner->aaBB != nullptr)
+	{
+		owner->aaBBGlobal = AABB(*owner->aaBB);
+		owner->aaBBGlobal.TransformAsAABB(modelMatrixGlobal);
+	}
 }
 void Transform::PropagateTransform() // update & propagate transform matrix
 {

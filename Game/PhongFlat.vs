@@ -15,7 +15,7 @@ uniform float k_ambient;
 uniform float k_diffuse;
 uniform float k_specular;
 
-out vec2 uv0;
+out vec2 UV0;
 out float intensity;
 out vec3 normal;
 
@@ -29,4 +29,5 @@ void main()
     float NL = max(0.0f, dot(normal, light_dir));
 
 	intensity = ambient * k_ambient + k_diffuse * NL;
+	UV0 = vertex_uv0;
 }

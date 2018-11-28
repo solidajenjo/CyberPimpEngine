@@ -8,6 +8,7 @@
 #include "SDL/include/SDL.h"
 #include "imgui/imgui.h"
 #include "imgui/examples/imgui_impl_sdl.h"
+#include "SceneImporter.h"
 
 #define MAX_KEYS 300
 
@@ -92,12 +93,16 @@ update_status ModuleInput::PreUpdate()
 		{
 			char* file = event.drop.file;
 			std::string strFile(file);
-			std::size_t found = strFile.find("fbx");
-			/*if (found != std::string::npos)
-				//App->modelLoader->Load(std::string(file));
+			for (unsigned i = 0u; i < strFile.size(); ++i)
+				strFile[i] = toupper(strFile[i]);
+			std::size_t found = strFile.find(".FBX");
+			if (found != std::string::npos)
+			{
+				SceneImporter si;
+				si.Import(strFile);
+			}
 			else
-				App->textures->Load(strFile.c_str());
-				*/
+				App->textures->Load(strFile.c_str());			
 			SDL_free(file);
 			break;
 		}

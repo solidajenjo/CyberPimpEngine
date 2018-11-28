@@ -44,7 +44,7 @@ public:
 	std::list<GameObject*> children; //Released by scene module (each one)
 	std::list<Component*> components;
 
-	AABB aaBB = AABB();
+	AABB* aaBB = nullptr;
 	AABB aaBBGlobal = AABB();
 	bool enabled = true, selected = false;
 	std::string name = "";

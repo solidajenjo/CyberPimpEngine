@@ -48,6 +48,7 @@ public:
 	unsigned nVertices = 0;
 	unsigned nCoords = 0;
 	unsigned nIndices = 0;	
+	unsigned nNormals = 0;	
 	std::vector<float3> meshVertices;
 	std::vector<float3> meshNormals;
 	std::vector<float> meshTexCoords;

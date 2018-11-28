@@ -10,12 +10,10 @@
 #include "Brofiler/ProfilerCore/Brofiler.h"
 
 using namespace ImGui; 
-using namespace std::filesystem;
 using namespace rapidjson;
 
 SubModuleEditorFileInspector::SubModuleEditorFileInspector(const std::string & editorModuleName) : SubModuleEditor(editorModuleName)
 {
-	runningPath = std::filesystem::absolute(path).string();
 	document = Document(kObjectType);
 	SDL_RWops *rw = SDL_RWFromFile(fileSystemRegistry.c_str(), "r");	
 	if (rw == nullptr)
@@ -55,7 +53,7 @@ void SubModuleEditorFileInspector::Show()
 	if (enabled)
 	{			
 		ImGui::Begin(editorModuleName.c_str(), &enabled);
-		static bool refresh = true;
+		/*static bool refresh = true;
 		Text(absolute(path).string().c_str());
 		if (runningPath != absolute(path).string())
 		{
@@ -174,7 +172,7 @@ void SubModuleEditorFileInspector::Show()
 							
 			}			
 			ImGui::PopID();
-		}			
+		}	*/		
 		ImGui::End();
 	}
 }
