@@ -13,16 +13,17 @@ class ModuleScene :
 public:
 	
 	bool Init() override;
-	update_status Update() override;
 	bool CleanUp() override; //clean when a new model is loaded & on exit
 
-	void insertGameObject(GameObject* newGO);
-	void destroyGameObject(GameObject* destroyableGO);
-	void showHierarchy(); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
-	void drawNode(GameObject* gObj);
+	void InsertGameObject(GameObject* newGO);
+	void ImportGameObject(GameObject* newGO);
+	void DestroyGameObject(GameObject* destroyableGO);
+	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
+	void DrawNode(GameObject* gObj, bool isWorld = true);
 
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
-	bool isRoot(const GameObject* go) const;
+	const std::vector<GameObject*>* getImportedGameObjects() const; //read only getter
+	bool IsRoot(const GameObject* go) const;
 	void SetSkyBox(); //sets skybox on framebuffer
 
 	void Serialize();
@@ -33,12 +34,15 @@ public:
 
 private:
 
-	void flattenHierarchy(GameObject* go);
+	void FlattenHierarchy(GameObject* go);
+	void FlattenImported(GameObject* go);
 
 	//members
 
-	std::vector<GameObject*> sceneGameObjects; //handles all game objects
-	GameObject* root = nullptr; 
+	std::vector<GameObject*> sceneGameObjects; //handles all game objects instantiated
+	std::vector<GameObject*> importedGameObjects; //handles all game objects imported
+	GameObject* root = nullptr; //scene root
+	GameObject* directory = nullptr; //handles all imported files
 };
 
 #endif

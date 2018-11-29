@@ -22,7 +22,8 @@ public:
 		sprintf_s(gameObjectUUID, uuid.c_str());		
 	}
 
-	GameObject(char UUID[40], Transform* transform) : transform(transform) {
+	GameObject(char UUID[40], Transform* transform) : transform(transform) 
+	{
 		sprintf_s(gameObjectUUID,UUID);
 	};
 
@@ -40,6 +41,9 @@ public:
 	void InsertChild(GameObject* child);
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
+
+	void Clone(const GameObject& clonedGO);
+
 	//members
 	
 	Transform* transform = nullptr;

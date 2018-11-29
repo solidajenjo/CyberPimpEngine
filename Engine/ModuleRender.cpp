@@ -81,7 +81,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::Render(ComponentCamera* camera) const
 {
 	assert(camera != nullptr);
-	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes
+	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
 	{
 		if (*it == nullptr) 
 		{
