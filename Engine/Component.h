@@ -2,7 +2,7 @@
 #define _COMPONENT_H_
 
 #include <string>
-
+#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 
 class GameObject;
 
@@ -23,6 +23,7 @@ public:
 	}
 	virtual ~Component() {};
 	virtual void EditorDraw() = 0; //descendants should implement his own inspector handler draw
+	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) { }
 
 	//members
 

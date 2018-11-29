@@ -38,6 +38,8 @@ public:
 
 	void Render(const ComponentCamera* camera) const;
 
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
+
 	void SendToGPU();
 	void ReleaseFromGPU();
 

@@ -24,6 +24,8 @@ public:
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
 	bool isRoot(const GameObject* go) const;
 	void SetSkyBox(); //sets skybox on framebuffer
+
+	void Serialize();
 	//members
 
 	GameObject* selected = nullptr;

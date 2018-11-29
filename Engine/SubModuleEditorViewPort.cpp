@@ -69,6 +69,7 @@ void SubModuleEditorViewPort::Show()
 		{
 			if (ImGui::TreeNodeEx("Add primitive"))
 			{				
+				//TODO: Calculate AABBs
 				if (ImGui::Button("Cube", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Cube");

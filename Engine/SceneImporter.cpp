@@ -262,6 +262,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 	GameObject* root = model[0];
 	root->transform->PropagateTransform();
 	delete[] model;
+	LOG("Loaded.");
 	return root;
 }
 

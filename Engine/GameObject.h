@@ -8,6 +8,7 @@
 #include "Component.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "crossguid/include/crossguid/guid.hpp"
+#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 
 class GameObject
 {
@@ -17,10 +18,13 @@ public:
 	{
 		transform = new Transform(this); //notice transform who owns it
 		xg::Guid guid = xg::newGuid();
-		gameObjectUUID = guid.str();
+		std::string uuid = guid.str();
+		sprintf_s(gameObjectUUID, uuid.c_str());		
 	}
 
-	GameObject(std::string gameObjectUUID, Transform* transform) : gameObjectUUID(gameObjectUUID), transform(transform) {};
+	GameObject(char UUID[40], Transform* transform) : transform(transform) {
+		sprintf_s(gameObjectUUID,UUID);
+	};
 
 	~GameObject()
 	{
@@ -35,6 +39,7 @@ public:
 	void InsertComponent(Component* newComponent);
 	void InsertChild(GameObject* child);
 
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
 	//members
 	
 	Transform* transform = nullptr;
@@ -49,7 +54,7 @@ public:
 	bool enabled = true, selected = false;
 	std::string name = "";
 
-	std::string gameObjectUUID = ""; //unique game object id
+	char gameObjectUUID[40] = ""; //unique game object id
 
 };
 

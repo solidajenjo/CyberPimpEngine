@@ -5,6 +5,8 @@
 #include "ModuleTextures.h"
 #include "Application.h"
 #include "imgui/imgui.h"
+#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
+
 
 bool ModuleScene::Init()
 {
@@ -71,18 +73,19 @@ void ModuleScene::drawNode(GameObject* gObj)
 	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
-		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * gObj->gameObjectUUID.size());
+		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
 		{
-			std::string movedId = *(std::string*)payload->Data;
+			char movedId[40];
+			sprintf_s(movedId,(char*)payload->Data); //TODO: use constant to 40
 			GameObject* movedGO = nullptr;
 			for (std::vector<GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 			{
-				if ((*it)->gameObjectUUID == movedId)
+				if (strcmp((*it)->gameObjectUUID, movedId) == 0)
 				{
 					movedGO = *it;
 					break;
@@ -91,7 +94,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 			movedGO->parent->children.remove(movedGO);
 
 			movedGO->parent = gObj;
-			LOG("Moved gameobject %s", gObj->gameObjectUUID.c_str());
+			LOG("Moved gameobject %s", gObj->gameObjectUUID);
 			gObj->children.push_back(movedGO);			
 			movedGO->transform->NewAttachment();
 		}
@@ -156,4 +159,14 @@ void ModuleScene::flattenHierarchy(GameObject* go) //TODO:Remove recursivity
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 		flattenHierarchy(*it);
 
+}
+
+void ModuleScene::Serialize()
+{
+	rapidjson::StringBuffer sb;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+	root->Serialize(writer);
+	const char* jsonContent = new char[sb.GetSize()];
+	jsonContent = sb.GetString();
+	int x = 0;
 }

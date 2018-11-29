@@ -64,6 +64,10 @@ update_status ModuleEditorCamera::Update()
 			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.front * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		{
+			App->scene->Serialize();
+		}
 		iPoint mouseMotion = App->input->GetMouseMotion();
 
 		editorCamera.pitch(-mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);

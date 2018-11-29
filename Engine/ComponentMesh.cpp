@@ -167,6 +167,14 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 	}
 }
 
+void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("Mesh"); writer.String("Foo");
+	material->Serialize(writer);
+	writer.EndObject();
+}
+
 void ComponentMesh::SendToGPU()
 {
 	GLuint vbo, vao, vio;

@@ -63,6 +63,24 @@ void ComponentCamera::RecalculateFrustum(float3 front, float3 up)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 }
 
+void ComponentCamera::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+
+	writer.String("cam_pos"); 
+	writer.StartArray();
+	writer.Double(camPos.x);
+	writer.Double(camPos.y);
+	writer.Double(camPos.z);
+	writer.EndArray();
+	
+	writer.String("vFov"); writer.Double(vFov);
+	writer.String("zNear"); writer.Double(zNear);
+	writer.String("zFar"); writer.Double(zFar);
+
+	writer.EndObject();
+}
+
 void ComponentCamera::Update()
 {
 	camPos = owner->transform->getGlobalPosition();

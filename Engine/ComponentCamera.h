@@ -22,7 +22,7 @@ public:
 	void pitch(float amount);
 	void RecalculateFrustum(); //window events updater
 	void RecalculateFrustum(float3 front, float3 up);
-
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	//members
 
 	math::float3 camPos = float3(0.f, 1.f, 10.f);

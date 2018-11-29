@@ -32,3 +32,21 @@ void GameObject::InsertChild(GameObject * child)
 	children.push_back(child);
 	child->parent = this;
 }
+
+void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+
+	writer.String("UUID"); writer.String(gameObjectUUID);
+	if (parent != nullptr)
+	{
+		writer.String("Parent"); writer.String(parent->gameObjectUUID);
+	}		
+
+	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->Serialize(writer);
+	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		(*it)->Serialize(writer);
+
+	writer.EndObject();
+}
