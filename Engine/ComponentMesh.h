@@ -57,7 +57,6 @@ public:
 	std::vector<unsigned> meshIndices;
 
 	ComponentMaterial* material;
-	bool showNormals = false;
 	float normalLength = 2.f;
 	
 };

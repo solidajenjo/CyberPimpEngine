@@ -16,7 +16,7 @@ void SubModuleEditorInspector::Show()
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		if (App->scene->selected != nullptr)
 		{
-			if (App->scene->isRoot(App->scene->selected)) //root node unnaccesible to edit
+			if (App->scene->IsRoot(App->scene->selected)) //root node unnaccesible to edit
 			{
 				ImGui::End();
 				return;

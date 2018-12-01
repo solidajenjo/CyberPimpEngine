@@ -14,9 +14,9 @@ void SubModuleEditorWorldInspector::Show()
 		{
 			GameObject* newGO = new GameObject("Empty");
 			newGO->transform->PropagateTransform();
-			App->scene->insertGameObject(newGO);
+			App->scene->InsertGameObject(newGO);
 		}
-		App->scene->showHierarchy();
+		App->scene->ShowHierarchy();
 		ImGui::End();
 	}
 }

@@ -14,18 +14,17 @@ class GameObject
 {
 public:
 
-	GameObject(char name[40]) 
+	GameObject(std::string name) : name(name)
 	{
 		transform = new Transform(this); //notice transform who owns it
 		xg::Guid guid = xg::newGuid();
 		std::string uuid = guid.str();
 		sprintf_s(gameObjectUUID, uuid.c_str());		
-		sprintf_s(this->name, name);
 	}
 
-	GameObject(char UUID[40], char name[40], Transform* transform) : transform(transform) {
+	GameObject(char UUID[40], Transform* transform) : transform(transform) 
+	{
 		sprintf_s(gameObjectUUID,UUID);
-		sprintf_s(this->name, name);
 	};
 
 	~GameObject()
@@ -42,6 +41,9 @@ public:
 	void InsertChild(GameObject* child);
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
+
+	void Clone(const GameObject& clonedGO);
+
 	//members
 	
 	Transform* transform = nullptr;
@@ -54,8 +56,8 @@ public:
 	AABB* aaBB = nullptr;
 	AABB aaBBGlobal = AABB();
 	bool enabled = true, selected = false;
-	
-	char name[40] = "";
+	std::string name = "";
+
 	char gameObjectUUID[40] = ""; //unique game object id
 
 };

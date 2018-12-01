@@ -50,3 +50,8 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 
 	writer.EndObject();
 }
+
+void GameObject::Clone(const GameObject & clonedGO)
+{
+
+}

@@ -253,14 +253,12 @@ GameObject* SceneImporter::Load(const std::string file) const
 
 			model[id]->InsertComponent(newMesh);
 			newMesh->material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
-			newMesh->SendToGPU();
-			App->renderer->insertRenderizable(newMesh);
 		}	
 	}
 	SDL_RWclose(rw);
-	App->scene->insertGameObject(model[0]);	
 	GameObject* root = model[0];
 	root->transform->PropagateTransform();
+	App->scene->ImportGameObject(model[0]);
 	delete[] model;
 	LOG("Loaded.");
 	return root;

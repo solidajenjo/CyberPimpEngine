@@ -55,14 +55,21 @@ void SubModuleEditorViewPort::Show()
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_OK"))
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_GAMEOBJECT_ID"))
 			{
-				char buffer[4096];
-				char* bBegin = (char*)payload->Data;
-				memcpy(&buffer[0], bBegin, 4096);
-				SceneImporter si;
-				GameObject* loaded = si.Load(std::string(buffer) + ".dmd");
-				App->scene->insertGameObject(loaded);
+				char movedId[40];
+				sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
+				GameObject* movedGO = nullptr;
+				const std::vector<GameObject*>* importedGameObjects = App->scene->getImportedGameObjects();
+				for (std::vector<GameObject*>::const_iterator it = importedGameObjects->begin(); it != importedGameObjects->end(); ++it)
+				{
+					if (strcmp((*it)->gameObjectUUID, movedId) == 0)
+					{
+						movedGO = *it;
+						break;
+					}
+				}
+				App->scene->InsertGameObject(movedGO);
 			}
 		}
 		if (ImGui::BeginPopupContextItem("Editor"))
@@ -77,7 +84,7 @@ void SubModuleEditorViewPort::Show()
 					App->renderer->insertRenderizable(newMesh);
 					newMesh->SendToGPU();
 					newGO->InsertComponent(newMesh);
-					App->scene->insertGameObject(newGO);
+					App->scene->InsertGameObject(newGO);
 					ImGui::CloseCurrentPopup();
 				}
 				if (ImGui::Button("Sphere", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
@@ -87,7 +94,7 @@ void SubModuleEditorViewPort::Show()
 					App->renderer->insertRenderizable(newMesh);
 					newMesh->SendToGPU();
 					newGO->InsertComponent(newMesh);
-					App->scene->insertGameObject(newGO);
+					App->scene->InsertGameObject(newGO);
 					ImGui::CloseCurrentPopup();
 				}
 				if (ImGui::Button("Torus", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
@@ -97,7 +104,7 @@ void SubModuleEditorViewPort::Show()
 					App->renderer->insertRenderizable(newMesh);
 					newMesh->SendToGPU();
 					newGO->InsertComponent(newMesh);
-					App->scene->insertGameObject(newGO);
+					App->scene->InsertGameObject(newGO);
 					ImGui::CloseCurrentPopup();
 				}
 				if (ImGui::Button("Cylinder", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
@@ -107,7 +114,7 @@ void SubModuleEditorViewPort::Show()
 					App->renderer->insertRenderizable(newMesh);
 					newMesh->SendToGPU();
 					newGO->InsertComponent(newMesh);
-					App->scene->insertGameObject(newGO);
+					App->scene->InsertGameObject(newGO);
 					ImGui::CloseCurrentPopup();
 				}
 				if (ImGui::Button("Plane", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
@@ -117,7 +124,7 @@ void SubModuleEditorViewPort::Show()
 					App->renderer->insertRenderizable(newMesh);
 					newMesh->SendToGPU();
 					newGO->InsertComponent(newMesh);
-					App->scene->insertGameObject(newGO);
+					App->scene->InsertGameObject(newGO);
 					ImGui::CloseCurrentPopup();
 				}
 				ImGui::TreePop();

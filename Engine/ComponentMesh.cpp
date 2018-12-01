@@ -108,8 +108,6 @@ void ComponentMesh::EditorDraw()
 {
 	//show info from his material
 	material->EditorDraw();
-	ImGui::Checkbox("Draw Normals", &showNormals);
-	ImGui::SliderFloat("Normal length", &normalLength, 1.0f, 5.0f);
 }
 
 void ComponentMesh::Render(const ComponentCamera * camera) const
@@ -130,41 +128,20 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 	}
 	else
 		glUniform1i(glGetUniformLocation(material->program, "useTex"), 0);
+
 	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->color.x, material->color.y, material->color.z, 1.0f); 
 	float3 lightPos = float3(0.f, 0.f, 10.f);
 	
 	glUniform3fv(glGetUniformLocation(material->program, "light_pos"), 1, &lightPos[0]);
-	glUniform1f(glGetUniformLocation(material->program, "ambient"), 0.6f);
+	glUniform1f(glGetUniformLocation(material->program, "ambient"), 0.9f);
 	glUniform1f(glGetUniformLocation(material->program, "shininess"), 65.f);
 	glUniform1f(glGetUniformLocation(material->program, "k_ambient"), material->ambient);
 	glUniform1f(glGetUniformLocation(material->program, "k_diffuse"), material->diffuse);
 	glUniform1f(glGetUniformLocation(material->program, "k_specular"), material->specular);
 
-
-	//glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
 	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
-	
-	if (showNormals)
-	{
-		glUseProgram(App->program->default);
-		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
-			"model"), 1, GL_TRUE, owner->transform->GetModelMatrix());
-		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
-			"view"), 1, GL_TRUE, &view[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(App->program->default,
-			"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
-		
-		if (meshNormals.size() > 0)
-		{
-			for (unsigned i = 0u; i < nVertices; ++i)
-			{
-				dd::vertexNormal(meshVertices[i], meshNormals[i], normalLength);
-			}
-		}
-		glBindVertexArray(0);
-	}
 }
 
 void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
