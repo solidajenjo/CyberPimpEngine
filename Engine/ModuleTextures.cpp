@@ -5,6 +5,7 @@
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilut.h"
 #include "DevIL/include/IL/ilu.h"
+#include <algorithm>
 
 
 using namespace std;
@@ -21,8 +22,8 @@ ModuleTextures::ModuleTextures()
 bool ModuleTextures::CleanUp() //can be called to reset stored textures
 {
 	LOG("Cleaning Module Textures");
-	if (textures.size() > 0)
-		glDeleteTextures(textures.size(), &textures[0]); //clean textures
+	for (std::list<unsigned>::iterator it = textures.begin(); it != textures.end(); ++it)
+		glDeleteTextures(1, &(*it)); //clean textures
 	textures.resize(0);
 	LOG("Cleaning Module Textures. Done");
 	return true;
@@ -78,6 +79,16 @@ unsigned ModuleTextures::Load(const std::string& path)
 	}
 
 	return 0;
+}
+
+std::list<unsigned>::iterator ModuleTextures::UnLoad(unsigned texNum)
+{
+	std::list<unsigned>::iterator it = std::find(textures.begin(), textures.end(), texNum);
+	if (it != textures.end()) 
+	{
+		return textures.erase(it);
+	}
+	return textures.end(); //texture not found
 }
 
 

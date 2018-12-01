@@ -96,7 +96,7 @@ void SubModuleEditorConfig::Show()
 				App->textures->CleanUp();
 			}
 			unsigned id = 0;
-			for (std::vector<unsigned>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
+			for (std::list<unsigned>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
 			{
 				++id;
 				std::string tNum = "Texture " + std::to_string(*it);
@@ -134,12 +134,14 @@ void SubModuleEditorConfig::Show()
 					ImGui::Separator();
 					if (ImGui::Button("Remove"))
 					{
-						//TODO:Remove texture modify App->textures->textures from vector to list
+						it = App->textures->UnLoad(*it);						
 					}
 					ImGui::Separator();
 					ImGui::Separator();
 					ImGui::Separator();
 				}
+				if (App->textures->textures.size() == 0)
+					break;
 			}
 		}
 				

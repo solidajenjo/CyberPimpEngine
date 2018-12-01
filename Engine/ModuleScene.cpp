@@ -11,8 +11,7 @@
 bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
-	root = new GameObject("SceneRoot");
-	root->name = "Scene";
+	root = new GameObject("Scene");
 	return true;
 }
 
@@ -70,7 +69,7 @@ void ModuleScene::drawNode(GameObject* gObj)
 		flags |= ImGuiTreeNodeFlags_Selected;
 	}
 	ImGui::PushID(&gObj->name);
-	bool node_open = ImGui::TreeNodeEx(gObj->name.c_str(), flags);
+	bool node_open = ImGui::TreeNodeEx(gObj->name, flags);
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
 		ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40

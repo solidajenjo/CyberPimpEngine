@@ -26,7 +26,7 @@ void SubModuleEditorInspector::Show()
 			ImGui::Separator();
 			ImGui::Separator();	
 			bool firstMesh = false; //only one mesh drawing per gameobject
-			//TODO: Let change gameobject name
+			ImGui::InputText("Name", &App->scene->selected->name[0], 40);
 			if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
 				if (selectedNewComponent == (int)Component::ComponentTypes::CAMERA_COMPONENT)
 				{

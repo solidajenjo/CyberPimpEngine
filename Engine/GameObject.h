@@ -14,16 +14,18 @@ class GameObject
 {
 public:
 
-	GameObject(std::string name) : name(name)
+	GameObject(char name[40]) 
 	{
 		transform = new Transform(this); //notice transform who owns it
 		xg::Guid guid = xg::newGuid();
 		std::string uuid = guid.str();
 		sprintf_s(gameObjectUUID, uuid.c_str());		
+		sprintf_s(this->name, name);
 	}
 
-	GameObject(char UUID[40], Transform* transform) : transform(transform) {
+	GameObject(char UUID[40], char name[40], Transform* transform) : transform(transform) {
 		sprintf_s(gameObjectUUID,UUID);
+		sprintf_s(this->name, name);
 	};
 
 	~GameObject()
@@ -52,8 +54,8 @@ public:
 	AABB* aaBB = nullptr;
 	AABB aaBBGlobal = AABB();
 	bool enabled = true, selected = false;
-	std::string name = "";
-
+	
+	char name[40] = "";
 	char gameObjectUUID[40] = ""; //unique game object id
 
 };

@@ -212,7 +212,7 @@ GameObject* SceneImporter::Load(const std::string file) const
 		unsigned nMeshes = nodeHeader[1];
 		unsigned parent = nodeHeader[2];
 		unsigned id = nodeHeader[3];
-		model[id]->name = std::string(buffer);
+		sprintf_s(model[id]->name, buffer);
 		
 		if (parent <= numNodes - 1)
 		{

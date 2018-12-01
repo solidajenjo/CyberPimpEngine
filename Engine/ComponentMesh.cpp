@@ -130,7 +130,7 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 	}
 	else
 		glUniform1i(glGetUniformLocation(material->program, "useTex"), 0);
-	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->color.x, material->color.y, material->color.z, 1.0f); // TODO:Use material color
+	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->color.x, material->color.y, material->color.z, 1.0f); 
 	float3 lightPos = float3(0.f, 0.f, 10.f);
 	
 	glUniform3fv(glGetUniformLocation(material->program, "light_pos"), 1, &lightPos[0]);

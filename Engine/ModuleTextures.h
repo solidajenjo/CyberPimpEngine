@@ -1,7 +1,7 @@
 #ifndef _MODULE_TEXTURES_H
 #define _MODULE_TEXTURES_H
 
-#include <vector>
+#include <list>
 #include <string>
 #include "Module.h"
 #include "Globals.h"
@@ -14,10 +14,11 @@ public:
 	bool CleanUp() override;
 
 	unsigned Load(const std::string& path);
+	std::list<unsigned>::iterator UnLoad(unsigned texNum);
 
 //members
 
-	std::vector<unsigned> textures; 
+	std::list<unsigned> textures; 
 };
 
 #endif

@@ -75,7 +75,8 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.RecalculateFrustum();
 	}
 
-	//TODO: Set geometry center as target
+	if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
+		editorCamera.target = App->scene->selected->aaBB->CenterPoint();
 
 	bool focus = false;
 	float orbitFocus = 0.f;

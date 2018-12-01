@@ -8,8 +8,11 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
+#include "ModuleWindow.h"
 #include <queue>
 #include "imgui/imgui.h"
+#include "SDL/include/SDL_mouse.h"
 
 float* Transform::GetModelMatrix()
 {	
@@ -45,7 +48,7 @@ void Transform::Rotate(const float3& rotations)  //TODO: Hace cosas raras
 }
 
 void Transform::Translate(const float3& translation)
-{
+{	
 	position += translation;
 	modelMatrixLocal = float4x4::FromTRS(position, float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z), scale);
 	PropagateTransform();
@@ -61,21 +64,21 @@ void Transform::Scale(const float3& scalation)
 void Transform::SetPosition(const float3& newPosition)
 {
 	position = newPosition;
-
+	modelMatrixLocal = float4x4::FromTRS(position, float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z), scale);
 	PropagateTransform();
 }
 
 void Transform::SetRotation(const float3& newRotation)
 {
 	rotation = newRotation;
-	modelMatrixLocal = Quat::FromEulerXZY(rotation.x, rotation.z, rotation.y);
+	modelMatrixLocal = float4x4::FromTRS(position, float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z), scale);
 	PropagateTransform();
 }
 
 void Transform::SetScale(const float3& newScale)
 {
 	scale = newScale;
-
+	modelMatrixLocal = float4x4::FromTRS(position, float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z), scale);
 	PropagateTransform();
 }
 
@@ -109,29 +112,69 @@ void Transform::RecalcModelMatrix()
 void Transform::EditorDraw()
 {
 	GameObject* selected = App->scene->selected;
-	ImGui::Text(selected->name.c_str());
+	ImGui::Text(selected->name);
 	float3 rot = RadToDeg(rotation);
-	float3 rotFinal = RadToDeg(rotation);
 	float3 pos = float3(position);
 	float3 scl = float3(scale);
+
+	static float3 oldPos = pos;
+	static float3 oldRot = rot;
+	static float3 oldScl = scl;
+	static bool windowJumped = false;
+	static bool jumpRefresh = false;
+	if (jumpRefresh) //it tooks 2 frames to change the value with the new pos after a big jump
+	{
+		//restore values after jump
+		pos = oldPos;
+		rot = oldRot;
+		scl = oldScl;
+		jumpRefresh = false;
+	}
+	if (windowJumped) //transition state when jumped && before imgui updates new value with mouse position
+	{
+		oldPos = pos;
+		oldRot = rot;
+		oldScl = scl;
+		windowJumped = false;
+		jumpRefresh = true;
+	}
+	if (ImGui::IsWindowFocused() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	{
+		ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 winPos = ImGui::GetMousePos();
+		ImVec2 winBegin = ImGui::GetWindowPos();
+		ImVec2 winEnd = ImVec2(winBegin.x + size.x, winBegin.y + size.y);
+		if (winPos.x < winBegin.x)
+		{			
+			SDL_WarpMouseInWindow(App->window->window, winEnd.x, winPos.y);					
+			windowJumped = true;
+		}
+		if (winPos.x > winEnd.x)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);	
+			windowJumped = true;
+		}
+	}
 	ImGui::PushID(1);
 	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f))
-	{
-		Translate(position - pos);
+	{		
+		if (!windowJumped && !jumpRefresh)
+			SetPosition(pos);
 	}
 	ImGui::PopID();
 	ImGui::PushID(2);
-	if (ImGui::DragFloat3("Rotation (Local)", &rotFinal.x, 0.1f))
+	if (ImGui::DragFloat3("Rotation (Local)", &rot.x, 0.1f))
 	{
-		Rotate(DegToRad(rot - rotFinal));
+		if (!windowJumped && !jumpRefresh)
+			SetRotation(DegToRad(rot));
 	}
 	ImGui::PopID();
 	ImGui::PushID(3);
 	if (ImGui::DragFloat3("Scale (Local)", &scl.x, 0.01f))
 	{
-		Scale(scale - scl);
+		if (!windowJumped && !jumpRefresh)
+			SetScale(scl);
 	}
-	
 	ImGui::PopID();
 }
 
