@@ -8,7 +8,7 @@
 #include "GameObject.h"
 
 
-ComponentCamera::ComponentCamera(bool mainCamera) : Component("Camera")
+ComponentCamera::ComponentCamera(bool mainCamera) : Component(ComponentTypes::CAMERA_COMPONENT)
 {
 	if (mainCamera)
 		App->scene->sceneCamera = this;
@@ -17,7 +17,7 @@ ComponentCamera::ComponentCamera(bool mainCamera) : Component("Camera")
 void ComponentCamera::EditorDraw()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader(type))
+	if (ImGui::CollapsingHeader("Camera"))
 	{
 		if (ImGui::Checkbox("Main Camera", &mainCamera))
 		{
@@ -66,19 +66,35 @@ void ComponentCamera::RecalculateFrustum(float3 front, float3 up)
 void ComponentCamera::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
 	writer.StartObject();
-
+	writer.String("type"); writer.Int((int)type);
 	writer.String("cam_pos"); 
-	writer.StartArray();
-	writer.Double(camPos.x);
-	writer.Double(camPos.y);
-	writer.Double(camPos.z);
-	writer.EndArray();
-	
+	writer.StartObject();
+	writer.String("x"); writer.Double(camPos.x);
+	writer.String("y"); writer.Double(camPos.y);
+	writer.String("z"); writer.Double(camPos.z);
+	writer.EndObject();
+	writer.String("main"); writer.Bool(mainCamera);
 	writer.String("vFov"); writer.Double(vFov);
 	writer.String("zNear"); writer.Double(zNear);
 	writer.String("zFar"); writer.Double(zFar);
 
 	writer.EndObject();
+}
+
+void ComponentCamera::UnSerialize(rapidjson::Value & value)
+{
+	camPos.x = value["cam_pos"]["x"].GetDouble();
+	camPos.y = value["cam_pos"]["y"].GetDouble();
+	camPos.z = value["cam_pos"]["z"].GetDouble();
+	mainCamera = value["main"].GetBool();
+	if (mainCamera)
+	{
+		App->scene->sceneCamera = this;
+	}
+	vFov = value["vFov"].GetDouble();
+	zNear = value["zNear"].GetDouble();
+	zFar = value["zFar"].GetDouble();
+	RecalculateFrustum();
 }
 
 void ComponentCamera::Update()

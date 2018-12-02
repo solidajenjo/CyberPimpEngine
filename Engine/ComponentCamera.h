@@ -11,7 +11,7 @@ class GameObject;
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera() : Component("Camera") {}
+	ComponentCamera() : Component(ComponentTypes::CAMERA_COMPONENT) {}
 
 	ComponentCamera(bool mainCamera);
 
@@ -23,6 +23,8 @@ public:
 	void RecalculateFrustum(); //window events updater
 	void RecalculateFrustum(float3 front, float3 up);
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
+	void UnSerialize(rapidjson::Value &value) override;
+
 	//members
 
 	math::float3 camPos = float3(0.f, 1.f, 10.f);

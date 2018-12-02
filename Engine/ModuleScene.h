@@ -13,10 +13,11 @@ class ModuleScene :
 public:
 	
 	bool Init() override;
+	update_status Update() override;
 	bool CleanUp() override; //clean when a new model is loaded & on exit
 
-	void InsertGameObject(GameObject* newGO);
-	void ImportGameObject(GameObject* newGO);
+	void InsertGameObject(GameObject* newGO); //Insert instantiated Game Object
+	void ImportGameObject(GameObject* newGO); //Insert imported game Object
 	void DestroyGameObject(GameObject* destroyableGO);
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
 	void DrawNode(GameObject* gObj, bool isWorld = true);
@@ -24,9 +25,15 @@ public:
 	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
 	const std::vector<GameObject*>* getImportedGameObjects() const; //read only getter
 	bool IsRoot(const GameObject* go) const;
+
+	bool MakeParentInstantiated(char parentUUID[40], GameObject* son); //searchs for an instantiated gameobject by it's UUID and attaches son to it
+	bool MakeParentImported(char parentUUID[40], GameObject* son); //searchs for an imported gameobject by it's UUID and attaches son to it
+	GameObject* FindInstanceOrigin(char instance[40]);
+
 	void SetSkyBox(); //sets skybox on framebuffer
 
 	void Serialize();
+
 	//members
 
 	GameObject* selected = nullptr;

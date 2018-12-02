@@ -38,7 +38,7 @@ void SubModuleEditorInspector::Show()
 			}
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{							
-				if (strcmp((*it)->type, "Mesh") != 0)
+				if ((*it)->type != Component::ComponentTypes::MESH_COMPONENT)
 				{
 					if (ImGui::Button("Remove"))
 					{
@@ -58,7 +58,7 @@ void SubModuleEditorInspector::Show()
 					{
 						for (std::list<Component*>::const_iterator it2 = App->scene->selected->components.begin(); it2 != App->scene->selected->components.end(); ++it2)
 						{
-							if (strcmp((*it2)->type, "Mesh") == 0)
+							if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
 								(*it2)->EditorDraw();
 						}
 					}

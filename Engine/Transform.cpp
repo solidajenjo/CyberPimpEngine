@@ -25,11 +25,11 @@ float3 Transform::getGlobalPosition()
 }
 
 
-Transform::Transform(GameObject* go) : Component("Transform"), owner(go)
+Transform::Transform(GameObject* go) : Component(ComponentTypes::TRANSFORM_COMPONENT), owner(go)
 {
 }
 
-Transform::Transform(const Transform & other) : Component("Transform")
+Transform::Transform(const Transform & other) : Component(ComponentTypes::TRANSFORM_COMPONENT)
 { 
 	position = other.position;
 	localPosition = other.localPosition;
@@ -37,9 +37,8 @@ Transform::Transform(const Transform & other) : Component("Transform")
 	scale = other.scale;
 }
 
-void Transform::Rotate(const float3& rotations)  //TODO: Hace cosas raras
+void Transform::Rotate(const float3& rotations) 
 {
-	//modelMatrixLocal = Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z) * modelMatrixLocal; //rotate in parent's coords
 	modelMatrixLocal = modelMatrixLocal * Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z); //rotate in local coords
 	rotation += rotations;	
 
@@ -107,6 +106,50 @@ void Transform::RecalcModelMatrix()
 
 	PropagateTransform();
 
+}
+
+void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("position"); 
+	writer.StartObject(); 
+	writer.String("x"); writer.Double(position.x);
+	writer.String("y"); writer.Double(position.y);
+	writer.String("z"); writer.Double(position.z);
+	writer.EndObject();
+
+	writer.String("rotation");
+	writer.StartObject();
+	writer.String("x"); writer.Double(rotation.x);
+	writer.String("y"); writer.Double(rotation.y);
+	writer.String("z"); writer.Double(rotation.z);
+	writer.EndObject();
+
+	writer.String("scale");
+	writer.StartObject();
+	writer.String("x"); writer.Double(scale.x);
+	writer.String("y"); writer.Double(scale.y);
+	writer.String("z"); writer.Double(scale.z);
+	writer.EndObject();
+
+	writer.EndObject();
+}
+
+void Transform::UnSerialize(rapidjson::Value & value)
+{
+	position.x = value["position"]["x"].GetDouble();
+	position.y = value["position"]["y"].GetDouble();
+	position.z = value["position"]["z"].GetDouble();
+	
+	rotation.x = value["rotation"]["x"].GetDouble();
+	rotation.y = value["rotation"]["y"].GetDouble();
+	rotation.z = value["rotation"]["z"].GetDouble();
+	
+	scale.x = value["scale"]["x"].GetDouble();
+	scale.y = value["scale"]["y"].GetDouble();
+	scale.z = value["scale"]["z"].GetDouble();
+	
+	RecalcModelMatrix();
 }
 
 void Transform::EditorDraw()

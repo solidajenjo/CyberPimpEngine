@@ -5,7 +5,7 @@
 #include "Globals.h"
 #include <list>
 
-class ComponentMesh;
+class GameObject;
 class ComponentCamera;
 
 class ModuleRender : public Module
@@ -22,8 +22,8 @@ public:
 
 	void Render(ComponentCamera* camera) const;
 
-	const std::list<ComponentMesh*>* getRenderizables() const; //read only getter
-	void insertRenderizable(ComponentMesh* newMesh);
+	const std::list<GameObject*>* getRenderizables() const; //read only getter
+	void insertRenderizable(GameObject* newMesh);
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
@@ -31,7 +31,7 @@ public:
 	bool frustumCulling = true;
 
 private:
-	std::list<ComponentMesh*> renderizables;  //The owner of the component should clean this
+	std::list<GameObject*> renderizables;  //The owner of the component should clean this
 };
 
 #endif

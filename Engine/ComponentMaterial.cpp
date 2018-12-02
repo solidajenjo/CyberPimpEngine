@@ -1,4 +1,5 @@
 #include "ComponentMaterial.h"
+#include "Component.h"
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "imgui/imgui.h"
@@ -6,11 +7,11 @@
 
 #define WIDGET_WIDTHS 128
 
-ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component("Material")
+ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component(ComponentTypes::MATERIAL_COMPONENT)
 {
 	color = float4(r, g, b, a);
 	program = App->program->phongFlat;
-	sprintf_s(nameBuff, "Material");
+	sprintf_s(name, "Material");
 	sprintf_s(textureName, "");
 }
 
@@ -18,10 +19,10 @@ void ComponentMaterial::EditorDraw()
 {
 	ImGui::PushID(this);
 	char header[1024];
-	sprintf_s(header, "Material %s", nameBuff);
+	sprintf_s(header, "Material %s", name);
 	ImGui::TextWrapped(header);
 		
-	ImGui::InputText("Name", &nameBuff[0], 2000);
+	ImGui::InputText("Name", &name[0], 2000);
 	
 	ImGui::ColorEdit4("Color", &color[0]);
 	ImGui::SliderFloat("Ambient", &ambient, 0.f, 1.f);
@@ -51,17 +52,31 @@ void ComponentMaterial::EditorDraw()
 void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer)
 {
 	writer.StartObject();
-
-	writer.String("name"); writer.String(nameBuff);
+	writer.String("type"); writer.Int((int)type);
+	writer.String("name"); writer.String(name);
 	writer.String("texture"); writer.String(textureName);
 	writer.String("r"); writer.Double(color.x);
 	writer.String("g"); writer.Double(color.y);
 	writer.String("b"); writer.Double(color.z);
 	writer.String("a"); writer.Double(color.w);
-
+	writer.String("program"); writer.Int(program);
 	writer.String("diffuse"); writer.Double(diffuse);
 	writer.String("ambient"); writer.Double(ambient);
 	writer.String("specular"); writer.Double(specular);
 
 	writer.EndObject();
+}
+
+void ComponentMaterial::UnSerialize(rapidjson::Value & value)
+{
+	sprintf_s(name, value["name"].GetString());
+	sprintf_s(textureName, value["texture"].GetString());
+	color.x = value["r"].GetDouble();
+	color.y = value["g"].GetDouble();
+	color.z = value["b"].GetDouble();
+	color.w = value["a"].GetDouble();
+	diffuse = value["diffuse"].GetDouble();
+	ambient = value["ambient"].GetDouble();
+	specular = value["specular"].GetDouble();
+	program = value["program"].GetInt();
 }

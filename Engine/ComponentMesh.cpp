@@ -1,4 +1,5 @@
-﻿#include "ComponentMesh.h"
+﻿#include "Component.h"
+#include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "Application.h"
@@ -6,7 +7,9 @@
 #include "ModuleProgram.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Math/float4x4.h"
+#include "crossguid/include/crossguid/guid.hpp"
 #include "MathGeoLib/include/Math/MathConstants.h"
+#include "glew-2.1.0/include/GL/glew.h"
 #include "debugdraw.h"
 #include "GameObject.h"
 #pragma warning(push)
@@ -20,9 +23,24 @@
 #pragma warning(pop)
 #endif
 
-ComponentMesh::ComponentMesh(Primitives primitive) : Component("Mesh")
+
+ComponentMesh::ComponentMesh() : Component(ComponentTypes::MESH_COMPONENT) 
+{
+	xg::Guid guid = xg::newGuid();
+	sprintf_s(meshUUID, guid.str().c_str());
+}
+
+ComponentMesh::ComponentMesh(Primitives primitive) : Component(ComponentTypes::MESH_COMPONENT)
+{
+	xg::Guid guid = xg::newGuid();
+	sprintf_s(meshUUID, guid.str().c_str());
+	FromPrimitive(primitive);
+}
+
+void ComponentMesh::FromPrimitive(Primitives primitive)
 {
 	par_shapes_mesh_s* mesh;
+	primitiveType = primitive;
 	switch (primitive)
 	{
 		case Primitives::CUBE:
@@ -83,9 +101,10 @@ ComponentMesh::ComponentMesh(Primitives primitive) : Component("Mesh")
 	delete mesh;
 }
 
-ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vector<unsigned>& indices, const std::vector<float>& texCoords) : Component("Mesh")
+ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vector<unsigned>& indices, const std::vector<float>& texCoords) : Component(ComponentTypes::MESH_COMPONENT)
 {
-	
+	xg::Guid guid = xg::newGuid();
+	sprintf_s(meshUUID, guid.str().c_str());
 	nVertices = vertices.size() / 3.f;
 	meshVertices.resize(nVertices);
 	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices * 3);
@@ -104,18 +123,24 @@ ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vect
 	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
 }
 
+ComponentMesh::~ComponentMesh()
+{
+	if (VAO != 0)
+		glDeleteVertexArrays(1, &VAO);
+}
+
 void ComponentMesh::EditorDraw()
 {
 	//show info from his material
 	material->EditorDraw();
 }
 
-void ComponentMesh::Render(const ComponentCamera * camera) const
+void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform) const
 {
 	glUseProgram(material->program);	
 	math::float4x4 model = float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(material->program,
-		"model"), 1, GL_TRUE, owner->transform->GetModelMatrix());
+		"model"), 1, GL_TRUE, transform->GetModelMatrix());
 	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
 	glUniformMatrix4fv(glGetUniformLocation(material->program,
 		"view"), 1, GL_TRUE, &view[0][0]);
@@ -147,9 +172,27 @@ void ComponentMesh::Render(const ComponentCamera * camera) const
 void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
 	writer.StartObject();
-	writer.String("Mesh"); writer.String("Foo");
+	writer.String("type"); writer.Int((int)type);
+	writer.String("meshUUID"); writer.String(meshUUID);
+	writer.String("primitive"); writer.Int((int)primitiveType);
+	writer.String("meshPath"); writer.String(meshPath);
+	writer.String("material");
 	material->Serialize(writer);
 	writer.EndObject();
+}
+
+void ComponentMesh::UnSerialize(rapidjson::Value & value)
+{
+	primitiveType = (Primitives)value["primitive"].GetInt();
+	if (primitiveType != Primitives::VOID_PRIMITIVE)
+	{
+		FromPrimitive(primitiveType);
+		material->UnSerialize(value["material"]);
+	}
+	else
+	{
+		material->UnSerialize(value["material"]);
+	}
 }
 
 void ComponentMesh::SendToGPU()

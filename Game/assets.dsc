@@ -1,6 +1,6 @@
 {
-    "UUID": "f7b5f5c7-e0ab-437e-8dc3-51ae94e7614b",
-    "name": "Scene",
+    "UUID": "aa60cf4c-6a8f-4921-80ed-8f21c3567b2f",
+    "name": "Assets",
     "transform": {
         "position": {
             "x": 0.0,
@@ -23,7 +23,7 @@
     "parent": "",
     "children": [
         {
-            "UUID": "283c34aa-19e9-41b5-9e7b-4c8d8e131ab4",
+            "UUID": "7bec7759-8385-4b0f-aa35-2093e9adef19",
             "name": "Root",
             "transform": {
                 "position": {
@@ -43,11 +43,11 @@
                 }
             },
             "meshRoot": "\\BAKERHOUSE.FBX.dmd",
-            "instanceOf": "7bec7759-8385-4b0f-aa35-2093e9adef19",
-            "Parent": "f7b5f5c7-e0ab-437e-8dc3-51ae94e7614b",
+            "instanceOf": "",
+            "Parent": "aa60cf4c-6a8f-4921-80ed-8f21c3567b2f",
             "children": [
                 {
-                    "UUID": "47e0e195-0d22-4616-b14f-37f9c5b1efc3",
+                    "UUID": "89250d6b-1e0c-406d-957a-b1a29c218024",
                     "name": "Baker_house",
                     "transform": {
                         "position": {
@@ -67,8 +67,8 @@
                         }
                     },
                     "meshRoot": "",
-                    "instanceOf": "89250d6b-1e0c-406d-957a-b1a29c218024",
-                    "Parent": "283c34aa-19e9-41b5-9e7b-4c8d8e131ab4",
+                    "instanceOf": "",
+                    "Parent": "7bec7759-8385-4b0f-aa35-2093e9adef19",
                     "children": [],
                     "components": [
                         {
@@ -93,7 +93,7 @@
                     ]
                 },
                 {
-                    "UUID": "c288cb61-0e67-40d8-ac8c-73f38353abf2",
+                    "UUID": "6e8f9d67-c7c7-441c-b242-fe96d61fdb62",
                     "name": "Chimney",
                     "transform": {
                         "position": {
@@ -113,8 +113,8 @@
                         }
                     },
                     "meshRoot": "",
-                    "instanceOf": "6e8f9d67-c7c7-441c-b242-fe96d61fdb62",
-                    "Parent": "283c34aa-19e9-41b5-9e7b-4c8d8e131ab4",
+                    "instanceOf": "",
+                    "Parent": "7bec7759-8385-4b0f-aa35-2093e9adef19",
                     "children": [],
                     "components": [
                         {
@@ -140,52 +140,6 @@
                 }
             ],
             "components": []
-        },
-        {
-            "UUID": "733c89fe-0e46-4f32-822f-74155bd1b51c",
-            "name": "Sphere",
-            "transform": {
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rotation": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "scale": {
-                    "x": 1.0,
-                    "y": 1.0,
-                    "z": 1.0
-                }
-            },
-            "meshRoot": "",
-            "instanceOf": "",
-            "Parent": "f7b5f5c7-e0ab-437e-8dc3-51ae94e7614b",
-            "children": [],
-            "components": [
-                {
-                    "type": 1,
-                    "meshUUID": "004c7cd2-2184-4128-bd10-638ce46378ad",
-                    "primitive": 1,
-                    "meshPath": "",
-                    "material": {
-                        "type": 2,
-                        "name": "Material",
-                        "texture": "",
-                        "r": 1.0,
-                        "g": 1.0,
-                        "b": 1.0,
-                        "a": 1.0,
-                        "program": 4,
-                        "diffuse": 0.0,
-                        "ambient": 0.0,
-                        "specular": 0.0
-                    }
-                }
-            ]
         }
     ],
     "components": []

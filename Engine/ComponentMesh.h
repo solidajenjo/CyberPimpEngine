@@ -3,12 +3,12 @@
 
 #include <vector>
 #include "MathGeoLib/include/Math/float3.h"
-#include "glew-2.1.0/include/GL/glew.h"
 #include "Component.h"
 
 class GameObject;
 class ComponentMaterial;
 class ComponentCamera;
+class Transform;
 
 struct par_shapes_mesh_s;
 
@@ -18,28 +18,27 @@ public:
 
 	enum class Primitives
 	{
-		CUBE,
+		VOID_PRIMITIVE = -1,
+		CUBE = 0,
 		SPHERE,
 		TORUS,
 		CYLINDER,
 		PLANE
 	};
 
-	ComponentMesh() : Component("Mesh") {}
+	ComponentMesh();
 	ComponentMesh(Primitives primitive);
 	ComponentMesh(const std::vector<float> &vertices, const std::vector<unsigned> &indices, const std::vector<float> &texCoords);
 
-	~ComponentMesh() {
-		if (VAO != 0)
-			glDeleteVertexArrays(1, &VAO);
-	}
+	~ComponentMesh();
 
+	void FromPrimitive(Primitives primitive);
 	void EditorDraw() override;
 
-	void Render(const ComponentCamera* camera) const;
+	void Render(const ComponentCamera* camera, Transform* transform) const;
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
-
+	void UnSerialize(rapidjson::Value &value) override;
 	void SendToGPU();
 	void ReleaseFromGPU();
 
@@ -58,7 +57,9 @@ public:
 
 	ComponentMaterial* material;
 	float normalLength = 2.f;
-	
+	char meshPath[4096] = "";
+	char meshUUID[40] = "";
+	Primitives primitiveType = Primitives::VOID_PRIMITIVE;
 };
 
 #endif

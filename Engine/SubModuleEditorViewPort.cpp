@@ -1,3 +1,10 @@
+#define PROCESS_PRIMITIVE(){\
+								App->renderer->insertRenderizable(newGO);\
+								newMesh->SendToGPU();\
+								newGO->InsertComponent(newMesh);\
+								App->scene->InsertGameObject(newGO);\
+								ImGui::CloseCurrentPopup(); }
+
 #include "SubModuleEditorViewPort.h"
 #include "Application.h"
 #include "ModuleFrameBuffer.h"
@@ -69,7 +76,12 @@ void SubModuleEditorViewPort::Show()
 						break;
 					}
 				}
-				App->scene->InsertGameObject(movedGO);
+				if (movedGO != nullptr)
+				{
+					GameObject* instance = movedGO->MakeInstanceOf();
+					instance->SetInstanceOf(movedGO->gameObjectUUID);
+					App->scene->InsertGameObject(instance);
+				}
 			}
 		}
 		if (ImGui::BeginPopupContextItem("Editor"))
@@ -81,51 +93,31 @@ void SubModuleEditorViewPort::Show()
 				{
 					GameObject* newGO = new GameObject("Cube");
 					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CUBE);
-					App->renderer->insertRenderizable(newMesh);
-					newMesh->SendToGPU();
-					newGO->InsertComponent(newMesh);
-					App->scene->InsertGameObject(newGO);
-					ImGui::CloseCurrentPopup();
+					PROCESS_PRIMITIVE();
 				}
 				if (ImGui::Button("Sphere", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Sphere");
 					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::SPHERE);
-					App->renderer->insertRenderizable(newMesh);
-					newMesh->SendToGPU();
-					newGO->InsertComponent(newMesh);
-					App->scene->InsertGameObject(newGO);
-					ImGui::CloseCurrentPopup();
+					PROCESS_PRIMITIVE();
 				}
 				if (ImGui::Button("Torus", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Torus");
 					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::TORUS);
-					App->renderer->insertRenderizable(newMesh);
-					newMesh->SendToGPU();
-					newGO->InsertComponent(newMesh);
-					App->scene->InsertGameObject(newGO);
-					ImGui::CloseCurrentPopup();
+					PROCESS_PRIMITIVE();
 				}
 				if (ImGui::Button("Cylinder", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Cylinder");
 					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CYLINDER);
-					App->renderer->insertRenderizable(newMesh);
-					newMesh->SendToGPU();
-					newGO->InsertComponent(newMesh);
-					App->scene->InsertGameObject(newGO);
-					ImGui::CloseCurrentPopup();
+					PROCESS_PRIMITIVE();
 				}
 				if (ImGui::Button("Plane", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Plane");
 					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::PLANE);
-					App->renderer->insertRenderizable(newMesh);
-					newMesh->SendToGPU();
-					newGO->InsertComponent(newMesh);
-					App->scene->InsertGameObject(newGO);
-					ImGui::CloseCurrentPopup();
+					PROCESS_PRIMITIVE();
 				}
 				ImGui::TreePop();
 			}

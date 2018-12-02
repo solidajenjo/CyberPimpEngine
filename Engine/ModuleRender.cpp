@@ -81,7 +81,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::Render(ComponentCamera* camera) const
 {
 	assert(camera != nullptr);
-	for (std::list<ComponentMesh*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
+	for (std::list<GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
 	{
 		if (*it == nullptr) 
 		{
@@ -90,13 +90,19 @@ void ModuleRender::Render(ComponentCamera* camera) const
 		else
 		{
 			bool render = true;
-			if (!(*it)->owner->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects((*it)->owner->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains((*it)->owner->aaBBGlobal)))
+			if (!(*it)->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects((*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains((*it)->aaBBGlobal)))
 			{
 				render = false;
 			}
 			if(render)
 			{
-				(*it)->Render(camera);
+				for (std::list<Component*>::const_iterator it2 = (*it)->components.cbegin(); it2 != (*it)->components.cend(); ++it2)
+				{
+					if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
+					{
+						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform);
+					}
+				}
 			}			
 			glEnd();
 	
@@ -106,12 +112,12 @@ void ModuleRender::Render(ComponentCamera* camera) const
 	glBindVertexArray(0);
 }
 
-const std::list<ComponentMesh*>* ModuleRender::getRenderizables() const
+const std::list<GameObject*>* ModuleRender::getRenderizables() const
 {
 	return &renderizables;
 }
 
-void ModuleRender::insertRenderizable(ComponentMesh * newMesh)
+void ModuleRender::insertRenderizable(GameObject * newMesh)
 {
 	assert(newMesh != nullptr);
 	renderizables.push_back(newMesh);

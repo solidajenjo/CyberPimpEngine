@@ -1,4 +1,9 @@
-#define CLEAN_ON_FAILED(numNodes) {LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError()); SDL_RWclose(rw); for (unsigned k = 0u; k < numNodes; ++k) RELEASE(model[k]); delete[] model; return nullptr; }
+#define CLEAN_ON_FAILED(numNodes) {\
+									LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError()); \
+									SDL_RWclose(rw); \
+									for (unsigned k = 0u; k < numNodes; ++k) RELEASE(model[k]); \
+									delete[] model; \
+									return nullptr; }
 
 #include "SceneImporter.h"
 #include "Assimp/include/assimp/cimport.h"
@@ -14,6 +19,7 @@
 #include "ComponentMaterial.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
+#include "crossguid/include/crossguid/guid.hpp"
 #include <stack>
 
 bool SceneImporter::Import(const std::string file) const
@@ -70,7 +76,10 @@ bool SceneImporter::Import(const std::string file) const
 		writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &id);
 
 		writeToBuffer(bytes, bytesPointer, sizeof(char) * nameSize, node->mName.C_Str());
-
+		char nodeUUID[40];
+		xg::Guid guid = xg::newGuid();
+		sprintf_s(nodeUUID, guid.str().c_str());
+		writeToBuffer(bytes, bytesPointer, sizeof(nodeUUID), &nodeUUID[0]);  //unique identifier to reference it from other gameobjects
 		aiVector3D pos;
 		aiVector3D scl;
 		aiQuaternion rot;
@@ -87,6 +96,10 @@ bool SceneImporter::Import(const std::string file) const
 		{		
 			for (unsigned i = 0u; i < nMeshes; ++i)
 			{				
+				xg::Guid guid = xg::newGuid();
+				char meshUUID[40];
+				sprintf_s(meshUUID, guid.str().c_str());
+				writeToBuffer(bytes, bytesPointer, sizeof(meshUUID), &meshUUID[0]);
 				aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 				unsigned nVertices = mesh->mNumVertices;
 
@@ -214,6 +227,11 @@ GameObject* SceneImporter::Load(const std::string file) const
 		unsigned id = nodeHeader[3];
 		sprintf_s(model[id]->name, buffer);
 		
+		char nodeUUID[40];
+		if (SDL_RWread(rw, nodeUUID, sizeof(nodeUUID), 1) != 1)
+			CLEAN_ON_FAILED(numNodes + 1);
+		sprintf_s(model[id]->gameObjectUUID, nodeUUID);
+
 		if (parent <= numNodes - 1)
 		{
 			model[id]->parent = model[parent];
@@ -227,12 +245,17 @@ GameObject* SceneImporter::Load(const std::string file) const
 
 		for (unsigned j = 0u; j < nMeshes; ++j) 
 		{
+			char meshUUID[40];
+			if (SDL_RWread(rw, &meshUUID, sizeof(meshUUID), 1) != 1)
+				CLEAN_ON_FAILED(numNodes + 1);
+
 			unsigned nElements[4]; //nVertices - nIndices - nCoords - nNormals
 			
 			if (SDL_RWread(rw, &nElements, sizeof(unsigned), 4) != 4)
 				CLEAN_ON_FAILED(numNodes + 1);
 
 			ComponentMesh* newMesh = new ComponentMesh();
+			sprintf_s(newMesh->meshUUID, meshUUID);
 			newMesh->meshVertices.resize(nElements[0] * 3);
 			newMesh->nVertices = nElements[0];
 			newMesh->meshIndices.resize(nElements[1]);
@@ -258,7 +281,8 @@ GameObject* SceneImporter::Load(const std::string file) const
 	SDL_RWclose(rw);
 	GameObject* root = model[0];
 	root->transform->PropagateTransform();
-	App->scene->ImportGameObject(model[0]);
+	sprintf_s(root->meshRoot, file.c_str());
+	App->scene->ImportGameObject(root);
 	delete[] model;
 	LOG("Loaded.");
 	return root;

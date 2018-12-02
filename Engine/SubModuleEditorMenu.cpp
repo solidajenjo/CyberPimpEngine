@@ -1,5 +1,6 @@
 #include "SubModuleEditorMenu.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include <vector>
@@ -10,6 +11,11 @@ void SubModuleEditorMenu::Show()
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("Save"))
+			{
+				App->scene->Serialize();
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Exit"))
 			{
 				App->exit = true;

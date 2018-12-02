@@ -307,6 +307,7 @@
     <ClCompile Include="Dependencies\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Engine\Application.cpp" />
+    <ClCompile Include="Engine\Component.cpp" />
     <ClCompile Include="Engine\ComponentCamera.cpp" />
     <ClCompile Include="Engine\ComponentMaterial.cpp" />
     <ClCompile Include="Engine\ComponentMesh.cpp" />

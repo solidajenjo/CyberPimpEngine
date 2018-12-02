@@ -63,11 +63,7 @@ update_status ModuleEditorCamera::Update()
 		{
 			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.front * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
-		
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-		{
-			App->scene->Serialize();
-		}
+
 		iPoint mouseMotion = App->input->GetMouseMotion();
 
 		editorCamera.pitch(-mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
@@ -87,6 +83,8 @@ update_status ModuleEditorCamera::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{			
+		if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
+			editorCamera.target = App->scene->selected->aaBB->CenterPoint();
 		iPoint mouseMotion = App->input->GetMouseMotion();
 		Quat orbitMat = Quat::RotateY(mouseMotion.x * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime);
 		editorCamera.camPos = editorCamera.target + orbitMat * (editorCamera.camPos - editorCamera.target);
@@ -102,7 +100,6 @@ update_status ModuleEditorCamera::Update()
 		{
 			orbitFocus = 0.1f;
 		}
-		
 
 	}
 
