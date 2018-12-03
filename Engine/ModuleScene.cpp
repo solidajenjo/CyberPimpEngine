@@ -385,8 +385,14 @@ void ModuleScene::FlattenImported(GameObject * go)
 void ModuleScene::Serialize()
 {
 	rapidjson::StringBuffer sb;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);	
-	root->Serialize(writer);	
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+	writer.StartArray();
+	for (std::vector<GameObject*>::const_iterator it = sceneGameObjects.cbegin(); it != sceneGameObjects.cend(); ++it)
+	{
+		(*it)->Serialize(writer);
+	}
+	writer.EndArray();
+
 	//save scene
 	SDL_RWops *rw = SDL_RWFromFile("scene.dsc", "w");
 	if (rw == nullptr)
@@ -408,7 +414,12 @@ void ModuleScene::Serialize()
 
 	rapidjson::StringBuffer sb2;
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer2(sb2);
-	directory->Serialize(writer2);	
+	writer2.StartArray();
+	for (std::vector<GameObject*>::const_iterator it = importedGameObjects.cbegin(); it != importedGameObjects.cend(); ++it)
+	{
+		(*it)->Serialize(writer2);
+	}
+	writer2.EndArray();
 
 	//save imported assets
 	rw = SDL_RWFromFile("assets.dsc", "w");

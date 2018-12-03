@@ -83,13 +83,6 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 		writer.String("parent"); writer.String("");
 	}
 
-	writer.String("children");
-	writer.StartArray();
-	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-	{
-		(*it)->Serialize(writer);
-	}
-	writer.EndArray();
 	writer.String("components");
 	writer.StartArray();
 	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
@@ -126,20 +119,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 		InsertChild(loadedGO);
 		return true; // finished, nothing more to do if it's a loaded mesh
 	}
-	for (rapidjson::Value::ValueIterator it = serializedChildren.Begin(); it != serializedChildren.End(); ++it)
-	{
-		GameObject* newGO = new GameObject("");
-		newGO->UnSerialize(*it, isInstantiated);
-		InsertChild(newGO);
-	}
-	if (isInstantiated)
-	{
-		isOk = isOk && App->scene->MakeParentInstantiated(parentUUID, this);
-	}
-	else
-	{
-		isOk = isOk && App->scene->MakeParentImported(parentUUID, this);
-	}
+	
 	rapidjson::Value componentValues = value["components"].GetArray();
 	bool hasMeshes = false;
 	for (rapidjson::Value::ValueIterator it = componentValues.Begin(); it != componentValues.End(); ++it)

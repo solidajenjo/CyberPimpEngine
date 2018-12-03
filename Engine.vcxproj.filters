@@ -207,6 +207,75 @@
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component.cpp" />
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_7z.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_dir.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_grp.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_hog.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_iso9660.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_mvl.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_qpak.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_slb.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_unpacked.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_vdf.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_wad.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_archiver_zip.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_byteorder.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_haiku.cpp">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_os2.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_posix.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_qnx.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_unix.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_windows.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_winrt.cpp">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_unicode.c">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModuleFileSystem.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -785,6 +854,27 @@
     <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\writer.h">
       <Filter>Utilities\JSON</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs_casefolding.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs_internal.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs_lzmasdk.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs_miniz.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\physfs-3.0.1\src\physfs_platforms.h">
+      <Filter>Utilities\PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleFileSystem.h">
+      <Filter>EngineModules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -834,6 +924,9 @@
     </Filter>
     <Filter Include="Utilities\JSON">
       <UniqueIdentifier>{e35bd86e-d2ab-46b6-a2b0-a9907643dae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\PhysFS">
+      <UniqueIdentifier>{5cbf5a7d-7c30-48c2-959f-c2efa3b07aad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

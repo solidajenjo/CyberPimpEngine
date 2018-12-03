@@ -184,14 +184,12 @@ bool SceneImporter::Import(const std::string file) const
 
 	bytesPointer = 0;
 	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &numNodes); //store the amount of nodes of the model
-	
-	unsigned ext = file.find("FBX") - 1;
-	unsigned nameBegin = ext;
-	while (file[nameBegin] != '\\' && file[nameBegin] != '/' && nameBegin > 0)
-	{
-		--nameBegin;
-	}
-	std::string importedFileName = "Library\\Meshes" + file.substr(nameBegin, ext) + ".dmd";
+	unsigned extBegin = file.find_last_of('.');
+	unsigned filenameBegin;
+	filenameBegin = file.find_last_of('/');
+	if (filenameBegin  == std::string::npos)
+		filenameBegin = file.find_last_of('\\');
+	std::string importedFileName = "Library/Meshes" + file.substr(filenameBegin, extBegin) + ".dmd";
 	SDL_RWops *rw = SDL_RWFromFile(importedFileName.c_str(), "w");	
 	if (rw == nullptr || SDL_RWwrite(rw, &bytes[0], sizeof(char), bytes.size()) != bytes.size())
 	{
@@ -201,7 +199,7 @@ bool SceneImporter::Import(const std::string file) const
 	LOG("Succesfully imported %s", file.c_str());
 	SDL_RWclose(rw);
 	std::vector<GameObject*> materials;
-	Load(file.substr(nameBegin, ext)+".dmd", materials);
+	Load(importedFileName, materials);
 	for (unsigned i = 0u; i < materials.size(); ++i)
 	{
 		App->scene->ImportGameObject(materials[i]);
@@ -211,7 +209,7 @@ bool SceneImporter::Import(const std::string file) const
 
 GameObject* SceneImporter::Load(const std::string file, std::vector<GameObject*> &gameObjectMaterials) const
 {
-	std::string path = "Library\\Meshes" + file;
+	std::string path = "Library/Meshes" + file;
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "r");
 	
 	if (rw == nullptr)

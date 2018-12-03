@@ -99,7 +99,7 @@ update_status ModuleInput::PreUpdate()
 			if (found != std::string::npos)
 			{
 				SceneImporter si;
-				si.Import(strFile);
+				si.Import(std::string(file));
 			}
 			else
 				App->textures->Load(strFile.c_str());			
