@@ -1,8 +1,11 @@
 #include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 #include "Component.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "imgui/imgui.h"
+#include <algorithm>
 #include "rapidjson-1.1.0/include/rapidjson/writer.h"
 
 #define WIDGET_WIDTHS 128
@@ -12,11 +15,16 @@ ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Compo
 	color = float4(r, g, b, a);
 	program = App->program->phongFlat;
 	sprintf_s(name, "Material");
-	sprintf_s(textureName, "");
+	sprintf_s(texturePath, "");
+}
+
+ComponentMaterial::~ComponentMaterial()
+{
+
 }
 
 void ComponentMaterial::EditorDraw()
-{
+{	
 	ImGui::PushID(this);
 	char header[1024];
 	sprintf_s(header, "Material %s", name);
@@ -46,7 +54,7 @@ void ComponentMaterial::EditorDraw()
 		}
 	}
 	ImGui::Separator();
-	ImGui::PopID();
+	ImGui::PopID();	
 }
 
 void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer)
@@ -54,7 +62,8 @@ void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffe
 	writer.StartObject();
 	writer.String("type"); writer.Int((int)type);
 	writer.String("name"); writer.String(name);
-	writer.String("texture"); writer.String(textureName);
+	writer.String("instanceOf"); writer.String(instanceOf);
+	writer.String("texturePath"); writer.String(texturePath);
 	writer.String("r"); writer.Double(color.x);
 	writer.String("g"); writer.Double(color.y);
 	writer.String("b"); writer.Double(color.z);
@@ -70,7 +79,7 @@ void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffe
 void ComponentMaterial::UnSerialize(rapidjson::Value & value)
 {
 	sprintf_s(name, value["name"].GetString());
-	sprintf_s(textureName, value["texture"].GetString());
+	sprintf_s(texturePath, value["texturePath"].GetString());
 	color.x = value["r"].GetDouble();
 	color.y = value["g"].GetDouble();
 	color.z = value["b"].GetDouble();
@@ -79,4 +88,6 @@ void ComponentMaterial::UnSerialize(rapidjson::Value & value)
 	ambient = value["ambient"].GetDouble();
 	specular = value["specular"].GetDouble();
 	program = value["program"].GetInt();
+	
 }
+

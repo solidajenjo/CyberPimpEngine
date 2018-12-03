@@ -28,7 +28,7 @@ public:
 
 	bool MakeParentInstantiated(char parentUUID[40], GameObject* son); //searchs for an instantiated gameobject by it's UUID and attaches son to it
 	bool MakeParentImported(char parentUUID[40], GameObject* son); //searchs for an imported gameobject by it's UUID and attaches son to it
-	GameObject* FindInstanceOrigin(char instance[40]);
+	GameObject* FindInstanceOrigin(char instance[40]);	
 
 	void SetSkyBox(); //sets skybox on framebuffer
 

@@ -255,13 +255,16 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 		GameObject* GO = stackGO.front(); stackGO.pop();
 		for (std::list<GameObject*>::iterator it = GO->children.begin(); it != GO->children.end(); ++it)
 		{
-			stackGO.push(*it); //push the children to propagate later
+			if ((*it)->transform != nullptr)
+			{
+				stackGO.push(*it); //push the children to propagate later
 			//propagate transforms
-			(*it)->transform->modelMatrixGlobal = (*it)->parent->transform->modelMatrixGlobal.Mul((*it)->transform->modelMatrixLocal);
-			(*it)->transform->front = -(*it)->transform->modelMatrixGlobal.Col3(2);
-			(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
-			(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);
-			(*it)->transform->UpdateAABB();
+				(*it)->transform->modelMatrixGlobal = (*it)->parent->transform->modelMatrixGlobal.Mul((*it)->transform->modelMatrixLocal);
+				(*it)->transform->front = -(*it)->transform->modelMatrixGlobal.Col3(2);
+				(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
+				(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);
+				(*it)->transform->UpdateAABB();
+			}
 		}
 	}
 

@@ -7,7 +7,6 @@
 #include "DevIL/include/IL/ilu.h"
 #include <algorithm>
 
-
 using namespace std;
 
 ModuleTextures::ModuleTextures()

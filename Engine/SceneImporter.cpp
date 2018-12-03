@@ -2,7 +2,9 @@
 									LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError()); \
 									SDL_RWclose(rw); \
 									for (unsigned k = 0u; k < numNodes; ++k) RELEASE(model[k]); \
+									for (unsigned k = 0u; k < nMaterials; ++k) RELEASE(materials[k]); \
 									delete[] model; \
+									delete[] materials; \
 									return nullptr; }
 
 #include "SceneImporter.h"
@@ -19,7 +21,9 @@
 #include "ComponentMaterial.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
+#include "ModuleTextures.h"
 #include "crossguid/include/crossguid/guid.hpp"
+#include "MaterialImporter.h"
 #include <stack>
 
 bool SceneImporter::Import(const std::string file) const
@@ -43,6 +47,23 @@ bool SceneImporter::Import(const std::string file) const
 	unsigned id = 0u;
 	unsigned numNodes = 0u;
 	unsigned bytesPointer = sizeof(unsigned); //reserve to store the amount of nodes
+
+	unsigned nMaterials = scene->mNumMaterials;
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nMaterials); //number of materials of the model
+
+	MaterialImporter mi;
+	for (unsigned i = 0u; i < nMaterials; ++i)
+	{
+		std::string materialPath = mi.Import(scene->mMaterials[i], i);
+		char buffer[1024];
+		sprintf_s(buffer, materialPath.c_str());
+		char materialUUID[40];
+		xg::Guid guid = xg::newGuid();
+		sprintf_s(materialUUID, guid.str().c_str());
+		writeToBuffer(bytes, bytesPointer, sizeof(char) * 1024, buffer);
+		writeToBuffer(bytes, bytesPointer, sizeof(char) * 40, materialUUID);
+	}
+
 	for (unsigned i = 0; i < rootNode->mNumChildren; ++i) //skip rootnode
 	{
 		stackNode.push(rootNode->mChildren[i]);
@@ -71,7 +92,7 @@ bool SceneImporter::Import(const std::string file) const
 		
 		unsigned nMeshes = node->mNumMeshes;
 		
-		writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nMeshes);
+		writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &nMeshes);		
 		writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &parent);
 		writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &id);
 
@@ -156,6 +177,7 @@ bool SceneImporter::Import(const std::string file) const
 				{
 					writeToBuffer(bytes, bytesPointer, sizeof(float) * 3 * nNormals, &mesh->mNormals[0]);
 				}
+				writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &mesh->mMaterialIndex);
 			}
 		}
 	}
@@ -178,14 +200,20 @@ bool SceneImporter::Import(const std::string file) const
 	}
 	LOG("Succesfully imported %s", file.c_str());
 	SDL_RWclose(rw);
-	Load(file.substr(nameBegin, ext)+".dmd");
+	std::vector<GameObject*> materials;
+	Load(file.substr(nameBegin, ext)+".dmd", materials);
+	for (unsigned i = 0u; i < materials.size(); ++i)
+	{
+		App->scene->ImportGameObject(materials[i]);
+	}
 	return true;
 }
 
-GameObject* SceneImporter::Load(const std::string file) const
+GameObject* SceneImporter::Load(const std::string file, std::vector<GameObject*> &gameObjectMaterials) const
 {
 	std::string path = "Library\\Meshes" + file;
 	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "r");
+	
 	if (rw == nullptr)
 	{
 		LOG("Couldn't load %s -> %s", file.c_str(), SDL_GetError());
@@ -196,6 +224,50 @@ GameObject* SceneImporter::Load(const std::string file) const
 	{
 		SDL_RWclose(rw);
 		return nullptr;
+	}
+
+	unsigned nMaterials;
+	if (SDL_RWread(rw, &nMaterials, sizeof(unsigned), 1) != 1)
+	{
+		SDL_RWclose(rw);
+		return nullptr;
+	}
+	
+	ComponentMaterial** materials = new ComponentMaterial*[nMaterials];
+	gameObjectMaterials.resize(nMaterials);
+	MaterialImporter mi;
+	for (unsigned i = 0u; i < nMaterials; ++i)
+	{
+		materials[i] = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
+		char buffer[1024];
+		if (SDL_RWread(rw, &buffer[0], sizeof(char) * 1024, 1) != 1)
+		{
+			LOG("Couldn't load materials-> %s", file.c_str(), SDL_GetError());
+			SDL_RWclose(rw);
+			delete[] materials;
+			return nullptr;
+		}
+		materials[i] = mi.Load(buffer);
+		if (strlen(materials[i]->texturePath) > 0) {
+			materials[i]->texture = App->textures->Load(materials[i]->texturePath);
+		}
+		char materialUUID[40];
+		if (SDL_RWread(rw, &materialUUID[0], sizeof(char) * 40, 1) != 1)
+		{
+			LOG("Couldn't load materials-> %s", file.c_str(), SDL_GetError());
+			SDL_RWclose(rw);
+			delete[] materials;
+			return nullptr;
+		}
+		sprintf_s(materials[i]->instanceOf, materialUUID);
+		GameObject* materialGameObject = new GameObject(materials[i]->name);
+		sprintf_s(materialGameObject->gameObjectUUID, materials[i]->instanceOf);
+		materialGameObject->InsertComponent(materials[i]);
+		sprintf_s(materialGameObject->path, buffer);
+		RELEASE(materialGameObject->transform);
+		materialGameObject->transform = nullptr; //This avoids transformation drawing & manipulation on editor 
+		materialGameObject->containerType = Component::ComponentTypes::MATERIAL_COMPONENT;
+		gameObjectMaterials[i] = materialGameObject;
 	}
 
 	LOG("Loading %s -> Num nodes %d", file.c_str(), numNodes);
@@ -274,16 +346,23 @@ GameObject* SceneImporter::Load(const std::string file) const
 			if (nElements[3] > 0 && SDL_RWread(rw, &newMesh->meshNormals[0], sizeof(float), nElements[3] * 3) != nElements[3] * 3)
 				CLEAN_ON_FAILED(numNodes + 1);
 
+			unsigned matIndex;
+			if (SDL_RWread(rw, &matIndex, sizeof(unsigned), 1) != 1)
+				CLEAN_ON_FAILED(numNodes + 1);
+			newMesh->material = materials[matIndex];
+			
 			model[id]->InsertComponent(newMesh);
-			newMesh->material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
 		}	
 	}
 	SDL_RWclose(rw);
 	GameObject* root = model[0];
+	
 	root->transform->PropagateTransform();
 	sprintf_s(root->meshRoot, file.c_str());
 	App->scene->ImportGameObject(root);
+	
 	delete[] model;
+	delete[] materials;
 	LOG("Loaded.");
 	return root;
 }

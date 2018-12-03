@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "crossguid/include/crossguid/guid.hpp"
@@ -191,12 +192,35 @@ void ComponentMesh::UnSerialize(rapidjson::Value & value)
 	}
 	else
 	{
-		material->UnSerialize(value["material"]);
+		char materialPath[1024];
+		sprintf_s(materialPath, value["materialPath"].GetString());
+		if (strlen(materialPath) > 0)
+		{
+			char instanceOf[40];
+			sprintf_s(instanceOf, value["material"]["instanceOf"].GetString());
+			if (strlen(instanceOf) > 0) {
+				GameObject* materialInstance = App->scene->FindInstanceOrigin(instanceOf);
+				if (material != nullptr)
+				{
+					material = (ComponentMaterial*) materialInstance->components.front();
+				}
+				else
+				{
+					material->UnSerialize(value["material"]);
+				}
+			}
+		}
+		else
+		{
+			material->UnSerialize(value["material"]);
+		}
 	}
 }
 
 void ComponentMesh::SendToGPU()
 {
+	if (VAO > 0) //only once at gpu -- TODO: Keep a suscriber counter to know how many gameobjects remain expecting this to be rendered
+		return;
 	GLuint vbo, vao, vio;
 	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices);
 	unsigned offsetTexCoords = nVertices * sizeof(float3);
@@ -234,5 +258,8 @@ void ComponentMesh::SendToGPU()
 void ComponentMesh::ReleaseFromGPU()
 {
 	if (VAO != 0)
+	{
 		glDeleteVertexArrays(1, &VAO);
+		VAO = 0;
+	}
 }

@@ -335,6 +335,7 @@ GameObject * ModuleScene::FindInstanceOrigin(char instance[40])
 	return nullptr;  //broken link
 }
 
+
 void ModuleScene::SetSkyBox()
 {
 	/*

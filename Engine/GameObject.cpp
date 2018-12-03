@@ -1,10 +1,13 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
+#include "ModuleTextures.h"
 #include "SceneImporter.h"
+#include "MaterialImporter.h"
 #include <queue>
 
 void GameObject::InsertComponent(Component * newComponent)
@@ -53,10 +56,24 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 
 	writer.String("UUID"); writer.String(gameObjectUUID);
 	writer.String("name"); writer.String(name);
-	writer.String("transform"); 
-	transform->Serialize(writer);
+	if (transform != nullptr)
+	{
+		writer.String("transform");
+		transform->Serialize(writer);
+	}
 	writer.String("meshRoot"); writer.String(meshRoot);
 	writer.String("instanceOf"); writer.String(instanceOf);
+	writer.String("path"); writer.String(path);
+	writer.String("containerType"); writer.Int((int)containerType);
+	switch (containerType)
+	{
+		case Component::ComponentTypes::MATERIAL_COMPONENT:
+		{
+			MaterialImporter mi;
+			mi.Save(path, (ComponentMaterial*) components.front()); //persist changes
+			break; 
+		}
+	}
 	if (parent != nullptr)
 	{
 		writer.String("Parent"); writer.String(parent->gameObjectUUID);
@@ -90,15 +107,22 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 	sprintf_s(name, value["name"].GetString());
 	char parentUUID[40];
 	sprintf_s(parentUUID, value["Parent"].GetString());
-	transform->UnSerialize(value["transform"]);
+	
+	if (value.HasMember("transform"))
+		transform->UnSerialize(value["transform"]);
 	rapidjson::Value serializedChildren = value["children"].GetArray();
 	sprintf_s(meshRoot, value["meshRoot"].GetString());
 	sprintf_s(instanceOf, value["instanceOf"].GetString());
+	sprintf_s(path, value["path"].GetString());
+	containerType = (Component::ComponentTypes) value["containerType"].GetInt();
+
 	if (strlen(meshRoot) > 0 && !isInstantiated) { //only the imported gameobjects will load their meshes the others will use references
 		//load from disk
 		SceneImporter si;
-		GameObject* loadedGO = si.Load(meshRoot);
+		std::vector<GameObject*> foo;  //not really needeed
+		GameObject* loadedGO = si.Load(meshRoot, foo);
 		sprintf_s(loadedGO->gameObjectUUID, gameObjectUUID);
+		sprintf_s(loadedGO->name, name);
 		InsertChild(loadedGO);
 		return true; // finished, nothing more to do if it's a loaded mesh
 	}
@@ -167,6 +191,13 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 						hasMeshes = true;
 					}
 				}
+				break;
+			}
+			case (unsigned)Component::ComponentTypes::MATERIAL_COMPONENT:
+			{
+				MaterialImporter mi;				
+				ComponentMaterial* mat = mi.Load(path);
+				InsertComponent(mat);
 				break;
 			}
 		}

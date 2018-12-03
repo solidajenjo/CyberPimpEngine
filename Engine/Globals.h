@@ -5,7 +5,13 @@
 #include <stdio.h>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__)
-#define RELEASE(p) {if (p != nullptr) delete p;}
+#define RELEASE(p) { \
+	if (p != nullptr) \
+	{ \
+		delete p; \
+		p = nullptr; \
+	} \
+}
 
 void log(const char file[], int line, const char* format, ...);
 

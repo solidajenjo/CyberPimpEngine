@@ -33,7 +33,7 @@ public:
 
 	~GameObject()
 	{
-		RELEASE(transform);
+		RELEASE(transform); //TODO: Release bug on exit
 
 		for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 		{
@@ -68,6 +68,9 @@ public:
 	char gameObjectUUID[40] = ""; //unique game object id
 	char meshRoot[80] = ""; //special Identifier for mesh hierarchies root
 	char instanceOf[40] = ""; //identifier to search on assets hierarchy & clone
+	char path[1024] = ""; //some type of gameobjects store a path to be loaded from disk
+
+	Component::ComponentTypes containerType = Component::ComponentTypes::VOID_COMPONENT; // to declare special gameobjects holding one component only
 };
 
 

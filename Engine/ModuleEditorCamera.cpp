@@ -25,7 +25,7 @@ update_status ModuleEditorCamera::Update()
 	if (!App->editor->viewPort->cursorIn)
 		return UPDATE_CONTINUE;
 
-	if (App->scene->selected != nullptr) // if something is selected mark as target
+	if (App->scene->selected != nullptr && App->scene->selected->transform != nullptr) // if something is selected mark as target
 	{
 		editorCamera.target = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
 	}

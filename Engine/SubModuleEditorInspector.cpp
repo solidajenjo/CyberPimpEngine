@@ -21,7 +21,8 @@ void SubModuleEditorInspector::Show()
 				ImGui::End();
 				return;
 			}
-			App->scene->selected->transform->EditorDraw();			
+			if (App->scene->selected->transform != nullptr) //special gameobjects like directories or materials
+				App->scene->selected->transform->EditorDraw();			
 			ImGui::Separator();
 			ImGui::Separator();
 			ImGui::Separator();	

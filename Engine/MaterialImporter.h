@@ -3,15 +3,18 @@
 
 #include <string>
 
+class GameObject;
+class ComponentMaterial;
+
 struct aiMaterial;
 
 class MaterialImporter
 {
 public:
 
-	bool Import(const char* file, const char* path, std::string& output_file);	
-	bool Import(const aiMaterial * material);
-	bool Load(const char* exported_file);
+	std::string Import(const aiMaterial * material, const unsigned index); //stores as DDS in engine folders
+	ComponentMaterial* Load(char path[4096]);
+	void Save(char path[1024], ComponentMaterial* material);
 };
 
 #endif 
