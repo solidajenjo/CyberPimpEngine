@@ -10,11 +10,9 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ModuleScene.h"
-#include "ModuleRender.h"
-#include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
-#include "crossguid/include/crossguid/guid.hpp"
-#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
+#include "rapidjson-1.1.0/include/rapidjson/document.h"
+#include "rapidjson-1.1.0/include/rapidjson/error/en.h"
 #include "MaterialImporter.h"
 #include <stack>
 
@@ -162,7 +160,7 @@ bool SceneImporter::Import(const std::string & file) const
 		writer.EndArray();
 		writer.EndObject();
 	}
-
+	writer.EndArray();
 	unsigned extBegin = file.find_last_of('.');
 	unsigned filenameBegin;
 	filenameBegin = file.find_last_of('/');
@@ -176,19 +174,127 @@ bool SceneImporter::Import(const std::string & file) const
 	memcpy(serialData, sb.GetString(), dataSize);
 	App->fileSystem->Write(importedFileName.c_str(), serialData, dataSize);
 	RELEASE(serialData);
-
-
+	Load(importedFileName);
 	return true;
 }
 
-GameObject * SceneImporter::Load(const std::string & file, std::vector<GameObject*>& gameObjectMaterials) const
+void SceneImporter::Load(const std::string & file) const
 {
-	return nullptr;
+	GameObject* go = nullptr;	
+	std::map<std::string, ComponentMaterial*> materials;
+	unsigned size = App->fileSystem->Size(file);
+	if (size > 0)
+	{
+		char* buffer = new char[size];
+		App->fileSystem->Read(file, buffer, size);
+		rapidjson::Document document;
+		if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
+		{
+			LOG("Error parsing model. Model file corrupted -> %s -> %d", rapidjson::GetParseError_En(document.GetParseError()), document.GetErrorOffset());
+			return;
+		}
+		for (rapidjson::Value::ValueIterator it = document.GetArray().Begin(); it != document.GetArray().End(); ++it)
+		{
+			go = new GameObject("");
+			if ((it)->HasMember("gameobject"))
+			{
+				go->UnSerialize((*it)["gameobject"], false);
+			}
+			else
+			{
+				go->UnSerialize((*it), false);
+			}			
+			App->scene->ImportGameObject(go);
+			if ((*it).HasMember("meshes"))
+			{
+				for (rapidjson::Value::ValueIterator it2 = (*it)["meshes"].GetArray().Begin(); it2 != (*it)["meshes"].GetArray().End(); ++it2)
+				{
+					char path[1024];
+					sprintf_s(path, (*it2).GetString());
+					go->InsertComponent(LoadMesh(path, materials));
+				}
+			}
+		}
+	}
 }
 inline void SceneImporter::writeToBuffer(std::vector<char> &buffer, unsigned & pointer, const unsigned size, const void * data) const
 {
 	buffer.resize(buffer.size() + size);
 	memcpy(&buffer[pointer], data, size);
 	pointer += size;
+}
+
+ComponentMesh * SceneImporter::LoadMesh(const char path[1024], std::map<std::string, ComponentMaterial*> &materials) const
+{
+	unsigned size = App->fileSystem->Size(std::string(path));
+	if (size > 0)
+	{
+		char* buffer = new char[size];
+		if (App->fileSystem->Read(std::string(path), buffer, size))
+		{
+			//read mesh header
+			unsigned nVertices, nIndices, nCoords, nNormals;
+			memcpy(&nVertices, &buffer[0], sizeof(unsigned));
+			memcpy(&nIndices, &buffer[sizeof(unsigned) * 1], sizeof(unsigned));
+			memcpy(&nCoords, &buffer[sizeof(unsigned) * 2], sizeof(unsigned));
+			memcpy(&nNormals, &buffer[sizeof(unsigned) * 3], sizeof(unsigned));
+
+			unsigned verticesOffset = 4 * sizeof(unsigned);
+			unsigned verticesSize = nVertices * sizeof(float) * 3;
+			unsigned indicesOffset = verticesOffset + verticesSize;
+			unsigned indicesSize = nIndices * sizeof(unsigned);
+			unsigned coordsOffset = indicesOffset + indicesSize;
+			unsigned coordsSize = nCoords * sizeof(float);
+			unsigned normalsOffset = coordsOffset + coordsSize;
+			unsigned normalsSize = nNormals * sizeof(float) * 3;
+			unsigned materialsOffset = normalsOffset + normalsSize;
+
+			//create Mesh component
+			ComponentMesh* newMesh = new ComponentMesh();
+			newMesh->meshVertices.resize(nVertices);
+			memcpy(&newMesh->meshVertices[0], &buffer[verticesOffset], verticesSize);
+			if (nIndices > 0)
+			{
+				newMesh->meshIndices.resize(nIndices);
+				memcpy(&newMesh->meshIndices[0], &buffer[indicesOffset], indicesSize);
+			}
+			if (nCoords > 0)
+			{
+				newMesh->meshTexCoords.resize(nCoords);
+				memcpy(&newMesh->meshTexCoords[0], &buffer[coordsOffset], coordsSize);
+			}
+			if (nNormals > 0)
+			{
+				newMesh->meshNormals.resize(nNormals);
+				memcpy(&newMesh->meshNormals[0], &buffer[normalsOffset], normalsSize);
+			}
+
+			char materialPath[1024];
+			memcpy(&materialPath[0], &buffer[materialsOffset], sizeof(char) * 1024);
+
+			std::string matPath(materialPath);
+
+			std::map<std::string, ComponentMaterial*>::iterator it = materials.find(matPath);
+			if (it == materials.end()) //Load from disk
+			{
+				MaterialImporter mi;
+				GameObject* mat = mi.Load(materialPath);
+				if (mat != nullptr)
+				{
+					App->scene->ImportGameObject(mat);
+					materials[matPath] = (ComponentMaterial*) mat->components.front();
+					newMesh->material = (ComponentMaterial*) mat->components.front();
+				}
+			}
+			else //Use loaded
+			{
+				newMesh->material = materials[matPath];
+			}
+			RELEASE(buffer);
+			return newMesh;
+		}
+		RELEASE(buffer);
+	}
+	return nullptr;
 }
 

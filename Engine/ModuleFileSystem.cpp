@@ -8,6 +8,7 @@ bool ModuleFileSystem::Init()
 	SDL_free(p);
 	PHYSFS_init(prefPath.c_str());
 	PHYSFS_setWriteDir(".");
+	PHYSFS_mount(".", "", 0);
 	return true;
 }
 
@@ -36,15 +37,15 @@ bool ModuleFileSystem::Write(const std::string & path, void * data, unsigned siz
 	return false;
 }
 
-bool ModuleFileSystem::Load(const std::string & path, void * data, unsigned size) const
+bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) const
 {
-	data = new char*[size];
 	PHYSFS_File* file = PHYSFS_openRead(path.c_str());
 	if (file == nullptr)
 	{
-		LOG("Error reading %d", PHYSFS_ErrorCode());
+		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
 		return false;
 	}
+
 	if (PHYSFS_readBytes(file, data, size) == size)
 	{
 		PHYSFS_close(file);
@@ -61,7 +62,13 @@ bool ModuleFileSystem::Exists(const std::string & path) const
 
 unsigned ModuleFileSystem::Size(const std::string & path) const
 {
-	return 0;
+	PHYSFS_File* file = PHYSFS_openRead(path.c_str());
+	if (file == nullptr)
+	{
+		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
+		return 0;
+	}
+	return PHYSFS_fileLength(file);	
 }
 
 bool ModuleFileSystem::CreateDir(const std::string & path) const

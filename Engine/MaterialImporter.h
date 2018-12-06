@@ -13,7 +13,7 @@ class MaterialImporter
 public:
 
 	std::string Import(const aiMaterial * material, const unsigned index); //stores as DDS in engine folders
-	ComponentMaterial* Load(char path[4096]);
+	GameObject* Load(char path[4096]);
 	void Save(char path[1024], ComponentMaterial* material);
 };
 

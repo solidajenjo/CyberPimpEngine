@@ -104,6 +104,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 	bool hasMeshes = false;
 	for (rapidjson::Value::ValueIterator it = componentValues.Begin(); it != componentValues.End(); ++it)
 	{
+		/*
 		unsigned componentType = (*it)["type"].GetInt();		
 		switch (componentType)
 		{
@@ -156,11 +157,11 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 			case (unsigned)Component::ComponentTypes::MATERIAL_COMPONENT:
 			{
 				MaterialImporter mi;				
-				ComponentMaterial* mat = mi.Load(path);
-				InsertComponent(mat);
+				GameObject* mat = mi.Load(path);
+				InsertComponent(mat->components.front());
 				break;
 			}
-		}
+		}*/
 		if (hasMeshes)
 			App->renderer->insertRenderizable(this);
 	}

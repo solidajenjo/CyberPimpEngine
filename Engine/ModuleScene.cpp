@@ -107,10 +107,17 @@ void ModuleScene::InsertGameObject(GameObject * newGO)
 
 void ModuleScene::ImportGameObject(GameObject * newGO)
 {
-	assert(newGO != nullptr);
-	directory->children.push_back(newGO);
+	assert(newGO != nullptr);	
 	FlattenHierarchy(newGO);
-	newGO->parent = directory;
+	if (strlen(newGO->parentUUID) > 0)
+	{
+		MakeParent(newGO->parentUUID, newGO);
+	}
+	else
+	{
+		directory->children.push_back(newGO);
+		newGO->parent = directory;
+	}
 }
 
 void ModuleScene::DestroyGameObject(GameObject * destroyableGO)

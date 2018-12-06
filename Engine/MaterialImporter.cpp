@@ -10,7 +10,8 @@
 #include "ModuleFileSystem.h"
 #include "GameObject.h"
 #include "crossguid/include/crossguid/guid.hpp"
-#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
+#include "rapidjson-1.1.0/include/rapidjson/document.h"
+#include "rapidjson-1.1.0/include/rapidjson/error/en.h"
 
 std::string MaterialImporter::Import(const aiMaterial* material, const unsigned index)
 {
@@ -73,29 +74,35 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 	return materialPath;
 }
 
-ComponentMaterial* MaterialImporter::Load(char path[4096])
-{
-	ComponentMaterial mat(1.f, 1.f, 1.f, 1.f);
-	if (!App->fileSystem->Load(std::string(path), &mat, sizeof(mat)))
+GameObject* MaterialImporter::Load(char path[4096])
+{	
+	unsigned size = App->fileSystem->Size(path);
+	char* buffer = new char[size];
+	if (!App->fileSystem->Read(path, &buffer[0], size))
 	{
 		LOG("Couldn't read material %s", path);
+		RELEASE(buffer);
 		return nullptr;
 	}
-	
-	//TODO:Create a Cloner
-	ComponentMaterial* newMat = new ComponentMaterial(mat.color.x, mat.color.y, mat.color.z, mat.color.w); 
-	newMat->ambient = mat.ambient;
-	newMat->diffuse = mat.diffuse;
-	newMat->specular = mat.specular;
-	sprintf_s(newMat->instanceOf, mat.instanceOf);
-	sprintf_s(newMat->name, mat.name);
-	newMat->program = mat.program;
-	sprintf_s(newMat->texturePath, mat.texturePath);
-	if (strlen(newMat->texturePath) > 0) {
+	rapidjson::Document document;
+	if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
+	{
+		LOG("Error parsing model. Model file corrupted -> %s -> %d", rapidjson::GetParseError_En(document.GetParseError()), document.GetErrorOffset());
+		RELEASE(buffer);
+		return nullptr;
+	}
+	GameObject* newGO = new GameObject("");
+	newGO->UnSerialize(document, false);
+	size = App->fileSystem->Size(newGO->path);
+	ComponentMaterial* newMat = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
+	App->fileSystem->Read(newGO->path, newMat, sizeof(ComponentMaterial));
+	if (strlen(newMat->texturePath) > 0)
+	{
 		newMat->texture = App->textures->Load(newMat->texturePath);
 	}
-
-	return newMat;
+	newGO->InsertComponent(newMat);
+	RELEASE(buffer);
+	return newGO;
 }
 
 void MaterialImporter::Save(char path[1024], ComponentMaterial * material)

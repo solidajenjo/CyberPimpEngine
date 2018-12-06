@@ -181,7 +181,7 @@ void Transform::EditorDraw()
 		windowJumped = false;
 		jumpRefresh = true;
 	}
-	if (ImGui::IsWindowFocused() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 winPos = ImGui::GetMousePos();
@@ -197,6 +197,11 @@ void Transform::EditorDraw()
 			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);	
 			windowJumped = true;
 		}
+	}
+	else
+	{
+		windowJumped = false;
+		jumpRefresh = false;
 	}
 	ImGui::PushID(1);
 	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f))
