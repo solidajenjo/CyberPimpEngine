@@ -1,0 +1,89 @@
+[
+    {
+        "UUID": "5c3eba90-f8eb-47cb-a2a5-ee686c42f1de",
+        "name": "Root",
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "gameObjectType": 0,
+        "parentUUID": "",
+        "components": []
+    },
+    {
+        "gameobject": {
+            "UUID": "aa0c3f8f-1154-4b69-ae7d-0b835abb8a43",
+            "name": "Baker_house",
+            "transform": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "x": -1.5707964897155762,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 100.0,
+                    "y": 100.0,
+                    "z": 100.0
+                }
+            },
+            "instanceOf": "",
+            "path": "",
+            "gameObjectType": 0,
+            "parentUUID": "5c3eba90-f8eb-47cb-a2a5-ee686c42f1de",
+            "components": []
+        },
+        "meshes": [
+            "Library/Meshes/adeb69d9-a406-42b8-8812-15b54837192a.msh"
+        ]
+    },
+    {
+        "gameobject": {
+            "UUID": "58d3500c-3132-46aa-9a74-5805fe0437ae",
+            "name": "Chimney",
+            "transform": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "x": -1.5707964897155762,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 100.0,
+                    "y": 100.0,
+                    "z": 100.0
+                }
+            },
+            "instanceOf": "",
+            "path": "",
+            "gameObjectType": 0,
+            "parentUUID": "5c3eba90-f8eb-47cb-a2a5-ee686c42f1de",
+            "components": []
+        },
+        "meshes": [
+            "Library/Meshes/864783ee-2356-4540-a153-54c1d14a515d.msh"
+        ]
+    }

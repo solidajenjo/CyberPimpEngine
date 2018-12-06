@@ -7,8 +7,10 @@
 #include "DevIL/include/IL/ilu.h"
 #include "ComponentMaterial.h"
 #include "ModuleTextures.h"
-#include "SDL/include/SDL_rwops.h"
+#include "ModuleFileSystem.h"
+#include "GameObject.h"
 #include "crossguid/include/crossguid/guid.hpp"
+#include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 
 std::string MaterialImporter::Import(const aiMaterial* material, const unsigned index)
 {
@@ -19,7 +21,7 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 	aiColor3D color(1.f, 1.f, 1.f);
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 	ComponentMaterial materialComponent(color.r, color.g, color.b, 1.0f);
-	std::string materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".dmt";
+	std::string materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".mat";
 	
 	std::string savePath = "";
 	aiString file;
@@ -50,38 +52,35 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 	
 	sprintf_s(materialComponent.texturePath, savePath.c_str());
 
-	SDL_RWops *rw = SDL_RWFromFile(materialPath.c_str(), "w");
-	if (rw == nullptr)
+	if (!App->fileSystem->Write(materialPath, &materialComponent, sizeof(materialComponent)))
 	{
-		LOG("Failed importing %s -> %s", materialPath.c_str(), SDL_GetError());
+		LOG("Failed importing %s", materialPath.c_str());		
 		return "";
 	}
-	if (SDL_RWwrite(rw, &materialComponent, sizeof(materialComponent), 1) != 1)
-	{
-		LOG("Failed importing %s -> %s", materialPath.c_str(), SDL_GetError());		
-		SDL_RWclose(rw);
-		return "";
-	}
-	SDL_RWclose(rw);
+	GameObject* gameObject = new GameObject("Material");
+	gameObject->gameObjectType = GameObject::GameObjectType::MATERIAL_CONTAINER;
+	gameObject->InsertComponent(&materialComponent);
+	rapidjson::StringBuffer sb;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+	sprintf_s(gameObject->path, materialPath.c_str());
+	gameObject->Serialize(writer);	
+	materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".mgo";
+	unsigned dataSize = strlen(sb.GetString());
+	char* serialData = new char[dataSize];
+	memcpy(serialData, sb.GetString(), dataSize);
+	App->fileSystem->Write(materialPath.c_str(), serialData, dataSize);
+	RELEASE(serialData);
 	return materialPath;
 }
 
 ComponentMaterial* MaterialImporter::Load(char path[4096])
 {
-	SDL_RWops *rw = SDL_RWFromFile(path, "r");
-	if (rw == nullptr)
-	{
-		LOG("Couldn't read material %s -> %s", path, SDL_GetError());
-		return nullptr;
-	}
 	ComponentMaterial mat(1.f, 1.f, 1.f, 1.f);
-	if (SDL_RWread(rw, &mat, sizeof(ComponentMaterial), 1) != 1)
+	if (!App->fileSystem->Load(std::string(path), &mat, sizeof(mat)))
 	{
-		LOG("Couldn't read material %s -> %s", path, SDL_GetError());
-		SDL_RWclose(rw);
+		LOG("Couldn't read material %s", path);
 		return nullptr;
 	}
-	SDL_RWclose(rw);
 	
 	//TODO:Create a Cloner
 	ComponentMaterial* newMat = new ComponentMaterial(mat.color.x, mat.color.y, mat.color.z, mat.color.w); 
@@ -101,18 +100,9 @@ ComponentMaterial* MaterialImporter::Load(char path[4096])
 
 void MaterialImporter::Save(char path[1024], ComponentMaterial * material)
 {
-	SDL_RWops *rw = SDL_RWFromFile(path, "w");
-	if (rw == nullptr)
+	if (!App->fileSystem->Write(std::string(path), material, sizeof(*material)))
 	{
-		LOG("Failed saving material %s -> %s", path, SDL_GetError());
-		return;
+		LOG("Failed saving material %s", path);
 	}
-	if (SDL_RWwrite(rw, material, sizeof(*material), 1) != 1)
-	{
-		LOG("Failed saving material %s -> %s", path, SDL_GetError());
-		SDL_RWclose(rw);
-		return;
-	}
-	SDL_RWclose(rw);
 }
 

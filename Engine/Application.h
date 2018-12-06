@@ -18,6 +18,7 @@ class ModuleTime;
 class ModuleScene;
 class ModuleFrameBuffer;
 class ModuleDebugDraw;
+class ModuleFileSystem;
 
 class Application
 {
@@ -43,6 +44,7 @@ public:
 	ModuleFrameBuffer* gameFrameBuffer = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
+	ModuleFileSystem* fileSystem = nullptr;
 
 	bool exit = false;
 	ImGuiTextBuffer* consoleBuffer = nullptr;

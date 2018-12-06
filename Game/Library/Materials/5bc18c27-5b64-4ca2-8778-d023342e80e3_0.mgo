@@ -1,0 +1,42 @@
+{
+    "UUID": "9798c529-9717-416f-ac3c-34af960123a6",
+    "name": "Material",
+    "transform": {
+        "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        }
+    },
+    "instanceOf": "",
+    "path": "Library/Materials/5bc18c27-5b64-4ca2-8778-d023342e80e3_0.mat",
+    "gameObjectType": 1,
+    "parentUUID": "",
+    "components": [
+        {
+            "type": 2,
+            "name": "Material",
+            "instanceOf": "",
+            "texturePath": "Library/Textures/Baker_house.png.dds",
+            "materialPath": "",
+            "r": 0.47040000557899477,
+            "g": 0.47040000557899477,
+            "b": 0.47040000557899477,
+            "a": 1.0,
+            "program": 4,
+            "diffuse": 0.0,
+            "ambient": 0.0,
+            "specular": 0.0
+        }
+    ]
+}

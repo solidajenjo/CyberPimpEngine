@@ -1,0 +1,125 @@
+[
+    {
+        "UUID": "653f7a3e-a835-4751-b981-a2b4fc740041",
+        "name": "Root",
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "gameObjectType": 0,
+        "parentUUID": "",
+        "components": []
+    },
+    {
+        "gameobject": {
+            "UUID": "1706bf76-cd2a-4f4d-8c0c-b275d0351a00",
+            "name": "Kojiima",
+            "transform": {
+                "position": {
+                    "x": 0.0,
+                    "y": 0.15659555792808534,
+                    "z": -0.00011094153160229325
+                },
+                "rotation": {
+                    "x": -0.0,
+                    "y": 0.0,
+                    "z": -0.0
+                },
+                "scale": {
+                    "x": 3.34537935256958,
+                    "y": 3.34537935256958,
+                    "z": 3.34537935256958
+                }
+            },
+            "instanceOf": "",
+            "path": "",
+            "gameObjectType": 0,
+            "parentUUID": "653f7a3e-a835-4751-b981-a2b4fc740041",
+            "components": []
+        },
+        "meshes": [
+            "Library/Meshes/ecd38900-31f5-469e-b08e-acbe79b2c8cd.msh",
+            "Library/Meshes/0a7c8dec-c6c7-4fdf-8d55-4dddc01a0f86.msh",
+            "Library/Meshes/b007bf13-eadf-4abe-abb9-78b1658773ec.msh",
+            "Library/Meshes/770a5ed2-fa3f-4232-bc60-cc8486729766.msh",
+            "Library/Meshes/b91e6cb8-6e46-49c9-accc-738aa4c6474d.msh",
+            "Library/Meshes/b4893b81-2d12-41f5-b8c6-a9acc5bc05d0.msh"
+        ]
+    },
+    {
+        "gameobject": {
+            "UUID": "106f7dfc-ac82-4500-8c4c-a9312c89e220",
+            "name": "Hair",
+            "transform": {
+                "position": {
+                    "x": -0.00887252762913704,
+                    "y": 5.7103471755981449,
+                    "z": 0.11122959107160568
+                },
+                "rotation": {
+                    "x": -0.0,
+                    "y": 0.0,
+                    "z": -0.0
+                },
+                "scale": {
+                    "x": 1.0471409559249879,
+                    "y": 1.0471409559249879,
+                    "z": 1.0471409559249879
+                }
+            },
+            "instanceOf": "",
+            "path": "",
+            "gameObjectType": 0,
+            "parentUUID": "1706bf76-cd2a-4f4d-8c0c-b275d0351a00",
+            "components": []
+        },
+        "meshes": [
+            "Library/Meshes/49d0b515-8ade-4ce2-acd8-0cba0a90e945.msh"
+        ]
+    },
+    {
+        "gameobject": {
+            "UUID": "57cf239b-3534-402a-885e-8fcc0c94be03",
+            "name": "Glasses",
+            "transform": {
+                "position": {
+                    "x": -0.014351129531860352,
+                    "y": 5.433706760406494,
+                    "z": 0.6580876111984253
+                },
+                "rotation": {
+                    "x": -1.5707967281341553,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "scale": {
+                    "x": 0.18186795711517335,
+                    "y": 0.16417302191257478,
+                    "z": 0.16417302191257478
+                }
+            },
+            "instanceOf": "",
+            "path": "",
+            "gameObjectType": 0,
+            "parentUUID": "1706bf76-cd2a-4f4d-8c0c-b275d0351a00",
+            "components": []
+        },
+        "meshes": [
+            "Library/Meshes/67b422f3-ae97-4e6c-82b5-47ee65215617.msh"
+        ]
+    }

@@ -43,6 +43,7 @@ void GameObject::InsertChild(GameObject * child)
 {
 	children.push_back(child);
 	child->parent = this;
+	sprintf_s(child->parentUUID, this->gameObjectUUID);
 }
 
 void GameObject::SetInstanceOf(char instanceOrigin[40])
@@ -61,28 +62,21 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 		writer.String("transform");
 		transform->Serialize(writer);
 	}
-	writer.String("meshRoot"); writer.String(meshRoot);
 	writer.String("instanceOf"); writer.String(instanceOf);
 	writer.String("path"); writer.String(path);
-	writer.String("containerType"); writer.Int((int)containerType);
-	switch (containerType)
+	writer.String("gameObjectType"); writer.Int((int)gameObjectType);
+	switch (gameObjectType)
 	{
-		case Component::ComponentTypes::MATERIAL_COMPONENT:
+		case GameObjectType::MATERIAL_CONTAINER:
 		{
 			MaterialImporter mi;
 			mi.Save(path, (ComponentMaterial*) components.front()); //persist changes
 			break; 
 		}
 	}
-	if (parent != nullptr)
-	{
-		writer.String("Parent"); writer.String(parent->gameObjectUUID);
-	}	
-	else
-	{
-		writer.String("parent"); writer.String("");
-	}
+	writer.String("parentUUID"); writer.String(parentUUID);
 
+	
 	writer.String("components");
 	writer.StartArray();
 	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
@@ -98,28 +92,14 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 	bool isOk = true;
 	sprintf_s(gameObjectUUID, value["UUID"].GetString());
 	sprintf_s(name, value["name"].GetString());
-	char parentUUID[40];
-	sprintf_s(parentUUID, value["Parent"].GetString());
+	sprintf_s(parentUUID, value["parentUUID"].GetString());
 	
 	if (value.HasMember("transform"))
 		transform->UnSerialize(value["transform"]);
-	rapidjson::Value serializedChildren = value["children"].GetArray();
-	sprintf_s(meshRoot, value["meshRoot"].GetString());
+	sprintf_s(parentUUID, value["parentUUID"].GetString());
 	sprintf_s(instanceOf, value["instanceOf"].GetString());
 	sprintf_s(path, value["path"].GetString());
-	containerType = (Component::ComponentTypes) value["containerType"].GetInt();
-
-	if (strlen(meshRoot) > 0 && !isInstantiated) { //only the imported gameobjects will load their meshes the others will use references
-		//load from disk
-		SceneImporter si;
-		std::vector<GameObject*> foo;  //not really needeed
-		GameObject* loadedGO = si.Load(meshRoot, foo);
-		sprintf_s(loadedGO->gameObjectUUID, gameObjectUUID);
-		sprintf_s(loadedGO->name, name);
-		InsertChild(loadedGO);
-		return true; // finished, nothing more to do if it's a loaded mesh
-	}
-	
+	gameObjectType = (GameObjectType) value["gameObjectType"].GetInt();
 	rapidjson::Value componentValues = value["components"].GetArray();
 	bool hasMeshes = false;
 	for (rapidjson::Value::ValueIterator it = componentValues.Begin(); it != componentValues.End(); ++it)
@@ -189,8 +169,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 
 GameObject* GameObject::MakeInstanceOf() const
 {
-	GameObject* clonedGO = new GameObject(name);	
-	sprintf_s(clonedGO->meshRoot, meshRoot);
+	GameObject* clonedGO = new GameObject(name);		
 	sprintf_s(clonedGO->instanceOf, gameObjectUUID);
 	clonedGO->transform->position = transform->position;
 	clonedGO->transform->rotation = transform->rotation;

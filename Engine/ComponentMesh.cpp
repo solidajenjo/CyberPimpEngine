@@ -176,7 +176,6 @@ void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& 
 	writer.String("type"); writer.Int((int)type);
 	writer.String("meshUUID"); writer.String(meshUUID);
 	writer.String("primitive"); writer.Int((int)primitiveType);
-	writer.String("meshPath"); writer.String(meshPath);
 	writer.String("material");
 	material->Serialize(writer);
 	writer.EndObject();

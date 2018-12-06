@@ -67,7 +67,7 @@ void SubModuleEditorViewPort::Show()
 				char movedId[40];
 				sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
 				GameObject* movedGO = nullptr;
-				const std::vector<GameObject*>* importedGameObjects = App->scene->getImportedGameObjects();
+				/*const std::vector<GameObject*>* importedGameObjects = App->scene->getImportedGameObjects();
 				for (std::vector<GameObject*>::const_iterator it = importedGameObjects->begin(); it != importedGameObjects->end(); ++it)
 				{
 					if (strcmp((*it)->gameObjectUUID, movedId) == 0)
@@ -75,7 +75,7 @@ void SubModuleEditorViewPort::Show()
 						movedGO = *it;
 						break;
 					}
-				}
+				}*/
 				if (movedGO != nullptr)
 				{
 					GameObject* instance = movedGO->MakeInstanceOf();

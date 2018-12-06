@@ -2,7 +2,8 @@
 #define _MODULE_SCENE_H
 
 #include "Module.h"
-#include <vector>
+#include <map>
+#include <string>
 
 class GameObject;
 class ComponentCamera;
@@ -22,17 +23,16 @@ public:
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
 	void DrawNode(GameObject* gObj, bool isWorld = true);
 
-	const std::vector<GameObject*>* getSceneGameObjects() const; //read only getter
-	const std::vector<GameObject*>* getImportedGameObjects() const; //read only getter
 	bool IsRoot(const GameObject* go) const;
 
-	bool MakeParentInstantiated(char parentUUID[40], GameObject* son); //searchs for an instantiated gameobject by it's UUID and attaches son to it
-	bool MakeParentImported(char parentUUID[40], GameObject* son); //searchs for an imported gameobject by it's UUID and attaches son to it
+	bool MakeParent(char parentUUID[40], GameObject* son); //searchs for a gameobject by it's UUID and attaches son to it
+	
 	GameObject* FindInstanceOrigin(char instance[40]);	
 
 	void SetSkyBox(); //sets skybox on framebuffer
 
 	void Serialize();
+	void LinkGameObjects();
 
 	//members
 
@@ -42,12 +42,11 @@ public:
 private:
 
 	void FlattenHierarchy(GameObject* go);
-	void FlattenImported(GameObject* go);
-
+	
 	//members
 
-	std::vector<GameObject*> sceneGameObjects; //handles all game objects instantiated
-	std::vector<GameObject*> importedGameObjects; //handles all game objects imported
+	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
+	
 	GameObject* root = nullptr; //scene root
 	GameObject* directory = nullptr; //handles all imported files
 };

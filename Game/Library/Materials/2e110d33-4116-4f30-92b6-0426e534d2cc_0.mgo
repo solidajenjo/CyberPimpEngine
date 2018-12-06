@@ -1,0 +1,42 @@
+{
+    "UUID": "f9c2896c-c6af-4b0d-b5bf-56de989112e6",
+    "name": "Material",
+    "transform": {
+        "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "scale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        }
+    },
+    "instanceOf": "",
+    "path": "Library/Materials/2e110d33-4116-4f30-92b6-0426e534d2cc_0.mat",
+    "gameObjectType": 1,
+    "parentUUID": "",
+    "components": [
+        {
+            "type": 2,
+            "name": "Material",
+            "instanceOf": "",
+            "texturePath": "",
+            "materialPath": "",
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0,
+            "program": 4,
+            "diffuse": 0.0,
+            "ambient": 0.0,
+            "specular": 0.0
+        }
+    ]
+}

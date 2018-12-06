@@ -17,6 +17,12 @@ class GameObject
 {
 public:
 
+	enum class GameObjectType
+	{
+		INSTANTIABLE, // Could have multiple components	
+		MATERIAL_CONTAINER // containers hold 1 component only
+	};
+
 	GameObject(const char name[40]) 
 	{
 		transform = new Transform(this); //notice transform who owns it
@@ -66,11 +72,11 @@ public:
 	
 	char name[40] = "";
 	char gameObjectUUID[40] = ""; //unique game object id
-	char meshRoot[80] = ""; //special Identifier for mesh hierarchies root
+	char parentUUID[40] = ""; //unique parent's game object id
 	char instanceOf[40] = ""; //identifier to search on assets hierarchy & clone
 	char path[1024] = ""; //some type of gameobjects store a path to be loaded from disk
 
-	Component::ComponentTypes containerType = Component::ComponentTypes::VOID_COMPONENT; // to declare special gameobjects holding one component only
+	GameObjectType gameObjectType = GameObjectType::INSTANTIABLE; 
 };
 
 

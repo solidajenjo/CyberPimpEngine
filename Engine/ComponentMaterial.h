@@ -30,6 +30,7 @@ public:
 	char name[40] = "";
 	char instanceOf[40] = "";
 	char texturePath[1024] = "";
+	char materialPath[1024] = "";
 };
 
 #endif

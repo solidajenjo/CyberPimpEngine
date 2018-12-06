@@ -64,6 +64,7 @@ void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffe
 	writer.String("name"); writer.String(name);
 	writer.String("instanceOf"); writer.String(instanceOf);
 	writer.String("texturePath"); writer.String(texturePath);
+	writer.String("materialPath"); writer.String(materialPath);
 	writer.String("r"); writer.Double(color.x);
 	writer.String("g"); writer.Double(color.y);
 	writer.String("b"); writer.Double(color.z);
@@ -80,6 +81,8 @@ void ComponentMaterial::UnSerialize(rapidjson::Value & value)
 {
 	sprintf_s(name, value["name"].GetString());
 	sprintf_s(texturePath, value["texturePath"].GetString());
+	sprintf_s(materialPath, value["materialPath"].GetString());
+	sprintf_s(instanceOf, value["instanceOf"].GetString());
 	color.x = value["r"].GetDouble();
 	color.y = value["g"].GetDouble();
 	color.z = value["b"].GetDouble();

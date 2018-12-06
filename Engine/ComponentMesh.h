@@ -56,8 +56,6 @@ public:
 	std::vector<unsigned> meshIndices;
 
 	ComponentMaterial* material;
-	float normalLength = 2.f;
-	char meshPath[4096] = "";
 	char meshUUID[40] = "";
 	Primitives primitiveType = Primitives::VOID_PRIMITIVE;
 };
