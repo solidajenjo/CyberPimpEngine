@@ -178,7 +178,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 
 					movedGO->parent = gObj;
 					LOG("Moved gameobject %s", gObj->gameObjectUUID);
-					gObj->children.push_back(movedGO);
+					gObj->InsertChild(movedGO);
 					movedGO->transform->NewAttachment();
 				}
 			}
@@ -270,6 +270,32 @@ void ModuleScene::SetSkyBox()
 		App->renderer->renderizables.clear(); //Clear renderizables, render skybox on demand only
 	}
 	*/
+}
+
+void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs) const
+{
+	bool first = true;
+	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
+	{
+		float3* corners = new float3[16];
+		if ((*it).second->isInstantiated && (*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
+		{	
+			if (first)
+			{				
+				globalAABB->SetNegativeInfinity();
+				globalAABB->Enclose(*(*it).second->aaBBGlobal);
+				first = false;
+			}
+			else
+			{
+				(*it).second->aaBBGlobal->GetCornerPoints(&corners[0]);
+				globalAABB->GetCornerPoints(&corners[8]);
+				globalAABB->Enclose(&corners[0], 16);
+			}
+			staticGOs.push_back((*it).second);
+		}
+		RELEASE(corners);
+	}
 }
 
 

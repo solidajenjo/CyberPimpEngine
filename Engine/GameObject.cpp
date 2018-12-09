@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleSpacePartitioning.h"
 #include "SceneImporter.h"
 #include "MaterialImporter.h"
 #include <queue>
@@ -29,7 +30,8 @@ GameObject::GameObject(char UUID[40], Transform* transform) : transform(transfor
 GameObject::~GameObject()
 {
 	RELEASE(transform); 
-
+	RELEASE(aaBB);
+	RELEASE(aaBBGlobal);
 	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->Release())
@@ -57,7 +59,10 @@ void GameObject::InsertComponent(Component * newComponent)
 		}
 		else
 		{
+			RELEASE(aaBB);
 			aaBB = new AABB();
+			RELEASE(aaBBGlobal);
+			aaBBGlobal = new AABB();
 			if (mesh->nVertices > 0)
 				aaBB->SetFrom(&mesh->meshVertices[0], mesh->nVertices);
 			else
@@ -86,6 +91,8 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 	writer.String("UUID"); writer.String(gameObjectUUID);
 	writer.String("name"); writer.String(name);
 	writer.String("isInstantiated"); writer.Bool(isInstantiated);
+	writer.String("isStatic"); writer.Bool(isStatic);
+	writer.String("active"); writer.Bool(active);
 	if (transform != nullptr)
 	{
 		writer.String("transform");
@@ -112,6 +119,8 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 	sprintf_s(name, value["name"].GetString());
 	sprintf_s(parentUUID, value["parentUUID"].GetString());
 	isInstantiated = value["isInstantiated"].GetBool();
+	isStatic = value["isStatic"].GetBool();
+	active = value["active"].GetBool();
 	if (value.HasMember("transform"))
 		transform->UnSerialize(value["transform"]);
 	else
@@ -175,6 +184,26 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 	}		
 
 	return true;
+}
+
+void GameObject::PropagateStaticCheck()
+{
+	std::queue<GameObject*> Q;
+	GameObject* origin = this;
+	while (!App->scene->IsRoot(origin->parent)) //crawl up until find a root descendant
+		origin = origin->parent;
+
+	Q.push(origin);
+	while (!Q.empty()) //propagate
+	{
+		origin = Q.front(); Q.pop();
+		origin->isStatic = isStatic;
+		for (std::list<GameObject*>::iterator it = origin->children.begin(); it != origin->children.end(); ++it)
+		{
+			Q.push(*it);			
+		}
+	}
+	App->spacePartitioning->quadTree.Calculate();
 }
 
 GameObject* GameObject::MakeInstanceOf() const

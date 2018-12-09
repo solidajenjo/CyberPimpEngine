@@ -90,7 +90,7 @@ void ModuleRender::Render(ComponentCamera* camera) const
 		else
 		{
 			bool render = true;
-			if (!(*it)->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects((*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains((*it)->aaBBGlobal)))
+			if (!(*it)->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects(*(*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains(*(*it)->aaBBGlobal)))
 			{
 				render = false;
 			}

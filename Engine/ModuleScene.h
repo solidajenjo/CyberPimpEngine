@@ -4,6 +4,8 @@
 #include "Module.h"
 #include <map>
 #include <string>
+#include <vector>
+#include <MathGeoLib/include/Geometry/AABB.h>
 
 class GameObject;
 class ComponentCamera;
@@ -32,6 +34,8 @@ public:
 	GameObject* FindInstanceOrigin(const std::string &instance);	
 
 	void SetSkyBox(); //sets skybox on framebuffer
+
+	void GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs) const; //get the global enclosing BB of the instantiated static gameobjects & the static gameObjects by reference
 
 	void Serialize();
 	void LinkGameObjects();

@@ -6,7 +6,9 @@
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
-#include "ModuleFramebuffer.h"
+#include "ModuleFrameBuffer.h"
+#include "ModuleSpacePartitioning.h"
+#include "QuadTree.h"
 #include "imgui/imgui.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
@@ -144,7 +146,10 @@ void SubModuleEditorConfig::Show()
 					break;
 			}
 		}
-				
+		if (ImGui::CollapsingHeader("QuadTree Module"))
+		{
+			ImGui::InputInt("Max Depth", &App->spacePartitioning->quadTree.maxDepth);
+		}
 		if (ImGui::CollapsingHeader("Scene Module"))
 		{
 			if (ImGui::Button("Clear scene"))

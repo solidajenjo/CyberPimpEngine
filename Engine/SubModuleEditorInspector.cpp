@@ -26,6 +26,12 @@ void SubModuleEditorInspector::Show()
 			ImGui::Separator();
 			ImGui::Separator();
 			ImGui::Separator();	
+			ImGui::Checkbox("Active", &App->scene->selected->active);
+			ImGui::SameLine();
+			if (ImGui::Checkbox("Static", &App->scene->selected->isStatic))
+			{
+				App->scene->selected->PropagateStaticCheck();
+			}
 			bool firstMesh = false; //only one mesh drawing per gameobject
 			ImGui::InputText("Name", &App->scene->selected->name[0], 40);
 			if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {

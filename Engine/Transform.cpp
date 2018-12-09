@@ -252,8 +252,8 @@ void Transform::UpdateAABB() const
 	//update AABB
 	if (owner->aaBB != nullptr)
 	{
-		owner->aaBBGlobal = AABB(*owner->aaBB);
-		owner->aaBBGlobal.TransformAsAABB(modelMatrixGlobal);
+		owner->aaBBGlobal->SetFrom(*owner->aaBB);
+		owner->aaBBGlobal->TransformAsAABB(modelMatrixGlobal);
 	}
 }
 void Transform::PropagateTransform() // update & propagate transform matrix

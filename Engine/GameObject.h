@@ -29,8 +29,9 @@ public:
 	void SetInstanceOf(char instanceOrigin[40]);
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
-
 	bool UnSerialize(rapidjson::Value &value);	
+
+	void PropagateStaticCheck();
 	
 	GameObject* MakeInstanceOf() const;
 
@@ -44,7 +45,7 @@ public:
 	std::list<Component*> components;
 
 	AABB* aaBB = nullptr;
-	AABB aaBBGlobal = AABB();
+	AABB* aaBBGlobal = nullptr;
 	bool enabled = true, selected = false;
 	
 	char name[40] = "";
@@ -53,7 +54,8 @@ public:
 	char instanceOf[40] = ""; //identifier to search on assets hierarchy & clone
 	char path[1024] = ""; //some type of gameobjects store a path to be loaded from disk
 	bool isInstantiated = false;
-
+	bool isStatic = false;
+	bool active = true;
 };
 
 

@@ -257,7 +257,9 @@
     <ClInclude Include="Engine\ModuleFrameBuffer.h" />
     <ClInclude Include="Engine\ModuleProgram.h" />
     <ClInclude Include="Engine\ModuleScene.h" />
+    <ClInclude Include="Engine\ModuleSpacePartitioning.h" />
     <ClInclude Include="Engine\ModuleTime.h" />
+    <ClInclude Include="Engine\QuadTree.h" />
     <ClInclude Include="Engine\SceneImporter.h" />
     <ClInclude Include="Engine\SubModuleEditorConsole.h" />
     <ClInclude Include="Engine\SubModuleEditorConfig.h" />
@@ -330,7 +332,9 @@
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />
     <ClCompile Include="Engine\ModuleProgram.cpp" />
     <ClCompile Include="Engine\ModuleScene.cpp" />
+    <ClCompile Include="Engine\ModuleSpacePartitioning.cpp" />
     <ClCompile Include="Engine\ModuleTime.cpp" />
+    <ClCompile Include="Engine\QuadTree.cpp" />
     <ClCompile Include="Engine\SceneImporter.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConsole.cpp" />
     <ClCompile Include="Engine\SubModuleEditorConfig.cpp" />

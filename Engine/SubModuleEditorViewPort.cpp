@@ -2,6 +2,7 @@
 								App->renderer->insertRenderizable(newGO);\
 								newMesh->SendToGPU();\
 								newGO->InsertComponent(newMesh);\
+								newGO->isInstantiated = true; \
 								App->scene->InsertGameObject(newGO);\
 								App->scene->AttachToRoot(newGO);\
 								newGO->transform->PropagateTransform();\
@@ -16,6 +17,7 @@
 #include "imgui/imgui.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleProgram.h"
+#include "ModuleSpacePartitioning.h"
 #include "debugdraw.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
@@ -53,13 +55,14 @@ void SubModuleEditorViewPort::Show()
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);
 			}
-			if (App->scene->selected != nullptr)
+			if (App->scene->selected != nullptr && App->scene->selected->aaBBGlobal != nullptr)
 			{
-				dd::aabb(App->scene->selected->aaBBGlobal.minPoint, App->scene->selected->aaBBGlobal.maxPoint, dd::colors::Yellow);				
+				dd::aabb(App->scene->selected->aaBBGlobal->minPoint, App->scene->selected->aaBBGlobal->maxPoint, dd::colors::Yellow);				
 			}
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 			
 		}		
+		App->spacePartitioning->quadTree.DebugDraw();
 		App->frameBuffer->UnBind();
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
 		if (ImGui::BeginDragDropTarget())

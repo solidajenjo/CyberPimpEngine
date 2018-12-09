@@ -213,6 +213,12 @@
     <ClCompile Include="Engine\ModuleFileSystem.cpp">
       <Filter>EngineModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleSpacePartitioning.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\QuadTree.cpp">
+      <Filter>SpacePartitioners</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -812,6 +818,12 @@
     <ClInclude Include="Engine\ModuleFileSystem.h">
       <Filter>EngineModules</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ModuleSpacePartitioning.h">
+      <Filter>EngineModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\QuadTree.h">
+      <Filter>SpacePartitioners</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -864,6 +876,9 @@
     </Filter>
     <Filter Include="Utilities\PhysFS">
       <UniqueIdentifier>{5cbf5a7d-7c30-48c2-959f-c2efa3b07aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpacePartitioners">
+      <UniqueIdentifier>{ba742d9c-e848-4729-ae2f-6136450a6c5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
