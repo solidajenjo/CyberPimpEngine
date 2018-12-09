@@ -24,10 +24,12 @@ public:
 	void DrawNode(GameObject* gObj, bool isWorld = true);
 
 	bool IsRoot(const GameObject* go) const;
+	void AttachToRoot(GameObject* go);
+	void AttachToAssets(GameObject* go);
 
-	bool MakeParent(char parentUUID[40], GameObject* son); //searchs for a gameobject by it's UUID and attaches son to it
+	bool MakeParent(const std::string &parentUUID, GameObject* son); //searchs for a gameobject by it's UUID and attaches son to it
 	
-	GameObject* FindInstanceOrigin(char instance[40]);	
+	GameObject* FindInstanceOrigin(const std::string &instance);	
 
 	void SetSkyBox(); //sets skybox on framebuffer
 
@@ -41,8 +43,6 @@ public:
 
 private:
 
-	void FlattenHierarchy(GameObject* go);
-	
 	//members
 
 	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects

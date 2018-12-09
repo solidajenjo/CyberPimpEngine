@@ -99,7 +99,6 @@ update_status ModuleInput::PreUpdate()
 			if (found != std::string::npos)
 			{
 				SceneImporter si;
-				std::vector<GameObject*> materials;
 				si.Import(std::string(file));
 			}
 			else

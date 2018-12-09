@@ -18,7 +18,7 @@ bool ModuleFileSystem::CleanUp()
 	return true;
 }
 
-bool ModuleFileSystem::Write(const std::string & path, void * data, unsigned size) const
+bool ModuleFileSystem::Write(const std::string & path, const void * data, unsigned size) const
 {
 	PHYSFS_File* file = PHYSFS_openWrite(path.c_str());
 	if (file == nullptr)

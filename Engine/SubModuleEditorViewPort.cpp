@@ -3,6 +3,8 @@
 								newMesh->SendToGPU();\
 								newGO->InsertComponent(newMesh);\
 								App->scene->InsertGameObject(newGO);\
+								App->scene->AttachToRoot(newGO);\
+								newGO->transform->PropagateTransform();\
 								ImGui::CloseCurrentPopup(); }
 
 #include "SubModuleEditorViewPort.h"
@@ -66,21 +68,13 @@ void SubModuleEditorViewPort::Show()
 			{
 				char movedId[40];
 				sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
-				GameObject* movedGO = nullptr;
-				/*const std::vector<GameObject*>* importedGameObjects = App->scene->getImportedGameObjects();
-				for (std::vector<GameObject*>::const_iterator it = importedGameObjects->begin(); it != importedGameObjects->end(); ++it)
-				{
-					if (strcmp((*it)->gameObjectUUID, movedId) == 0)
-					{
-						movedGO = *it;
-						break;
-					}
-				}*/
+				GameObject* movedGO = App->scene->FindInstanceOrigin(movedId);
 				if (movedGO != nullptr)
 				{
 					GameObject* instance = movedGO->MakeInstanceOf();
+					instance->transform->PropagateTransform();
 					instance->SetInstanceOf(movedGO->gameObjectUUID);
-					App->scene->InsertGameObject(instance);
+					App->scene->AttachToRoot(instance);
 				}
 			}
 		}
@@ -88,7 +82,6 @@ void SubModuleEditorViewPort::Show()
 		{
 			if (ImGui::TreeNodeEx("Add primitive"))
 			{				
-				//TODO: Calculate AABBs
 				if (ImGui::Button("Cube", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
 				{
 					GameObject* newGO = new GameObject("Cube");

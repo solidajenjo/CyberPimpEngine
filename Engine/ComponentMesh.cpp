@@ -10,6 +10,7 @@
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "crossguid/include/crossguid/guid.hpp"
 #include "MathGeoLib/include/Math/MathConstants.h"
+#include "SceneImporter.h"
 #include "glew-2.1.0/include/GL/glew.h"
 #include "debugdraw.h"
 #include "GameObject.h"
@@ -25,16 +26,10 @@
 #endif
 
 
-ComponentMesh::ComponentMesh() : Component(ComponentTypes::MESH_COMPONENT) 
-{
-	xg::Guid guid = xg::newGuid();
-	sprintf_s(meshUUID, guid.str().c_str());
-}
+std::map<std::string, ComponentMesh*>ComponentMesh::meshesLoaded;
 
 ComponentMesh::ComponentMesh(Primitives primitive) : Component(ComponentTypes::MESH_COMPONENT)
-{
-	xg::Guid guid = xg::newGuid();
-	sprintf_s(meshUUID, guid.str().c_str());
+{	
 	FromPrimitive(primitive);
 }
 
@@ -104,8 +99,6 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 
 ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vector<unsigned>& indices, const std::vector<float>& texCoords) : Component(ComponentTypes::MESH_COMPONENT)
 {
-	xg::Guid guid = xg::newGuid();
-	sprintf_s(meshUUID, guid.str().c_str());
 	nVertices = vertices.size() / 3.f;
 	meshVertices.resize(nVertices);
 	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices * 3);
@@ -174,7 +167,7 @@ void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& 
 {
 	writer.StartObject();
 	writer.String("type"); writer.Int((int)type);
-	writer.String("meshUUID"); writer.String(meshUUID);
+	writer.String("meshPath"); writer.String(meshPath);
 	writer.String("primitive"); writer.Int((int)primitiveType);
 	writer.String("material");
 	material->Serialize(writer);
@@ -183,6 +176,7 @@ void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& 
 
 void ComponentMesh::UnSerialize(rapidjson::Value & value)
 {
+	sprintf_s(meshPath, value["meshPath"].GetString());
 	primitiveType = (Primitives)value["primitive"].GetInt();
 	if (primitiveType != Primitives::VOID_PRIMITIVE)
 	{
@@ -213,6 +207,20 @@ void ComponentMesh::UnSerialize(rapidjson::Value & value)
 		{
 			material->UnSerialize(value["material"]);
 		}
+	}
+}
+
+bool ComponentMesh::Release()
+{
+	if (clients > 1) //still have clients -> no destroy
+	{
+		--clients;
+		return false;
+	}
+	else
+	{
+		meshesLoaded.erase(meshPath); //unload completely
+		return true;
 	}
 }
 
@@ -261,4 +269,24 @@ void ComponentMesh::ReleaseFromGPU()
 		glDeleteVertexArrays(1, &VAO);
 		VAO = 0;
 	}
+}
+
+ComponentMesh* ComponentMesh::GetMesh(std::string path)
+{
+	std::map<std::string, ComponentMesh*>::iterator it = meshesLoaded.find(path);
+	if (it == meshesLoaded.end())
+	{
+		SceneImporter si;
+		ComponentMesh* mesh = si.LoadMesh(path.c_str());
+		if (mesh != nullptr)
+		{
+			meshesLoaded[path] = mesh;
+			++mesh->clients;
+			return mesh;
+		}
+		else
+			return nullptr;
+	}		
+	++(*it).second->clients;
+	return (*it).second;
 }

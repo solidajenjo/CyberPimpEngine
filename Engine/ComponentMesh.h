@@ -2,6 +2,8 @@
 #define _COMPONENT_MESH_H_
 
 #include <vector>
+#include <string>
+#include <map>
 #include "MathGeoLib/include/Math/float3.h"
 #include "Component.h"
 
@@ -26,7 +28,7 @@ public:
 		PLANE
 	};
 
-	ComponentMesh();
+	ComponentMesh() : Component(ComponentTypes::MESH_COMPONENT) {};
 	ComponentMesh(Primitives primitive);
 	ComponentMesh(const std::vector<float> &vertices, const std::vector<unsigned> &indices, const std::vector<float> &texCoords);
 
@@ -39,6 +41,7 @@ public:
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;
+	bool Release() override;
 	void SendToGPU();
 	void ReleaseFromGPU();
 
@@ -56,8 +59,11 @@ public:
 	std::vector<unsigned> meshIndices;
 
 	ComponentMaterial* material;
-	char meshUUID[40] = "";
+	char meshPath[1024] = "";
 	Primitives primitiveType = Primitives::VOID_PRIMITIVE;
+
+	static ComponentMesh* GetMesh(std::string path); //check if a mesh is loaded and returns it, otherwise tries to load and return
+	static std::map<std::string, ComponentMesh*> meshesLoaded;
 };
 
 #endif

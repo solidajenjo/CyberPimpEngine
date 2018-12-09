@@ -17,45 +17,22 @@ class GameObject
 {
 public:
 
-	enum class GameObjectType
-	{
-		INSTANTIABLE, // Could have multiple components	
-		MATERIAL_CONTAINER // containers hold 1 component only
-	};
 
-	GameObject(const char name[40]) 
-	{
-		transform = new Transform(this); //notice transform who owns it
-		xg::Guid guid = xg::newGuid();
-		std::string uuid = guid.str();
-		sprintf_s(gameObjectUUID, uuid.c_str());		
-		sprintf_s(this->name, name);
-	}
+	GameObject(const char name[40]);
 
-	GameObject(char UUID[40], Transform* transform) : transform(transform) 
-	{
-		sprintf_s(gameObjectUUID,UUID);
-	};
+	GameObject(char UUID[40], Transform* transform);
 
-	~GameObject()
-	{
-		RELEASE(transform); //TODO: Release bug on exit
-
-		for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-		{
-			RELEASE(*it);
-		}
-	}
-
+	~GameObject();
+	
 	void InsertComponent(Component* newComponent);
 	void InsertChild(GameObject* child);
 	void SetInstanceOf(char instanceOrigin[40]);
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
-	bool UnSerialize(rapidjson::Value &value, bool isInstantiated);	
+
+	bool UnSerialize(rapidjson::Value &value);	
 	
 	GameObject* MakeInstanceOf() const;
-	ComponentMesh* GetMeshInstanceOrigin(char meshUUID[40]) const;
 
 	//members
 	
@@ -75,8 +52,8 @@ public:
 	char parentUUID[40] = ""; //unique parent's game object id
 	char instanceOf[40] = ""; //identifier to search on assets hierarchy & clone
 	char path[1024] = ""; //some type of gameobjects store a path to be loaded from disk
+	bool isInstantiated = false;
 
-	GameObjectType gameObjectType = GameObjectType::INSTANTIABLE; 
 };
 
 

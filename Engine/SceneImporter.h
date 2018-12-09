@@ -18,11 +18,11 @@ class SceneImporter
 public:
 
 	bool Import(const std::string &file) const;
-	void Load(const std::string &file) const; //Loads the model & all his materials.
+	ComponentMesh* LoadMesh(const char path[1024]) const;
 
 private:
 	inline void writeToBuffer(std::vector<char> &buffer, unsigned &pointer, const unsigned size, const void* data) const;
-	ComponentMesh* LoadMesh(const char path[1024], std::map<std::string, ComponentMaterial*> &materials) const;
+
 };
 
 #endif 

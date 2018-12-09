@@ -10,6 +10,34 @@
 #include "MaterialImporter.h"
 #include <queue>
 
+
+
+GameObject::GameObject(const char name[40])
+{
+	transform = new Transform(this); //notice transform who owns it
+	xg::Guid guid = xg::newGuid();
+	std::string uuid = guid.str();
+	sprintf_s(gameObjectUUID, uuid.c_str());
+	sprintf_s(this->name, name);
+}
+
+GameObject::GameObject(char UUID[40], Transform* transform) : transform(transform)
+{
+	sprintf_s(gameObjectUUID, UUID);
+};
+
+GameObject::~GameObject()
+{
+	RELEASE(transform); 
+
+	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->Release())
+			RELEASE(*it);
+	}
+}
+
+
 void GameObject::InsertComponent(Component * newComponent)
 {
 	newComponent->owner = this;
@@ -57,6 +85,7 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 
 	writer.String("UUID"); writer.String(gameObjectUUID);
 	writer.String("name"); writer.String(name);
+	writer.String("isInstantiated"); writer.Bool(isInstantiated);
 	if (transform != nullptr)
 	{
 		writer.String("transform");
@@ -64,19 +93,9 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 	}
 	writer.String("instanceOf"); writer.String(instanceOf);
 	writer.String("path"); writer.String(path);
-	writer.String("gameObjectType"); writer.Int((int)gameObjectType);
-	switch (gameObjectType)
-	{
-		case GameObjectType::MATERIAL_CONTAINER:
-		{
-			MaterialImporter mi;
-			mi.Save(path, (ComponentMaterial*) components.front()); //persist changes
-			break; 
-		}
-	}
-	writer.String("parentUUID"); writer.String(parentUUID);
-
 	
+	writer.String("parentUUID"); writer.String(parentUUID);
+		
 	writer.String("components");
 	writer.StartArray();
 	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
@@ -87,25 +106,24 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 	writer.EndObject();
 }
 
-bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
+bool GameObject::UnSerialize(rapidjson::Value &value)
 {
-	bool isOk = true;
 	sprintf_s(gameObjectUUID, value["UUID"].GetString());
 	sprintf_s(name, value["name"].GetString());
 	sprintf_s(parentUUID, value["parentUUID"].GetString());
-	
+	isInstantiated = value["isInstantiated"].GetBool();
 	if (value.HasMember("transform"))
 		transform->UnSerialize(value["transform"]);
+	else
+		RELEASE(transform);
 	sprintf_s(parentUUID, value["parentUUID"].GetString());
 	sprintf_s(instanceOf, value["instanceOf"].GetString());
 	sprintf_s(path, value["path"].GetString());
-	gameObjectType = (GameObjectType) value["gameObjectType"].GetInt();
 	rapidjson::Value componentValues = value["components"].GetArray();
-	bool hasMeshes = false;
+
 	for (rapidjson::Value::ValueIterator it = componentValues.Begin(); it != componentValues.End(); ++it)
 	{
-		/*
-		unsigned componentType = (*it)["type"].GetInt();		
+		unsigned componentType = (*it)["type"].GetInt();
 		switch (componentType)
 		{
 			case (unsigned)Component::ComponentTypes::CAMERA_COMPONENT:
@@ -115,57 +133,48 @@ bool GameObject::UnSerialize(rapidjson::Value &value, bool isInstantiated)
 				InsertComponent(newCamera);
 				break;
 			}
-			case (unsigned)Component::ComponentTypes::MESH_COMPONENT:
-			{				
-				if (isInstantiated)
-				{
-					char meshInstanceOf[40];
-					sprintf_s(meshInstanceOf, (*it)["meshUUID"].GetString());
-					if (strlen(meshInstanceOf) > 0)
-					{
-						GameObject* origin = App->scene->FindInstanceOrigin(instanceOf);
-						if (origin == nullptr)
-						{
-							LOG("Broken link");
-						}
-						else
-						{
-							ComponentMesh* mesh = origin->GetMeshInstanceOrigin(meshInstanceOf);
-							if (mesh == nullptr)
-							{
-								LOG("Broken link");
-							}
-							else
-							{
-								InsertComponent(mesh);
-								mesh->SendToGPU();
-								hasMeshes = true;								
-							}
-						}
-					}
-					else
-					{
-						ComponentMesh* newMesh = new ComponentMesh();
-						newMesh->UnSerialize(*it);
-						InsertComponent(newMesh);
-						newMesh->SendToGPU(); //TODO send only once to gpu
-						hasMeshes = true;
-					}
-				}
-				break;
-			}
+					
 			case (unsigned)Component::ComponentTypes::MATERIAL_COMPONENT:
 			{
-				MaterialImporter mi;				
-				GameObject* mat = mi.Load(path);
-				InsertComponent(mat->components.front());
+				char materialPath[1024];
+				sprintf_s(materialPath, (*it)["materialPath"].GetString());
+				ComponentMaterial* mat = ComponentMaterial::GetMaterial(materialPath);
+				if (mat != nullptr)
+					InsertComponent(mat);
 				break;
 			}
-		}*/
-		if (hasMeshes)
-			App->renderer->insertRenderizable(this);
-	}
-	return isOk;
+
+			case (unsigned)Component::ComponentTypes::MESH_COMPONENT:
+			{
+				if ((*it)["primitive"].GetInt() == (int)ComponentMesh::Primitives::VOID_PRIMITIVE) //is a mesh
+				{
+					char meshPath[1024];
+					sprintf_s(meshPath, (*it)["meshPath"].GetString());
+					ComponentMesh* mesh = ComponentMesh::GetMesh(meshPath);
+					if (mesh != nullptr)
+					{
+						InsertComponent(mesh);
+						if (isInstantiated)
+						{
+							mesh->SendToGPU();
+							App->renderer->insertRenderizable(this);
+						}
+					}
+				}
+				else
+				{
+					ComponentMesh* newMesh = new ComponentMesh();
+					newMesh->UnSerialize(*it);
+					newMesh->SendToGPU();
+					InsertComponent(newMesh);
+					App->renderer->insertRenderizable(this);
+				}
+			}
+		}
+
+	}		
+
+	return true;
 }
 
 GameObject* GameObject::MakeInstanceOf() const
@@ -176,29 +185,24 @@ GameObject* GameObject::MakeInstanceOf() const
 	clonedGO->transform->rotation = transform->rotation;
 	clonedGO->transform->scale = transform->scale;
 	clonedGO->transform->RecalcModelMatrix();
-	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
-	{
-		clonedGO->components.push_back(*it);
-	}
-	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
-	{
-		clonedGO->InsertChild((*it)->MakeInstanceOf());
-	}
-	return clonedGO;
-}
-
-ComponentMesh* GameObject::GetMeshInstanceOrigin(char meshUUID[40]) const
-{
+	clonedGO->isInstantiated = true;
 	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->type == Component::ComponentTypes::MESH_COMPONENT)
 		{
 			ComponentMesh* mesh = (ComponentMesh*)(*it);
-			if (strcmp(mesh->meshUUID, meshUUID) == 0)
-			{
-				return mesh;
-			}
+			ComponentMesh* newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
+			newMesh->SendToGPU();
+			App->renderer->insertRenderizable(clonedGO);
+			clonedGO->InsertComponent(newMesh);
 		}
+		else
+			clonedGO->InsertComponent(*it);
 	}
-	return nullptr; //broken link
+	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
+	{
+		clonedGO->InsertChild((*it)->MakeInstanceOf());
+	}
+	App->scene->InsertGameObject(clonedGO);
+	return clonedGO;
 }

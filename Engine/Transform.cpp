@@ -181,31 +181,24 @@ void Transform::EditorDraw()
 		windowJumped = false;
 		jumpRefresh = true;
 	}
-	if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
-	{
+
+	ImGui::PushID(1);
+	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f))
+	{		
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 winPos = ImGui::GetMousePos();
 		ImVec2 winBegin = ImGui::GetWindowPos();
 		ImVec2 winEnd = ImVec2(winBegin.x + size.x, winBegin.y + size.y);
 		if (winPos.x < winBegin.x)
-		{			
-			SDL_WarpMouseInWindow(App->window->window, winEnd.x, winPos.y);					
+		{
+			SDL_WarpMouseInWindow(App->window->window, winEnd.x, winPos.y);
 			windowJumped = true;
 		}
 		if (winPos.x > winEnd.x)
 		{
-			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);	
+			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);
 			windowJumped = true;
 		}
-	}
-	else
-	{
-		windowJumped = false;
-		jumpRefresh = false;
-	}
-	ImGui::PushID(1);
-	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f))
-	{		
 		if (!windowJumped && !jumpRefresh)
 			SetPosition(pos);
 	}
@@ -213,6 +206,20 @@ void Transform::EditorDraw()
 	ImGui::PushID(2);
 	if (ImGui::DragFloat3("Rotation (Local)", &rot.x, 0.1f))
 	{
+		ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 winPos = ImGui::GetMousePos();
+		ImVec2 winBegin = ImGui::GetWindowPos();
+		ImVec2 winEnd = ImVec2(winBegin.x + size.x, winBegin.y + size.y);
+		if (winPos.x < winBegin.x)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winEnd.x, winPos.y);
+			windowJumped = true;
+		}
+		if (winPos.x > winEnd.x)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);
+			windowJumped = true;
+		}
 		if (!windowJumped && !jumpRefresh)
 			SetRotation(DegToRad(rot));
 	}
@@ -220,6 +227,20 @@ void Transform::EditorDraw()
 	ImGui::PushID(3);
 	if (ImGui::DragFloat3("Scale (Local)", &scl.x, 0.01f))
 	{
+		ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 winPos = ImGui::GetMousePos();
+		ImVec2 winBegin = ImGui::GetWindowPos();
+		ImVec2 winEnd = ImVec2(winBegin.x + size.x, winBegin.y + size.y);
+		if (winPos.x < winBegin.x)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winEnd.x, winPos.y);
+			windowJumped = true;
+		}
+		if (winPos.x > winEnd.x)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winBegin.x, winPos.y);
+			windowJumped = true;
+		}
 		if (!windowJumped && !jumpRefresh)
 			SetScale(scl);
 	}

@@ -13,7 +13,7 @@
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include "rapidjson-1.1.0/include/rapidjson/error/en.h"
 
-std::string MaterialImporter::Import(const aiMaterial* material, const unsigned index)
+std::string MaterialImporter::Import(const aiMaterial* material, const unsigned index, GameObject* &materialImported) const
 {
 	assert(material != nullptr);
 	xg::Guid guid = xg::newGuid();
@@ -21,7 +21,7 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 
 	aiColor3D color(1.f, 1.f, 1.f);
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-	ComponentMaterial materialComponent(color.r, color.g, color.b, 1.0f);
+	ComponentMaterial* materialComponent = new ComponentMaterial(color.r, color.g, color.b, 1.0f);
 	std::string materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".mat";
 	
 	std::string savePath = "";
@@ -51,65 +51,81 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 		
 	}
 	
-	sprintf_s(materialComponent.texturePath, savePath.c_str());
+	sprintf_s(materialComponent->texturePath, savePath.c_str());
+	sprintf_s(materialComponent->materialPath, materialPath.c_str());
 
-	if (!App->fileSystem->Write(materialPath, &materialComponent, sizeof(materialComponent)))
-	{
-		LOG("Failed importing %s", materialPath.c_str());		
-		return "";
-	}
-	GameObject* gameObject = new GameObject("Material");
-	gameObject->gameObjectType = GameObject::GameObjectType::MATERIAL_CONTAINER;
-	gameObject->InsertComponent(&materialComponent);
-	rapidjson::StringBuffer sb;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
-	sprintf_s(gameObject->path, materialPath.c_str());
-	gameObject->Serialize(writer);	
-	materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".mgo";
-	unsigned dataSize = strlen(sb.GetString());
-	char* serialData = new char[dataSize];
-	memcpy(serialData, sb.GetString(), dataSize);
-	App->fileSystem->Write(materialPath.c_str(), serialData, dataSize);
-	RELEASE(serialData);
+	Save(materialPath.c_str(), materialComponent);
+	
+	materialImported->InsertComponent(materialComponent);
+	
+	ComponentMaterial::materialsLoaded[materialComponent->materialPath] = materialComponent;
+	
 	return materialPath;
 }
 
-GameObject* MaterialImporter::Load(char path[4096])
+ComponentMaterial* MaterialImporter::Load(const char path[4096]) const
 {	
 	unsigned size = App->fileSystem->Size(path);
-	char* buffer = new char[size];
-	if (!App->fileSystem->Read(path, &buffer[0], size))
+	if (size > 0)
 	{
-		LOG("Couldn't read material %s", path);
-		RELEASE(buffer);
-		return nullptr;
+		char* buffer = new char[size];
+		if (App->fileSystem->Read(path, &buffer[0], size)) 
+		{
+			ComponentMaterial* newMat = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
+			unsigned pointer = 0u;
+			newMat->program = buffer[pointer];
+			pointer += sizeof(unsigned);
+			memcpy(&newMat->color.x, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->color.y, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->color.z, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->color.w, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+
+			memcpy(&newMat->diffuse, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->ambient, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->specular, &buffer[pointer], sizeof(float));
+			pointer += sizeof(float);
+			memcpy(&newMat->texturePath, &buffer[pointer], sizeof(newMat->texturePath));
+			if (strlen(newMat->texturePath) > 0)
+			{
+				newMat->texture = App->textures->Load(newMat->texturePath); //TODO: Control multi load
+			}
+			pointer += sizeof(newMat->texturePath);
+			memcpy(&newMat->materialPath, &buffer[pointer], sizeof(newMat->materialPath));
+			return newMat;
+
+		}
 	}
-	rapidjson::Document document;
-	if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
-	{
-		LOG("Error parsing model. Model file corrupted -> %s -> %d", rapidjson::GetParseError_En(document.GetParseError()), document.GetErrorOffset());
-		RELEASE(buffer);
-		return nullptr;
-	}
-	GameObject* newGO = new GameObject("");
-	newGO->UnSerialize(document, false);
-	size = App->fileSystem->Size(newGO->path);
-	ComponentMaterial* newMat = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
-	App->fileSystem->Read(newGO->path, newMat, sizeof(ComponentMaterial));
-	if (strlen(newMat->texturePath) > 0)
-	{
-		newMat->texture = App->textures->Load(newMat->texturePath);
-	}
-	newGO->InsertComponent(newMat);
-	RELEASE(buffer);
-	return newGO;
+	return nullptr;
 }
 
-void MaterialImporter::Save(char path[1024], ComponentMaterial * material)
+void MaterialImporter::Save(const char path[1024], const ComponentMaterial * material) const
 {
-	if (!App->fileSystem->Write(std::string(path), material, sizeof(*material)))
+	unsigned size = sizeof(unsigned) + sizeof(float) * 7 + sizeof(material->name) + sizeof(material->texturePath) + sizeof(material->materialPath);
+	char* buffer = new char[size];
+	unsigned pointer = 0u;
+	memcpy(&buffer[pointer], &material->program, sizeof(unsigned));
+	pointer += sizeof(unsigned);
+	memcpy(&buffer[pointer], &material->color, sizeof(float) * 4);
+	pointer += sizeof(float) * 4;
+	memcpy(&buffer[pointer], &material->diffuse, sizeof(float));
+	pointer += sizeof(float);
+	memcpy(&buffer[pointer], &material->ambient, sizeof(float));
+	pointer += sizeof(float);
+	memcpy(&buffer[pointer], &material->specular, sizeof(float));
+	pointer += sizeof(float);
+	memcpy(&buffer[pointer], &material->texturePath, sizeof(material->texturePath));
+	pointer += sizeof(material->texturePath);
+	memcpy(&buffer[pointer], &material->materialPath, sizeof(material->materialPath));
+	if (!App->fileSystem->Write(std::string(path), buffer, size))
 	{
 		LOG("Failed saving material %s", path);
 	}
+	RELEASE(buffer);
 }
 

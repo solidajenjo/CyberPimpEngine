@@ -23,6 +23,8 @@ bool ModuleScene::Init()
 	{
 		root = new GameObject("Scene");	
 		directory = new GameObject("Assets");
+		sceneGameObjects[root->gameObjectUUID] = root;
+		sceneGameObjects[directory->gameObjectUUID] = directory;
 	}
 	else
 	{
@@ -37,30 +39,37 @@ bool ModuleScene::Init()
 			{
 				LOG("Error loading previous scene. Scene file corrupted.");
 				root = new GameObject("Scene");
+				directory = new GameObject("Assets");
+				sceneGameObjects[root->gameObjectUUID] = root;
+				sceneGameObjects[directory->gameObjectUUID] = directory;
 			}
 			else
 			{				
-				root = new GameObject("Scene");
-				sprintf_s(root->gameObjectUUID, document["UUID"].GetString());
-				rapidjson::Value children = document["children"].GetArray();
-				bool isOk = true;
-				for (rapidjson::Value::ValueIterator it = children.Begin(); it != children.End(); ++it)
+				rapidjson::Value gameObjects = document.GetArray();				
+				for (rapidjson::Value::ValueIterator it = gameObjects.Begin(); it != gameObjects.End(); ++it)
 				{
-					GameObject* newGO = new GameObject("");	
-					isOk = isOk && newGO->UnSerialize(*it, true);
+					if ((*it).HasMember("scene"))
+					{
+						root = new GameObject("");
+						root->UnSerialize((*it)["scene"]);	
+						sceneGameObjects[root->gameObjectUUID] = root;
+					}
+					else if ((*it).HasMember("assets"))
+					{
+						directory = new GameObject("");
+						directory->UnSerialize((*it)["assets"]);
+						sceneGameObjects[directory->gameObjectUUID] = directory;
+					}
+					else
+					{
+						GameObject* newGO = new GameObject("");
+						if (newGO->UnSerialize(*it))
+							sceneGameObjects[newGO->gameObjectUUID] = newGO;
+					}
 				}
-				if (!isOk)
-				{
-					CleanUp();
-					root = new GameObject("Scene");
-					LOG("Error loading scene");
-				}
-				else
-				{
-					root->transform->PropagateTransform();
-					FlattenHierarchy(root);
-					LinkGameObjects();
-				}
+				
+				LinkGameObjects();					
+				root->transform->PropagateTransform();
 			}
 			delete buffer;
 		}
@@ -100,24 +109,17 @@ bool ModuleScene::CleanUp()
 void ModuleScene::InsertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);
-	root->children.push_back(newGO);
-	newGO->parent = root;
-	FlattenHierarchy(newGO);
+	sceneGameObjects[newGO->gameObjectUUID] = newGO;
 }
 
-void ModuleScene::ImportGameObject(GameObject * newGO)
+void ModuleScene::ImportGameObject(GameObject * newGO) 
 {
-	assert(newGO != nullptr);	
-	FlattenHierarchy(newGO);
-	if (strlen(newGO->parentUUID) > 0)
-	{
-		MakeParent(newGO->parentUUID, newGO);
+	assert(newGO != nullptr);		
+	if (strlen(newGO->parentUUID) == 0) 
+	{	
+		directory->InsertChild(newGO);		
 	}
-	else
-	{
-		directory->children.push_back(newGO);
-		newGO->parent = directory;
-	}
+	sceneGameObjects[newGO->gameObjectUUID] = newGO;
 }
 
 void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
@@ -154,7 +156,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 	{
 		flags |= ImGuiTreeNodeFlags_Selected;
 	}
-	ImGui::PushID(&gObj->name);
+	ImGui::PushID(gObj);
 	bool node_open = ImGui::TreeNodeEx(gObj->name, flags);
 	if (isWorld)
 	{
@@ -220,23 +222,33 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 
 bool ModuleScene::IsRoot(const GameObject * go) const
 {
-	return go == root;
+	return go == root || go == directory;
 }
 
-bool ModuleScene::MakeParent(char parentUUID[40], GameObject * son)
+void ModuleScene::AttachToRoot(GameObject * go)
+{
+	root->InsertChild(go);
+}
+
+void ModuleScene::AttachToAssets(GameObject * go)
+{
+	directory->InsertChild(go);
+}
+
+bool ModuleScene::MakeParent(const std::string &parentUUID, GameObject * son)
 {
 	GameObject* parent = FindInstanceOrigin(parentUUID);
 	if (parent != nullptr)
 	{
-		parent->InsertChild(son);
+		parent->InsertChild(son);		
 		return true;
 	}
 	return false;
 }
 
-GameObject* ModuleScene::FindInstanceOrigin(char instance[40])
+GameObject* ModuleScene::FindInstanceOrigin(const std::string &instance)
 {
-	std::map<std::string, GameObject*>::iterator it = sceneGameObjects.find(std::string(instance));
+	std::map<std::string, GameObject*>::iterator it = sceneGameObjects.find(instance);
 	if (it != sceneGameObjects.end())
 		return (*it).second;
 	return nullptr;  //broken link
@@ -260,33 +272,30 @@ void ModuleScene::SetSkyBox()
 	*/
 }
 
-void ModuleScene::FlattenHierarchy(GameObject* go) 
-{
-	std::stack<GameObject*> S;
-	S.push(go);
-	while (!S.empty())
-	{
-		GameObject* flatGO = S.top();
-		S.pop();
-		sceneGameObjects[std::string(flatGO->gameObjectUUID)] = flatGO;
-		for (std::list<GameObject*>::iterator it = flatGO->children.begin(); it != flatGO->children.end(); ++it)
-		{
-			S.push(*it);
-		}
-	}
-	
-}
-
 
 void ModuleScene::Serialize()
 {
 	rapidjson::StringBuffer sb;
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
 	writer.StartArray();
+
+	//Keep the roots to rebuild hierarchies
+	writer.StartObject(); 
+	writer.String("scene");
+	root->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("assets");
+	directory->Serialize(writer);
+	writer.EndObject();
+
+	//Serialize all the remaining gameobjects
 	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
-		(*it).second->Serialize(writer);
+		if (!IsRoot((*it).second))
+			(*it).second->Serialize(writer);
 	}
+
 	writer.EndArray();
 
 	//save scene
@@ -315,8 +324,6 @@ void ModuleScene::LinkGameObjects()
 {
 	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
-		GameObject* parent = FindInstanceOrigin((*it).second->parentUUID);
-		if (parent != nullptr)
-			parent->InsertChild((*it).second);
+		MakeParent((*it).second->parentUUID, (*it).second);
 	}
 }

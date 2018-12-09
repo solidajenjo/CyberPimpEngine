@@ -27,10 +27,13 @@ public:
 	virtual void EditorDraw() = 0; //descendants should implement his own inspector handler draw
 	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) { }
 	virtual void UnSerialize(rapidjson::Value &value) {}
+	virtual bool Release() { return true; } // tells if it has to be destroyed if it has no active clients on release
 	//members
 
 	ComponentTypes type = ComponentTypes::VOID_COMPONENT;
 	GameObject* owner = nullptr;
+
+	unsigned clients = 0u; //controls shared component clean
 };
 
 #endif
