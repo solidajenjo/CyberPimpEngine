@@ -343,7 +343,6 @@ void ModuleScene::Serialize()
 		SDL_RWclose(rw);
 	}
 	
-
 }
 
 void ModuleScene::LinkGameObjects()

@@ -74,7 +74,7 @@ inline void QuadTree<T>::DebugDraw()
 	{
 		QTNode* node = Q.front(); 
 		Q.pop();
-		//if (node->lowerNodes.size() == 0)
+		if (node->lowerNodes.size() == 0)
 			dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
 		for each (QTNode* n in node->lowerNodes)
 		{

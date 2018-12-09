@@ -63,7 +63,7 @@
         "UUID": "007ae4ca-ea3b-4ffd-80fc-634a61f809de",
         "name": "Cylinder.034",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -178,7 +178,7 @@
         "UUID": "011fcd93-9e66-41e2-8406-0ec7d3682926",
         "name": "Cylinder.069",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -245,7 +245,7 @@
         "UUID": "01383144-ab72-4ffb-b993-72b7ffba0ba7",
         "name": "Plane",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -282,8 +282,8 @@
                     "b": 0.06122644618153572,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.5270000100135803,
-                    "ambient": 0.2669999897480011,
+                    "diffuse": 0.8460000157356262,
+                    "ambient": 0.3659999966621399,
                     "specular": 0.0
                 }
             }
@@ -293,7 +293,7 @@
         "UUID": "014a5bf8-e689-42db-8309-f1eff1a69d69",
         "name": "Cylinder.033",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -494,7 +494,7 @@
         "UUID": "04b45f43-9644-4958-907e-e4c237922671",
         "name": "Cylinder.087",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -676,7 +676,7 @@
         "UUID": "07f7a516-737d-408f-aa4c-cec66298c354",
         "name": "Cylinder.082",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -791,7 +791,7 @@
         "UUID": "0aff9ce0-6abd-490b-9f9e-111b729cada4",
         "name": "Baker_house.016",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -887,7 +887,7 @@
         "UUID": "0b2129bb-2d3c-4323-b5b4-670f8c284e56",
         "name": "Cylinder.090",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1021,7 +1021,7 @@
         "UUID": "0ba1c291-17ae-4e35-9ac6-501239896a7e",
         "name": "Chimney.010",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1085,8 +1085,8 @@
                 "b": 0.06122644618153572,
                 "a": 1.0,
                 "program": 4,
-                "diffuse": 0.5270000100135803,
-                "ambient": 0.2669999897480011,
+                "diffuse": 0.8460000157356262,
+                "ambient": 0.3659999966621399,
                 "specular": 0.0
             }
         ]
@@ -1095,7 +1095,7 @@
         "UUID": "0c02eb38-0970-4d00-ba60-3ca27755cb18",
         "name": "Cylinder.020",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1229,7 +1229,7 @@
         "UUID": "0f265aac-d0c0-4445-afae-7f33351866ca",
         "name": "Cylinder.013",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1296,7 +1296,7 @@
         "UUID": "10cb6797-9d22-4a5c-ba2c-8d1df4792aa3",
         "name": "Baker_house.008",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1344,7 +1344,7 @@
         "UUID": "116a6f9e-196c-4ba3-b5dc-0a27a64f488b",
         "name": "Baker_house.013",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1392,7 +1392,7 @@
         "UUID": "11f9cfc6-e62d-4475-a1e5-fe8ffc6e3e17",
         "name": "Cylinder.018",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1459,7 +1459,7 @@
         "UUID": "12fd871b-3381-4699-9a8c-1c1bf766c7b4",
         "name": "Baker_house.014",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1507,7 +1507,7 @@
         "UUID": "14c50ecb-65a9-44f0-ba0d-a3d55953084c",
         "name": "Chimney.001",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1555,7 +1555,7 @@
         "UUID": "150df8e9-7370-4911-8d20-19d0f969c593",
         "name": "Empty",
         "isInstantiated": false,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1583,7 +1583,7 @@
         "UUID": "15e0d96d-5ccd-4ed9-b582-c544baf534ce",
         "name": "Cylinder.002",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1717,7 +1717,7 @@
         "UUID": "17155cc0-fcee-4878-987c-c0dddbe0c4dd",
         "name": "Chimney.006",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1765,7 +1765,7 @@
         "UUID": "178885bf-20e5-45d3-98df-b7c911dcc082",
         "name": "Cylinder.077",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1928,7 +1928,7 @@
         "UUID": "19fca7e4-079f-4f92-9d11-24246cecd9db",
         "name": "Chimney.005",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -1976,7 +1976,7 @@
         "UUID": "1c0653a3-6c8f-49a1-9077-2387b5463ff2",
         "name": "Cylinder.046",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2043,7 +2043,7 @@
         "UUID": "1ea949ff-8d54-4cdf-9aca-73889428a9cf",
         "name": "Cylinder.047",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2177,7 +2177,7 @@
         "UUID": "1fb4e0ab-826f-41b7-ad59-c101bc0de976",
         "name": "Cylinder.091",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2445,7 +2445,7 @@
         "UUID": "2113700e-9318-4dda-8031-b5202bec43e4",
         "name": "Baker_house.005",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2560,7 +2560,7 @@
         "UUID": "227259f0-de22-4a2e-9161-9a3c2a89b925",
         "name": "Chimney.017",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2608,7 +2608,7 @@
         "UUID": "23b43c70-3124-4b69-8fb6-fab43bf5af40",
         "name": "Cylinder.007",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2809,7 +2809,7 @@
         "UUID": "278c0b57-8c5b-41c2-bed0-9c40862de7f7",
         "name": "Cylinder.055",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -2943,7 +2943,7 @@
         "UUID": "294b1b6a-620c-4fa8-929b-4c92fb505c65",
         "name": "Cylinder.061",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3010,7 +3010,7 @@
         "UUID": "29cde4dd-251a-4082-afc9-856395e5a250",
         "name": "Cylinder.068",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3192,7 +3192,7 @@
         "UUID": "2f651791-79bf-4888-8238-6c2f58ef5cdf",
         "name": "Cylinder.022",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3459,8 +3459,8 @@
                     "b": 0.06122644618153572,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.5270000100135803,
-                    "ambient": 0.2669999897480011,
+                    "diffuse": 0.8460000157356262,
+                    "ambient": 0.3659999966621399,
                     "specular": 0.0
                 }
             }
@@ -3537,7 +3537,7 @@
         "UUID": "35f6aba1-c5cc-482b-9ff0-de23b4680bb2",
         "name": "Cylinder.041",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3604,7 +3604,7 @@
         "UUID": "366c9e85-0395-4717-8ae9-04d4dcd6920f",
         "name": "Cylinder.038",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3738,7 +3738,7 @@
         "UUID": "3b36b0a0-df6d-4458-be67-5528dfe18bce",
         "name": "Cylinder.001",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3805,7 +3805,7 @@
         "UUID": "3cb2e3e0-23c9-4fb8-a6f9-a14844281d3e",
         "name": "Cylinder.053",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3872,7 +3872,7 @@
         "UUID": "3d338e2d-2e81-4ad1-afa3-1fe1c1cfd537",
         "name": "Chimney.016",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -3920,7 +3920,7 @@
         "UUID": "3d9b9d28-34ca-4003-b5b9-3788ef2a9d2d",
         "name": "Cylinder.054",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4380,7 +4380,7 @@
         "UUID": "44b2975d-a09f-4263-8e1c-9580abe136c7",
         "name": "Cylinder.050",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4514,7 +4514,7 @@
         "UUID": "46a4f031-ba2f-4e0a-8a47-34eaa0c80543",
         "name": "Cylinder.062",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4581,7 +4581,7 @@
         "UUID": "46fc9047-ba49-4a75-a88f-5778cb51302f",
         "name": "Cylinder.030",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4648,7 +4648,7 @@
         "UUID": "48532238-5f9f-4301-88c0-e6dffebed63e",
         "name": "Cylinder.044",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4741,7 +4741,7 @@
         "UUID": "4a741404-b3e5-46be-8137-e970bd480f0a",
         "name": "Cylinder.057",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4808,7 +4808,7 @@
         "UUID": "4b8216c0-c3b0-4610-87c0-d9a1bf227690",
         "name": "Cylinder.010",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -4923,7 +4923,7 @@
         "UUID": "4c7c8efe-d4f3-49a7-8bc2-de417d813ecc",
         "name": "Baker_house.012",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5086,7 +5086,7 @@
         "UUID": "52d2d8d7-e006-42bf-8375-8510f2229e6d",
         "name": "Cylinder.063",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5220,7 +5220,7 @@
         "UUID": "5472bcce-af55-4c46-b47f-a998141f2525",
         "name": "Cylinder.072",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5287,7 +5287,7 @@
         "UUID": "5582aa9e-117d-472d-9051-069df0d9940e",
         "name": "Baker_house.015",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5335,7 +5335,7 @@
         "UUID": "5587e876-5952-4eb4-8f23-cf4c2e7feee7",
         "name": "Cylinder.073",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5603,7 +5603,7 @@
         "UUID": "580adf95-f499-4c4f-b288-9964533d6987",
         "name": "Cylinder.045",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5670,7 +5670,7 @@
         "UUID": "58bbafec-2bd6-44fe-8ecb-81db39abca69",
         "name": "Cylinder.036",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5737,7 +5737,7 @@
         "UUID": "58fbb8cc-db3e-496a-93d7-6ea907992882",
         "name": "Cylinder.089",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5871,7 +5871,7 @@
         "UUID": "5a766d89-6268-4ef5-9e29-0c84cb83a201",
         "name": "Cylinder.037",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -5938,7 +5938,7 @@
         "UUID": "5b68e36b-7391-4fc1-a25a-faa1cb62ca32",
         "name": "Cylinder.042",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6005,7 +6005,7 @@
         "UUID": "5c5235ea-46ca-4986-948a-667569c6d4dd",
         "name": "Cylinder.023",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6072,7 +6072,7 @@
         "UUID": "5d281a57-262c-4ebf-9ecd-6dd69c88a49e",
         "name": "Cylinder.028",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6273,7 +6273,7 @@
         "UUID": "60264e43-e8e3-491e-9b43-687f10c6d5ae",
         "name": "Chimney.004",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6752,7 +6752,7 @@
         "UUID": "6a876b3c-c5eb-4742-8c43-a6294af23300",
         "name": "Cylinder.079",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6886,7 +6886,7 @@
         "UUID": "6be0d6ea-3581-4615-abca-5c0babf819be",
         "name": "Cylinder.040",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -6953,7 +6953,7 @@
         "UUID": "6cbd2617-bf25-4db0-9a08-96f8d03b0058",
         "name": "Baker_house.003",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7001,7 +7001,7 @@
         "UUID": "6cff43f4-f62c-4903-aaf0-9ae9b6ea00ef",
         "name": "Cylinder.019",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7135,7 +7135,7 @@
         "UUID": "6e2af1f1-f577-4c17-b6fd-cf28d35a237c",
         "name": "Baker_house.010",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7231,7 +7231,7 @@
         "UUID": "6e77cada-b2f1-4eaa-be60-a67ff8c09cb0",
         "name": "Cylinder.076",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7298,7 +7298,7 @@
         "UUID": "711cd525-9f36-45a0-9558-32799c4007c8",
         "name": "Cylinder.043",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7413,7 +7413,7 @@
         "UUID": "734c4c2b-981c-4400-af7b-8f3c60b70f29",
         "name": "Cylinder.003",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7480,7 +7480,7 @@
         "UUID": "74eba9ff-4274-485a-a713-1dfc8fa818c8",
         "name": "Cylinder.015",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7614,7 +7614,7 @@
         "UUID": "779c8c9b-fb01-4bc0-a0b9-029b0fefe292",
         "name": "Cylinder.067",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7796,7 +7796,7 @@
         "UUID": "79aa93fc-897c-40a2-9165-e1205e940888",
         "name": "Cylinder.086",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -7911,7 +7911,7 @@
         "UUID": "7a094b6c-d938-48e6-a4cb-b1319d0afe8a",
         "name": "Cylinder.039",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8227,7 +8227,7 @@
         "UUID": "7eff729e-6a69-4ff9-806e-d914b9813926",
         "name": "Cylinder.052",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8361,7 +8361,7 @@
         "UUID": "7ff4e503-6e0f-48f4-b502-894068def74d",
         "name": "Cylinder.085",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8428,7 +8428,7 @@
         "UUID": "80a9e2ce-cc17-416f-b924-f6e1a3ddfdc6",
         "name": "Cylinder.060",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8562,7 +8562,7 @@
         "UUID": "841b47b0-3bab-48d6-ba77-b307399138da",
         "name": "Cylinder",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8629,7 +8629,7 @@
         "UUID": "8426f272-345b-4e8f-a64a-0865b7e8a135",
         "name": "Cylinder.008",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8696,7 +8696,7 @@
         "UUID": "85f98fa4-eb7b-424e-be20-2b2dde0976fa",
         "name": "Cylinder.027",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8811,7 +8811,7 @@
         "UUID": "8b00caa1-7be2-4d8e-9e4d-57a6e9face92",
         "name": "Cylinder.074",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -8878,7 +8878,7 @@
         "UUID": "8bd120ff-1405-415d-a02c-4af28c46ee73",
         "name": "Cylinder.035",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -9079,7 +9079,7 @@
         "UUID": "8eb01f51-7fd0-41a6-b504-41c0fd929ef8",
         "name": "Baker_house.006",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -9175,7 +9175,7 @@
         "UUID": "8f869613-c6dc-4b50-9dcd-688ee9fe4413",
         "name": "Cylinder.032",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -9357,7 +9357,7 @@
         "UUID": "925a6bab-1049-49bb-b738-dcb9d4b69c0d",
         "name": "Cylinder.012",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -9424,7 +9424,7 @@
         "UUID": "948de7e4-e961-4d68-8790-d00534f18408",
         "name": "Cylinder.058",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -9625,7 +9625,7 @@
         "UUID": "96a1ae6c-a8a3-4a53-b010-580f9baf75ad",
         "name": "Baker_house.004",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10264,7 +10264,7 @@
         "UUID": "9fe69446-7d9b-43dd-8cae-59e10e9340b4",
         "name": "Cylinder.078",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10446,7 +10446,7 @@
         "UUID": "a174e4aa-87f4-444f-b66d-9b169829805f",
         "name": "Cylinder.048",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10561,7 +10561,7 @@
         "UUID": "a3b59671-4e87-4ae6-aa2e-20b021d7845a",
         "name": "Chimney.007",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10676,7 +10676,7 @@
         "UUID": "a5ed96b1-cbad-42dc-94d2-6735517ef606",
         "name": "Cylinder.064",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10743,7 +10743,7 @@
         "UUID": "a6057fc6-df5b-4140-b6ab-b3bdfa621270",
         "name": "Chimney.014",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10906,7 +10906,7 @@
         "UUID": "a82a3bc5-a427-4a55-adee-3d6efc6fe2b8",
         "name": "Cylinder.021",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -10973,7 +10973,7 @@
         "UUID": "a8a4bdc9-6f4e-4ef5-8619-04f25b3c885c",
         "name": "Chimney.011",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11116,7 +11116,7 @@
         "UUID": "a9975e05-ed62-4af9-9bf8-08453b3a840f",
         "name": "Chimney.013",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11164,7 +11164,7 @@
         "UUID": "a9b972e8-c9ba-49a0-a5e5-8c6d5b045293",
         "name": "Chimney.015",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11260,7 +11260,7 @@
         "UUID": "aa90b97c-4916-4b1e-9293-391d75407ec5",
         "name": "Cylinder.004",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11375,7 +11375,7 @@
         "UUID": "ade7877d-3c99-4a63-9520-edaf6175d775",
         "name": "Cylinder.075",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11509,7 +11509,7 @@
         "UUID": "ae1d8ac7-396a-46cc-83f7-66d38bf82036",
         "name": "Cylinder.031",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11643,7 +11643,7 @@
         "UUID": "af535bd5-9e0c-4231-bef9-26472774ba78",
         "name": "Cylinder.081",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11710,7 +11710,7 @@
         "UUID": "b155809c-ae9b-454e-82a0-6995c7f3abbf",
         "name": "Cylinder.011",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11844,7 +11844,7 @@
         "UUID": "b2434fa8-56ce-4a37-83e4-16cf69be1405",
         "name": "Cylinder.026",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -11911,7 +11911,7 @@
         "UUID": "b29c3330-ec22-4615-a54c-a8da5bbc26be",
         "name": "Baker_house.007",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12119,7 +12119,7 @@
         "UUID": "b520be7e-9017-4947-b51b-546e4220e71d",
         "name": "Cylinder.066",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12186,7 +12186,7 @@
         "UUID": "b5aa7cd1-27a2-4b55-b30f-c93f6f041755",
         "name": "Root",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12214,7 +12214,7 @@
         "UUID": "b6ed7711-faac-459b-aaa0-9b4ca8fd1f00",
         "name": "Chimney.009",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12329,7 +12329,7 @@
         "UUID": "b7aab40b-bec9-4fae-9721-b9c01e994b7f",
         "name": "Cylinder.049",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12396,7 +12396,7 @@
         "UUID": "b80d8834-d795-4cea-b7cf-62521d7e1e75",
         "name": "Baker_house",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12645,7 +12645,7 @@
         "UUID": "be1e1e4b-a5bb-4e87-b8a3-2f68259685c0",
         "name": "Baker_house.001",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12693,7 +12693,7 @@
         "UUID": "bef703c6-32c0-41ff-8358-097fd7c4bef9",
         "name": "Baker_house.002",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12741,7 +12741,7 @@
         "UUID": "c2dd2f23-a643-4054-93f9-71f7f33c0496",
         "name": "Cylinder.051",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12808,7 +12808,7 @@
         "UUID": "c322b02f-9115-475f-9be2-8ab64dee0879",
         "name": "Chimney.002",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12923,7 +12923,7 @@
         "UUID": "c4068416-82c4-4d7a-a162-bff50262a4d9",
         "name": "Cylinder.083",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -12990,7 +12990,7 @@
         "UUID": "c48d3c2c-78c3-44b4-a109-bc4ece4eebee",
         "name": "Cylinder.070",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13220,7 +13220,7 @@
         "UUID": "c862d576-01ec-4640-85ee-1dc78817ae69",
         "name": "Cylinder.088",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13287,7 +13287,7 @@
         "UUID": "c94c4eb7-4e2c-4d4b-bd08-f60933d629b9",
         "name": "Cylinder.080",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13354,7 +13354,7 @@
         "UUID": "cb504dee-d86c-454f-8de3-fa5b545365c9",
         "name": "Cylinder.024",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13421,7 +13421,7 @@
         "UUID": "cb77cc29-16a1-4e3b-a1d8-4769af3243e0",
         "name": "Cylinder.056",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13488,7 +13488,7 @@
         "UUID": "cc8ea0cb-7d4c-4d1e-80a9-d949e59c8468",
         "name": "Cylinder.025",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -13737,7 +13737,7 @@
         "UUID": "cd932fdd-2124-4d6f-ac2d-1850450d5cf4",
         "name": "Chimney.003",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14187,7 +14187,7 @@
         "UUID": "d517bf6a-d64c-468a-ae9b-d050a39d2378",
         "name": "Cylinder.071",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14254,7 +14254,7 @@
         "UUID": "d76afdde-1541-45ff-abf4-9dcda1e261bf",
         "name": "Cylinder.084",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14436,7 +14436,7 @@
         "UUID": "db272c68-976d-4548-a4f1-55a7bebd7590",
         "name": "Chimney.012",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14484,7 +14484,7 @@
         "UUID": "dc046c7b-4953-4f7d-945d-256d367e41ed",
         "name": "Cylinder.016",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14599,7 +14599,7 @@
         "UUID": "dd4798c3-874d-494e-8c0f-808980d9f02f",
         "name": "Cylinder.017",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14800,7 +14800,7 @@
         "UUID": "df9280eb-3a44-4b67-bee7-caf203986a05",
         "name": "Baker_house.017",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14848,7 +14848,7 @@
         "UUID": "e16bf88f-fe2c-4c0b-bd1b-c9642a155646",
         "name": "Cylinder.029",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -14915,7 +14915,7 @@
         "UUID": "e2dc4406-279e-4f26-a262-b57f17f3eda3",
         "name": "Cylinder.014",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15116,7 +15116,7 @@
         "UUID": "e4355dfb-ea75-4681-bd10-a2a311d8138b",
         "name": "Cylinder.059",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15480,7 +15480,7 @@
         "UUID": "eacd8be7-d15f-45d2-b58d-e0d9ae769ab8",
         "name": "Baker_house.009",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15595,7 +15595,7 @@
         "UUID": "ecf7b34c-e77c-4252-85ce-dae7fcb6285a",
         "name": "Cylinder.065",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15729,7 +15729,7 @@
         "UUID": "f0a438bf-ac80-4893-a0a1-2e77555ab441",
         "name": "Cylinder.006",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15863,7 +15863,7 @@
         "UUID": "f4f7ac9d-98d1-481a-aa18-dfd9978238e5",
         "name": "Chimney.008",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -15959,7 +15959,7 @@
         "UUID": "fa1c804d-bfbd-4990-a9fe-258f1cd18631",
         "name": "Cylinder.009",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -16141,7 +16141,7 @@
         "UUID": "fbd5e984-0c70-4882-969f-aae0fcb03696",
         "name": "Chimney",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -16189,7 +16189,7 @@
         "UUID": "fe5a376c-e724-41b9-ac4a-c6bd099474c1",
         "name": "Cylinder.005",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
@@ -16256,7 +16256,7 @@
         "UUID": "fe715634-6ac2-4194-b6a6-ebb9915a7ea3",
         "name": "Baker_house.011",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
