@@ -102,7 +102,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -162,14 +162,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -217,7 +217,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -332,7 +332,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -399,7 +399,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -466,7 +466,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -533,7 +533,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -593,14 +593,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -648,7 +648,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -715,7 +715,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -775,14 +775,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -823,14 +823,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -871,14 +871,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -926,7 +926,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -993,7 +993,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1053,14 +1053,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1134,7 +1134,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1201,7 +1201,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1220,6 +1220,54 @@
                     "program": 4,
                     "diffuse": 0.6100000143051148,
                     "ambient": 0.34599998593330386,
+                    "specular": 0.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "0effc2fa-283c-4a2e-b818-a86ffec19f2f",
+        "name": "Hair",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -0.00887252762913704,
+                "y": 5.7103471755981449,
+                "z": 0.11122959107160568
+            },
+            "rotation": {
+                "x": -0.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "scale": {
+                "x": 1.0471409559249879,
+                "y": 1.0471409559249879,
+                "z": 1.0471409559249879
+            }
+        },
+        "instanceOf": "c2470d93-40a2-4d83-86ce-eba6f2ada928",
+        "path": "",
+        "parentUUID": "7efc157f-f65d-423a-899c-2a668ed80f16",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/2b7155e5-0bb2-4a64-b70a-b4848aabc969.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/5cbfd896-50b6-4a0d-ad1c-4535be550733_7.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
                     "specular": 0.0
                 }
             }
@@ -1268,7 +1316,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1301,7 +1349,7 @@
         "transform": {
             "position": {
                 "x": -8.248424530029297,
-                "y": -0.012841122224926949,
+                "y": 0.007000000216066837,
                 "z": 4.403504848480225
             },
             "rotation": {
@@ -1310,9 +1358,9 @@
                 "z": -1.809376470873758e-8
             },
             "scale": {
-                "x": 0.4428720772266388,
-                "y": 0.44287219643592837,
-                "z": 0.4428720772266388
+                "x": 100.0,
+                "y": 100.0,
+                "z": 100.0
             }
         },
         "instanceOf": "1984510a-67da-4872-b5f4-5f0bbf0dcff6",
@@ -1328,14 +1376,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1376,14 +1424,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1431,7 +1479,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1452,6 +1500,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "1213cb23-2a65-4443-bd12-bba6f9f890aa",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/003f7be8-b9de-4a3c-b05f-72c33944ce87_5.mat",
+                "r": 0.0,
+                "g": 0.009237121790647507,
+                "b": 0.1498504877090454,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 1.0,
+                "ambient": 0.1550000011920929,
+                "specular": 0.0
             }
         ]
     },
@@ -1491,14 +1565,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1539,32 +1613,60 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
     },
     {
         "UUID": "150df8e9-7370-4911-8d20-19d0f969c593",
-        "name": "Empty",
+        "name": "Baker Town",
         "isInstantiated": false,
         "isStatic": false,
         "active": true,
         "transform": {
             "position": {
                 "x": 0.0,
-                "y": 24.81999969482422,
+                "y": 0.0,
                 "z": 0.0
             },
             "rotation": {
                 "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 10.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "components": []
+    },
+    {
+        "UUID": "1515f7de-146a-4b39-8885-db5fb05dee89",
+        "name": "RUST_3d_Low",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": -1.5707964897155762,
                 "y": 0.0,
                 "z": 0.0
             },
@@ -1576,8 +1678,28 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
-        "components": []
+        "parentUUID": "471bb349-99db-46fb-a307-7e61cbe42ebf",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/9bca91e7-a1a8-40c1-a146-08e2f99cba92.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "Library/Textures/RUST_3d_Low1_Difuse.dds.dds",
+                    "materialPath": "Library/Materials/753e92c0-b4af-4005-9b91-12767624d935_0.mat",
+                    "r": 0.4000000059604645,
+                    "g": 0.4000000059604645,
+                    "b": 0.4000000059604645,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            }
+        ]
     },
     {
         "UUID": "15e0d96d-5ccd-4ed9-b582-c544baf534ce",
@@ -1622,7 +1744,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1689,7 +1811,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1749,14 +1871,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1804,7 +1926,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -1829,6 +1951,32 @@
         ]
     },
     {
+        "UUID": "17f7dffe-3155-4564-8a92-27a941abf354",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/2d900a32-c462-40b1-b230-9d886a0e735f_2.mat",
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 0.0,
+                "ambient": 0.0,
+                "specular": 0.0
+            }
+        ]
+    },
+    {
         "UUID": "186b3165-7c27-4d24-b1ef-76936f417b76",
         "name": "Sphere Root",
         "isInstantiated": true,
@@ -1842,18 +1990,18 @@
             },
             "rotation": {
                 "x": -0.0,
-                "y": 1.1187562942504883,
+                "y": 1.1187564134597779,
                 "z": -0.0
             },
             "scale": {
-                "x": 0.9999998807907105,
+                "x": 0.9999998211860657,
                 "y": 1.0,
-                "z": 0.9999998807907105
+                "z": 0.9999998211860657
             }
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "parentUUID": "22443ae2-0465-41b5-9bb1-11aef01a369f",
         "components": [
             {
                 "type": 1,
@@ -1912,14 +2060,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -1960,14 +2108,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -2015,7 +2163,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2082,7 +2230,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2149,7 +2297,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2216,7 +2364,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2283,7 +2431,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2350,7 +2498,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2417,7 +2565,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2477,14 +2625,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -2532,7 +2680,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2555,6 +2703,34 @@
                 }
             }
         ]
+    },
+    {
+        "UUID": "22443ae2-0465-41b5-9bb1-11aef01a369f",
+        "name": "Bolas",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "components": []
     },
     {
         "UUID": "227259f0-de22-4a2e-9161-9a3c2a89b925",
@@ -2592,14 +2768,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -2647,7 +2823,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2714,7 +2890,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2781,7 +2957,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2848,7 +3024,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2915,7 +3091,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -2982,7 +3158,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3049,7 +3225,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3116,7 +3292,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3176,14 +3352,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -3231,7 +3407,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3250,6 +3426,149 @@
                     "program": 4,
                     "diffuse": 0.6100000143051148,
                     "ambient": 0.34599998593330386,
+                    "specular": 0.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "2f7cbe18-3d8c-41c0-9523-797f3202cc8a",
+        "name": "Kojiima",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.15659555792808534,
+                "z": -0.00011094153160229325
+            },
+            "rotation": {
+                "x": -0.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "scale": {
+                "x": 3.34537935256958,
+                "y": 3.34537935256958,
+                "z": 3.34537935256958
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "c3d34fa6-cf38-4d06-bd9c-5eff81504977",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/c4b25688-22c3-4854-a316-63fae22524e2.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/e1e99b36-ecfd-4f8a-9422-84b6ce2e06d1_0.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/bb7d9a18-b3ff-4122-9905-3e1d3dcdeb7d.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/c277b28a-f2f7-42d9-8378-d6d69d38d594_1.mat",
+                    "r": 0.64000004529953,
+                    "g": 0.34569379687309267,
+                    "b": 0.14636845886707307,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.1550000011920929,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/df3b9aee-fd8a-45d4-a176-a6918cb8e7a2.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/2d900a32-c462-40b1-b230-9d886a0e735f_2.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/9d6c24fc-d47b-4755-855e-451b23fd3bdc.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/8e023618-984b-4fb1-bd29-468799228d23_3.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/c8971b95-11b8-4586-9a79-c29414b2ad0a.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/16aec80a-8e0e-4d16-a438-7c248d69ce62_4.mat",
+                    "r": 0.4510233402252197,
+                    "g": 0.64000004529953,
+                    "b": 0.5944647789001465,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.12300000339746475,
+                    "specular": 1.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/d2f86db9-fc2d-4202-9e32-a60e3341a6de.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/003f7be8-b9de-4a3c-b05f-72c33944ce87_5.mat",
+                    "r": 0.0,
+                    "g": 0.009237121790647507,
+                    "b": 0.1498504877090454,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.1550000011920929,
                     "specular": 0.0
                 }
             }
@@ -3298,7 +3617,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3358,14 +3677,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -3406,14 +3725,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -3509,7 +3828,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3576,7 +3895,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3643,7 +3962,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3710,7 +4029,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3777,7 +4096,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3844,7 +4163,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -3904,14 +4223,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -3959,7 +4278,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4026,7 +4345,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4075,7 +4394,7 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "parentUUID": "22443ae2-0465-41b5-9bb1-11aef01a369f",
         "components": [
             {
                 "type": 1,
@@ -4091,9 +4410,9 @@
                     "b": 0.10272488743066788,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.6439999938011169,
-                    "ambient": 0.18199999630451203,
-                    "specular": 0.0
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 1.0
                 }
             }
         ]
@@ -4141,7 +4460,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4201,14 +4520,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -4297,14 +4616,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -4352,7 +4671,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4419,7 +4738,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4486,7 +4805,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4553,7 +4872,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4620,7 +4939,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4643,6 +4962,34 @@
                 }
             }
         ]
+    },
+    {
+        "UUID": "471bb349-99db-46fb-a307-7e61cbe42ebf",
+        "name": "Root",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": []
     },
     {
         "UUID": "48532238-5f9f-4301-88c0-e6dffebed63e",
@@ -4687,7 +5034,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4726,14 +5073,14 @@
                 "name": "Material",
                 "texturePath": "Library/Textures/Baker_house.png.dds",
                 "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                "r": 0.47040000557899477,
-                "g": 0.47040000557899477,
-                "b": 0.47040000557899477,
+                "r": 1.0,
+                "g": 0.9999899864196777,
+                "b": 0.9999899864196777,
                 "a": 1.0,
                 "program": 4,
-                "diffuse": 0.8489999771118164,
+                "diffuse": 0.0,
                 "ambient": 0.19900000095367433,
-                "specular": 0.0
+                "specular": 1.0
             }
         ]
     },
@@ -4780,7 +5127,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4847,7 +5194,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -4907,14 +5254,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -4955,14 +5302,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -5003,14 +5350,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -5058,7 +5405,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5125,7 +5472,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5192,7 +5539,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5259,7 +5606,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5319,14 +5666,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -5374,7 +5721,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5441,7 +5788,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5508,7 +5855,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5575,7 +5922,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5642,7 +5989,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5709,7 +6056,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5776,7 +6123,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5843,7 +6190,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5910,7 +6257,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -5977,7 +6324,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6044,7 +6391,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6111,7 +6458,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6178,7 +6525,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6245,7 +6592,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6305,14 +6652,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -6360,7 +6707,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6420,14 +6767,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -6475,7 +6822,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6542,7 +6889,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6609,7 +6956,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6676,7 +7023,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6736,14 +7083,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -6791,7 +7138,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6858,7 +7205,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6925,7 +7272,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -6985,14 +7332,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7040,7 +7387,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7059,6 +7406,54 @@
                     "program": 4,
                     "diffuse": 0.6100000143051148,
                     "ambient": 0.34599998593330386,
+                    "specular": 0.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "6d6ad629-c86f-496e-9d8b-89f3228f1f4f",
+        "name": "Glasses",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -0.014351129531860352,
+                "y": 5.433706760406494,
+                "z": 0.6580876111984253
+            },
+            "rotation": {
+                "x": -1.5707967281341553,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 0.18186795711517335,
+                "y": 0.16417302191257478,
+                "z": 0.16417302191257478
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "2f7cbe18-3d8c-41c0-9523-797f3202cc8a",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/51762277-0839-489b-beac-8b4be0528090.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/67c97349-67b9-4a1b-8df6-de83eada1873_6.mat",
+                    "r": 0.800000011920929,
+                    "g": 0.800000011920929,
+                    "b": 0.800000011920929,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.07800000160932541,
                     "specular": 0.0
                 }
             }
@@ -7107,7 +7502,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7167,14 +7562,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7215,14 +7610,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7270,7 +7665,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7337,7 +7732,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7397,14 +7792,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7452,7 +7847,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7519,7 +7914,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7540,6 +7935,47 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "762eee86-d5e0-4297-9801-b0893a6aa0da",
+        "name": "Camera",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -8.9399995803833,
+                "y": 22.3799991607666,
+                "z": 25.489999771118165
+            },
+            "rotation": {
+                "x": -0.42586010694503786,
+                "y": -0.33510303497314455,
+                "z": -0.08028514683246613
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "components": [
+            {
+                "type": 0,
+                "cam_pos": {
+                    "x": -8.9399995803833,
+                    "y": 22.3799991607666,
+                    "z": 25.489999771118165
+                },
+                "main": true,
+                "vFov": 90.0,
+                "zNear": 0.10000000149011612,
+                "zFar": 2000.0
             }
         ]
     },
@@ -7586,7 +8022,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7653,7 +8089,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7720,7 +8156,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7780,14 +8216,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7835,7 +8271,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -7895,14 +8331,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -7950,7 +8386,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8017,7 +8453,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8084,7 +8520,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8151,7 +8587,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8189,7 +8625,7 @@
             },
             "rotation": {
                 "x": 3.141592502593994,
-                "y": 0.22870796918869019,
+                "y": -0.22870798408985139,
                 "z": 3.141592502593994
             },
             "scale": {
@@ -8200,7 +8636,7 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "parentUUID": "22443ae2-0465-41b5-9bb1-11aef01a369f",
         "components": [
             {
                 "type": 1,
@@ -8218,6 +8654,149 @@
                     "program": 4,
                     "diffuse": 0.5889999866485596,
                     "ambient": 0.15800000727176667,
+                    "specular": 0.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "7efc157f-f65d-423a-899c-2a668ed80f16",
+        "name": "Kojiima",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.15659555792808534,
+                "z": -0.00011094153160229325
+            },
+            "rotation": {
+                "x": -0.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "scale": {
+                "x": 3.34537935256958,
+                "y": 3.34537935256958,
+                "z": 3.34537935256958
+            }
+        },
+        "instanceOf": "2f7cbe18-3d8c-41c0-9523-797f3202cc8a",
+        "path": "",
+        "parentUUID": "820e1dfa-6dbf-4e8e-acea-55034a2ae9f6",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/c4b25688-22c3-4854-a316-63fae22524e2.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/e1e99b36-ecfd-4f8a-9422-84b6ce2e06d1_0.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/bb7d9a18-b3ff-4122-9905-3e1d3dcdeb7d.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/c277b28a-f2f7-42d9-8378-d6d69d38d594_1.mat",
+                    "r": 0.64000004529953,
+                    "g": 0.34569379687309267,
+                    "b": 0.14636845886707307,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.1550000011920929,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/df3b9aee-fd8a-45d4-a176-a6918cb8e7a2.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/2d900a32-c462-40b1-b230-9d886a0e735f_2.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/9d6c24fc-d47b-4755-855e-451b23fd3bdc.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/8e023618-984b-4fb1-bd29-468799228d23_3.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
+                    "specular": 0.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/c8971b95-11b8-4586-9a79-c29414b2ad0a.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/16aec80a-8e0e-4d16-a438-7c248d69ce62_4.mat",
+                    "r": 0.4510233402252197,
+                    "g": 0.64000004529953,
+                    "b": 0.5944647789001465,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.12300000339746475,
+                    "specular": 1.0
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/d2f86db9-fc2d-4202-9e32-a60e3341a6de.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/003f7be8-b9de-4a3c-b05f-72c33944ce87_5.mat",
+                    "r": 0.0,
+                    "g": 0.009237121790647507,
+                    "b": 0.1498504877090454,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.1550000011920929,
                     "specular": 0.0
                 }
             }
@@ -8266,7 +8845,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8287,6 +8866,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "7f52c37b-9c6f-48fd-a96d-f55a116fb29a",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/67c97349-67b9-4a1b-8df6-de83eada1873_6.mat",
+                "r": 0.800000011920929,
+                "g": 0.800000011920929,
+                "b": 0.800000011920929,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 1.0,
+                "ambient": 0.07800000160932541,
+                "specular": 0.0
             }
         ]
     },
@@ -8333,7 +8938,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8400,7 +9005,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8467,7 +9072,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8534,7 +9139,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8557,6 +9162,34 @@
                 }
             }
         ]
+    },
+    {
+        "UUID": "820e1dfa-6dbf-4e8e-acea-55034a2ae9f6",
+        "name": "Kojima",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 1.6200000047683716,
+                "y": 0.05000000074505806,
+                "z": -5.610000133514404
+            },
+            "rotation": {
+                "x": 0.4450587034225464,
+                "y": -12.991515159606934,
+                "z": 0.03839724510908127
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "c3d34fa6-cf38-4d06-bd9c-5eff81504977",
+        "path": "",
+        "parentUUID": "9d24bb13-77f2-4ec4-a864-281922581c24",
+        "components": []
     },
     {
         "UUID": "841b47b0-3bab-48d6-ba77-b307399138da",
@@ -8601,7 +9234,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8668,7 +9301,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8689,6 +9322,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "84670870-92ec-4827-8e97-4cabb4f6c26f",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/c277b28a-f2f7-42d9-8378-d6d69d38d594_1.mat",
+                "r": 0.64000004529953,
+                "g": 0.34569379687309267,
+                "b": 0.14636845886707307,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 1.0,
+                "ambient": 0.1550000011920929,
+                "specular": 0.0
             }
         ]
     },
@@ -8735,7 +9394,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8795,14 +9454,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -8850,7 +9509,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8917,7 +9576,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -8984,7 +9643,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9051,7 +9710,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9111,14 +9770,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -9159,14 +9818,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -9214,7 +9873,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9274,15 +9933,41 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "914816d9-cba9-4eb1-9826-ae7340502946",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/5cbfd896-50b6-4a0d-ad1c-4535be550733_7.mat",
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 0.0,
+                "ambient": 0.0,
+                "specular": 0.0
             }
         ]
     },
@@ -9329,7 +10014,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9396,7 +10081,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9463,7 +10148,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9530,7 +10215,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9597,7 +10282,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9657,14 +10342,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -9712,7 +10397,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9779,7 +10464,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9805,7 +10490,7 @@
     },
     {
         "UUID": "9a09451a-a82e-4885-86f8-6e1c208b5e34",
-        "name": "Material",
+        "name": "Arbol_Verde",
         "isInstantiated": false,
         "isStatic": false,
         "active": true,
@@ -9825,7 +10510,7 @@
                 "program": 4,
                 "diffuse": 0.6370000243186951,
                 "ambient": 0.3659999966621399,
-                "specular": 0.0
+                "specular": 0.26499998569488528
             }
         ]
     },
@@ -9872,7 +10557,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -9932,15 +10617,41 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "9befaf2a-df7b-4c06-b55c-eb3829376c2f",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/8e023618-984b-4fb1-bd29-468799228d23_3.mat",
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 0.0,
+                "ambient": 0.0,
+                "specular": 0.0
             }
         ]
     },
@@ -9987,7 +10698,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10054,7 +10765,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10121,7 +10832,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10181,14 +10892,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10236,7 +10947,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10303,7 +11014,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10363,14 +11074,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10418,7 +11129,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10485,7 +11196,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10545,14 +11256,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10593,14 +11304,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10648,7 +11359,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10715,7 +11426,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10775,14 +11486,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10823,14 +11534,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -10878,7 +11589,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -10945,7 +11656,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11005,14 +11716,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11060,7 +11771,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11086,7 +11797,7 @@
     },
     {
         "UUID": "a98e28b0-c2b3-4903-9bd9-77598b58153b",
-        "name": "Root",
+        "name": "Baker Town",
         "isInstantiated": false,
         "isStatic": false,
         "active": true,
@@ -11148,14 +11859,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11196,14 +11907,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11244,14 +11955,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11299,7 +12010,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11359,14 +12070,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11414,7 +12125,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11481,7 +12192,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11548,7 +12259,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11615,7 +12326,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11682,7 +12393,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11749,7 +12460,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11816,7 +12527,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11883,7 +12594,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -11943,14 +12654,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -11998,7 +12709,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12065,7 +12776,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12158,7 +12869,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12191,7 +12902,7 @@
         "transform": {
             "position": {
                 "x": 0.0,
-                "y": -24.81999969482422,
+                "y": 0.0,
                 "z": 0.0
             },
             "rotation": {
@@ -12246,14 +12957,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -12301,7 +13012,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12368,7 +13079,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12428,14 +13139,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -12483,7 +13194,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12550,7 +13261,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12617,7 +13328,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12677,14 +13388,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -12725,13 +13436,61 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
+                    "specular": 1.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "c2470d93-40a2-4d83-86ce-eba6f2ada928",
+        "name": "Hair",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -0.00887252762913704,
+                "y": 5.7103471755981449,
+                "z": 0.11122959107160568
+            },
+            "rotation": {
+                "x": -0.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "scale": {
+                "x": 1.0471409559249879,
+                "y": 1.0471409559249879,
+                "z": 1.0471409559249879
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "2f7cbe18-3d8c-41c0-9523-797f3202cc8a",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/2b7155e5-0bb2-4a64-b70a-b4848aabc969.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/5cbfd896-50b6-4a0d-ad1c-4535be550733_7.mat",
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 0.0,
+                    "ambient": 0.0,
                     "specular": 0.0
                 }
             }
@@ -12780,7 +13539,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12840,14 +13599,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -12895,7 +13654,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -12918,6 +13677,34 @@
                 }
             }
         ]
+    },
+    {
+        "UUID": "c3d34fa6-cf38-4d06-bd9c-5eff81504977",
+        "name": "Root",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": []
     },
     {
         "UUID": "c4068416-82c4-4d7a-a162-bff50262a4d9",
@@ -12962,7 +13749,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13029,7 +13816,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13089,14 +13876,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -13144,7 +13931,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13204,14 +13991,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -13259,7 +14046,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13326,7 +14113,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13393,7 +14180,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13460,7 +14247,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13527,7 +14314,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13587,14 +14374,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -13642,7 +14429,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13709,7 +14496,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13769,14 +14556,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -13824,7 +14611,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13891,7 +14678,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -13958,7 +14745,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14025,7 +14812,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14092,7 +14879,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14113,6 +14900,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "d1006288-fe7a-424e-b829-5aa23a3f8621",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/e1e99b36-ecfd-4f8a-9422-84b6ce2e06d1_0.mat",
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 0.0,
+                "ambient": 0.0,
+                "specular": 0.0
             }
         ]
     },
@@ -14159,7 +14972,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14226,7 +15039,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14245,6 +15058,54 @@
                     "program": 4,
                     "diffuse": 0.6100000143051148,
                     "ambient": 0.34599998593330386,
+                    "specular": 0.0
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "d5c51b53-1210-4fd8-a42b-5f49d37b0fed",
+        "name": "Glasses",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -0.014351129531860352,
+                "y": 5.433706760406494,
+                "z": 0.6580876111984253
+            },
+            "rotation": {
+                "x": -1.5707967281341553,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 0.18186795711517335,
+                "y": 0.16417302191257478,
+                "z": 0.16417302191257478
+            }
+        },
+        "instanceOf": "6d6ad629-c86f-496e-9d8b-89f3228f1f4f",
+        "path": "",
+        "parentUUID": "7efc157f-f65d-423a-899c-2a668ed80f16",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/51762277-0839-489b-beac-8b4be0528090.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "name": "Material",
+                    "texturePath": "",
+                    "materialPath": "Library/Materials/67c97349-67b9-4a1b-8df6-de83eada1873_6.mat",
+                    "r": 0.800000011920929,
+                    "g": 0.800000011920929,
+                    "b": 0.800000011920929,
+                    "a": 1.0,
+                    "program": 4,
+                    "diffuse": 1.0,
+                    "ambient": 0.07800000160932541,
                     "specular": 0.0
                 }
             }
@@ -14293,7 +15154,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14360,7 +15221,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14420,14 +15281,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -14468,14 +15329,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -14523,7 +15384,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14583,14 +15444,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -14638,7 +15499,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14705,7 +15566,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14772,7 +15633,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14832,14 +15693,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -14887,7 +15748,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -14954,7 +15815,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15021,7 +15882,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15088,7 +15949,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15155,7 +16016,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15215,14 +16076,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -15270,7 +16131,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15337,7 +16198,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15397,14 +16258,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -15452,7 +16313,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15512,14 +16373,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -15567,7 +16428,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15588,6 +16449,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "ec10b860-3fd6-45b8-8f63-68fca6287d65",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "Library/Textures/RUST_3d_Low1_Difuse.dds.dds",
+                "materialPath": "Library/Materials/753e92c0-b4af-4005-9b91-12767624d935_0.mat",
+                "r": 0.4000000059604645,
+                "g": 0.4000000059604645,
+                "b": 0.4000000059604645,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 0.0,
+                "ambient": 0.0,
+                "specular": 0.0
             }
         ]
     },
@@ -15634,7 +16521,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15701,7 +16588,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15768,7 +16655,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15835,7 +16722,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -15856,6 +16743,32 @@
                     "ambient": 0.34599998593330386,
                     "specular": 0.0
                 }
+            }
+        ]
+    },
+    {
+        "UUID": "f348b756-556d-407c-8ed8-22e897092d0a",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "0f8afb92-9de8-44a1-9610-15ba76ca4a7c",
+        "components": [
+            {
+                "type": 2,
+                "name": "Material",
+                "texturePath": "",
+                "materialPath": "Library/Materials/16aec80a-8e0e-4d16-a438-7c248d69ce62_4.mat",
+                "r": 0.4510233402252197,
+                "g": 0.64000004529953,
+                "b": 0.5944647789001465,
+                "a": 1.0,
+                "program": 4,
+                "diffuse": 1.0,
+                "ambient": 0.12300000339746475,
+                "specular": 1.0
             }
         ]
     },
@@ -15895,14 +16808,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -15998,7 +16911,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -16058,14 +16971,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -16113,7 +17026,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -16173,14 +17086,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -16228,7 +17141,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {
@@ -16288,14 +17201,14 @@
                     "name": "Material",
                     "texturePath": "Library/Textures/Baker_house.png.dds",
                     "materialPath": "Library/Materials/19db8917-5aeb-412b-b900-3a501e2ed10f_3.mat",
-                    "r": 0.47040000557899477,
-                    "g": 0.47040000557899477,
-                    "b": 0.47040000557899477,
+                    "r": 1.0,
+                    "g": 0.9999899864196777,
+                    "b": 0.9999899864196777,
                     "a": 1.0,
                     "program": 4,
-                    "diffuse": 0.8489999771118164,
+                    "diffuse": 0.0,
                     "ambient": 0.19900000095367433,
-                    "specular": 0.0
+                    "specular": 1.0
                 }
             }
         ]
@@ -16343,7 +17256,7 @@
                     "program": 4,
                     "diffuse": 0.6370000243186951,
                     "ambient": 0.3659999966621399,
-                    "specular": 0.0
+                    "specular": 0.26499998569488528
                 }
             },
             {

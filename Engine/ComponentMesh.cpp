@@ -153,7 +153,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 	
 	glUniform3fv(glGetUniformLocation(material->program, "light_pos"), 1, &lightPos[0]);
 	glUniform1f(glGetUniformLocation(material->program, "ambient"), 0.9f);
-	glUniform1f(glGetUniformLocation(material->program, "shininess"), 65.f);
+	glUniform1f(glGetUniformLocation(material->program, "shininess"), 15.f);
 	glUniform1f(glGetUniformLocation(material->program, "k_ambient"), material->ambient);
 	glUniform1f(glGetUniformLocation(material->program, "k_diffuse"), material->diffuse);
 	glUniform1f(glGetUniformLocation(material->program, "k_specular"), material->specular);

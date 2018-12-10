@@ -16,18 +16,21 @@ uniform float k_diffuse;
 uniform float k_specular;
 
 out vec2 UV0;
-out float intensity;
+
 out vec3 normal;
+out vec3 half;
+out vec3 light_dir;
+out vec3 eye_pos;
 
 void main()
 {
 	vec3 position = (model*vec4(vertex_position, 1.0)).xyz;
-    normal = (model*vec4(vertex_normal, 0.0)).xyz;
+    normal = normalize((model*vec4(vertex_normal, 0.0)).xyz);
     gl_Position = proj*view*model*vec4(vertex_position, 1.0);
 		
-    vec3 light_dir = normalize(light_pos-position);
-    float NL = max(0.0f, dot(normal, light_dir));
+    light_dir = normalize(light_pos-position);
+	eye_pos = -(transpose(mat3(view)) * view[3].xyz);
+	half = normalize(normalize(eye_pos - position) + light_dir);
 
-	intensity = ambient * k_ambient + k_diffuse * NL;
 	UV0 = vertex_uv0;
 }
