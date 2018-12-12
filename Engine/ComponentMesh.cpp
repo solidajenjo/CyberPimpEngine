@@ -2,6 +2,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentMap.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
@@ -140,23 +141,23 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(material->program,
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
-	if (material->texture > 0)
+	if (material->texture->mapId > 0)
 	{
 		glUniform1i(glGetUniformLocation(material->program, "useTex"), 1);
-		glBindTexture(GL_TEXTURE_2D, material->texture);
+		glBindTexture(GL_TEXTURE_2D, material->texture->mapId);
 	}
 	else
 		glUniform1i(glGetUniformLocation(material->program, "useTex"), 0);
 
-	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->color.x, material->color.y, material->color.z, 1.0f); 
+	glUniform4f(glGetUniformLocation(material->program, "object_color"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
 	float3 lightPos = float3(0.f, 0.f, 10.f);
 	
 	glUniform3fv(glGetUniformLocation(material->program, "light_pos"), 1, &lightPos[0]);
 	glUniform1f(glGetUniformLocation(material->program, "ambient"), 0.9f);
-	glUniform1f(glGetUniformLocation(material->program, "shininess"), 15.f);
-	glUniform1f(glGetUniformLocation(material->program, "k_ambient"), material->ambient);
-	glUniform1f(glGetUniformLocation(material->program, "k_diffuse"), material->diffuse);
-	glUniform1f(glGetUniformLocation(material->program, "k_specular"), material->specular);
+	glUniform1f(glGetUniformLocation(material->program, "shininess"), material->shininess);
+	glUniform1f(glGetUniformLocation(material->program, "k_ambient"), material->kAmbient);
+	glUniform1f(glGetUniformLocation(material->program, "k_diffuse"), material->kDiffuse);
+	glUniform1f(glGetUniformLocation(material->program, "k_specular"), material->kSpecular);
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
@@ -181,33 +182,9 @@ void ComponentMesh::UnSerialize(rapidjson::Value & value)
 	if (primitiveType != Primitives::VOID_PRIMITIVE)
 	{
 		FromPrimitive(primitiveType);
-		material->UnSerialize(value["material"]);
-	}
-	else
-	{
-		char materialPath[1024];
-		sprintf_s(materialPath, value["materialPath"].GetString());
-		if (strlen(materialPath) > 0)
-		{
-			char instanceOf[40];
-			sprintf_s(instanceOf, value["material"]["instanceOf"].GetString());
-			if (strlen(instanceOf) > 0) {
-				GameObject* materialInstance = App->scene->FindInstanceOrigin(instanceOf);
-				if (material != nullptr)
-				{
-					material = (ComponentMaterial*) materialInstance->components.front();
-				}
-				else
-				{
-					material->UnSerialize(value["material"]);
-				}
-			}
-		}
-		else
-		{
-			material->UnSerialize(value["material"]);
-		}
-	}
+		material = ComponentMaterial::GetMaterial(value["material"]["materialPath"].GetString());
+	}	
+	
 }
 
 bool ComponentMesh::Release()

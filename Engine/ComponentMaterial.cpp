@@ -1,5 +1,6 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
+#include "ComponentMap.h"
 #include "Component.h"
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -8,6 +9,7 @@
 #include "MaterialImporter.h"
 #include <algorithm>
 #include "rapidjson-1.1.0/include/rapidjson/writer.h"
+#include "crossguid/include/crossguid/guid.hpp"
 
 #define WIDGET_WIDTHS 128
 
@@ -15,90 +17,132 @@ std::map<std::string, ComponentMaterial*>ComponentMaterial::materialsLoaded;
 
 ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component(ComponentTypes::MATERIAL_COMPONENT)
 {
-	color = float4(r, g, b, a);
+	diffuseColor = float4(r, g, b, a);
 	program = App->program->phongFlat;
-	sprintf_s(name, "Material");
-	sprintf_s(texturePath, "");
+	
 }
 
 ComponentMaterial::~ComponentMaterial()
 {
-
+	if (texture != nullptr && texture->Release())
+		RELEASE(texture);
+	if (normal != nullptr && normal->Release())
+		RELEASE(normal);
+	if (specular != nullptr && specular->Release())
+		RELEASE(specular);
+	if (occlusion != nullptr && occlusion->Release())
+		RELEASE(occlusion);
+	if (emissive != nullptr && emissive->Release())
+		RELEASE(emissive);
 }
 
 void ComponentMaterial::EditorDraw()
 {	
-	ImGui::PushID(this);
-	char header[1024];
-	sprintf_s(header, "Material %s", name);
-	ImGui::TextWrapped(header);
-		
-	ImGui::InputText("Name", &name[0], 2000);
-	
-	ImGui::ColorEdit4("Color", &color[0]);
-	ImGui::SliderFloat("Ambient", &ambient, 0.f, 1.f);
-	ImGui::SliderFloat("Diffuse", &diffuse, 0.f, 1.f);
-	ImGui::SliderFloat("Specular", &specular, 0.f, 1.f);
-	ImGui::TextWrapped("Texture");
-	if (texture != 0)
+	if (ImGui::CollapsingHeader("Material"))
 	{
-		ImGui::Image((void*)(intptr_t)texture, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
-	}
-	else
-	{
-		ImGui::Button("Drop a texture");
-	}
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
+		ImGui::PushID(this);
+		ImGui::Text("Diffuse");
+		ImGui::ColorEdit4("Diffuse Color", &diffuseColor[0]);
+		if (texture != nullptr && texture->mapId != 0)
 		{
-			assert(payload->DataSize == sizeof(unsigned));
-			texture = *(unsigned*)payload->Data;
+			ImGui::Image((void*)(intptr_t)texture->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
 		}
+		else
+		{
+			ImGui::Button("Drop a diffuse map");
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
+			{
+				assert(payload->DataSize == sizeof(unsigned));
+				//texture = *(unsigned*)payload->Data;
+			}
+		}
+		ImGui::Separator();
+		ImGui::Text("Specular");
+		ImGui::ColorEdit4("Specular Color", &specularColor[0]);
+		if (specular != nullptr && specular->mapId != 0)
+		{
+			ImGui::Image((void*)(intptr_t)specular->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		else
+		{
+			ImGui::Button("Drop a specular map");
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
+			{
+				assert(payload->DataSize == sizeof(unsigned));
+				//specular = *(unsigned*)payload->Data;
+			}
+		}
+		ImGui::Separator();
+		ImGui::Text("Emissive");
+		ImGui::ColorEdit4("Emissive Color", &specularColor[0]);
+		if (emissive != nullptr && emissive->mapId != 0)
+		{
+			ImGui::Image((void*)(intptr_t)emissive->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		else
+		{
+			ImGui::Button("Drop an emissive map");
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
+			{
+				assert(payload->DataSize == sizeof(unsigned));
+				//emissive = *(unsigned*)payload->Data;
+			}
+		}
+		ImGui::Separator();
+		ImGui::Text("Normal");
+		if (normal != nullptr && normal->mapId != 0)
+		{
+			ImGui::Image((void*)(intptr_t)normal->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		else
+		{
+			ImGui::Button("Drop a normal map");
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
+			{
+				assert(payload->DataSize == sizeof(unsigned));
+				//normal = *(unsigned*)payload->Data;
+			}
+		}
+		ImGui::Separator();
+		ImGui::SliderFloat("Ambient", &kAmbient, 0.f, 1.f);
+		ImGui::SliderFloat("Diffuse", &kDiffuse, 0.f, 1.f);
+		ImGui::SliderFloat("Specular", &kSpecular, 0.f, 1.f);
+		ImGui::InputFloat("Shininess", &shininess, 0.1f, 0.5f);
+		ImGui::Separator();
+		ImGui::PopID();
 	}
-	ImGui::Separator();
-	ImGui::PopID();	
 }
 
 void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer)
 {
+	if (strlen(materialPath) == 0)
+	{
+		xg::Guid guid = xg::newGuid();
+		std::string uuid = guid.str();
+		std::string matPath = "Library/Materials/" + uuid + ".mat";
+		sprintf_s(materialPath, matPath.c_str());
+	}
+	MaterialImporter mi;
+	mi.Save(materialPath, this);
 	writer.StartObject();
 	writer.String("type"); writer.Int((int)type);
-	writer.String("name"); writer.String(name);
-	writer.String("texturePath"); writer.String(texturePath);
 	writer.String("materialPath"); writer.String(materialPath);
-	if (strlen(materialPath) > 0)
-	{
-		MaterialImporter mi;
-		mi.Save(materialPath, this);
-	}
-	writer.String("r"); writer.Double(color.x);
-	writer.String("g"); writer.Double(color.y);
-	writer.String("b"); writer.Double(color.z);
-	writer.String("a"); writer.Double(color.w);
-	writer.String("program"); writer.Int(program);
-	writer.String("diffuse"); writer.Double(diffuse);
-	writer.String("ambient"); writer.Double(ambient);
-	writer.String("specular"); writer.Double(specular);
-
 	writer.EndObject();
+		
 }
 
-void ComponentMaterial::UnSerialize(rapidjson::Value & value)
-{
-	sprintf_s(name, value["name"].GetString());
-	sprintf_s(texturePath, value["texturePath"].GetString());
-	sprintf_s(materialPath, value["materialPath"].GetString());
-	color.x = value["r"].GetDouble();
-	color.y = value["g"].GetDouble();
-	color.z = value["b"].GetDouble();
-	color.w = value["a"].GetDouble();
-	diffuse = value["diffuse"].GetDouble();
-	ambient = value["ambient"].GetDouble();
-	specular = value["specular"].GetDouble();
-	program = value["program"].GetInt();
-	
-}
 
 bool ComponentMaterial::Release()
 {

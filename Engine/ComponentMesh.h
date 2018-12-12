@@ -7,7 +7,6 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "Component.h"
 
-class GameObject;
 class ComponentMaterial;
 class ComponentCamera;
 class Transform;
@@ -62,6 +61,7 @@ public:
 	char meshPath[1024] = "";
 	Primitives primitiveType = Primitives::VOID_PRIMITIVE;
 
+	//Resource management
 	static ComponentMesh* GetMesh(std::string path); //check if a mesh is loaded and returns it, otherwise tries to load and return
 	static std::map<std::string, ComponentMesh*> meshesLoaded;
 };

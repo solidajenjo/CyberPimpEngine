@@ -39,7 +39,7 @@ bool SceneImporter::Import(const std::string & file) const
 	for (unsigned i = 0u; i < nMaterials; ++i)
 	{
 		GameObject* mat = new GameObject("Material");
-		materials[i] = mi.Import(scene->mMaterials[i], i, mat);	
+		materials[i] = mi.Import(scene->mMaterials[i], mat);	
 		RELEASE(mat->transform);
 		App->scene->ImportGameObject(mat); //import material
 	}

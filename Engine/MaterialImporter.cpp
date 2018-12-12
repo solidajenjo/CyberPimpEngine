@@ -6,6 +6,7 @@
 #include "DevIL/include/IL/ilut.h"
 #include "DevIL/include/IL/ilu.h"
 #include "ComponentMaterial.h"
+#include "ComponentMap.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "GameObject.h"
@@ -13,7 +14,7 @@
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include "rapidjson-1.1.0/include/rapidjson/error/en.h"
 
-std::string MaterialImporter::Import(const aiMaterial* material, const unsigned index, GameObject* &materialImported) const
+std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &materialImported) const
 {
 	assert(material != nullptr);
 	xg::Guid guid = xg::newGuid();
@@ -22,7 +23,7 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 	aiColor3D color(1.f, 1.f, 1.f);
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 	ComponentMaterial* materialComponent = new ComponentMaterial(color.r, color.g, color.b, 1.0f);
-	std::string materialPath = "Library/Materials/" + uuid + "_" + std::to_string(index) + ".mat";
+	std::string materialPath = "Library/Materials/" + uuid + ".mat";
 	
 	std::string savePath = "";
 	aiString file;
@@ -51,15 +52,15 @@ std::string MaterialImporter::Import(const aiMaterial* material, const unsigned 
 		
 	}
 	
-	sprintf_s(materialComponent->texturePath, savePath.c_str());
+	sprintf_s(materialComponent->diffuseMap, savePath.c_str());
 	sprintf_s(materialComponent->materialPath, materialPath.c_str());
 
 	Save(materialPath.c_str(), materialComponent);
-	
+	RELEASE(materialComponent);
+
+	materialComponent = ComponentMaterial::GetMaterial(materialPath);
 	materialImported->InsertComponent(materialComponent);
-	
-	ComponentMaterial::materialsLoaded[materialComponent->materialPath] = materialComponent;
-	
+		
 	return materialPath;
 }
 
@@ -68,35 +69,50 @@ ComponentMaterial* MaterialImporter::Load(const char path[4096]) const
 	unsigned size = App->fileSystem->Size(path);
 	if (size > 0)
 	{
-		char* buffer = new char[size];
-		if (App->fileSystem->Read(path, &buffer[0], size)) 
+		MaterialData matData;
+		if (App->fileSystem->Read(path, &matData, sizeof(matData))) 
 		{
 			ComponentMaterial* newMat = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
-			unsigned pointer = 0u;
-			newMat->program = buffer[pointer];
-			pointer += sizeof(unsigned);
-			memcpy(&newMat->color.x, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->color.y, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->color.z, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->color.w, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
+			
+			newMat->diffuseColor = matData.diffuseColor;
+			newMat->specularColor = matData.specularColor;
+			newMat->emissiveColor = matData.emissiveColor;
+			newMat->kDiffuse = matData.kDiffuse;
+			newMat->kAmbient = matData.kAmbient;
+			newMat->kSpecular = matData.kSpecular;
+			newMat->shininess = matData.shininess;
+			sprintf_s(newMat->diffuseMap, matData.diffuseMap);
+			sprintf_s(newMat->materialPath, matData.materialPath);
+			sprintf_s(newMat->normalMap, matData.normalMap);
+			sprintf_s(newMat->specularMap, matData.specularMap);
+			sprintf_s(newMat->occlusionMap, matData.occlusionMap);
+			sprintf_s(newMat->emissiveMap, matData.emissiveMap);
 
-			memcpy(&newMat->diffuse, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->ambient, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->specular, &buffer[pointer], sizeof(float));
-			pointer += sizeof(float);
-			memcpy(&newMat->texturePath, &buffer[pointer], sizeof(newMat->texturePath));
-			if (strlen(newMat->texturePath) > 0)
+			if (strlen(newMat->diffuseMap) > 0)
 			{
-				newMat->texture = App->textures->Load(newMat->texturePath); //TODO: Control multi load
+				newMat->texture = ComponentMap::GetMap(newMat->diffuseMap);
 			}
-			pointer += sizeof(newMat->texturePath);
-			memcpy(&newMat->materialPath, &buffer[pointer], sizeof(newMat->materialPath));
+
+			if (strlen(newMat->normalMap) > 0)
+			{
+				newMat->normal = ComponentMap::GetMap(newMat->normalMap); 
+			}
+
+			if (strlen(newMat->specularMap) > 0)
+			{
+				newMat->specular = ComponentMap::GetMap(newMat->specularMap); 
+			}
+
+			if (strlen(newMat->occlusionMap) > 0)
+			{
+				newMat->occlusion = ComponentMap::GetMap(newMat->occlusionMap);
+			}
+
+			if (strlen(newMat->emissiveMap) > 0)
+			{
+				newMat->emissive = ComponentMap::GetMap(newMat->emissiveMap); 
+			}
+			
 			return newMat;
 
 		}
@@ -106,26 +122,25 @@ ComponentMaterial* MaterialImporter::Load(const char path[4096]) const
 
 void MaterialImporter::Save(const char path[1024], const ComponentMaterial * material) const
 {
-	unsigned size = sizeof(unsigned) + sizeof(float) * 7 + sizeof(material->name) + sizeof(material->texturePath) + sizeof(material->materialPath);
-	char* buffer = new char[size];
-	unsigned pointer = 0u;
-	memcpy(&buffer[pointer], &material->program, sizeof(unsigned));
-	pointer += sizeof(unsigned);
-	memcpy(&buffer[pointer], &material->color, sizeof(float) * 4);
-	pointer += sizeof(float) * 4;
-	memcpy(&buffer[pointer], &material->diffuse, sizeof(float));
-	pointer += sizeof(float);
-	memcpy(&buffer[pointer], &material->ambient, sizeof(float));
-	pointer += sizeof(float);
-	memcpy(&buffer[pointer], &material->specular, sizeof(float));
-	pointer += sizeof(float);
-	memcpy(&buffer[pointer], &material->texturePath, sizeof(material->texturePath));
-	pointer += sizeof(material->texturePath);
-	memcpy(&buffer[pointer], &material->materialPath, sizeof(material->materialPath));
-	if (!App->fileSystem->Write(std::string(path), buffer, size))
+	
+	MaterialData matData;
+	matData.diffuseColor = material->diffuseColor;
+	matData.specularColor = material->specularColor;
+	matData.emissiveColor = material->emissiveColor;
+	matData.kDiffuse = material->kDiffuse;
+	matData.kAmbient = material->kAmbient;
+	matData.kSpecular = material->kSpecular;
+	matData.shininess = material->shininess;
+	sprintf_s(matData.diffuseMap, material->diffuseMap);
+	sprintf_s(matData.materialPath, material->materialPath);
+	sprintf_s(matData.normalMap, material->normalMap);
+	sprintf_s(matData.specularMap, material->specularMap);
+	sprintf_s(matData.occlusionMap, material->occlusionMap);
+	sprintf_s(matData.emissiveMap, material->emissiveMap);
+	
+	if (!App->fileSystem->Write(std::string(path), &matData, sizeof(matData)))
 	{
 		LOG("Failed saving material %s", path);
 	}
-	RELEASE(buffer);
 }
 

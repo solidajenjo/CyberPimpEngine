@@ -80,14 +80,14 @@ unsigned ModuleTextures::Load(const std::string& path)
 	return 0;
 }
 
-std::list<unsigned>::iterator ModuleTextures::UnLoad(unsigned texNum)
+void ModuleTextures::UnLoad(unsigned texNum)
 {
 	std::list<unsigned>::iterator it = std::find(textures.begin(), textures.end(), texNum);
+	glDeleteTextures(1, &texNum);
 	if (it != textures.end()) 
 	{
-		return textures.erase(it);
-	}
-	return textures.end(); //texture not found
+		textures.erase(it);
+	}	
 }
 
 

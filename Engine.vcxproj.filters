@@ -206,7 +206,6 @@
     <ClCompile Include="Engine\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component.cpp" />
     <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_haiku.cpp">
       <Filter>Utilities\PhysFS</Filter>
     </ClCompile>
@@ -218,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="Engine\QuadTree.cpp">
       <Filter>SpacePartitioners</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentMap.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -823,6 +825,9 @@
     </ClInclude>
     <ClInclude Include="Engine\QuadTree.h">
       <Filter>SpacePartitioners</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentMap.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

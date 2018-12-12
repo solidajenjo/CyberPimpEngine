@@ -6,8 +6,6 @@
 #include "MathGeoLib/include/Geometry/Frustum.h"
 #include "MathGeoLib/include/Math/float3.h"
 
-class GameObject;
-
 class ComponentCamera : public Component
 {
 public:

@@ -136,7 +136,7 @@ void SubModuleEditorConfig::Show()
 					ImGui::Separator();
 					if (ImGui::Button("Remove"))
 					{
-						it = App->textures->UnLoad(*it);						
+						App->textures->UnLoad(*it);						
 					}
 					ImGui::Separator();
 					ImGui::Separator();

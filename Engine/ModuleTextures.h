@@ -14,7 +14,7 @@ public:
 	bool CleanUp() override;
 
 	unsigned Load(const std::string& path);
-	std::list<unsigned>::iterator UnLoad(unsigned texNum);
+	void UnLoad(unsigned texNum);
 
 //members
 
