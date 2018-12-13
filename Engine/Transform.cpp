@@ -284,7 +284,7 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 			if ((*it)->transform != nullptr)
 			{
 				stackGO.push(*it); //push the children to propagate later
-			//propagate transforms
+				//propagate transforms
 				(*it)->transform->modelMatrixGlobal = (*it)->parent->transform->modelMatrixGlobal.Mul((*it)->transform->modelMatrixLocal);
 				(*it)->transform->front = -(*it)->transform->modelMatrixGlobal.Col3(2);
 				(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);

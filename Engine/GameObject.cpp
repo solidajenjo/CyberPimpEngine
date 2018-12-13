@@ -20,11 +20,17 @@ GameObject::GameObject(const char name[40])
 	std::string uuid = guid.str();
 	sprintf_s(gameObjectUUID, uuid.c_str());
 	sprintf_s(this->name, name);
+	aaBB = new AABB();
+	aaBBGlobal = new AABB();
+	aaBB->SetFromCenterAndSize(transform->position, float3(.1f, .1f, .1f));
 }
 
 GameObject::GameObject(char UUID[40], Transform* transform) : transform(transform)
 {
 	sprintf_s(gameObjectUUID, UUID);
+	aaBB = new AABB();
+	aaBBGlobal = new AABB();
+	aaBB->SetFromCenterAndSize(transform->position, float3(.1f, .1f, .1f));
 };
 
 GameObject::~GameObject()

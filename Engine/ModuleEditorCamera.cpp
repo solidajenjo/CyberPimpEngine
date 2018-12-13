@@ -25,16 +25,12 @@ update_status ModuleEditorCamera::Update()
 	if (!App->editor->viewPort->cursorIn)
 		return UPDATE_CONTINUE;
 
-	if (App->scene->selected != nullptr && App->scene->selected->transform != nullptr) // if something is selected mark as target
-	{
-		editorCamera.target = App->scene->selected->transform->modelMatrixGlobal.Col3(3);
-	}
+	if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
+		editorCamera.target = App->scene->selected->aaBBGlobal->CenterPoint();
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
 		float movementScale = 1.f;
-
-		editorCamera.target = editorCamera.frustum.front;
 
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
 			movementScale = 2.f;
@@ -71,8 +67,7 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.RecalculateFrustum();
 	}
 
-	if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
-		editorCamera.target = App->scene->selected->aaBB->CenterPoint();
+	
 
 	bool focus = false;
 	float orbitFocus = 0.f;
@@ -83,15 +78,14 @@ update_status ModuleEditorCamera::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{			
-		if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
-			editorCamera.target = App->scene->selected->aaBB->CenterPoint();
+
 		iPoint mouseMotion = App->input->GetMouseMotion();
 		Quat orbitMat = Quat::RotateY(mouseMotion.x * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * 0.5f * App->appTime->realDeltaTime);
-		editorCamera.camPos = editorCamera.target + orbitMat * (editorCamera.camPos - editorCamera.target);
+		editorCamera.camPos =  orbitMat * (editorCamera.camPos - editorCamera.target) + editorCamera.target;
 		editorCamera.RecalculateFrustum();
 		focus = true;
 
-		float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos)); //TODO: No orbita al target
+		float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos)); 
 		if (focusLerp > 1.0f && angleToTarget <= 1.0f)
 		{			
 			focusLerp = 1.f;

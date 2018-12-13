@@ -264,6 +264,72 @@
         ]
     },
     {
+        "UUID": "54510ef9-3915-4dd6-b4f6-51667e3a420d",
+        "name": "Root",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": -0.07999999821186066,
+                "z": -200.0
+            },
+            "rotation": {
+                "x": 0.6684609651565552,
+                "y": 0.01745329238474369,
+                "z": -0.006981314159929752
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "fef36bb0-0177-4f83-b369-192935ed2623",
+        "path": "",
+        "parentUUID": "429dae31-6e41-496b-a224-1edf2c512c3c",
+        "components": []
+    },
+    {
+        "UUID": "5b7feaf4-c61c-46ca-8d94-6de4ac331d16",
+        "name": "RUST_3d_Low",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": -1.5707964897155762,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "fef36bb0-0177-4f83-b369-192935ed2623",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/552c138b-a057-45a2-b6af-932c0083475d.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
+                }
+            }
+        ]
+    },
+    {
         "UUID": "6396fb7b-f5e2-4a2c-9d4a-76f81cc28a72",
         "name": "Baker_house",
         "isInstantiated": false,
@@ -470,6 +536,44 @@
         ]
     },
     {
+        "UUID": "cea7ec94-fb9c-43e6-866a-3439118d6832",
+        "name": "RUST_3d_Low",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": -1.5707964897155762,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "5b7feaf4-c61c-46ca-8d94-6de4ac331d16",
+        "path": "",
+        "parentUUID": "54510ef9-3915-4dd6-b4f6-51667e3a420d",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/552c138b-a057-45a2-b6af-932c0083475d.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
+                }
+            }
+        ]
+    },
+    {
         "UUID": "ceee4377-7289-4bdb-b6fd-377b48866231",
         "name": "Baker_house",
         "isInstantiated": false,
@@ -538,5 +642,49 @@
                 "materialPath": "Library/Materials/9d98ae48-6872-4901-ba3a-120388ce5973.mat"
             }
         ]
+    },
+    {
+        "UUID": "ee8d0d43-eb3a-4e7a-8d0f-46d094ad852b",
+        "name": "Material",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
+        "components": [
+            {
+                "type": 2,
+                "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
+            }
+        ]
+    },
+    {
+        "UUID": "fef36bb0-0177-4f83-b369-192935ed2623",
+        "name": "Root",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
+        "components": []
     }
 ]
