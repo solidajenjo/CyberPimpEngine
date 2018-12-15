@@ -51,6 +51,8 @@ public:
 	bool exit = false;
 	ImGuiTextBuffer* consoleBuffer = nullptr;
 
+	float appScale = 1;
+
 private:
 
 	std::list<Module*> modules;

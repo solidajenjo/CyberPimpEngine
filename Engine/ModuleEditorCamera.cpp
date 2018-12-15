@@ -16,6 +16,7 @@
 
 bool ModuleEditorCamera::Init()
 {
+	editorCamera.zFar = 20000.f;
 	editorCamera.RecalculateFrustum(-float3::unitZ, float3::unitY);
 	return true;
 }
@@ -37,27 +38,27 @@ update_status ModuleEditorCamera::Update()
 		}
 		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos + float3(0.f, movementScale * editorCamera.moveSpeed * App->appTime->realDeltaTime, 0.f);
+			editorCamera.camPos = editorCamera.camPos + float3(0.f, App->appScale * movementScale * editorCamera.moveSpeed * App->appTime->realDeltaTime, 0.f);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos + float3(0.f, -editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime, 0.f);
+			editorCamera.camPos = editorCamera.camPos + float3(0.f, App->appScale * -editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime, 0.f);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.WorldRight() * App->appScale *  editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.WorldRight() * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.WorldRight() * App->appScale *  editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * App->appScale * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.front * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
+			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.front * App->appScale * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
 
 		iPoint mouseMotion = App->input->GetMouseMotion();

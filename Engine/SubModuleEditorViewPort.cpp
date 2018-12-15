@@ -50,7 +50,7 @@ void SubModuleEditorViewPort::Show()
 		App->renderer->Render(&App->camera->editorCamera);
 		if (App->editor->gizmosEnabled)
 		{
-			dd::xzSquareGrid(-200.f, 200.f, 0.f, 1.f, dd::colors::DarkGray);
+			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, 0.f, 1.f * App->appScale, dd::colors::DarkGray);
 			if (App->scene->sceneCamera != nullptr && App->scene->selected == App->scene->sceneCamera->owner)
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);

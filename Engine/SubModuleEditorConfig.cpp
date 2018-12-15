@@ -72,8 +72,8 @@ void SubModuleEditorConfig::Show()
 		if (ImGui::CollapsingHeader("Editor Camera"))
 		{
 			ImGui::SliderFloat("FOV", &App->camera->editorCamera.vFov, 10, 180);
-			ImGui::SliderFloat("Z Near", &App->camera->editorCamera.zNear, 0.01f, 2000.f);
-			ImGui::SliderFloat("Z Far", &App->camera->editorCamera.zFar, 0.01f, 2000.f);
+			ImGui::SliderFloat("Z Near", &App->camera->editorCamera.zNear, 0.01f, 20000.f);
+			ImGui::SliderFloat("Z Far", &App->camera->editorCamera.zFar, 0.01f, 20000.f);
 			ImGui::SliderFloat("Movement speed", &App->camera->editorCamera.moveSpeed, 0.01f, 50.f);
 			ImGui::SliderFloat("Rotation speed", &App->camera->editorCamera.rotSpeed, 0.01f, 50.f);
 			ImGui::SliderFloat("Zoom speed", &App->camera->editorCamera.zoomSpeed, 0.01f, 50.f);
