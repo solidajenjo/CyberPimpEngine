@@ -73,37 +73,40 @@ void SubModuleEditorViewPort::Show()
 			if (selected == 1)
 			{
 				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
-				float3 originalLocalPosition = modelMatrix.Col3(3);				
+				float3 originalPos = modelMatrix.Col3(3);
 				modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
-				modelMatrix.Transpose();
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());				
+				modelMatrix.Transpose();				
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());								
 				if (ImGuizmo::IsUsing())
 				{
 					modelMatrix.Transpose();
-					modelMatrix.SetCol3(3, originalLocalPosition); //restore original local position
+					modelMatrix.SetCol3(3, originalPos); //restore local position
 					App->scene->selected->transform->modelMatrixLocal = modelMatrix;
 					App->scene->selected->transform->ExtractLocalTransformFromMatrix();
-					App->scene->selected->parent->transform->PropagateTransform();
+					App->scene->selected->transform->PropagateTransform();
 				}
+				
 			}
 			else
 			{
 				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
 				modelMatrix.Transpose();
+				float3 originalRot = App->scene->selected->transform->rotation;
 				float4x4 deltaMatrix;
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());
-				deltaMatrix.Transpose();
-				float3 translation;
-				float3 scale;
-				float3x3 rot;
-				deltaMatrix.Decompose(translation, rot, scale);				
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());				
 				if (ImGuizmo::IsUsing())
 				{					
-					App->scene->selected->transform->Translate(translation);					
-					App->scene->selected->transform->SetScale(scale);
+					deltaMatrix.Transpose();
+					float3 translation;
+					float3 scale;
+					float3x3 rot;
+					deltaMatrix.Decompose(translation, rot, scale);
+					App->scene->selected->transform->scale = scale;					
+					App->scene->selected->transform->Translate(translation);
 					App->scene->selected->transform->PropagateTransform();
 				}
 			}
+			
 		}
 				
 		ImVec2 size = ImGui::GetWindowSize();			

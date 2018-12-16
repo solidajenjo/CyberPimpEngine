@@ -1,7 +1,7 @@
 [
     {
         "scene": {
-            "UUID": "429dae31-6e41-496b-a224-1edf2c512c3c",
+            "UUID": "5114b119-4f16-4277-b0e4-a85083e9f033",
             "name": "Scene",
             "isInstantiated": false,
             "isStatic": false,
@@ -31,7 +31,7 @@
     },
     {
         "assets": {
-            "UUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
+            "UUID": "31075d8f-2f9f-48ab-b896-ce3ab68721d7",
             "name": "Assets",
             "isInstantiated": false,
             "isStatic": false,
@@ -60,173 +60,23 @@
         }
     },
     {
-        "UUID": "16e94181-3cb3-4306-aaf9-71b626ca32c3",
-        "name": "Root",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": []
-    },
-    {
-        "UUID": "177b70f5-1122-4a42-b3ee-5121548a15c6",
-        "name": "Root",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": []
-    },
-    {
-        "UUID": "2d5b7b67-d592-41ee-83ff-b1dd4edae40f",
-        "name": "Root",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": []
-    },
-    {
-        "UUID": "369c5f22-188e-40ac-a7a7-e5a8cdb6bbab",
-        "name": "Chimney",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "177b70f5-1122-4a42-b3ee-5121548a15c6",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/9fcffc95-8795-4cdc-879e-5f102f50e3d8.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/fc723b88-516b-4603-b697-174948a5e9ac.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "3c06c8ea-91e6-488e-aad1-f47c24cbf3ac",
+        "UUID": "01e78868-aa78-4011-8af5-322849e1283f",
         "name": "Material",
         "isInstantiated": false,
         "isStatic": false,
         "active": true,
         "instanceOf": "",
         "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
+        "parentUUID": "31075d8f-2f9f-48ab-b896-ce3ab68721d7",
         "components": [
             {
                 "type": 2,
-                "materialPath": "Library/Materials/f0c9380c-a5c4-492a-b0af-e9dbcd399c40.mat"
+                "materialPath": "Library/Materials/af15862e-3c13-4edf-b416-c1a2e407f2b8.mat"
             }
         ]
     },
     {
-        "UUID": "49aeb580-da2c-4e58-9b18-bdd589ad5d59",
-        "name": "Root",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": []
-    },
-    {
-        "UUID": "4a01b57e-8b85-49f0-a8f8-8cf6f9c02d64",
+        "UUID": "09b55e11-30f9-41ad-86fc-9bcb14fffb51",
         "name": "Chimney",
         "isInstantiated": false,
         "isStatic": false,
@@ -250,89 +100,23 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "2d5b7b67-d592-41ee-83ff-b1dd4edae40f",
+        "parentUUID": "85a8db8e-c306-4868-a257-3268b1193dae",
         "components": [
             {
                 "type": 1,
-                "meshPath": "Library/Meshes/519c82e4-f85a-4c5e-ae6f-9236322e0892.msh",
+                "meshPath": "Library/Meshes/48f4937b-2d41-42e5-8898-63c08bb78428.msh",
                 "primitive": -1,
                 "material": {
                     "type": 2,
-                    "materialPath": "Library/Materials/9d98ae48-6872-4901-ba3a-120388ce5973.mat"
+                    "materialPath": "Library/Materials/af15862e-3c13-4edf-b416-c1a2e407f2b8.mat"
                 }
             }
         ]
     },
     {
-        "UUID": "54510ef9-3915-4dd6-b4f6-51667e3a420d",
-        "name": "Root",
+        "UUID": "6889dc6c-c219-4264-b25c-b4d06b265748",
+        "name": "Chimney",
         "isInstantiated": true,
-        "isStatic": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": -0.07999999821186066,
-                "z": -200.0
-            },
-            "rotation": {
-                "x": 0.6684609651565552,
-                "y": 0.01745329238474369,
-                "z": -0.006981314159929752
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "fef36bb0-0177-4f83-b369-192935ed2623",
-        "path": "",
-        "parentUUID": "429dae31-6e41-496b-a224-1edf2c512c3c",
-        "components": []
-    },
-    {
-        "UUID": "5b7feaf4-c61c-46ca-8d94-6de4ac331d16",
-        "name": "RUST_3d_Low",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "fef36bb0-0177-4f83-b369-192935ed2623",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/552c138b-a057-45a2-b6af-932c0083475d.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "6396fb7b-f5e2-4a2c-9d4a-76f81cc28a72",
-        "name": "Baker_house",
-        "isInstantiated": false,
         "isStatic": false,
         "active": true,
         "transform": {
@@ -352,215 +136,47 @@
                 "z": 100.0
             }
         },
-        "instanceOf": "",
+        "instanceOf": "09b55e11-30f9-41ad-86fc-9bcb14fffb51",
         "path": "",
-        "parentUUID": "2d5b7b67-d592-41ee-83ff-b1dd4edae40f",
+        "parentUUID": "e6fcd32c-534a-40ef-9029-ac678a21cfff",
         "components": [
             {
                 "type": 1,
-                "meshPath": "Library/Meshes/504e1580-9814-4b12-9681-873b26ea8f94.msh",
+                "meshPath": "Library/Meshes/48f4937b-2d41-42e5-8898-63c08bb78428.msh",
                 "primitive": -1,
                 "material": {
                     "type": 2,
-                    "materialPath": "Library/Materials/9d98ae48-6872-4901-ba3a-120388ce5973.mat"
+                    "materialPath": "Library/Materials/af15862e-3c13-4edf-b416-c1a2e407f2b8.mat"
                 }
             }
         ]
     },
     {
-        "UUID": "6d3006ab-34f4-4c52-bc36-49c0430b00aa",
-        "name": "Baker_house",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "177b70f5-1122-4a42-b3ee-5121548a15c6",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/1a9cb79c-2c83-445e-bafe-35869d04c2bd.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/fc723b88-516b-4603-b697-174948a5e9ac.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "a21a8373-3e00-4473-b1c2-847fd249befd",
-        "name": "Material",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": [
-            {
-                "type": 2,
-                "materialPath": "Library/Materials/fc723b88-516b-4603-b697-174948a5e9ac.mat"
-            }
-        ]
-    },
-    {
-        "UUID": "a688e9d8-cb7a-4e10-8271-974857428b6c",
-        "name": "Baker_house",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "16e94181-3cb3-4306-aaf9-71b626ca32c3",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/b8961ea2-b396-4c04-8c85-469d82542bb0.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/f0c9380c-a5c4-492a-b0af-e9dbcd399c40.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "b80cc2b4-9c12-4f70-bc72-225175d27c28",
-        "name": "Chimney",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "16e94181-3cb3-4306-aaf9-71b626ca32c3",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/d7f1c904-11dd-4139-801d-cf71f1fcac5a.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/f0c9380c-a5c4-492a-b0af-e9dbcd399c40.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "bf1b5aad-57b0-4285-83d5-607de1b6c13c",
-        "name": "Chimney",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "49aeb580-da2c-4e58-9b18-bdd589ad5d59",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/86c67d67-ca61-4b5d-8fa7-2e04580e2918.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/f6c3bee2-ee65-4ca1-b614-592735212071.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "bfe79ac5-209a-4764-a799-679ce0162acc",
+        "UUID": "71a6c124-b5d0-446f-b351-002119702e5e",
         "name": "Sphere",
         "isInstantiated": true,
-        "isStatic": true,
+        "isStatic": false,
         "active": true,
         "transform": {
             "position": {
-                "x": -2.9246768951416017,
-                "y": 14.4967041015625,
-                "z": -12.774529457092286
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "rotation": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 0.8510424494743347,
+                "y": 0.9965755343437195,
+                "z": 0.8481284379959106
             },
             "scale": {
                 "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "y": 1.000000238418579,
+                "z": 1.0000009536743165
             }
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "429dae31-6e41-496b-a224-1edf2c512c3c",
+        "parentUUID": "5114b119-4f16-4277-b0e4-a85083e9f033",
         "components": [
             {
                 "type": 1,
@@ -568,137 +184,13 @@
                 "primitive": 1,
                 "material": {
                     "type": 2,
-                    "materialPath": "Library/Materials/df0df1da-d196-4b3b-b30a-2599503b3353.mat"
+                    "materialPath": "Library/Materials/47a532dd-d9b7-4fd3-959a-37289d1f91fe.mat"
                 }
             }
         ]
     },
     {
-        "UUID": "cea7ec94-fb9c-43e6-866a-3439118d6832",
-        "name": "RUST_3d_Low",
-        "isInstantiated": true,
-        "isStatic": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "5b7feaf4-c61c-46ca-8d94-6de4ac331d16",
-        "path": "",
-        "parentUUID": "54510ef9-3915-4dd6-b4f6-51667e3a420d",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/552c138b-a057-45a2-b6af-932c0083475d.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "ceee4377-7289-4bdb-b6fd-377b48866231",
-        "name": "Baker_house",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "49aeb580-da2c-4e58-9b18-bdd589ad5d59",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/ee90e8b6-4978-4139-b5ec-af30794c48c3.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/f6c3bee2-ee65-4ca1-b614-592735212071.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "d83325ed-9c41-4cb6-a2c4-ac23fea78532",
-        "name": "Material",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": [
-            {
-                "type": 2,
-                "materialPath": "Library/Materials/f6c3bee2-ee65-4ca1-b614-592735212071.mat"
-            }
-        ]
-    },
-    {
-        "UUID": "e45f28e0-cca9-44cd-84f4-db88cf0407d0",
-        "name": "Material",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": [
-            {
-                "type": 2,
-                "materialPath": "Library/Materials/9d98ae48-6872-4901-ba3a-120388ce5973.mat"
-            }
-        ]
-    },
-    {
-        "UUID": "ee8d0d43-eb3a-4e7a-8d0f-46d094ad852b",
-        "name": "Material",
-        "isInstantiated": false,
-        "isStatic": false,
-        "active": true,
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
-        "components": [
-            {
-                "type": 2,
-                "materialPath": "Library/Materials/e3e775ac-d54f-45bc-9018-0ccef7af2bca.mat"
-            }
-        ]
-    },
-    {
-        "UUID": "fef36bb0-0177-4f83-b369-192935ed2623",
+        "UUID": "85a8db8e-c306-4868-a257-3268b1193dae",
         "name": "Root",
         "isInstantiated": false,
         "isStatic": false,
@@ -722,7 +214,111 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "76ecd83a-f364-4461-8619-9cc456736bbe",
+        "parentUUID": "31075d8f-2f9f-48ab-b896-ce3ab68721d7",
+        "components": []
+    },
+    {
+        "UUID": "8ab7182b-4425-4739-a83b-f772172567a2",
+        "name": "Baker_house",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 2.7799999713897707,
+                "y": -1.3700000047683716,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "d8865543-fe07-455f-ac53-e70bfaacb348",
+        "path": "",
+        "parentUUID": "e6fcd32c-534a-40ef-9029-ac678a21cfff",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/2455d5bd-c446-4d9c-8bdb-945459981434.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/af15862e-3c13-4edf-b416-c1a2e407f2b8.mat"
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "d8865543-fe07-455f-ac53-e70bfaacb348",
+        "name": "Baker_house",
+        "isInstantiated": false,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": -1.5707964897155762,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 100.0,
+                "y": 100.0,
+                "z": 100.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "85a8db8e-c306-4868-a257-3268b1193dae",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/2455d5bd-c446-4d9c-8bdb-945459981434.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/af15862e-3c13-4edf-b416-c1a2e407f2b8.mat"
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "e6fcd32c-534a-40ef-9029-ac678a21cfff",
+        "name": "Root",
+        "isInstantiated": true,
+        "isStatic": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -2.8318543434143068,
+                "y": 1.339794635772705,
+                "z": -9.353866516903508e-7
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 0.9999999403953552,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "85a8db8e-c306-4868-a257-3268b1193dae",
+        "path": "",
+        "parentUUID": "5114b119-4f16-4277-b0e4-a85083e9f033",
         "components": []
     }
 ]

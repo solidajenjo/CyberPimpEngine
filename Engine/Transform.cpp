@@ -97,9 +97,7 @@ void Transform::ExtractLocalTransformFromMatrix()
 {
 	float3x3 rot;
 	modelMatrixLocal.Decompose(position, rot, scale);
-	rotation.x = (rot.Col3(0) / scale.x)[0];
-	rotation.y = (rot.Col3(1) / scale.x)[1];
-	rotation.z = (rot.Col3(2) / scale.x)[2];
+	rotation = rot.ToEulerXYZ();
 }
 
 void Transform::RecalcModelMatrix()
