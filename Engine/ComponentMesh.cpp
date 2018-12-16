@@ -141,7 +141,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->phongFlat,
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
-	if (material->texture->mapId > 0)
+	if (material->texture != nullptr && material->texture->mapId > 0)
 	{
 		glUniform1i(glGetUniformLocation(App->program->phongFlat, "useTex"), 1);
 		glBindTexture(GL_TEXTURE_2D, material->texture->mapId);

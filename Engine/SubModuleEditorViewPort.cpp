@@ -23,6 +23,8 @@
 #include "ComponentMesh.h"
 #include "GameObject.h"
 #include "ModuleRender.h"
+#include "ImGuizmo/ImGuizmo.h"
+#include "MathGeoLib/include/Math/MathFunc.h"
 #include "SceneImporter.h"
 
 
@@ -32,9 +34,80 @@ void SubModuleEditorViewPort::Show()
 	{	
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		
+		const char* items[] = { "Translate", "Rotate", "Scale"};
+		static const char* item_current = items[0];
+		static unsigned selected = 0u;		
+		ImGui::PushItemWidth(100.f);
+		if (ImGui::BeginCombo("Operation", item_current))
+		{			
+			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			{
+				bool is_selected = (item_current == items[n]);
+				if (ImGui::Selectable(items[n], is_selected))
+				{
+					item_current = items[n];
+					selected = n;
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();								
+			}						
+			ImGui::EndCombo();
+		}
+		ImGui::PopItemWidth();				
+
 		cursorIn = ImGui::IsWindowHovered();
+
+		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected))
+		{
+
+			ImGuiIO& io = ImGui::GetIO();
+			ImVec2 winPos = ImGui::GetWindowPos();
+			ImVec2 winSize = ImGui::GetContentRegionMax();			
+			
+			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
+			
+			App->camera->guizmoLock = ImGuizmo::IsOver();
+						
+			ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
+			float4x4 modelMatrix;
+			if (selected == 1)
+			{
+				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
+				float3 originalLocalPosition = modelMatrix.Col3(3);				
+				modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
+				modelMatrix.Transpose();
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());				
+				if (ImGuizmo::IsUsing())
+				{
+					modelMatrix.Transpose();
+					modelMatrix.SetCol3(3, originalLocalPosition); //restore original local position
+					App->scene->selected->transform->modelMatrixLocal = modelMatrix;
+					App->scene->selected->transform->ExtractLocalTransformFromMatrix();
+					App->scene->selected->parent->transform->PropagateTransform();
+				}
+			}
+			else
+			{
+				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
+				modelMatrix.Transpose();
+				float4x4 deltaMatrix;
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());
+				deltaMatrix.Transpose();
+				float3 translation;
+				float3 scale;
+				float3x3 rot;
+				deltaMatrix.Decompose(translation, rot, scale);				
+				if (ImGuizmo::IsUsing())
+				{					
+					App->scene->selected->transform->Translate(translation);					
+					App->scene->selected->transform->SetScale(scale);
+					App->scene->selected->transform->PropagateTransform();
+				}
+			}
+		}
+				
 		ImVec2 size = ImGui::GetWindowSize();			
-		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30); //padding
+		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 60); //padding
 		if (width != size.x || height != size.y) //viewport changed
 		{					
 			width = size.x;
@@ -55,7 +128,7 @@ void SubModuleEditorViewPort::Show()
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);
 			}
-			if (App->scene->selected != nullptr && App->scene->selected->aaBBGlobal != nullptr)
+			if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->aaBBGlobal != nullptr)
 			{
 				dd::aabb(App->scene->selected->aaBBGlobal->minPoint, App->scene->selected->aaBBGlobal->maxPoint, dd::colors::Yellow);				
 			}

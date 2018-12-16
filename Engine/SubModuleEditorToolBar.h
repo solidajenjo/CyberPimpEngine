@@ -10,7 +10,7 @@ public:
 
 	void Show();
 
-	unsigned toolBarHeight = 50;
+	unsigned toolBarHeight = 60u;
 };
 
 #endif

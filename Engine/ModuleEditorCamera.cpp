@@ -22,8 +22,8 @@ bool ModuleEditorCamera::Init()
 }
 
 update_status ModuleEditorCamera::Update()
-{
-	if (!App->editor->viewPort->cursorIn)
+{	
+	if (!App->editor->viewPort->cursorIn || guizmoLock)
 		return UPDATE_CONTINUE;
 
 	if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)

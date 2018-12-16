@@ -267,7 +267,7 @@
         "UUID": "54510ef9-3915-4dd6-b4f6-51667e3a420d",
         "name": "Root",
         "isInstantiated": true,
-        "isStatic": false,
+        "isStatic": true,
         "active": true,
         "transform": {
             "position": {
@@ -536,10 +536,48 @@
         ]
     },
     {
+        "UUID": "bfe79ac5-209a-4764-a799-679ce0162acc",
+        "name": "Sphere",
+        "isInstantiated": true,
+        "isStatic": true,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": -2.9246768951416017,
+                "y": 14.4967041015625,
+                "z": -12.774529457092286
+            },
+            "rotation": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "429dae31-6e41-496b-a224-1edf2c512c3c",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "",
+                "primitive": 1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/df0df1da-d196-4b3b-b30a-2599503b3353.mat"
+                }
+            }
+        ]
+    },
+    {
         "UUID": "cea7ec94-fb9c-43e6-866a-3439118d6832",
         "name": "RUST_3d_Low",
         "isInstantiated": true,
-        "isStatic": false,
+        "isStatic": true,
         "active": true,
         "transform": {
             "position": {

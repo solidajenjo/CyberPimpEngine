@@ -221,6 +221,9 @@
     <ClCompile Include="Engine\ComponentMap.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Utilities\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -829,6 +832,9 @@
     <ClInclude Include="Engine\ComponentMap.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo\ImGuizmo.h">
+      <Filter>Utilities\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">
@@ -884,6 +890,9 @@
     </Filter>
     <Filter Include="SpacePartitioners">
       <UniqueIdentifier>{ba742d9c-e848-4729-ae2f-6136450a6c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\ImGuizmo">
+      <UniqueIdentifier>{bc57c862-8dbb-4b27-a693-52cc39e33f59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

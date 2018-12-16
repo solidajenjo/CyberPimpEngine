@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "imgui.h"
+#include "imgui/imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "imgui_internal.h"
+#include "imgui/imgui_internal.h"
 #include "ImGuizmo.h"
 
 // includes patches for multiview from
@@ -1825,9 +1825,9 @@ namespace ImGuizmo
 
       mat.OrthoNormalize();
 
-      rotation[0] = RAD2DEG * atan2f(mat.m[1][2], mat.m[2][2]);
-      rotation[1] = RAD2DEG * atan2f(-mat.m[0][2], sqrtf(mat.m[1][2] * mat.m[1][2] + mat.m[2][2]* mat.m[2][2]));
-      rotation[2] = RAD2DEG * atan2f(mat.m[0][1], mat.m[0][0]);
+      rotation[0] = atan2f(mat.m[1][2], mat.m[2][2]);
+      rotation[1] = atan2f(-mat.m[0][2], sqrtf(mat.m[1][2] * mat.m[1][2] + mat.m[2][2]* mat.m[2][2]));
+      rotation[2] = atan2f(mat.m[0][1], mat.m[0][0]);
 
       translation[0] = mat.v.position.x;
       translation[1] = mat.v.position.y;
@@ -1905,8 +1905,8 @@ namespace ImGuizmo
           case ROTATE:
               DrawRotationGizmo(type);
               break;
-          case TRANSLATE:
-              DrawTranslationGizmo(type);
+          case TRANSLATE:             
+              DrawTranslationGizmo(type);              
               break;
           case SCALE:
               DrawScaleGizmo(type);

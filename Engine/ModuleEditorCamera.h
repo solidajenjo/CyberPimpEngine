@@ -16,11 +16,11 @@ public:
 	//members
 
 	ComponentCamera editorCamera;
+	bool guizmoLock = false;
 
 private:
 	float focusLerp = 0.f;
-	bool movementStart = false;
-
+	bool movementStart = false;	
 };
 
 #endif;

@@ -19,6 +19,7 @@
 #include "SubModuleEditorFileInspector.h"
 #include "GameObject.h"
 #include "ModuleEditorCamera.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 bool ModuleEditor::Init()
 {
@@ -32,15 +33,15 @@ bool ModuleEditor::Init()
 	ImGui_ImplOpenGL3_Init(OPENGL_VERSION);
 	
 	ImGui::StyleColorsDark();
-	
+
 	subModules.push_back(menu = new SubModuleEditorMenu("Menu"));
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
 	subModules.push_back(inspector = new SubModuleEditorInspector("Inspector"));
-	subModules.push_back(viewPort = new SubModuleEditorViewPort("Viewport"));
 	subModules.push_back(gameViewPort = new SubModuleEditorGameViewPort("Game Viewport"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
 	subModules.push_back(files = new SubModuleEditorFileInspector("Files"));
+	subModules.push_back(viewPort = new SubModuleEditorViewPort("Viewport"));
 	App->consoleBuffer = new ImGuiTextBuffer();
 
 	toolBar = new SubModuleEditorToolBar("ToolBar");
@@ -53,10 +54,9 @@ update_status ModuleEditor::PreUpdate()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
-	ImGui::NewFrame();
-	
-	toolBar->Show();
-
+	ImGui::NewFrame();				
+	ImGuizmo::BeginFrame();
+	toolBar->Show();		
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruDockspace;
 	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
@@ -65,26 +65,25 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, toolBar->toolBarHeight));
 	ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y * .95f/* - toolBar->toolBarHeight*/));
 	ImGui::SetNextWindowViewport(viewport->ID);
-	ImGui::SetNextWindowBgAlpha(0.f);	
-	ImGui::Begin("DockSpace", &bDock, window_flags);	
-		if (backgroundTex == 0) //post glew initialization needed
-		{
-			backgroundTex = textures->Load("editorBackground.png");
-			logo = textures->Load("editorHeaderLogo.png");
-			checkersTex = textures->Load("checkers.png");			
-			noCamTex = textures->Load("noCam.png");		
-			App->scene->SetSkyBox();
-		}
-		float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
-		ImVec2 cornerPos = ImGui::GetCursorPos();
-		ImGui::SetCursorPosX(imageXPos);
-		ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::SetCursorPos(cornerPos);
-		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);
+	ImGui::SetNextWindowBgAlpha(0.f);		
+	ImGui::Begin("DockSpace", &bDock, window_flags);		
+	if (backgroundTex == 0) //post glew initialization needed
+	{
+		backgroundTex = textures->Load("editorBackground.png");
+		logo = textures->Load("editorHeaderLogo.png");
+		checkersTex = textures->Load("checkers.png");			
+		noCamTex = textures->Load("noCam.png");		
+		App->scene->SetSkyBox();
+	}
+	float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);
+	ImVec2 cornerPos = ImGui::GetCursorPos();
+	ImGui::SetCursorPosX(imageXPos);
+	ImGui::Image((void*)(intptr_t)backgroundTex, ImVec2(viewport->Size.y - toolBar->toolBarHeight, viewport->Size.y * .95f - toolBar->toolBarHeight), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SetCursorPos(cornerPos);
+	ImGuiID dockspace_id = ImGui::GetID("DockSpace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), opt_flags);
 	ImGui::End();
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(500, 500));	
-	App->frameBuffer->PreUpdate();
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(500, 500));			
 	return UPDATE_CONTINUE;
 }
 

@@ -33,12 +33,12 @@ public:
 	void NewAttachment();
 	void EditorDraw() override;
 	//TODO: create a set global position
+	void ExtractLocalTransformFromMatrix();
 	void RecalcModelMatrix();
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;
 
-public:
 	//members
 	Quat rotQuat = Quat::identity;
 	

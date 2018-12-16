@@ -151,6 +151,7 @@
     <ClInclude Include="Dependencies\Assimp\include\assimp\Vertex.h" />
     <ClInclude Include="Dependencies\Assimp\include\assimp\XMLTools.h" />
     <ClInclude Include="Dependencies\crossguid\include\crossguid\guid.hpp" />
+    <ClInclude Include="Dependencies\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Dependencies\imgui\examples\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\imgui\examples\imgui_impl_sdl.h" />
     <ClInclude Include="Dependencies\imgui\imgui.h" />
@@ -284,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dependencies\crossguid\src\guid.cpp" />
+    <ClCompile Include="Dependencies\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Geometry\Capsule.cpp" />

@@ -52,16 +52,15 @@ void GameObject::InsertComponent(Component * newComponent)
 	if (newComponent->type == Component::ComponentTypes::MESH_COMPONENT)
 	{
 		ComponentMesh* mesh = (ComponentMesh*)newComponent;		
-		if (aaBB != nullptr) //accumulate AABBs //TODO: create global AABB when multi-mesh gameobjects
+		if (aaBB != nullptr)
 		{
+			float3* corners = new float3[16];
 			AABB tempAABB;
 			tempAABB.SetFrom(&mesh->meshVertices[0], mesh->nVertices);
-			std::vector<float3> aaBBPoints;
-			aaBBPoints.push_back(tempAABB.minPoint);
-			aaBBPoints.push_back(tempAABB.maxPoint);
-			aaBBPoints.push_back(aaBB->minPoint);
-			aaBBPoints.push_back(aaBB->maxPoint);
-			aaBB->MinimalEnclosingAABB(&aaBBPoints[0], 4);
+
+			aaBB->GetCornerPoints(&corners[0]);
+			tempAABB.GetCornerPoints(&corners[8]);
+			aaBB->Enclose(&corners[0], 16);		
 		}
 		else
 		{

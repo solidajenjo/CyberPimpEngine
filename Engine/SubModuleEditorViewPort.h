@@ -6,6 +6,7 @@
 class SubModuleEditorViewPort : public SubModuleEditor
 {
 public:
+
 	SubModuleEditorViewPort(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
@@ -13,7 +14,7 @@ public:
 //members
 
 	float height = 0, width = 0;
-	bool cursorIn = false;
+	bool cursorIn = false;	
 };
 
 #endif
