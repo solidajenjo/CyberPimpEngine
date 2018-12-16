@@ -11,11 +11,13 @@ class ModuleTextures : public Module
 public:
 	ModuleTextures();
 
+	bool Init() override;
 	bool CleanUp() override;
 
 	unsigned Load(const std::string& path);
 	void UnLoad(unsigned texNum);
 
+	unsigned whiteFallback = 0u, blackFallback = 0u;
 //members
 
 	std::list<unsigned> textures; 

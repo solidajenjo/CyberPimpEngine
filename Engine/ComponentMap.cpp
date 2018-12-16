@@ -5,7 +5,6 @@
 
 std::map<std::string, ComponentMap*>ComponentMap::mapsLoaded;
 
-
 void ComponentMap::EditorDraw()
 {
 	if (mapId != 0)

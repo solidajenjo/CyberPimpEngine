@@ -367,8 +367,8 @@
     <None Include="Dependencies\MathGeoLib\include\Math\Matrix.inl" />
     <None Include="Game\default.fs" />
     <None Include="Game\default.vs" />
-    <None Include="Game\PhongFlat.fs" />
-    <None Include="Game\PhongFlat.vs" />
+    <None Include="Game\DirectRenderingShader.fs" />
+    <None Include="Game\DirectRenderingShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -914,10 +914,10 @@
     <None Include="Dependencies\Assimp\include\assimp\config.h.in">
       <Filter>Utilities\Assimp</Filter>
     </None>
-    <None Include="Game\PhongFlat.fs">
+    <None Include="Game\DirectRenderingShader.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\PhongFlat.vs">
+    <None Include="Game\DirectRenderingShader.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

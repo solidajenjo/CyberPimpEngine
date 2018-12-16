@@ -57,7 +57,7 @@ void SubModuleEditorViewPort::Show()
 
 		cursorIn = ImGui::IsWindowHovered();
 
-		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected))
+		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
 		{
 
 			ImGuiIO& io = ImGui::GetIO();

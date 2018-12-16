@@ -27,7 +27,8 @@ public:
 	ComponentMap* occlusion = nullptr;
 	ComponentMap* emissive = nullptr;
 
-	unsigned program = 0;
+	unsigned* program = nullptr;
+
 	float4 diffuseColor = float4(1.f, 1.f, 1.f, 1.f);
 	float4 specularColor = float4(1.f, 1.f, 1.f, 1.f);
 	float4 emissiveColor = float4(0.f, 0.f, 0.f, 0.f);

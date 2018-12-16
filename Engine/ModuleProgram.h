@@ -12,7 +12,7 @@ public:
 	enum class Shaders
 	{
 		DEFAULT,
-		PHONG_FLAT
+		DIRECT_RENDERING
 	};
 
 	bool Init() override;
@@ -23,8 +23,8 @@ public:
 	
 //members
 
-	unsigned default = 0;
-	unsigned phongFlat = 0;
+	unsigned* default = nullptr;
+	unsigned* directRenderingProgram = nullptr;
 
 private:
 

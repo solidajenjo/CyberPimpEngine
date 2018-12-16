@@ -16,6 +16,32 @@ ModuleTextures::ModuleTextures()
 	ilutInit();
 }
 
+bool ModuleTextures::Init()
+{
+	char fallbackImageWhite[3] = { GLubyte(255), GLubyte(255), GLubyte(255) };
+	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &whiteFallback);
+	glBindTexture(GL_TEXTURE_2D, whiteFallback);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImageWhite);
+
+	char fallbackImageBlack[3] = { GLubyte(0), GLubyte(0), GLubyte(0) };
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &blackFallback);
+	glBindTexture(GL_TEXTURE_2D, blackFallback);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImageBlack);
+
+	return (blackFallback != 0u && whiteFallback != 0u);
+}
 
 // Called before quitting
 bool ModuleTextures::CleanUp() //can be called to reset stored textures

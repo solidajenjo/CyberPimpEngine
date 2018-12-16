@@ -90,26 +90,31 @@ ComponentMaterial* MaterialImporter::Load(const char path[4096]) const
 
 			if (strlen(newMat->diffuseMap) > 0)
 			{
+				RELEASE(newMat->texture);
 				newMat->texture = ComponentMap::GetMap(newMat->diffuseMap);
 			}
 
 			if (strlen(newMat->normalMap) > 0)
 			{
+				RELEASE(newMat->normal);
 				newMat->normal = ComponentMap::GetMap(newMat->normalMap); 
 			}
 
 			if (strlen(newMat->specularMap) > 0)
 			{
+				RELEASE(newMat->specular);
 				newMat->specular = ComponentMap::GetMap(newMat->specularMap); 
 			}
 
 			if (strlen(newMat->occlusionMap) > 0)
 			{
+				RELEASE(newMat->occlusion);
 				newMat->occlusion = ComponentMap::GetMap(newMat->occlusionMap);
 			}
 
 			if (strlen(newMat->emissiveMap) > 0)
 			{
+				RELEASE(newMat->emissive);
 				newMat->emissive = ComponentMap::GetMap(newMat->emissiveMap); 
 			}
 			

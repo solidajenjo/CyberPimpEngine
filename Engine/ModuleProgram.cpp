@@ -7,7 +7,7 @@ bool ModuleProgram::Init()
 {
 	bool ret = true;
 	ret = ret && Compile(ModuleProgram::Shaders::DEFAULT, "default.vs", "default.fs");
-	ret = ret && Compile(ModuleProgram::Shaders::PHONG_FLAT, "PhongFlat.vs", "PhongFlat.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::DIRECT_RENDERING, "DirectRenderingShader.vs", "DirectRenderingShader.fs");
 	return ret;
 }
 
@@ -84,10 +84,12 @@ bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string 
 	switch (shaderType)
 	{
 	case Shaders::DEFAULT:
-		default = program;
+		default = new unsigned;
+		*default = program;
 		break;
-	case Shaders::PHONG_FLAT:
-		phongFlat = program;
+	case Shaders::DIRECT_RENDERING:
+		directRenderingProgram = new unsigned;
+		*directRenderingProgram = program;
 		break;
 	}
 	return true;
@@ -101,8 +103,10 @@ void ModuleProgram::StopUseProgram() const
 bool ModuleProgram::CleanUp()
 {
 	LOG("Cleaning Module Program");
-	glDeleteProgram(default);
-	glDeleteProgram(phongFlat);
+	glDeleteProgram(*default);
+	glDeleteProgram(*directRenderingProgram);
+	RELEASE(default);
+	RELEASE(directRenderingProgram);
 	LOG("Cleaning Module Program. Done");
 	return true;
 }

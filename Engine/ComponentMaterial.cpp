@@ -1,15 +1,13 @@
 #include "ComponentMaterial.h"
-#include "ComponentMesh.h"
 #include "ComponentMap.h"
 #include "Component.h"
 #include "Application.h"
 #include "ModuleProgram.h"
-#include "ModuleScene.h"
+#include "ModuleTextures.h"
 #include "imgui/imgui.h"
 #include "MaterialImporter.h"
-#include <algorithm>
-#include "rapidjson-1.1.0/include/rapidjson/writer.h"
 #include "crossguid/include/crossguid/guid.hpp"
+#include "rapidjson-1.1.0/include/rapidjson/writer.h"
 
 #define WIDGET_WIDTHS 128
 
@@ -18,7 +16,13 @@ std::map<std::string, ComponentMaterial*>ComponentMaterial::materialsLoaded;
 ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component(ComponentTypes::MATERIAL_COMPONENT)
 {
 	diffuseColor = float4(r, g, b, a);
-	program = App->program->phongFlat;
+	program = App->program->directRenderingProgram;
+
+	texture = new ComponentMap();
+	texture->mapId = App->textures->whiteFallback;
+
+	emissive = new ComponentMap();
+	emissive->mapId = App->textures->whiteFallback;
 	
 }
 
@@ -38,9 +42,9 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::EditorDraw()
 {	
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material"))
-	{
-		ImGui::PushID(this);
+	{		
 		ImGui::Text("Diffuse");
 		ImGui::ColorEdit4("Diffuse Color", &diffuseColor[0]);
 		if (texture != nullptr && texture->mapId != 0)
@@ -56,7 +60,7 @@ void ComponentMaterial::EditorDraw()
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
 			{
 				assert(payload->DataSize == sizeof(unsigned));
-				//texture = *(unsigned*)payload->Data;
+				texture->mapId = *(unsigned*)payload->Data;
 			}
 		}
 		ImGui::Separator();
@@ -80,7 +84,7 @@ void ComponentMaterial::EditorDraw()
 		}
 		ImGui::Separator();
 		ImGui::Text("Emissive");
-		ImGui::ColorEdit4("Emissive Color", &specularColor[0]);
+		ImGui::ColorEdit4("Emissive Color", &emissiveColor[0]);
 		if (emissive != nullptr && emissive->mapId != 0)
 		{
 			ImGui::Image((void*)(intptr_t)emissive->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
@@ -112,7 +116,7 @@ void ComponentMaterial::EditorDraw()
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
 			{
 				assert(payload->DataSize == sizeof(unsigned));
-				//normal = *(unsigned*)payload->Data;
+				normal->mapId = *(unsigned*)payload->Data;
 			}
 		}
 		ImGui::Separator();
@@ -120,9 +124,9 @@ void ComponentMaterial::EditorDraw()
 		ImGui::SliderFloat("Diffuse", &kDiffuse, 0.f, 1.f);
 		ImGui::SliderFloat("Specular", &kSpecular, 0.f, 1.f);
 		ImGui::InputFloat("Shininess", &shininess, 0.1f, 0.5f);
-		ImGui::Separator();
-		ImGui::PopID();
+		ImGui::Separator();		
 	}
+	ImGui::PopID();
 }
 
 void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer)
