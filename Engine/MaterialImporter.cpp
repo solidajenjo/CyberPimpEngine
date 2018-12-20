@@ -64,7 +64,8 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 	return materialPath;
 }
 
-ComponentMaterial* MaterialImporter::Load(const char path[4096]) const
+
+ComponentMaterial* MaterialImporter::Load(const char path[1024]) const
 {	
 	unsigned size = App->fileSystem->Size(path);
 	if (size > 0)

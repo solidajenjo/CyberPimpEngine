@@ -101,8 +101,13 @@ void SubModuleEditorViewPort::Show()
 					float3 scale;
 					float3x3 rot;
 					deltaMatrix.Decompose(translation, rot, scale);
-					App->scene->selected->transform->scale = scale;					
-					App->scene->selected->transform->Translate(translation);
+					if (selected == ImGuizmo::OPERATION::SCALE)
+					{
+						App->scene->selected->transform->SetScale(scale);
+					}
+					else
+						App->scene->selected->transform->Translate(translation);
+
 					App->scene->selected->transform->PropagateTransform();
 				}
 			}
