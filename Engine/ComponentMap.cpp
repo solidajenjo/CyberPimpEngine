@@ -17,6 +17,7 @@ void ComponentMap::EditorDraw()
 void ComponentMap::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
 	writer.StartObject();
+	writer.String("type"); writer.Int((int)type);
 	writer.String("mapPath");
 	writer.String(mapPath);
 	writer.EndObject();

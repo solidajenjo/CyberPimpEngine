@@ -2,6 +2,7 @@
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentMap.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
@@ -13,7 +14,7 @@
 
 
 
-GameObject::GameObject(const char name[40])
+GameObject::GameObject(const char name[40], bool isContainer) : isContainer(isContainer)
 {
 	transform = new Transform(this); //notice transform who owns it
 	xg::Guid guid = xg::newGuid();
@@ -105,6 +106,7 @@ void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& wri
 	writer.String("name"); writer.String(name);
 	writer.String("isInstantiated"); writer.Bool(isInstantiated);
 	writer.String("isStatic"); writer.Bool(isStatic);
+	writer.String("isContainer"); writer.Bool(isContainer);
 	writer.String("active"); writer.Bool(active);
 	if (transform != nullptr)
 	{
@@ -133,6 +135,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 	sprintf_s(parentUUID, value["parentUUID"].GetString());
 	isInstantiated = value["isInstantiated"].GetBool();
 	isStatic = value["isStatic"].GetBool();
+	isContainer = value["isContainer"].GetBool();
 	active = value["active"].GetBool();
 	if (value.HasMember("transform"))
 		transform->UnSerialize(value["transform"]);
@@ -163,6 +166,16 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				ComponentMaterial* mat = ComponentMaterial::GetMaterial(materialPath);
 				if (mat != nullptr)
 					InsertComponent(mat);
+				break;
+			}
+
+			case (unsigned)Component::ComponentTypes::MAP_COMPONENT:
+			{
+				char mapPath[1024];
+				sprintf_s(mapPath, (*it)["mapPath"].GetString());
+				ComponentMap* map = ComponentMap::GetMap(mapPath);
+				if (map != nullptr)
+					InsertComponent(map);
 				break;
 			}
 

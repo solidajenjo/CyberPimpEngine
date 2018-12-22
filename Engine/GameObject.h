@@ -18,7 +18,7 @@ class GameObject
 public:
 
 
-	GameObject(const char name[40]);
+	GameObject(const char name[40], bool isContainer = false);
 
 	GameObject(char UUID[40], Transform* transform);
 
@@ -57,6 +57,7 @@ public:
 	char path[1024] = ""; //some type of gameobjects store a path to be loaded from disk
 	bool isInstantiated = false;
 	bool isStatic = false;
+	bool isContainer = false;
 	bool active = true;
 };
 

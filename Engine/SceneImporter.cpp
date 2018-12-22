@@ -38,13 +38,13 @@ bool SceneImporter::Import(const std::string & file) const
 	materials.resize(nMaterials);
 	for (unsigned i = 0u; i < nMaterials; ++i)
 	{
-		GameObject* mat = new GameObject("Material");
+		GameObject* mat = new GameObject("Material", true);
 		materials[i] = mi.Import(scene->mMaterials[i], mat);	
 		RELEASE(mat->transform);
-		App->scene->ImportGameObject(mat); //import material
+		App->scene->ImportGameObject(mat, ModuleScene::ImportedType::MATERIAL); //import material
 	}
 
-	GameObject* root = new GameObject("Root");
+	GameObject* root = new GameObject("Root", true);
 	for (unsigned i = 0; i < rootNode->mNumChildren; ++i) //skip rootnode
 	{
 		stackNode.push(rootNode->mChildren[i]);
@@ -56,7 +56,7 @@ bool SceneImporter::Import(const std::string & file) const
 	{
 		//process model
 		aiNode* node = stackNode.top(); stackNode.pop();		
-		GameObject* gameObjectNode = new GameObject(node->mName.C_Str());
+		GameObject* gameObjectNode = new GameObject(node->mName.C_Str(), true);
 		GameObject* parent = stackParent.top(); stackParent.pop();
 		sprintf_s (gameObjectNode->parentUUID, parent->gameObjectUUID);
 
@@ -155,10 +155,9 @@ bool SceneImporter::Import(const std::string & file) const
 					gameObjectNode->InsertComponent(newMesh); //insert the mesh on the new node
 				}
 			}			
-		}
-		App->scene->ImportGameObject(gameObjectNode); //insert the node on the assets holder
+		}		
 	}
-	App->scene->ImportGameObject(root);	
+	App->scene->ImportGameObject(root, ModuleScene::ImportedType::MODEL);	
 	return true;
 }
 

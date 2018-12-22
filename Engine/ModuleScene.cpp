@@ -23,10 +23,19 @@ bool ModuleScene::Init()
 	SDL_RWops* rw = SDL_RWFromFile("scene.dsc", "r");
 	if (rw == nullptr) //no previous scene found
 	{
-		root = new GameObject("Scene");	
-		directory = new GameObject("Assets");
+		root = new GameObject("Scene", true);
+		directory = new GameObject("Assets", true);
+		modelFolder = new GameObject("Models", true);
+		mapFolder = new GameObject("Maps", true);
+		materialFolder = new GameObject("Materials", true);
+		AttachToAssets(modelFolder);
+		AttachToAssets(mapFolder);
+		AttachToAssets(materialFolder);
 		sceneGameObjects[root->gameObjectUUID] = root;
 		sceneGameObjects[directory->gameObjectUUID] = directory;
+		sceneGameObjects[modelFolder->gameObjectUUID] = modelFolder;
+		sceneGameObjects[mapFolder->gameObjectUUID] = mapFolder;
+		sceneGameObjects[materialFolder->gameObjectUUID] = materialFolder;
 	}
 	else
 	{
@@ -40,10 +49,20 @@ bool ModuleScene::Init()
 			if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
 			{
 				LOG("Error loading previous scene. Scene file corrupted.");
-				root = new GameObject("Scene");
-				directory = new GameObject("Assets");
+				root = new GameObject("Scene", true);
+				directory = new GameObject("Assets", true);
+				modelFolder = new GameObject("Models", true);
+				mapFolder = new GameObject("Maps", true);
+				materialFolder = new GameObject("Materials", true);
+				AttachToAssets(modelFolder);
+				AttachToAssets(mapFolder);
+				AttachToAssets(materialFolder);
+				sceneGameObjects[root->gameObjectUUID] = root;
 				sceneGameObjects[root->gameObjectUUID] = root;
 				sceneGameObjects[directory->gameObjectUUID] = directory;
+				sceneGameObjects[modelFolder->gameObjectUUID] = modelFolder;
+				sceneGameObjects[mapFolder->gameObjectUUID] = mapFolder;
+				sceneGameObjects[materialFolder->gameObjectUUID] = materialFolder;
 			}
 			else
 			{				
@@ -61,6 +80,24 @@ bool ModuleScene::Init()
 						directory = new GameObject("");
 						directory->UnSerialize((*it)["assets"]);
 						sceneGameObjects[directory->gameObjectUUID] = directory;
+					}
+					else if ((*it).HasMember("models"))
+					{
+						modelFolder = new GameObject("");
+						modelFolder->UnSerialize((*it)["models"]);
+						sceneGameObjects[modelFolder->gameObjectUUID] = modelFolder;
+					}
+					else if ((*it).HasMember("maps"))
+					{
+						mapFolder = new GameObject("");
+						mapFolder->UnSerialize((*it)["maps"]);
+						sceneGameObjects[mapFolder->gameObjectUUID] = mapFolder;
+					}
+					else if ((*it).HasMember("materials"))
+					{
+						materialFolder = new GameObject("");
+						materialFolder->UnSerialize((*it)["materials"]);
+						sceneGameObjects[materialFolder->gameObjectUUID] = materialFolder;
 					}
 					else
 					{
@@ -99,7 +136,7 @@ bool ModuleScene::CleanUp()
 
 	RELEASE(root);
 	RELEASE(directory);
-
+	
 	sceneGameObjects.clear();
 	LOG("Cleaning scene GameObjects. Done");
 	selected = nullptr;
@@ -113,14 +150,22 @@ void ModuleScene::InsertGameObject(GameObject * newGO)
 	sceneGameObjects[newGO->gameObjectUUID] = newGO;
 }
 
-void ModuleScene::ImportGameObject(GameObject * newGO) 
+void ModuleScene::ImportGameObject(GameObject * newGO, ImportedType type)
 {
 	assert(newGO != nullptr);		
-	if (strlen(newGO->parentUUID) == 0) 
-	{	
-		directory->InsertChild(newGO);		
-	}
-	sceneGameObjects[newGO->gameObjectUUID] = newGO;
+	switch (type)
+	{
+	case ImportedType::MAP:
+		AttachToMaps(newGO);
+		break;
+	case ImportedType::MODEL:
+		AttachToModels(newGO);
+		break;
+	case ImportedType::MATERIAL:
+		AttachToMaterials(newGO);
+		break;
+	}		
+		
 }
 
 void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
@@ -299,17 +344,42 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 
 bool ModuleScene::IsRoot(const GameObject * go) const
 {
-	return go == root || go == directory;
+	return go == root || go == directory || go == mapFolder || go == modelFolder || go == materialFolder;
 }
 
 void ModuleScene::AttachToRoot(GameObject * go)
 {
+	assert(go != nullptr);
 	root->InsertChild(go);
+	flattenHierarchyOnImport(go);
 }
 
 void ModuleScene::AttachToAssets(GameObject * go)
 {
+	assert(go != nullptr);
 	directory->InsertChild(go);
+	flattenHierarchyOnImport(go);
+}
+
+void ModuleScene::AttachToMaps(GameObject * go)
+{
+	assert(go != nullptr);
+	mapFolder->InsertChild(go);
+	flattenHierarchyOnImport(go);
+}
+
+void ModuleScene::AttachToModels(GameObject * go)
+{
+	assert(go != nullptr);
+	modelFolder->InsertChild(go);
+	flattenHierarchyOnImport(go);
+}
+
+void ModuleScene::AttachToMaterials(GameObject * go)
+{
+	assert(go != nullptr);
+	materialFolder->InsertChild(go);
+	flattenHierarchyOnImport(go);
 }
 
 void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
@@ -400,6 +470,20 @@ void ModuleScene::Serialize()
 	directory->Serialize(writer);
 	writer.EndObject();
 
+	//serialize folders
+	writer.StartObject();
+	writer.String("maps");	
+	mapFolder->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("materials");
+	materialFolder->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("models");
+	modelFolder->Serialize(writer);
+	writer.EndObject();
+
 	//Serialize all the remaining gameobjects
 	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
@@ -435,5 +519,24 @@ void ModuleScene::LinkGameObjects()
 	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
 		MakeParent((*it).second->parentUUID, (*it).second);
+	}
+}
+
+void ModuleScene::flattenHierarchyOnImport(GameObject * go)
+{
+	assert(go != nullptr);
+	std::stack<GameObject*> S;
+	S.push(go);
+
+	GameObject* node;
+
+	while (!S.empty())
+	{
+		node = S.top();
+		S.pop();
+		sceneGameObjects[node->gameObjectUUID] = node;
+
+		for (std::list<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+			S.push(*it);
 	}
 }

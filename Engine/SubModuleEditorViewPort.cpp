@@ -135,7 +135,7 @@ void SubModuleEditorViewPort::Show()
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);
 			}
-			if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->aaBBGlobal != nullptr)
+			if (App->scene->selected != nullptr && !App->scene->selected->isContainer && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->aaBBGlobal != nullptr)
 			{
 				dd::aabb(App->scene->selected->aaBBGlobal->minPoint, App->scene->selected->aaBBGlobal->maxPoint, dd::colors::Yellow);				
 			}

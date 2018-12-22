@@ -15,12 +15,19 @@ class ModuleScene :
 {
 public:
 	
+	enum class ImportedType
+	{
+		MODEL,
+		MATERIAL,
+		MAP
+	};
+
 	bool Init() override;
 	update_status Update() override;
 	bool CleanUp() override; //clean when a new model is loaded & on exit
 
 	void InsertGameObject(GameObject* newGO); //Insert instantiated Game Object
-	void ImportGameObject(GameObject* newGO); //Insert imported game Object
+	void ImportGameObject(GameObject* newGO, ImportedType type); //Insert imported game Object
 	void DestroyGameObject(GameObject* destroyableGO);
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
 	void DrawNode(GameObject* gObj, bool isWorld = true);
@@ -28,6 +35,9 @@ public:
 	bool IsRoot(const GameObject* go) const;
 	void AttachToRoot(GameObject* go);
 	void AttachToAssets(GameObject* go);
+	void AttachToMaps(GameObject* go);
+	void AttachToModels(GameObject* go);
+	void AttachToMaterials(GameObject* go);
 
 	void DeleteGameObject(GameObject* go, bool isAsset = false);
 	bool MakeParent(const std::string &parentUUID, GameObject* son); //searchs for a gameobject by it's UUID and attaches son to it
@@ -48,12 +58,17 @@ public:
 
 private:
 
+	void flattenHierarchyOnImport(GameObject* go);
+
 	//members
 
 	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
 	
 	GameObject* root = nullptr; //scene root
 	GameObject* directory = nullptr; //handles all imported files
+	GameObject* mapFolder = nullptr; //cleaned on directory destroy
+	GameObject* modelFolder = nullptr; //cleaned on directory destroy
+	GameObject* materialFolder = nullptr; //cleaned on directory destroy
 };
 
 #endif

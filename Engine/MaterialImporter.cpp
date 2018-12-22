@@ -8,6 +8,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMap.h"
 #include "ModuleTextures.h"
+#include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "GameObject.h"
 #include "crossguid/include/crossguid/guid.hpp"
@@ -42,12 +43,18 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 		{
 			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
 			ilSave(IL_DDS, savePath.c_str());
+			GameObject* newMap = new GameObject("Map");
+			newMap->InsertComponent(ComponentMap::GetMap(savePath));
+			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
 		}
 		std::string alternativePath = "Assets/" + std::string(file.C_Str());
 		if (ilLoadImage(alternativePath.c_str())) //try in Assets directory
 		{
 			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
 			ilSave(IL_DDS, savePath.c_str());
+			GameObject* newMap = new GameObject("Map", true);
+			newMap->InsertComponent(ComponentMap::GetMap(savePath));
+			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
 		}
 		
 	}

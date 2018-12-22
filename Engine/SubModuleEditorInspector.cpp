@@ -21,35 +21,43 @@ void SubModuleEditorInspector::Show()
 				ImGui::End();
 				return;
 			}
-			if (App->scene->selected->transform != nullptr) //special gameobjects like directories or materials
-				App->scene->selected->transform->EditorDraw();			
-			ImGui::Separator();
-			ImGui::Separator();
-			ImGui::Separator();	
-			ImGui::Checkbox("Active", &App->scene->selected->active);
-			ImGui::SameLine();
-			if (ImGui::Checkbox("Static", &App->scene->selected->isStatic))
+			if (App->scene->selected->transform != nullptr && !App->scene->selected->isContainer) //special gameobjects like directories or materials
 			{
-				App->scene->selected->PropagateStaticCheck();
+				App->scene->selected->transform->EditorDraw();
+				ImGui::Separator();
+				ImGui::Separator();
+				ImGui::Separator();
+				ImGui::Checkbox("Active", &App->scene->selected->active);
+				ImGui::SameLine();
+				if (ImGui::Checkbox("Static", &App->scene->selected->isStatic))
+				{
+					App->scene->selected->PropagateStaticCheck();
+				}
 			}
 			bool firstMesh = false; //only one mesh drawing per gameobject
 			ImGui::InputText("Name", &App->scene->selected->name[0], 40);
-			if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
-				if (selectedNewComponent == (int)Component::ComponentTypes::CAMERA_COMPONENT)
-				{
-					ComponentCamera* newCam = new ComponentCamera(false);
-					newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
-					newCam->owner = App->scene->selected;
-					App->scene->selected->components.push_back(newCam);
+			if (!App->scene->selected->isContainer)
+			{
+				if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
+					if (selectedNewComponent == (int)Component::ComponentTypes::CAMERA_COMPONENT)
+					{
+						ComponentCamera* newCam = new ComponentCamera(false);
+						newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
+						newCam->owner = App->scene->selected;
+						App->scene->selected->components.push_back(newCam);
+					}
 				}
 			}
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{							
 				if ((*it)->type != Component::ComponentTypes::MESH_COMPONENT)
 				{
-					if (ImGui::Button("Remove"))
+					if (!App->scene->selected->isContainer)
 					{
-						//delete component
+						if (ImGui::Button("Remove"))
+						{
+							//delete component
+						}
 					}
 					(*it)->EditorDraw();
 				}
@@ -57,9 +65,12 @@ void SubModuleEditorInspector::Show()
 				{
 					firstMesh = true;
 					ImGui::PushID(this);
-					if (ImGui::Button("Remove"))
+					if (!App->scene->selected->isContainer)
 					{
-						//delete component
+						if (ImGui::Button("Remove"))
+						{
+							//delete component
+						}
 					}
 					if (ImGui::CollapsingHeader("Mesh"))
 					{
