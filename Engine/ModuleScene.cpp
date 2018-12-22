@@ -13,6 +13,8 @@
 #include <stack>
 #include "SDL/include/SDL_filesystem.h"
 
+#define HIERARCHY_DRAW_TAB 10
+
 bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
@@ -95,10 +97,9 @@ bool ModuleScene::CleanUp()
 {
 	LOG("Cleaning scene GameObjects.");
 
-	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
-	{
-		RELEASE((*it).second);	
-	}
+	RELEASE(root);
+	RELEASE(directory);
+
 	sceneGameObjects.clear();
 	LOG("Cleaning scene GameObjects. Done");
 	selected = nullptr;
@@ -125,6 +126,7 @@ void ModuleScene::ImportGameObject(GameObject * newGO)
 void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
 {
 	assert(destroyableGO != nullptr);
+	sceneGameObjects.erase(destroyableGO->gameObjectUUID);
 }
 
 void ModuleScene::ShowHierarchy(bool isWorld)
@@ -141,81 +143,156 @@ void ModuleScene::ShowHierarchy(bool isWorld)
 	}
 }
 
-void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
+void ModuleScene::DrawNode(GameObject* gObj, bool isWorld) 
 {
 	assert(gObj != nullptr);
 
 	ImGuiTreeNodeFlags flags;
-	if (gObj->children.size() == 0)
-		flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_Leaf;
-	else
-		flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		
+	std::stack<GameObject*> S;
+	std::stack<int> depthStack;	
+	S.push(gObj);	
+	depthStack.push(0);
+	while (!S.empty())
+	{
+		gObj = S.top(); S.pop();		
+		ImGui::PushID(gObj->gameObjectUUID);
+		unsigned depth = depthStack.top(); depthStack.pop();
+		if (gObj->children.size() == 0)
+			flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_Leaf;
+		else
+			flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-	ImGui::PushID(&gObj);
-	if (gObj->selected)
-	{
-		flags |= ImGuiTreeNodeFlags_Selected;
-	}
-	ImGui::PushID(gObj);
-	bool node_open = ImGui::TreeNodeEx(gObj->name, flags);
-	if (isWorld)
-	{
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		if (gObj->selected)
 		{
-			ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
-			ImGui::EndDragDropSource();
+			flags |= ImGuiTreeNodeFlags_Selected;
+
 		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
-			{
-				char movedId[40];
-				sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
-				GameObject* movedGO = FindInstanceOrigin(movedId);
-				if (movedGO != nullptr)
-				{
-					movedGO->parent->children.remove(movedGO);
 
-					movedGO->parent = gObj;
-					LOG("Moved gameobject %s", gObj->gameObjectUUID);
-					gObj->InsertChild(movedGO);
-					movedGO->transform->NewAttachment();
+		ImVec2 pos = ImGui::GetCursorPos();
+		ImGui::SetCursorPos(ImVec2(pos.x + depth, pos.y));
+		if (ImGui::TreeNodeEx(gObj->name, flags))
+		{			
+			if (isWorld)
+			{
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+				{
+					ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+					ImGui::EndDragDropSource();
+				}
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
+					{
+						char movedId[40];
+						sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
+						GameObject* movedGO = FindInstanceOrigin(movedId);
+						if (movedGO != nullptr)
+						{
+							movedGO->parent->children.remove(movedGO);
+
+							movedGO->parent = gObj;
+							LOG("Moved gameobject %s", gObj->gameObjectUUID);
+							gObj->InsertChild(movedGO);
+							movedGO->transform->NewAttachment();
+						}
+					}
 				}
 			}
+			else
+			{
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+				{
+					ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+					ImGui::EndDragDropSource();
+				}
+			}			
+
+			if (gObj->children.size() > 0)
+			{
+				for (std::list<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
+				{
+					S.push(*it);	
+					depthStack.push(depth + HIERARCHY_DRAW_TAB);
+				}
+			}
+			ImGui::TreePop();			
+
 		}
-	}
-	else
-	{
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+		if (ImGui::IsItemClicked())
 		{
-			ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
-			ImGui::EndDragDropSource();
+			gObj->selected = !gObj->selected;
+			if (gObj->selected && selected != gObj)
+			{
+				selected != nullptr ? selected->selected = false : 1;
+				selected = gObj;
+			}
+			else if (!gObj->selected && selected == gObj)
+			{
+				selected = nullptr;
+			}
 		}
-	}
-	if (ImGui::IsItemClicked())
-	{
-		gObj->selected = !gObj->selected;
-		if (gObj->selected && selected != gObj)
+
+		if (!IsRoot(gObj) && gObj == selected && ImGui::BeginPopupContextItem("GO_CONTEXT"))
 		{
-			selected != nullptr ? selected->selected = false : 1;
-			selected = gObj;			
+			ImGui::Text("GameObject operations");
+			ImGui::Separator();			
+			bool deleteGameObject = false;						
+			ImVec2 curPos = ImGui::GetCursorScreenPos();
+			ImGui::Text("Delete    - Ctrl + X");
+			ImVec2 size = ImGui::GetItemRectSize();
+			if (ImGui::IsItemHovered())
+			{				
+				ImGui::GetWindowDrawList()->AddRectFilled(curPos, ImVec2(curPos.x + size.x * 1.1f, curPos.y + size.y), IM_COL32(200, 200, 200, 55));
+			}
+			if (ImGui::IsItemClicked())
+				deleteGameObject = true;
+			
+
+			if (deleteGameObject)
+			{
+				ImGui::OpenPopup("Confirm");
+			}
+
+			bool closeContextPopup = false;
+			if (ImGui::BeginPopup("Confirm", ImGuiWindowFlags_Modal))
+			{
+				ImGui::Text("Are you sure?");
+				if (ImGui::Button("NO", ImVec2(100, 20)))
+				{
+					ImGui::CloseCurrentPopup();
+					closeContextPopup = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("YES", ImVec2(100, 20)))
+				{
+					DeleteGameObject(gObj);
+					selected = nullptr;
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+
+			curPos = ImGui::GetCursorScreenPos();
+			ImGui::Text("Duplicate - Ctrl + D");
+			size = ImGui::GetItemRectSize();
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::GetWindowDrawList()->AddRectFilled(curPos, ImVec2(curPos.x + size.x * 1.1f, curPos.y + size.y), IM_COL32(200, 200, 200, 55));
+			}
+			if (ImGui::IsItemClicked())
+			{
+				gObj->parent->InsertChild(gObj->Clone());
+				gObj->parent->transform->PropagateTransform();
+				closeContextPopup = true;
+			}
+
+			if (closeContextPopup)
+				ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
 		}
-		else if (!gObj->selected && selected == gObj)
-		{
-			selected = nullptr;
-		}
-	}
-	if (node_open)
-	{
-		if (gObj->children.size() > 0)
-		{
-			for (std::list<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
-				DrawNode(*it, isWorld);
-		}
-		ImGui::TreePop();
-	}
-	ImGui::PopID();
-	ImGui::PopID();
+		ImGui::PopID();
+	}	
 
 }
 
@@ -233,6 +310,14 @@ void ModuleScene::AttachToRoot(GameObject * go)
 void ModuleScene::AttachToAssets(GameObject * go)
 {
 	directory->InsertChild(go);
+}
+
+void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
+{
+	assert(go != nullptr);
+	go->parent->children.remove(go);
+	sceneGameObjects.erase(go->gameObjectUUID);
+	RELEASE(go); 	
 }
 
 bool ModuleScene::MakeParent(const std::string &parentUUID, GameObject * son)

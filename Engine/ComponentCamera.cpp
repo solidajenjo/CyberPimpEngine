@@ -97,6 +97,23 @@ void ComponentCamera::UnSerialize(rapidjson::Value & value)
 	RecalculateFrustum();
 }
 
+ComponentCamera * ComponentCamera::Clone()
+{
+	ComponentCamera* newCam = new ComponentCamera();
+	newCam->camPos = camPos;
+	newCam->vFov = vFov;
+	newCam->zNear = zNear;
+	newCam->zFar = zFar;
+	newCam->zoomSpeed = zoomSpeed;
+	newCam->moveSpeed = moveSpeed;
+	newCam->rotSpeed = rotSpeed;
+	newCam->aspectRatio = aspectRatio;
+	newCam->target = target;
+	newCam->frustum = frustum;
+	
+	return newCam;
+}
+
 void ComponentCamera::Update()
 {
 	camPos = owner->transform->getGlobalPosition();

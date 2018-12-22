@@ -20,10 +20,10 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	void Render(ComponentCamera* camera) const;
-
-	const std::list<GameObject*>* getRenderizables() const; //read only getter
-	void insertRenderizable(GameObject* newMesh);
+	void Render(const ComponentCamera* camera) const;
+	
+	void insertRenderizable(GameObject* go);
+	void removeRenderizable(const GameObject* go);
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
@@ -31,7 +31,7 @@ public:
 	bool frustumCulling = true;
 
 private:
-	std::list<GameObject*> renderizables;  //The owner of the component should clean this
+	std::list<const GameObject*> renderizables;  //The owner of the component should clean this
 };
 
 #endif

@@ -35,6 +35,9 @@ GameObject::GameObject(char UUID[40], Transform* transform) : transform(transfor
 
 GameObject::~GameObject()
 {
+	if (isRenderizable)
+		App->renderer->removeRenderizable(this);
+
 	RELEASE(transform); 
 	RELEASE(aaBB);
 	RELEASE(aaBBGlobal);
@@ -42,6 +45,11 @@ GameObject::~GameObject()
 	{
 		if ((*it)->Release())
 			RELEASE(*it);
+	}
+	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{		
+		App->scene->DestroyGameObject(*it);
+		RELEASE(*it);
 	}
 }
 
@@ -211,6 +219,7 @@ void GameObject::PropagateStaticCheck()
 	App->spacePartitioning->quadTree.Calculate();
 }
 
+
 GameObject* GameObject::MakeInstanceOf() const
 {
 	GameObject* clonedGO = new GameObject(name);		
@@ -236,6 +245,44 @@ GameObject* GameObject::MakeInstanceOf() const
 	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 	{
 		clonedGO->InsertChild((*it)->MakeInstanceOf());
+	}
+	App->scene->InsertGameObject(clonedGO);
+	return clonedGO;
+}
+
+GameObject * GameObject::Clone() const
+{
+	GameObject* clonedGO = new GameObject(name);
+	sprintf_s(clonedGO->instanceOf, instanceOf);
+	if (transform != nullptr)
+	{
+		clonedGO->transform = transform->Clone();
+		clonedGO->transform->owner = clonedGO;
+		clonedGO->transform->RecalcModelMatrix();
+	}
+	clonedGO->isInstantiated = isInstantiated;
+	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == Component::ComponentTypes::MESH_COMPONENT)
+		{
+			ComponentMesh* mesh = (ComponentMesh*)(*it);
+			ComponentMesh* newMesh;
+			if (mesh->primitiveType == ComponentMesh::Primitives::VOID_PRIMITIVE)
+				newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
+			else
+			{
+				newMesh = mesh->Clone();				
+			}
+			newMesh->SendToGPU();
+			App->renderer->insertRenderizable(clonedGO);
+			clonedGO->InsertComponent(newMesh);
+		}
+		else
+			clonedGO->InsertComponent((*it)->Clone());
+	}
+	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
+	{
+		clonedGO->InsertChild((*it)->Clone());
 	}
 	App->scene->InsertGameObject(clonedGO);
 	return clonedGO;

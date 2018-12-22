@@ -78,10 +78,10 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::Render(ComponentCamera* camera) const
+void ModuleRender::Render(const ComponentCamera* camera) const
 {
 	assert(camera != nullptr);
-	for (std::list<GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
+	for (std::list<const GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
 	{
 		if (*it == nullptr) 
 		{
@@ -112,13 +112,16 @@ void ModuleRender::Render(ComponentCamera* camera) const
 	glBindVertexArray(0);
 }
 
-const std::list<GameObject*>* ModuleRender::getRenderizables() const
+
+void ModuleRender::insertRenderizable(GameObject * go)
 {
-	return &renderizables;
+	assert(go != nullptr);
+	go->isRenderizable = true;
+	renderizables.push_back(go);
 }
 
-void ModuleRender::insertRenderizable(GameObject * newMesh)
+void ModuleRender::removeRenderizable(const GameObject * go)
 {
-	assert(newMesh != nullptr);
-	renderizables.push_back(newMesh);
+	assert(go != nullptr);
+	renderizables.remove(go);
 }

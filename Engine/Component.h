@@ -28,6 +28,7 @@ public:
 	virtual void EditorDraw() = 0; //descendants should implement his own inspector handler draw
 	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) { }
 	virtual void UnSerialize(rapidjson::Value &value) {}
+	virtual Component* Clone() = 0;
 	virtual bool Release() { return true; } // tells if it has to be destroyed if it has no active clients on release
 	//members
 

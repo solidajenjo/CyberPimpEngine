@@ -15,6 +15,7 @@ public:
 	void EditorDraw() override;
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	bool Release() override;
+	ComponentMap* Clone() override;
 
 //members
 

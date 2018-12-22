@@ -37,7 +37,7 @@ public:
 	void EditorDraw() override;
 
 	void Render(const ComponentCamera* camera, Transform* transform) const;
-
+	ComponentMesh* Clone() override;
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;
 	bool Release() override;

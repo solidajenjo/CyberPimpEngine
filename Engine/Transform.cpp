@@ -29,14 +29,6 @@ Transform::Transform(GameObject* go) : Component(ComponentTypes::TRANSFORM_COMPO
 {
 }
 
-Transform::Transform(const Transform & other) : Component(ComponentTypes::TRANSFORM_COMPONENT)
-{ 
-	position = other.position;
-	localPosition = other.localPosition;
-	rotation = other.rotation;
-	scale = other.scale;
-}
-
 void Transform::Rotate(const float3& rotations) 
 {
 	modelMatrixLocal = modelMatrixLocal * Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z); //rotate in local coords
@@ -252,6 +244,18 @@ void Transform::EditorDraw()
 			SetScale(scl);
 	}
 	ImGui::PopID();
+}
+
+Transform * Transform::Clone()
+{
+	Transform* newTrf = new Transform();
+
+	newTrf->position = position;
+	newTrf->localPosition = localPosition;
+	newTrf->rotation = rotation;
+	newTrf->scale = scale;
+	
+	return newTrf;
 }
 
 void Transform::UpdateAABB() const

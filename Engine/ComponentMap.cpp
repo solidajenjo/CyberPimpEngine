@@ -36,6 +36,14 @@ bool ComponentMap::Release()
 	}
 }
 
+ComponentMap * ComponentMap::Clone()
+{
+	if (strlen(mapPath) > 0)
+		return GetMap(mapPath);
+	else
+		return new ComponentMap();
+}
+
 ComponentMap* ComponentMap::GetMap(const std::string path)
 {
 	std::map<std::string, ComponentMap*>::iterator it = mapsLoaded.find(path);

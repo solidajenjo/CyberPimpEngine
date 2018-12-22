@@ -33,7 +33,9 @@ public:
 
 	void PropagateStaticCheck();
 	
+	
 	GameObject* MakeInstanceOf() const;
+	GameObject* Clone() const;
 
 	//members
 	
@@ -46,7 +48,7 @@ public:
 
 	AABB* aaBB = nullptr;
 	AABB* aaBBGlobal = nullptr;
-	bool enabled = true, selected = false;
+	bool enabled = true, selected = false, isRenderizable = false;
 	
 	char name[40] = "";
 	char gameObjectUUID[40] = ""; //unique game object id

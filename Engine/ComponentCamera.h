@@ -22,6 +22,7 @@ public:
 	void RecalculateFrustum(float3 front, float3 up);
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;
+	ComponentCamera* Clone() override;
 
 	//members
 

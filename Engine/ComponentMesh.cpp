@@ -174,6 +174,25 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
 }
 
+ComponentMesh * ComponentMesh::Clone()
+{
+	ComponentMesh* newMesh = new ComponentMesh();
+	newMesh->nVertices = nVertices;
+	newMesh->nCoords = nCoords;
+	newMesh->nIndices = nIndices;
+	newMesh->nNormals = nNormals;
+	newMesh->meshVertices = meshVertices;
+	newMesh->meshNormals = meshNormals;
+	newMesh->meshTexCoords = meshTexCoords;
+	newMesh->meshIndices = meshIndices;
+	newMesh->primitiveType = primitiveType;
+	newMesh->material = material->Clone();
+	if (VAO != 0u)
+		newMesh->SendToGPU();
+
+	return newMesh;
+}
+
 void ComponentMesh::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
 	writer.StartObject();

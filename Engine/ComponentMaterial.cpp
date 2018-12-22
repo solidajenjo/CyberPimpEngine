@@ -162,6 +162,37 @@ bool ComponentMaterial::Release()
 	}
 }
 
+ComponentMaterial * ComponentMaterial::Clone()
+{
+	ComponentMaterial* newMat = new ComponentMaterial(diffuseColor.x, diffuseColor.y, diffuseColor.z, diffuseColor.w);
+	if (texture != nullptr)
+		newMat->texture = ComponentMap::GetMap(texture->mapPath);
+	if (normal != nullptr)
+	    newMat->normal = ComponentMap::GetMap(normal->mapPath);
+	if (specular != nullptr)
+		newMat->specular = ComponentMap::GetMap(specular->mapPath);
+	if (occlusion != nullptr)
+		newMat->occlusion = ComponentMap::GetMap(occlusion->mapPath);
+	if (emissive != nullptr)
+		newMat->emissive = ComponentMap::GetMap(emissive->mapPath);
+
+	newMat->program = program;
+	newMat->specularColor = specularColor;
+	newMat->emissiveColor = emissiveColor;
+	newMat->kDiffuse = kDiffuse;
+	newMat->kAmbient = kAmbient;
+	newMat->kSpecular = kSpecular;
+	newMat->shininess = shininess;
+
+	sprintf_s(newMat->diffuseMap, diffuseMap);
+	sprintf_s(newMat->emissiveMap, emissiveMap);
+	sprintf_s(newMat->specularMap, specularMap);
+	sprintf_s(newMat->occlusionMap, occlusionMap);
+	sprintf_s(newMat->normalMap, normalMap);
+
+	return newMat;
+}
+
 ComponentMaterial * ComponentMaterial::GetMaterial(const std::string path)
 {
 	std::map<std::string, ComponentMaterial*>::iterator it = materialsLoaded.find(path);

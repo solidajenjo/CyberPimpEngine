@@ -19,6 +19,8 @@ public:
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	bool Release() override;
 
+	ComponentMaterial* Clone();
+
 //members
 
 	ComponentMap* texture = nullptr;

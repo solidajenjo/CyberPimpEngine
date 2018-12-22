@@ -14,7 +14,7 @@ class Transform : public Component
 
 public:
 	Transform(GameObject* go);
-	Transform(const Transform &other);
+	Transform() : Component(ComponentTypes::TRANSFORM_COMPONENT) {};
 
 	void Rotate(const float3& rotations); //in local coords
 	void Translate(const float3& translation); //in parent's coords
@@ -25,14 +25,15 @@ public:
 	void SetScale(const float3& newScale); //Sets the local scale relative to his parent
 	void SetTransform(const float3& pos, const float3& rot, const float3& scl);
 
-	//TODO: Create getters
 	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
 	float3 getGlobalPosition();
 	void UpdateAABB() const;
 	void PropagateTransform();
 	void NewAttachment();
 	void EditorDraw() override;
-	//TODO: create a set global position
+
+	Transform* Clone() override;
+
 	void ExtractLocalTransformFromMatrix();
 	void RecalcModelMatrix();
 

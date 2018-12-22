@@ -70,7 +70,7 @@ void SubModuleEditorViewPort::Show()
 						
 			ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
 			float4x4 modelMatrix;
-			if (selected == 1)
+			if (selected == ImGuizmo::OPERATION::ROTATE)
 			{
 				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
 				float3 originalPos = modelMatrix.Col3(3);
@@ -91,7 +91,6 @@ void SubModuleEditorViewPort::Show()
 			{
 				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
 				modelMatrix.Transpose();
-				float3 originalRot = App->scene->selected->transform->rotation;
 				float4x4 deltaMatrix;
 				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());				
 				if (ImGuizmo::IsUsing())

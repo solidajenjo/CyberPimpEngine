@@ -29,6 +29,7 @@ public:
 	void AttachToRoot(GameObject* go);
 	void AttachToAssets(GameObject* go);
 
+	void DeleteGameObject(GameObject* go, bool isAsset = false);
 	bool MakeParent(const std::string &parentUUID, GameObject* son); //searchs for a gameobject by it's UUID and attaches son to it
 	
 	GameObject* FindInstanceOrigin(const std::string &instance);	
