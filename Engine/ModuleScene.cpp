@@ -237,7 +237,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 							movedGO->parent->children.remove(movedGO);
 
 							movedGO->parent = gObj;
-							LOG("Moved gameobject %s", gObj->gameObjectUUID);
+							LOG("Moved gameobject %s", movedGO->gameObjectUUID);
 							gObj->InsertChild(movedGO);
 							movedGO->transform->NewAttachment();
 						}
@@ -351,35 +351,35 @@ void ModuleScene::AttachToRoot(GameObject * go)
 {
 	assert(go != nullptr);
 	root->InsertChild(go);
-	flattenHierarchyOnImport(go);
+	FlattenHierarchyOnImport(go);
 }
 
 void ModuleScene::AttachToAssets(GameObject * go)
 {
 	assert(go != nullptr);
 	directory->InsertChild(go);
-	flattenHierarchyOnImport(go);
+	FlattenHierarchyOnImport(go);
 }
 
 void ModuleScene::AttachToMaps(GameObject * go)
 {
 	assert(go != nullptr);
 	mapFolder->InsertChild(go);
-	flattenHierarchyOnImport(go);
+	FlattenHierarchyOnImport(go);
 }
 
 void ModuleScene::AttachToModels(GameObject * go)
 {
 	assert(go != nullptr);
 	modelFolder->InsertChild(go);
-	flattenHierarchyOnImport(go);
+	FlattenHierarchyOnImport(go);
 }
 
 void ModuleScene::AttachToMaterials(GameObject * go)
 {
 	assert(go != nullptr);
 	materialFolder->InsertChild(go);
-	flattenHierarchyOnImport(go);
+	FlattenHierarchyOnImport(go);
 }
 
 void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
@@ -522,7 +522,7 @@ void ModuleScene::LinkGameObjects()
 	}
 }
 
-void ModuleScene::flattenHierarchyOnImport(GameObject * go)
+void ModuleScene::FlattenHierarchyOnImport(GameObject * go)
 {
 	assert(go != nullptr);
 	std::stack<GameObject*> S;

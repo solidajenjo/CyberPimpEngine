@@ -71,6 +71,28 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 	return materialPath;
 }
 
+void MaterialImporter::Import(const char path[1024]) const
+{
+	ILuint imageId;
+	ilGenImages(1, &imageId);
+	ilBindImage(imageId);
+	std::string filename = std::string(path);
+	unsigned nameBegin = filename.find_last_of("/");
+	if (nameBegin == std::string::npos)
+		nameBegin = filename.find_last_of("\\") + 1;
+
+	filename = filename.substr(nameBegin, filename.length() - nameBegin);
+
+	if (ilLoadImage(path)) //try in the same directory
+	{
+		std::string savePath = "Library/Textures/" + filename + ".dds";
+		ilSave(IL_DDS, savePath.c_str());
+		GameObject* newMap = new GameObject("Map", true);
+		newMap->InsertComponent(ComponentMap::GetMap(savePath));
+		App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
+	}
+}
+
 
 ComponentMaterial* MaterialImporter::Load(const char path[1024]) const
 {	
@@ -98,32 +120,87 @@ ComponentMaterial* MaterialImporter::Load(const char path[1024]) const
 
 			if (strlen(newMat->diffuseMap) > 0)
 			{
-				RELEASE(newMat->texture);
-				newMat->texture = ComponentMap::GetMap(newMat->diffuseMap);
-			}
+				if (strcmp(newMat->diffuseMap, "W_FBACK") == 0)
+				{
+					newMat->texture->mapId = App->textures->whiteFallback;
+				}
+				else if (strcmp(newMat->diffuseMap, "B_FBACK") == 0)
+				{
+					newMat->texture->mapId = App->textures->blackFallback;
+				}
+				else
+				{
+					RELEASE(newMat->texture);
+					newMat->texture = ComponentMap::GetMap(newMat->diffuseMap);
+				}
+			}							
 
 			if (strlen(newMat->normalMap) > 0)
 			{
-				RELEASE(newMat->normal);
-				newMat->normal = ComponentMap::GetMap(newMat->normalMap); 
+				if (strcmp(newMat->normalMap, "W_FBACK") == 0)
+				{
+					newMat->normal->mapId = App->textures->whiteFallback;
+				}
+				else if (strcmp(newMat->normalMap, "B_FBACK") == 0)
+				{
+					newMat->normal->mapId = App->textures->blackFallback;
+				}
+				else
+				{
+					RELEASE(newMat->normal);
+					newMat->normal = ComponentMap::GetMap(newMat->normalMap);
+				}
 			}
 
 			if (strlen(newMat->specularMap) > 0)
 			{
-				RELEASE(newMat->specular);
-				newMat->specular = ComponentMap::GetMap(newMat->specularMap); 
+				if (strcmp(newMat->specularMap, "W_FBACK") == 0)
+				{
+					newMat->specular->mapId = App->textures->whiteFallback;
+				}
+				else if (strcmp(newMat->specularMap, "B_FBACK") == 0)
+				{
+					newMat->specular->mapId = App->textures->blackFallback;
+				}
+				else
+				{
+					RELEASE(newMat->specular);
+					newMat->specular = ComponentMap::GetMap(newMat->specularMap);
+				}
 			}
 
 			if (strlen(newMat->occlusionMap) > 0)
 			{
-				RELEASE(newMat->occlusion);
-				newMat->occlusion = ComponentMap::GetMap(newMat->occlusionMap);
+				if (strcmp(newMat->occlusionMap, "W_FBACK") == 0)
+				{
+					newMat->occlusion->mapId = App->textures->whiteFallback;
+				}
+				else if (strcmp(newMat->occlusionMap, "B_FBACK") == 0)
+				{
+					newMat->occlusion->mapId = App->textures->blackFallback;
+				}
+				else
+				{
+					RELEASE(newMat->occlusion);
+					newMat->occlusion = ComponentMap::GetMap(newMat->occlusionMap);
+				}
 			}
 
 			if (strlen(newMat->emissiveMap) > 0)
 			{
-				RELEASE(newMat->emissive);
-				newMat->emissive = ComponentMap::GetMap(newMat->emissiveMap); 
+				if (strcmp(newMat->emissiveMap, "W_FBACK") == 0)
+				{
+					newMat->emissive->mapId = App->textures->whiteFallback;
+				}
+				else if (strcmp(newMat->emissiveMap, "B_FBACK") == 0)
+				{
+					newMat->emissive->mapId = App->textures->blackFallback;
+				}
+				else
+				{
+					RELEASE(newMat->emissive);
+					newMat->emissive = ComponentMap::GetMap(newMat->emissiveMap);
+				}
 			}
 			
 			return newMat;
@@ -144,12 +221,19 @@ void MaterialImporter::Save(const char path[1024], const ComponentMaterial * mat
 	matData.kAmbient = material->kAmbient;
 	matData.kSpecular = material->kSpecular;
 	matData.shininess = material->shininess;
-	sprintf_s(matData.diffuseMap, material->diffuseMap);
 	sprintf_s(matData.materialPath, material->materialPath);
-	sprintf_s(matData.normalMap, material->normalMap);
-	sprintf_s(matData.specularMap, material->specularMap);
-	sprintf_s(matData.occlusionMap, material->occlusionMap);
-	sprintf_s(matData.emissiveMap, material->emissiveMap);
+
+	if (material->texture != nullptr)
+		sprintf_s(matData.diffuseMap, material->texture->mapPath);	
+	if (material->normal != nullptr)
+		sprintf_s(matData.normalMap, material->normal->mapPath);
+	if (material->specular != nullptr)
+		sprintf_s(matData.specularMap, material->specular->mapPath);
+	if (material->occlusion != nullptr)
+		sprintf_s(matData.occlusionMap, material->occlusion->mapPath);
+	if (material->emissive != nullptr)
+		sprintf_s(matData.emissiveMap, material->emissive->mapPath);
+	
 	
 	if (!App->fileSystem->Write(std::string(path), &matData, sizeof(matData)))
 	{

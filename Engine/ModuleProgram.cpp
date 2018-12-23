@@ -7,7 +7,7 @@ bool ModuleProgram::Init()
 {
 	bool ret = true;
 	ret = ret && Compile(ModuleProgram::Shaders::DEFAULT, "default.vs", "default.fs");
-	ret = ret && Compile(ModuleProgram::Shaders::DIRECT_RENDERING, "DirectRenderingShader.vs", "DirectRenderingShader.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::DIRECT_RENDERING, "ForwardRenderingShader.vs", "ForwardRenderingShader.fs");
 	return ret;
 }
 

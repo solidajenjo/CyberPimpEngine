@@ -57,6 +57,11 @@ ComponentMap* ComponentMap::GetMap(const std::string path)
 		mapsLoaded[newMap->mapPath] = newMap;
 		return newMap;		
 	}
-	++(*it).second->clients;
-	return (*it).second;	
+	else // return copy
+	{
+		ComponentMap* newMap = new ComponentMap();
+		newMap->mapId = (*it).second->mapId;
+		sprintf_s(newMap->mapPath, (*it).second->mapPath);	
+		return newMap;
+	}
 }

@@ -8,6 +8,7 @@
 #include "SDL/include/SDL.h"
 #include "imgui/imgui.h"
 #include "imgui/examples/imgui_impl_sdl.h"
+#include "MaterialImporter.h"
 #include "SceneImporter.h"
 
 #define MAX_KEYS 300
@@ -102,7 +103,10 @@ update_status ModuleInput::PreUpdate()
 				si.Import(std::string(file));
 			}
 			else
-				App->textures->Load(strFile.c_str());			
+			{
+				MaterialImporter mi;
+				mi.Import(file);
+			}
 			SDL_free(file);
 			break;
 		}

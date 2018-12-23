@@ -138,6 +138,8 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 	math::float4x4 model = float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
 		"model"), 1, GL_TRUE, transform->GetModelMatrix());
+	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
+		"modelWithoutScale"), 1, GL_TRUE, float4x4::FromTRS(transform->getGlobalPosition(), transform->rotQuat, float3::one).ptr());
 	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
 	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
 		"view"), 1, GL_TRUE, &view[0][0]);

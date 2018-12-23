@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "ComponentMap.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilut.h"
 #include "DevIL/include/IL/ilu.h"

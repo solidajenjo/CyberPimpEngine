@@ -3,13 +3,16 @@
 #include "Component.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "imgui/imgui.h"
 #include "MaterialImporter.h"
+#include "GameObject.h"
 #include "crossguid/include/crossguid/guid.hpp"
 #include "rapidjson-1.1.0/include/rapidjson/writer.h"
+#include <stack>
 
-#define WIDGET_WIDTHS 128
+#define WIDGET_WIDTHS 150
 
 std::map<std::string, ComponentMaterial*>ComponentMaterial::materialsLoaded;
 
@@ -20,9 +23,23 @@ ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Compo
 
 	texture = new ComponentMap();
 	texture->mapId = App->textures->whiteFallback;
+	sprintf_s(texture->mapPath, "W_FBACK");
 
 	emissive = new ComponentMap();
 	emissive->mapId = App->textures->whiteFallback;
+	sprintf_s(emissive->mapPath, "W_FBACK");
+
+	specular = new ComponentMap();
+	specular->mapId = App->textures->whiteFallback;
+	sprintf_s(specular->mapPath, "W_FBACK");
+
+	occlusion = new ComponentMap();
+	occlusion->mapId = App->textures->whiteFallback;
+	sprintf_s(occlusion->mapPath, "W_FBACK");
+
+	normal = new ComponentMap();
+	normal->mapId = App->textures->blackFallback;
+	sprintf_s(normal->mapPath, "W_FBACK");
 	
 }
 
@@ -45,23 +62,22 @@ void ComponentMaterial::EditorDraw()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material"))
 	{		
+		if (mapSelectorReference != nullptr)
+		{
+			MapSelector();
+		}
 		ImGui::Text("Diffuse");
 		ImGui::ColorEdit4("Diffuse Color", &diffuseColor[0]);
 		if (texture != nullptr && texture->mapId != 0)
 		{
 			ImGui::Image((void*)(intptr_t)texture->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
 		}
-		else
+		if (ImGui::Button("Change Diffuse Map", ImVec2(WIDGET_WIDTHS, 20)))
 		{
-			ImGui::Button("Drop a diffuse map");
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
-			{
-				assert(payload->DataSize == sizeof(unsigned));
-				texture->mapId = *(unsigned*)payload->Data;
-			}
+			mapSelectorReference = texture;
+			mapSelectorSelected = new ComponentMap();
+			mapSelectorSelected->mapId = texture->mapId;
+			sprintf_s(mapSelectorSelected->mapPath, texture->mapPath);
 		}
 		ImGui::Separator();
 		ImGui::Text("Specular");
@@ -70,17 +86,12 @@ void ComponentMaterial::EditorDraw()
 		{
 			ImGui::Image((void*)(intptr_t)specular->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
 		}
-		else
+		if (ImGui::Button("Change Specular Map", ImVec2(WIDGET_WIDTHS, 20)))
 		{
-			ImGui::Button("Drop a specular map");
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
-			{
-				assert(payload->DataSize == sizeof(unsigned));
-				//specular = *(unsigned*)payload->Data;
-			}
+			mapSelectorReference = specular;
+			mapSelectorSelected = new ComponentMap();
+			mapSelectorSelected->mapId = specular->mapId;
+			sprintf_s(mapSelectorSelected->mapPath, specular->mapPath);
 		}
 		ImGui::Separator();
 		ImGui::Text("Emissive");
@@ -89,17 +100,12 @@ void ComponentMaterial::EditorDraw()
 		{
 			ImGui::Image((void*)(intptr_t)emissive->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
 		}
-		else
+		if (ImGui::Button("Change Emissive Map", ImVec2(WIDGET_WIDTHS, 20)))
 		{
-			ImGui::Button("Drop an emissive map");
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
-			{
-				assert(payload->DataSize == sizeof(unsigned));
-				//emissive = *(unsigned*)payload->Data;
-			}
+			mapSelectorReference = emissive;
+			mapSelectorSelected = new ComponentMap();
+			mapSelectorSelected->mapId = emissive->mapId;
+			sprintf_s(mapSelectorSelected->mapPath, emissive->mapPath);
 		}
 		ImGui::Separator();
 		ImGui::Text("Normal");
@@ -107,17 +113,26 @@ void ComponentMaterial::EditorDraw()
 		{
 			ImGui::Image((void*)(intptr_t)normal->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
 		}
-		else
+		if (ImGui::Button("Change Normal Map", ImVec2(WIDGET_WIDTHS, 20)))
 		{
-			ImGui::Button("Drop a normal map");
+			mapSelectorReference = normal;
+			mapSelectorSelected = new ComponentMap();
+			mapSelectorSelected->mapId = normal->mapId;
+			sprintf_s(mapSelectorSelected->mapPath, normal->mapPath);
 		}
-		if (ImGui::BeginDragDropTarget())
+		ImGui::Separator();
+		ImGui::Separator();
+		ImGui::Text("Occlusion");
+		if (occlusion != nullptr && occlusion->mapId != 0)
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEX_NUM"))
-			{
-				assert(payload->DataSize == sizeof(unsigned));
-				normal->mapId = *(unsigned*)payload->Data;
-			}
+			ImGui::Image((void*)(intptr_t)occlusion->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		if (ImGui::Button("Change Occlusion Map", ImVec2(WIDGET_WIDTHS, 20)))
+		{
+			mapSelectorReference = occlusion;
+			mapSelectorSelected = new ComponentMap();
+			mapSelectorSelected->mapId = occlusion->mapId;
+			sprintf_s(mapSelectorSelected->mapPath, occlusion->mapPath);
 		}
 		ImGui::Separator();
 		ImGui::SliderFloat("Ambient", &kAmbient, 0.f, 1.f);
@@ -211,5 +226,83 @@ ComponentMaterial * ComponentMaterial::GetMaterial(const std::string path)
 	}
 	++(*it).second->clients;
 	return (*it).second;
+}
+
+void ComponentMaterial::MapSelector()
+{
+	ImGui::OpenPopup("Map selector");
+	if (ImGui::BeginPopupModal("Map selector"))
+	{
+		ImGui::BeginChild("Control", ImVec2(0, WIDGET_WIDTHS * 1.2f), true);
+		ImGui::Text("Selected");
+		ImGui::SameLine();
+		ImGui::Image((void*)(intptr_t)mapSelectorSelected->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		if (ImGui::Button("Accept", ImVec2(100, 20)))
+		{			
+			mapSelectorReference->mapId = mapSelectorSelected->mapId;
+			sprintf_s(mapSelectorReference->mapPath, mapSelectorSelected->mapPath);
+			mapSelectorReference = nullptr;
+			RELEASE(mapSelectorSelected);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(100, 20)))
+		{
+			mapSelectorReference = nullptr;
+			RELEASE(mapSelectorSelected);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndChild();
+		ImGui::BeginChild("Maps", ImVec2(0, 0), true);
+		GameObject* mapHolder = App->scene->mapFolder;
+		std::stack<GameObject*> S;
+		S.push(mapHolder);
+		ImGui::Columns(2);
+		
+		ImGui::Text("White Fallback");				
+		ImGui::Image((void*)(intptr_t)App->textures->whiteFallback, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		if (ImGui::IsItemClicked()) 
+		{
+			mapSelectorSelected->mapId = App->textures->whiteFallback;
+			sprintf_s(mapSelectorSelected->mapPath, "W_FBACK");
+		}
+		
+		ImGui::NextColumn();
+		
+		ImGui::Text("Black Fallback");
+		ImGui::Image((void*)(intptr_t)App->textures->blackFallback, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+		if (ImGui::IsItemClicked())
+		{
+			mapSelectorSelected->mapId = App->textures->blackFallback;
+			sprintf_s(mapSelectorSelected->mapPath, "B_FBACK");
+		}
+
+		while (!S.empty())
+		{
+			GameObject* go = S.top();
+			S.pop();
+			if (go != mapHolder)
+			{
+				ImGui::NextColumn();
+				ImGui::Text(go->name);
+				assert(!go->components.empty());
+				ComponentMap* map = (ComponentMap*)go->components.front();
+				ImGui::Image((void*)(intptr_t)map->mapId, ImVec2(WIDGET_WIDTHS, WIDGET_WIDTHS), ImVec2(0, 1), ImVec2(1, 0));
+				if (ImGui::IsItemClicked())
+				{
+					mapSelectorSelected->mapId = map->mapId;
+					sprintf_s(mapSelectorSelected->mapPath, map->mapPath);
+				}
+			}
+			for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+			{
+				S.push(*it);
+			}
+		}
+		ImGui::Columns(1);
+		ImGui::EndChild();
+		ImGui::EndPopup();
+	}
 }
 

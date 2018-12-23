@@ -48,6 +48,13 @@ public:
 	//Resource management
 	static ComponentMaterial* GetMaterial(const std::string path);
 	static std::map<std::string, ComponentMaterial*> materialsLoaded;
+
+private:
+
+	void MapSelector();
+
+	ComponentMap* mapSelectorReference = nullptr;
+	ComponentMap* mapSelectorSelected = nullptr;
 };
 
 #endif

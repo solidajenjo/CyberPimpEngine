@@ -10,9 +10,11 @@
 class GameObject;
 class ComponentCamera;
 
-class ModuleScene :
-	public Module
+class ModuleScene :	public Module
 {
+	
+	friend class ComponentMaterial;
+
 public:
 	
 	enum class ImportedType
@@ -58,7 +60,7 @@ public:
 
 private:
 
-	void flattenHierarchyOnImport(GameObject* go);
+	void FlattenHierarchyOnImport(GameObject* go);
 
 	//members
 
