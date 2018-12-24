@@ -19,7 +19,7 @@ ModuleTextures::ModuleTextures()
 
 bool ModuleTextures::Init()
 {
-	char fallbackImageWhite[3] = { GLubyte(255), GLubyte(255), GLubyte(255) };
+	char fallbackImageWhite[4] = { GLubyte(255), GLubyte(255), GLubyte(255), GLubyte(255) };
 	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &whiteFallback);
@@ -28,9 +28,9 @@ bool ModuleTextures::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImageWhite);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, fallbackImageWhite);
 
-	char fallbackImageBlack[3] = { GLubyte(0), GLubyte(0), GLubyte(0) };
+	char fallbackImageBlack[4] = { GLubyte(0), GLubyte(0), GLubyte(0), GLubyte(0) };
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &blackFallback);
@@ -39,7 +39,7 @@ bool ModuleTextures::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImageBlack);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, fallbackImageBlack);
 
 	return (blackFallback != 0u && whiteFallback != 0u);
 }

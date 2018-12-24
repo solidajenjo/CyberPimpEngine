@@ -35,7 +35,7 @@ public:
 	
 	
 	GameObject* MakeInstanceOf() const;
-	GameObject* Clone() const;
+	GameObject* Clone(bool breakInstance = false) const;
 
 	//members
 	

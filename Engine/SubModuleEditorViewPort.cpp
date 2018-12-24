@@ -1,4 +1,5 @@
 #define PROCESS_PRIMITIVE(){\
+								newMesh->material->owner = newGO;\
 								App->renderer->insertRenderizable(newGO);\
 								newMesh->SendToGPU();\
 								newGO->InsertComponent(newMesh);\
@@ -21,6 +22,7 @@
 #include "debugdraw.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "GameObject.h"
 #include "ModuleRender.h"
 #include "ImGuizmo/ImGuizmo.h"

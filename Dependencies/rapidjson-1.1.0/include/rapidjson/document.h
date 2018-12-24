@@ -24,7 +24,8 @@
 #include "encodedstream.h"
 #include <new>      // placement new
 #include <limits>
-
+#pragma warning(push)
+#pragma warning(disable : 4003) 
 RAPIDJSON_DIAG_PUSH
 #ifdef _MSC_VER
 RAPIDJSON_DIAG_OFF(4127) // conditional expression is constant
@@ -2571,5 +2572,5 @@ private:
 
 RAPIDJSON_NAMESPACE_END
 RAPIDJSON_DIAG_POP
-
+#pragma warning(pop)
 #endif // RAPIDJSON_DOCUMENT_H_

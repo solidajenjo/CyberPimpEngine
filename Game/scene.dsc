@@ -1,7 +1,7 @@
 [
     {
         "scene": {
-            "UUID": "96fcd90f-e623-4e2e-b9d7-50fcd52c5208",
+            "UUID": "b148a2bf-fcba-4bec-ad98-7f47cf49d7d3",
             "name": "Scene",
             "isInstantiated": false,
             "isStatic": false,
@@ -32,7 +32,7 @@
     },
     {
         "assets": {
-            "UUID": "a471ec6f-10cc-41de-88d5-2e44d324be16",
+            "UUID": "b61b1ed0-a7ca-4023-9ab8-22ea5675f2ef",
             "name": "Assets",
             "isInstantiated": false,
             "isStatic": false,
@@ -63,7 +63,7 @@
     },
     {
         "maps": {
-            "UUID": "c3335d34-48fe-4562-a4fc-1ccda4446c8f",
+            "UUID": "2cbb8b4b-2389-4de6-8b54-e3505c515499",
             "name": "Maps",
             "isInstantiated": false,
             "isStatic": false,
@@ -88,13 +88,13 @@
             },
             "instanceOf": "",
             "path": "",
-            "parentUUID": "a471ec6f-10cc-41de-88d5-2e44d324be16",
+            "parentUUID": "b61b1ed0-a7ca-4023-9ab8-22ea5675f2ef",
             "components": []
         }
     },
     {
         "materials": {
-            "UUID": "359b1991-1a6f-4c00-8f52-f2d9967ffd99",
+            "UUID": "40cfbec3-82ff-473c-98ed-336183436731",
             "name": "Materials",
             "isInstantiated": false,
             "isStatic": false,
@@ -119,13 +119,13 @@
             },
             "instanceOf": "",
             "path": "",
-            "parentUUID": "a471ec6f-10cc-41de-88d5-2e44d324be16",
+            "parentUUID": "b61b1ed0-a7ca-4023-9ab8-22ea5675f2ef",
             "components": []
         }
     },
     {
         "models": {
-            "UUID": "03741092-8b4a-47d2-85de-8a4b9d9fd8ea",
+            "UUID": "6cc1e1bc-6e7b-4252-9bbc-acd48353fc36",
             "name": "Models",
             "isInstantiated": false,
             "isStatic": false,
@@ -150,90 +150,60 @@
             },
             "instanceOf": "",
             "path": "",
-            "parentUUID": "a471ec6f-10cc-41de-88d5-2e44d324be16",
+            "parentUUID": "b61b1ed0-a7ca-4023-9ab8-22ea5675f2ef",
             "components": []
         }
     },
     {
-        "UUID": "183becbf-6501-4cbe-8de1-cf00f707bec1",
-        "name": "RUST_3d_Low",
+        "UUID": "00661ef3-eb40-42ce-990c-7bf96d99b117",
+        "name": "Zombunny",
         "isInstantiated": true,
         "isStatic": false,
         "isContainer": false,
         "active": true,
         "transform": {
             "position": {
-                "x": 0.0,
-                "y": -116.19000244140625,
-                "z": 0.0
+                "x": 47.42906188964844,
+                "y": 0.0,
+                "z": -198.87962341308595
             },
             "rotation": {
-                "x": -1.5707964897155762,
+                "x": 0.4702695310115814,
                 "y": 0.0,
                 "z": -0.0
             },
             "scale": {
                 "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "8bf04f9b-6acc-4840-96c7-bcc9ed3c6c17",
-        "path": "",
-        "parentUUID": "5db792a8-172d-4779-b6d7-52948e3b776a",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/9ca2fcf3-71ba-4a60-969a-7300f0b2f0cc.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/667591fc-1577-43f4-ba64-d7f970e751b4.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "1f9739c2-e69e-4317-b72a-291319f8e61c",
-        "name": "Plane",
-        "isInstantiated": true,
-        "isStatic": false,
-        "isContainer": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": -7.322603225708008,
-                "y": 24.84741973876953,
-                "z": 22.885643005371095
-            },
-            "rotation": {
-                "x": 0.18160909414291383,
-                "y": 0.09158968925476074,
-                "z": -0.016793759539723398
-            },
-            "scale": {
-                "x": 20.0,
-                "y": 24.929996490478517,
-                "z": 1.5000004768371583
+                "y": 1.0000001192092896,
+                "z": 1.0000001192092896
             }
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "5db792a8-172d-4779-b6d7-52948e3b776a",
+        "parentUUID": "d60f29fa-9898-4331-87d8-596bddab66dc",
         "components": [
             {
                 "type": 1,
-                "meshPath": "",
-                "primitive": 4,
+                "meshPath": "Library/Meshes/a314bd2b-a68c-4d2d-845a-61851ba64d27.msh",
+                "primitive": -1,
                 "material": {
                     "type": 2,
-                    "materialPath": "Library/Materials/3012c8be-5cd7-4a15-b9bd-5eb451c9e779.mat"
+                    "materialPath": "Library/Materials/2105d316-9570-4cc1-91ca-b7cbd00a48b8.mat"
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/767e22e6-1872-4e18-b2a0-27800e1a40f5.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/b1fe0640-8bb5-4c76-bd5e-f7e1ce27e4ae.mat"
                 }
             }
         ]
     },
     {
-        "UUID": "4ddfcc01-08c8-4216-ba6b-6c38e97e167f",
+        "UUID": "03ebb679-5eea-4de3-959f-89ea70070529",
         "name": "Root",
         "isInstantiated": false,
         "isStatic": false,
@@ -258,164 +228,45 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "03741092-8b4a-47d2-85de-8a4b9d9fd8ea",
+        "parentUUID": "6cc1e1bc-6e7b-4252-9bbc-acd48353fc36",
         "components": []
     },
     {
-        "UUID": "5db792a8-172d-4779-b6d7-52948e3b776a",
-        "name": "Empty",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": false,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 118.06999969482422,
-                "z": -112.23999786376953
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "96fcd90f-e623-4e2e-b9d7-50fcd52c5208",
-        "components": []
-    },
-    {
-        "UUID": "60d32a05-f7f1-4902-8a78-7970e9adbfc5",
-        "name": "Map",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "c3335d34-48fe-4562-a4fc-1ccda4446c8f",
-        "components": [
-            {
-                "type": 4,
-                "mapPath": "Library/Textures/RUST_3d_Low1_Difuse.dds.dds"
-            }
-        ]
-    },
-    {
-        "UUID": "873c85e7-e884-4aad-90d1-5da3e36a97af",
-        "name": "Map",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "c3335d34-48fe-4562-a4fc-1ccda4446c8f",
-        "components": [
-            {
-                "type": 4,
-                "mapPath": "Library/Textures/IMG_20181223_122050.jpg.dds"
-            }
-        ]
-    },
-    {
-        "UUID": "8bf04f9b-6acc-4840-96c7-bcc9ed3c6c17",
-        "name": "RUST_3d_Low",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "4ddfcc01-08c8-4216-ba6b-6c38e97e167f",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/9ca2fcf3-71ba-4a60-969a-7300f0b2f0cc.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/667591fc-1577-43f4-ba64-d7f970e751b4.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "92f322f9-17c1-41b6-91e9-786c0685f8aa",
-        "name": "Material",
+        "UUID": "0d6ddf0f-3606-423e-804a-27de9edd7d54",
+        "name": "ZomBunny_Body_Mat",
         "isInstantiated": false,
         "isStatic": false,
         "isContainer": true,
         "active": true,
         "instanceOf": "",
         "path": "",
-        "parentUUID": "359b1991-1a6f-4c00-8f52-f2d9967ffd99",
+        "parentUUID": "40cfbec3-82ff-473c-98ed-336183436731",
         "components": [
             {
                 "type": 2,
-                "materialPath": "Library/Materials/667591fc-1577-43f4-ba64-d7f970e751b4.mat"
+                "materialPath": "Library/Materials/6fb32d5e-4576-4d96-ac1e-1cae00778d60.mat"
             }
         ]
     },
     {
-        "UUID": "d7f175d4-7603-4e20-8eec-92bbf1bdfd2a",
+        "UUID": "3841b154-1ced-48c1-b56a-e1a54c85e547",
+        "name": "ZomBunny_Eyes_Mat",
+        "isInstantiated": false,
+        "isStatic": false,
+        "isContainer": true,
+        "active": true,
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "40cfbec3-82ff-473c-98ed-336183436731",
+        "components": [
+            {
+                "type": 2,
+                "materialPath": "Library/Materials/744a7fd8-1ea1-4597-9fa2-35af0e2cf319.mat"
+            }
+        ]
+    },
+    {
+        "UUID": "5abbfa5e-c9da-4653-a17f-da29edd43bb1",
         "name": "Map",
         "isInstantiated": false,
         "isStatic": false,
@@ -440,16 +291,50 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "c3335d34-48fe-4562-a4fc-1ccda4446c8f",
+        "parentUUID": "2cbb8b4b-2389-4de6-8b54-e3505c515499",
         "components": [
             {
                 "type": 4,
-                "mapPath": "Library/Textures/RUST_3d_Low1_Difuse.dds.dds"
+                "mapPath": "Library/Textures/ZomBunnyEmissive.png.dds"
             }
         ]
     },
     {
-        "UUID": "edec5453-856d-4172-bb31-797527fff317",
+        "UUID": "5cd6bd5c-efbf-4843-813f-9ad2455ca89c",
+        "name": "Map",
+        "isInstantiated": false,
+        "isStatic": false,
+        "isContainer": true,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "2cbb8b4b-2389-4de6-8b54-e3505c515499",
+        "components": [
+            {
+                "type": 4,
+                "mapPath": "Library/Textures/ZomBunnyDiffuse.png.dds"
+            }
+        ]
+    },
+    {
+        "UUID": "727a0cf0-44c1-4261-a867-fac2dcd0d66c",
         "name": "Sphere",
         "isInstantiated": true,
         "isStatic": false,
@@ -457,8 +342,95 @@
         "active": true,
         "transform": {
             "position": {
-                "x": 7.124276638031006,
-                "y": 3.818685531616211,
+                "x": 4.94256591796875,
+                "y": 71.88387298583985,
+                "z": -92.55241394042969
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 50.0,
+                "y": 50.0,
+                "z": 50.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "b148a2bf-fcba-4bec-ad98-7f47cf49d7d3",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "",
+                "primitive": 1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/5b1e09ad-38e8-4bf6-b494-5d526652b0b1.mat"
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "8321dafa-b134-4b52-8ac3-dc62cf81f380",
+        "name": "Zombunny",
+        "isInstantiated": false,
+        "isStatic": false,
+        "isContainer": true,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": -0.0,
+                "y": 0.0,
+                "z": -0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "03ebb679-5eea-4de3-959f-89ea70070529",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/25a86c1a-c17b-4835-b22b-bd9fe8fd9180.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/6fb32d5e-4576-4d96-ac1e-1cae00778d60.mat"
+                }
+            },
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/9a69333a-82ed-414a-9b1e-5dbce6f3980a.msh",
+                "primitive": -1,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/744a7fd8-1ea1-4597-9fa2-35af0e2cf319.mat"
+                }
+            }
+        ]
+    },
+    {
+        "UUID": "8c809aa4-9a63-445f-bc7f-d8723e9a43fa",
+        "name": "Map",
+        "isInstantiated": false,
+        "isStatic": false,
+        "isContainer": true,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
             },
             "rotation": {
@@ -474,17 +446,41 @@
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "96fcd90f-e623-4e2e-b9d7-50fcd52c5208",
+        "parentUUID": "2cbb8b4b-2389-4de6-8b54-e3505c515499",
         "components": [
             {
-                "type": 1,
-                "meshPath": "",
-                "primitive": 1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/76633ab7-d78a-4986-9a2f-85daa6ac0a85.mat"
-                }
+                "type": 4,
+                "mapPath": "Library/Textures/ZomBunnyOcclusion.png.dds"
             }
         ]
+    },
+    {
+        "UUID": "d60f29fa-9898-4331-87d8-596bddab66dc",
+        "name": "Root",
+        "isInstantiated": true,
+        "isStatic": false,
+        "isContainer": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 146.439208984375,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "b148a2bf-fcba-4bec-ad98-7f47cf49d7d3",
+        "components": []
     }
 ]

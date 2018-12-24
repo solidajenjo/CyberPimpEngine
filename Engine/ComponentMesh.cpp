@@ -94,29 +94,10 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 		meshIndices[i] = mesh->triangles[i];
 	}
 
-	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
+	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f); // create material	
 	delete mesh;
 }
 
-ComponentMesh::ComponentMesh(const std::vector<float>& vertices, const std::vector<unsigned>& indices, const std::vector<float>& texCoords) : Component(ComponentTypes::MESH_COMPONENT)
-{
-	nVertices = vertices.size() / 3.f;
-	meshVertices.resize(nVertices);
-	memcpy(&meshVertices[0], &vertices[0], sizeof(float) * nVertices * 3);
-	nCoords = texCoords.size();
-	if (nCoords > 0)
-	{
-		meshTexCoords.resize(nCoords);
-		memcpy(&meshTexCoords[0], &texCoords[0], sizeof(float) * nCoords);
-	}
-	nIndices = indices.size();
-	if (nIndices > 0)
-	{
-		meshIndices.resize(nIndices);
-		memcpy(&meshIndices[0], &indices[0], sizeof(unsigned) * nIndices);
-	}
-	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f);
-}
 
 ComponentMesh::~ComponentMesh()
 {
@@ -128,6 +109,39 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::EditorDraw()
 {
+	static const ComponentMaterial* item_current = material;	
+	ImGui::PushID(this);
+	if (ImGui::BeginCombo("Material", item_current->owner != nullptr ? item_current->owner->name : "Default Mesh Material"))
+	{
+		ComponentMaterial** mats = new ComponentMaterial*[ComponentMaterial::materialsLoaded.size()];
+		unsigned i = 0u;
+		for (std::map<std::string, ComponentMaterial*>::iterator it = ComponentMaterial::materialsLoaded.begin(); it != ComponentMaterial::materialsLoaded.end(); ++it)
+		{
+			mats[i] = (*it).second;
+			++i;
+		}
+		for (unsigned n = 0u; n < ComponentMaterial::materialsLoaded.size(); ++n)
+		{
+			bool is_selected = (item_current == mats[n]);
+			if (ImGui::Selectable(mats[n]->owner != nullptr ? mats[n]->owner->name : "Default Mesh Material", is_selected))
+			{
+				if (material->Release())
+					RELEASE(material);
+				
+				item_current = mats[n];
+				material = ComponentMaterial::GetMaterial(item_current->materialPath);
+				if (strlen(meshPath) > 0)
+				{
+					SceneImporter si;
+					si.SaveMesh(this, meshPath);
+				}
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+			ImGui::EndCombo();
+	}	
+	ImGui::PopID();
 	//show info from his material
 	material->EditorDraw();
 }
@@ -138,31 +152,47 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 	math::float4x4 model = float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
 		"model"), 1, GL_TRUE, transform->GetModelMatrix());
-	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
-		"modelWithoutScale"), 1, GL_TRUE, float4x4::FromTRS(transform->getGlobalPosition(), transform->rotQuat, float3::one).ptr());
+
 	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
 	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
 		"view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
 	if (material->texture != nullptr && material->texture->mapId > 0)
-	{		
+	{				
+		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "diffuseMap"), 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, material->texture->mapId);
 	}
 	
 	if (material->emissive != nullptr && material->emissive->mapId > 0)
 	{
+		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "emissiveMap"), 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->emissive->mapId);
+	}
+
+	if (material->occlusion != nullptr && material->occlusion->mapId > 0)
+	{
+		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "occlusionMap"), 2);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, material->occlusion->mapId);
+	}
+
+	if (material->specular != nullptr && material->specular->mapId > 0)
+	{
+		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "specularMap"), 3);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, material->specular->mapId);
 	}
 
 
 	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
 	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
 	
 	
-	float3 lightPos = float3(0.f, 0.f, 10.f);
+	float3 lightPos = float3(0.f, 200.f, 1000.f);
 	
 	glUniform3fv(glGetUniformLocation(*App->program->directRenderingProgram, "light_pos"), 1, &lightPos[0]);
 	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "ambient"), 0.9f);
@@ -189,9 +219,16 @@ ComponentMesh * ComponentMesh::Clone()
 	newMesh->meshIndices = meshIndices;
 	newMesh->primitiveType = primitiveType;
 	newMesh->material = material->Clone();
+
 	if (VAO != 0u)
 		newMesh->SendToGPU();
 
+	xg::Guid guid = xg::newGuid();
+	std::string uuid = guid.str();
+	std::string meshSavePath = "Library/Meshes/" + uuid + ".msh";
+	sprintf_s(newMesh->meshPath, meshSavePath.c_str());
+	SceneImporter si;
+	si.SaveMesh(newMesh, meshSavePath.c_str()); //save a mesh copy
 	return newMesh;
 }
 

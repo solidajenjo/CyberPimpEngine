@@ -29,7 +29,6 @@ public:
 
 	ComponentMesh() : Component(ComponentTypes::MESH_COMPONENT) {};
 	ComponentMesh(Primitives primitive);
-	ComponentMesh(const std::vector<float> &vertices, const std::vector<unsigned> &indices, const std::vector<float> &texCoords);
 
 	~ComponentMesh();
 

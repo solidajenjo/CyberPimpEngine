@@ -33,6 +33,18 @@ void SubModuleEditorInspector::Show()
 				{
 					App->scene->selected->PropagateStaticCheck();
 				}
+				if (strlen(App->scene->selected->instanceOf) > 0)
+				{
+					ImGui::Text("Instance of %s", App->scene->FindInstanceOrigin(App->scene->selected->instanceOf)->name);
+					if (ImGui::Button("Break instance"))
+					{
+						GameObject* clone = App->scene->selected->Clone(true);
+						App->scene->selected->parent->InsertChild(clone);	
+						App->scene->DeleteGameObject(App->scene->selected);	
+						clone->parent->transform->PropagateTransform();
+						App->scene->selected = clone;
+					}
+				}
 			}
 			bool firstMesh = false; //only one mesh drawing per gameobject
 			ImGui::InputText("Name", &App->scene->selected->name[0], 40);

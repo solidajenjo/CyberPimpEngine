@@ -48,8 +48,7 @@ GameObject::~GameObject()
 			RELEASE(*it);
 	}
 	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-	{		
-		App->scene->DestroyGameObject(*it);
+	{				
 		RELEASE(*it);
 	}
 }
@@ -200,6 +199,8 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				{
 					ComponentMesh* newMesh = new ComponentMesh();
 					newMesh->UnSerialize(*it);
+					if (newMesh->primitiveType != ComponentMesh::Primitives::VOID_PRIMITIVE)
+						newMesh->material->owner = this;
 					newMesh->SendToGPU();
 					InsertComponent(newMesh);
 					App->renderer->insertRenderizable(this);
@@ -263,10 +264,11 @@ GameObject* GameObject::MakeInstanceOf() const
 	return clonedGO;
 }
 
-GameObject * GameObject::Clone() const
+GameObject * GameObject::Clone(bool breakInstance) const //TODO:Remove recursivity
 {
 	GameObject* clonedGO = new GameObject(name);
-	sprintf_s(clonedGO->instanceOf, instanceOf);
+	if (!breakInstance)
+		sprintf_s(clonedGO->instanceOf, instanceOf);
 	if (transform != nullptr)
 	{
 		clonedGO->transform = transform->Clone();
@@ -280,12 +282,12 @@ GameObject * GameObject::Clone() const
 		{
 			ComponentMesh* mesh = (ComponentMesh*)(*it);
 			ComponentMesh* newMesh;
-			if (mesh->primitiveType == ComponentMesh::Primitives::VOID_PRIMITIVE)
+			
+			if (!breakInstance)
 				newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
 			else
-			{
-				newMesh = mesh->Clone();				
-			}
+				newMesh = mesh->Clone();
+			
 			newMesh->SendToGPU();
 			App->renderer->insertRenderizable(clonedGO);
 			clonedGO->InsertComponent(newMesh);
@@ -295,7 +297,7 @@ GameObject * GameObject::Clone() const
 	}
 	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 	{
-		clonedGO->InsertChild((*it)->Clone());
+		clonedGO->InsertChild((*it)->Clone(breakInstance));
 	}
 	App->scene->InsertGameObject(clonedGO);
 	return clonedGO;

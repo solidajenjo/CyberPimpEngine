@@ -168,11 +168,6 @@ void ModuleScene::ImportGameObject(GameObject * newGO, ImportedType type)
 		
 }
 
-void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
-{
-	assert(destroyableGO != nullptr);
-	sceneGameObjects.erase(destroyableGO->gameObjectUUID);
-}
 
 void ModuleScene::ShowHierarchy(bool isWorld)
 {
@@ -382,11 +377,38 @@ void ModuleScene::AttachToMaterials(GameObject * go)
 	FlattenHierarchyOnImport(go);
 }
 
+void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
+{
+	assert(destroyableGO != nullptr);
+	destroyableGO->parent->children.remove(destroyableGO);
+	sceneGameObjects.erase(destroyableGO->gameObjectUUID);
+}
+
 void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
 {
 	assert(go != nullptr);
 	go->parent->children.remove(go);
 	sceneGameObjects.erase(go->gameObjectUUID);
+	std::stack<GameObject*> S;
+	std::stack<GameObject*> DFS; // start the destroy from the leaves of the tree and upwards to avoid crashes
+	S.push(go);
+	while (!S.empty())
+	{
+		GameObject* node = S.top();
+		S.pop();
+		for (std::list<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			S.push(*it);
+			DFS.push(*it);
+		}
+	}
+
+	while (!DFS.empty())
+	{
+		DestroyGameObject(DFS.top());
+		RELEASE(DFS.top());
+		DFS.pop();
+	}
 	RELEASE(go); 	
 }
 

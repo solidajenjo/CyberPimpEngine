@@ -146,15 +146,7 @@ void ComponentMaterial::EditorDraw()
 
 void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer)
 {
-	if (strlen(materialPath) == 0)
-	{
-		xg::Guid guid = xg::newGuid();
-		std::string uuid = guid.str();
-		std::string matPath = "Library/Materials/" + uuid + ".mat";
-		sprintf_s(materialPath, matPath.c_str());
-	}
-	MaterialImporter mi;
-	mi.Save(materialPath, this);
+	Save();	
 	writer.StartObject();
 	writer.String("type"); writer.Int((int)type);
 	writer.String("materialPath"); writer.String(materialPath);
@@ -162,6 +154,18 @@ void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffe
 		
 }
 
+void ComponentMaterial::Save()
+{
+	if (strlen(materialPath) == 0)
+	{
+		xg::Guid guid = xg::newGuid();
+		std::string uuid = guid.str();
+		std::string matPath = "Library/Materials/" + uuid + ".mat";
+		sprintf_s(materialPath, matPath.c_str());		
+	}
+	MaterialImporter mi;
+	mi.Save(materialPath, this);
+}
 
 bool ComponentMaterial::Release()
 {
@@ -204,7 +208,9 @@ ComponentMaterial * ComponentMaterial::Clone()
 	sprintf_s(newMat->specularMap, specularMap);
 	sprintf_s(newMat->occlusionMap, occlusionMap);
 	sprintf_s(newMat->normalMap, normalMap);
-
+	
+	sprintf_s(newMat->materialPath, "");
+	newMat->Save();
 	return newMat;
 }
 

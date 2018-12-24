@@ -223,7 +223,7 @@ ComponentMesh * SceneImporter::LoadMesh(const char path[1024]) const
 
 			std::string matPath(materialPath);
 
-			newMesh->material = ComponentMaterial::GetMaterial(matPath);
+			newMesh->material = ComponentMaterial::GetMaterial(matPath);			
 			sprintf_s(newMesh->meshPath, path);
 			RELEASE(buffer);			
 			return newMesh;
@@ -231,5 +231,37 @@ ComponentMesh * SceneImporter::LoadMesh(const char path[1024]) const
 		RELEASE(buffer);
 	}
 	return nullptr;
+}
+
+void SceneImporter::SaveMesh(const ComponentMesh* mesh, const char path[1024]) const
+{
+	std::vector<char> bytes;
+	unsigned bytesPointer = 0u;
+
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &mesh->nVertices);
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &mesh->nIndices);
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &mesh->nCoords);
+	writeToBuffer(bytes, bytesPointer, sizeof(unsigned), &mesh->nNormals);
+
+	writeToBuffer(bytes, bytesPointer, sizeof(float) * 3 * mesh->nVertices, &mesh->meshVertices[0]);
+
+	if (mesh->nIndices > 0)
+	{
+		writeToBuffer(bytes, bytesPointer, sizeof(unsigned) * mesh->meshIndices.size(), &mesh->meshIndices[0]);
+	}
+
+	if (mesh->nCoords > 0)
+	{
+		writeToBuffer(bytes, bytesPointer, sizeof(float) * mesh->meshTexCoords.size(), &mesh->meshTexCoords[0]);
+	}
+
+	if (mesh->nNormals > 0)
+	{
+		writeToBuffer(bytes, bytesPointer, sizeof(float) * 3 * mesh->nNormals, &mesh->meshNormals[0]);
+	}
+	writeToBuffer(bytes, bytesPointer, sizeof(char) * 1024, mesh->material->materialPath);
+
+	App->fileSystem->Write(path, &bytes[0], bytes.size());
+
 }
 
