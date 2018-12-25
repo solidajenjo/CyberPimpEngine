@@ -18,7 +18,7 @@ class GameObject
 public:
 
 
-	GameObject(const char name[40], bool isContainer = false);
+	GameObject(const char name[1024], bool isContainer = false);
 
 	GameObject(char UUID[40], Transform* transform);
 
@@ -50,7 +50,7 @@ public:
 	AABB* aaBBGlobal = nullptr;
 	bool enabled = true, selected = false, isRenderizable = false;
 	
-	char name[40] = "";
+	char name[1024] = "";
 	char gameObjectUUID[40] = ""; //unique game object id
 	char parentUUID[40] = ""; //unique parent's game object id
 	char instanceOf[40] = ""; //identifier to search on assets hierarchy & clone

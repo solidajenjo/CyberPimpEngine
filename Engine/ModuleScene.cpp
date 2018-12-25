@@ -417,7 +417,9 @@ bool ModuleScene::MakeParent(const std::string &parentUUID, GameObject * son)
 	GameObject* parent = FindInstanceOrigin(parentUUID);
 	if (parent != nullptr)
 	{
-		parent->InsertChild(son);		
+		parent->InsertChild(son);
+		if (parent->transform != nullptr)
+			parent->transform->PropagateTransform();
 		return true;
 	}
 	return false;

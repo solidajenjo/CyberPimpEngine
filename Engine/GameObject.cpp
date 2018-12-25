@@ -14,7 +14,7 @@
 
 
 
-GameObject::GameObject(const char name[40], bool isContainer) : isContainer(isContainer)
+GameObject::GameObject(const char name[1024], bool isContainer) : isContainer(isContainer)
 {
 	transform = new Transform(this); //notice transform who owns it
 	xg::Guid guid = xg::newGuid();
@@ -191,6 +191,8 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 						if (isInstantiated)
 						{
 							mesh->SendToGPU();
+							if (transform != nullptr)
+								transform->RecalcModelMatrix();
 							App->renderer->insertRenderizable(this);
 						}
 					}
