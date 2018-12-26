@@ -55,8 +55,13 @@ void SubModuleEditorViewPort::Show()
 			}						
 			ImGui::EndCombo();
 		}
-		ImGui::PopItemWidth();				
-
+		ImGui::PopItemWidth();						
+		if (App->scene->selected != nullptr && App->scene->selected->isInstantiated)
+		{
+			ImGui::SameLine();
+			float distance = App->scene->selected->transform->getGlobalPosition().Distance(App->camera->editorCamera.camPos);
+			ImGui::Text("Distance from selected %.3f", distance);
+		}
 		cursorIn = ImGui::IsWindowHovered();
 
 		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
