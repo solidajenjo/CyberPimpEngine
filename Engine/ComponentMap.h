@@ -21,9 +21,10 @@ public:
 
 	unsigned mapId = 0u;
 	char mapPath[1024] = "";
+	bool useMipMaps = false;
 
 //Resource management
-	static ComponentMap* GetMap(const std::string path);
+	static ComponentMap* GetMap(const std::string path, bool useMipMaps = false);
 	static std::map<std::string, ComponentMap*> mapsLoaded;
 };
 

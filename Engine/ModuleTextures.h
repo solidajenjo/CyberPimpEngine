@@ -14,7 +14,7 @@ public:
 	bool Init() override;
 	bool CleanUp() override;
 
-	unsigned Load(const std::string& path);
+	unsigned Load(const std::string& path, bool useMipMaps = false);
 	void UnLoad(unsigned texNum);
 
 	unsigned whiteFallback = 0u, blackFallback = 0u;

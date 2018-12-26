@@ -7,6 +7,12 @@ std::map<std::string, ComponentMap*>ComponentMap::mapsLoaded;
 
 void ComponentMap::EditorDraw()
 {
+	if (ImGui::Checkbox("Use Mip Maps", &useMipMaps))
+	{
+		LOG("Unloading texture %s", mapPath);
+		App->textures->UnLoad(mapId);
+		mapId = App->textures->Load(mapPath, useMipMaps);
+	}
 	if (mapId != 0)
 	{
 		float width = ImGui::GetWindowContentRegionWidth();
@@ -20,6 +26,8 @@ void ComponentMap::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& w
 	writer.String("type"); writer.Int((int)type);
 	writer.String("mapPath");
 	writer.String(mapPath);
+	writer.String("useMipMaps");
+	writer.Bool(useMipMaps);
 	writer.EndObject();
 }
 
@@ -45,13 +53,13 @@ ComponentMap * ComponentMap::Clone()
 		return new ComponentMap();
 }
 
-ComponentMap* ComponentMap::GetMap(const std::string path)
+ComponentMap* ComponentMap::GetMap(const std::string path, bool useMipMaps)
 {
 	std::map<std::string, ComponentMap*>::iterator it = mapsLoaded.find(path);
 	if (it == mapsLoaded.end())
 	{
 		ComponentMap* newMap = new ComponentMap();
-		newMap->mapId = App->textures->Load(path);
+		newMap->mapId = App->textures->Load(path, useMipMaps);
 		sprintf_s(newMap->mapPath, path.c_str());
 		++newMap->clients;
 		mapsLoaded[newMap->mapPath] = newMap;

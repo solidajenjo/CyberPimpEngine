@@ -12,7 +12,8 @@ public:
 	enum class Shaders
 	{
 		DEFAULT,
-		DIRECT_RENDERING
+		FORWARD_RENDERING,
+		NORMAL_INSPECTOR
 	};
 
 	bool Init() override;
@@ -25,6 +26,7 @@ public:
 
 	unsigned* default = nullptr;
 	unsigned* directRenderingProgram = nullptr;
+	unsigned* normalInspectorProgram = nullptr;
 
 private:
 

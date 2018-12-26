@@ -69,10 +69,10 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::Begin("DockSpace", &bDock, window_flags);		
 	if (backgroundTex == 0) //post glew initialization needed
 	{
-		backgroundTex = textures->Load("editorBackground.png");
-		logo = textures->Load("editorHeaderLogo.png");
-		checkersTex = textures->Load("checkers.png");			
-		noCamTex = textures->Load("noCam.png");		
+		backgroundTex = textures->Load("editorBackground.dds");
+		logo = textures->Load("editorHeaderLogo.dds");
+		checkersTex = textures->Load("checkers.dds");			
+		noCamTex = textures->Load("noCam.dds");		
 		App->scene->SetSkyBox();
 	}
 	float imageXPos = (viewport->Size.x / 2) - (viewport->Size.y / 2);

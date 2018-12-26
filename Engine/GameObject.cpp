@@ -172,9 +172,13 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 			{
 				char mapPath[1024];
 				sprintf_s(mapPath, (*it)["mapPath"].GetString());
-				ComponentMap* map = ComponentMap::GetMap(mapPath);
+				bool useMipMaps = (*it)["useMipMaps"].GetBool();
+				ComponentMap* map = ComponentMap::GetMap(mapPath, useMipMaps);
 				if (map != nullptr)
+				{
+					map->useMipMaps = useMipMaps;
 					InsertComponent(map);
+				}
 				break;
 			}
 

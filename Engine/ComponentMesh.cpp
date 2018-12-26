@@ -148,58 +148,60 @@ void ComponentMesh::EditorDraw()
 
 void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform) const
 {
-	glUseProgram(*App->program->directRenderingProgram);	
+	unsigned program = *App->program->directRenderingProgram;
+	//unsigned program = *App->program->normalInspectorProgram;
+	glUseProgram(program);	
 	math::float4x4 model = float4x4::identity;
-	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
+	glUniformMatrix4fv(glGetUniformLocation(program,
 		"model"), 1, GL_TRUE, transform->GetModelMatrix());
 
 	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
-	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
+	glUniformMatrix4fv(glGetUniformLocation(program,
 		"view"), 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(*App->program->directRenderingProgram,
+	glUniformMatrix4fv(glGetUniformLocation(program,
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
 	if (material->texture != nullptr && material->texture->mapId > 0)
 	{				
-		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "diffuseMap"), 0);
+		glUniform1i(glGetUniformLocation(program, "diffuseMap"), 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, material->texture->mapId);
 	}
 	
 	if (material->emissive != nullptr && material->emissive->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "emissiveMap"), 1);
+		glUniform1i(glGetUniformLocation(program, "emissiveMap"), 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->emissive->mapId);
 	}
 
 	if (material->occlusion != nullptr && material->occlusion->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "occlusionMap"), 2);
+		glUniform1i(glGetUniformLocation(program, "occlusionMap"), 2);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, material->occlusion->mapId);
 	}
 
 	if (material->specular != nullptr && material->specular->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(*App->program->directRenderingProgram, "specularMap"), 3);
+		glUniform1i(glGetUniformLocation(program, "specularMap"), 3);
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, material->specular->mapId);
 	}
 
 
-	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
-	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
-	glUniform4f(glGetUniformLocation(*App->program->directRenderingProgram, "specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
 	
 	
 	float3 lightPos = float3(0.f, 200.f, 1000.f);
 	
-	glUniform3fv(glGetUniformLocation(*App->program->directRenderingProgram, "light_pos"), 1, &lightPos[0]);
-	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "ambient"), 0.9f);
-	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "shininess"), material->shininess);
-	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "k_ambient"), material->kAmbient);
-	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "k_diffuse"), material->kDiffuse);
-	glUniform1f(glGetUniformLocation(*App->program->directRenderingProgram, "k_specular"), material->kSpecular);
+	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, &lightPos[0]);
+	glUniform1f(glGetUniformLocation(program, "ambient"), 0.9f);
+	glUniform1f(glGetUniformLocation(program, "shininess"), material->shininess);
+	glUniform1f(glGetUniformLocation(program, "k_ambient"), material->kAmbient);
+	glUniform1f(glGetUniformLocation(program, "k_diffuse"), material->kDiffuse);
+	glUniform1f(glGetUniformLocation(program, "k_specular"), material->kSpecular);
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);

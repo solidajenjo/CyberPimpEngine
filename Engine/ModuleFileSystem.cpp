@@ -38,21 +38,36 @@ bool ModuleFileSystem::Write(const std::string & path, const void * data, unsign
 }
 
 bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) const
-{
+{		
 	PHYSFS_File* file = PHYSFS_openRead(path.c_str());
-	if (file == nullptr)
+	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
+	if (errorCode == PHYSFS_ERR_BAD_FILENAME) //possibly it's from outside the filesystem -> read as C
 	{
-		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
-		return false;
-	}
-
-	if (PHYSFS_readBytes(file, data, size) == size)
-	{
-		PHYSFS_close(file);
+		LOG("Reading outside filesystem.");
+		FILE* file = nullptr;
+		fopen_s(&file, path.c_str(), "rb");
+		if (file == nullptr)
+			return false;
+		fread_s(data, size, 1, size, file);
+		fclose(file);
 		return true;
 	}
-	PHYSFS_close(file);
-	return false;
+	else
+	{
+		if (file == nullptr)
+		{
+			LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
+			return false;
+		}
+
+		if (PHYSFS_readBytes(file, data, size) == size)
+		{
+			PHYSFS_close(file);
+			return true;
+		}
+		PHYSFS_close(file);
+		return false;
+	}
 }
 
 bool ModuleFileSystem::Exists(const std::string & path) const
@@ -63,6 +78,17 @@ bool ModuleFileSystem::Exists(const std::string & path) const
 unsigned ModuleFileSystem::Size(const std::string & path) const
 {
 	PHYSFS_File* file = PHYSFS_openRead(path.c_str());
+	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
+	if (errorCode == PHYSFS_ERR_BAD_FILENAME) //possibly it's from outside the filesystem -> read as C
+	{
+		LOG("Reading outside filesystem.");
+		FILE* file = nullptr;
+		fopen_s(&file, path.c_str(), "rb");
+		if (file == nullptr)
+			return 0;
+		fseek(file, 0L, SEEK_END);
+		return ftell(file);
+	}
 	if (file == nullptr)
 	{
 		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());

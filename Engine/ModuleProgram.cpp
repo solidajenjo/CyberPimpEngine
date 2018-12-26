@@ -7,7 +7,8 @@ bool ModuleProgram::Init()
 {
 	bool ret = true;
 	ret = ret && Compile(ModuleProgram::Shaders::DEFAULT, "default.vs", "default.fs");
-	ret = ret && Compile(ModuleProgram::Shaders::DIRECT_RENDERING, "ForwardRenderingShader.vs", "ForwardRenderingShader.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::FORWARD_RENDERING, "ForwardRenderingShader.vs", "ForwardRenderingShader.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::NORMAL_INSPECTOR, "NormalInspectorShader.vs", "NormalInspectorShader.fs");
 	return ret;
 }
 
@@ -87,10 +88,13 @@ bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string 
 		default = new unsigned;
 		*default = program;
 		break;
-	case Shaders::DIRECT_RENDERING:
+	case Shaders::FORWARD_RENDERING:
 		directRenderingProgram = new unsigned;
 		*directRenderingProgram = program;
 		break;
+	case Shaders::NORMAL_INSPECTOR:
+		normalInspectorProgram = new unsigned;
+		*normalInspectorProgram = program;
 	}
 	return true;
 }

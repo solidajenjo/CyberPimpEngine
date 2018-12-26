@@ -41,6 +41,7 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 		ilBindImage(imageId);
 		if (ilLoadImage(file.C_Str())) //try in the same directory
 		{
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
 			ilSave(IL_DDS, savePath.c_str());
 			GameObject* newMap = new GameObject("Map");
@@ -50,13 +51,17 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 		std::string alternativePath = "Assets/" + std::string(file.C_Str());
 		if (ilLoadImage(alternativePath.c_str())) //try in Assets directory
 		{
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
 			ilSave(IL_DDS, savePath.c_str());
 			GameObject* newMap = new GameObject("Map", true);
 			newMap->InsertComponent(ComponentMap::GetMap(savePath));
 			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
 		}
-		
+		ILenum Error;
+		while ((Error = ilGetError()) != IL_NO_ERROR) {
+			LOG("Importing Texture Error %d: %s", Error, iluErrorString(Error));
+		}
 	}
 	
 	sprintf_s(materialComponent->diffuseMap, savePath.c_str());
@@ -73,6 +78,9 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 
 void MaterialImporter::Import(const char path[1024]) const
 {
+	LOG("Importing texture %s", path);
+	ILenum Error;
+	while ((Error = ilGetError()) != IL_NO_ERROR); //Flush previous errors
 	ILuint imageId;
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
@@ -82,15 +90,67 @@ void MaterialImporter::Import(const char path[1024]) const
 		nameBegin = filename.find_last_of("\\") + 1;
 
 	filename = filename.substr(nameBegin, filename.length() - nameBegin);
-
-	if (ilLoadImage(path)) //try in the same directory
+	ILenum imageType = ilDetermineType(path);
+	unsigned imageSize = App->fileSystem->Size(path);
+	char* imageData = new char[imageSize];
+	if (App->fileSystem->Read(path, imageData, imageSize))
 	{
-		std::string savePath = "Library/Textures/" + filename + ".dds";
-		ilSave(IL_DDS, savePath.c_str());
-		GameObject* newMap = new GameObject("Map", true);
-		newMap->InsertComponent(ComponentMap::GetMap(savePath));
-		App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
+		if (imageType == IL_TYPE_UNKNOWN)
+		{
+			imageType = ilDetermineTypeL(imageData, imageSize);
+		}
+		if (ilLoadL(imageType, imageData, imageSize) == IL_FALSE)
+		{
+			LOG("Error importing texture %s", path);
+		}
+		else
+		{			
+			ILenum format = ilGetInteger(IL_IMAGE_FORMAT);
+			switch (format)
+			{
+			case IL_COLOUR_INDEX: 
+				LOG("Image format COLOUR_INDEX");
+				break;
+			case IL_ALPHA:
+				LOG("Image format ALPHA");
+				break;
+			case IL_BGR: 
+				LOG("Image format BGR");
+				break;
+			case IL_BGRA: 
+				LOG("Image format BGRA");
+				break;
+			case IL_RGB:
+				LOG("Image format RGB");
+				break;
+			case IL_RGBA:
+				LOG("Image format RGBA");
+				break;
+			case IL_LUMINANCE:
+				LOG("Image format LUMINANCE");
+				break;
+			case IL_LUMINANCE_ALPHA:
+				LOG("Image format LUMINANCE_ALPHA");
+				break;
+			}			
+			std::string savePath = "Library/Textures/" + filename + ".dds";
+			LOG("Saving image.");
+			ilEnable(IL_FILE_OVERWRITE);
+			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5); 
+			ilSave(IL_DDS, savePath.c_str());
+			GameObject* newMap = new GameObject("Map", true);
+			newMap->InsertComponent(ComponentMap::GetMap(savePath));
+			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);			
+		}
 	}
+	else
+	{
+		LOG("Error importing texture %s", path);
+	}
+	while ((Error = ilGetError()) != IL_NO_ERROR) {
+		LOG("Importing Texture Error %d: %s", Error, iluErrorString(Error));
+	}
+	delete[] imageData;
 }
 
 
