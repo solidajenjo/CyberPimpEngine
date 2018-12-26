@@ -55,8 +55,8 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 	else
 	{
 		if (file == nullptr)
-		{
-			LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
+		{			
+			LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ unsigned ModuleFileSystem::Size(const std::string & path) const
 	}
 	if (file == nullptr)
 	{
-		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getLastError());
+		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 		return 0;
 	}
 	return PHYSFS_fileLength(file);	

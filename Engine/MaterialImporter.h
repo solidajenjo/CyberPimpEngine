@@ -29,7 +29,7 @@ public:
 	};
 
 	std::string Import(const aiMaterial * material, GameObject* &materialImported) const; //stores texture as DDS in engine folders return path of the material & a gameobject with the material by reference	
-	void Import(const char path[1024]) const;
+	bool Import(const char path[1024]) const;
 	ComponentMaterial* Load(const char path[1024]) const;
 	void Save(const char path[1024], const ComponentMaterial* material) const;
 };

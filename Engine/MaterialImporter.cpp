@@ -35,28 +35,26 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 	}
 	else
 	{
-		
 		ILuint imageId;
 		ilGenImages(1, &imageId);
 		ilBindImage(imageId);
-		if (ilLoadImage(file.C_Str())) //try in the same directory
+		if (Import(file.C_Str())) //try in the same directory
 		{
-			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
-			ilSave(IL_DDS, savePath.c_str());
+			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";			
 			GameObject* newMap = new GameObject("Map");
 			newMap->InsertComponent(ComponentMap::GetMap(savePath));
 			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
 		}
-		std::string alternativePath = "Assets/" + std::string(file.C_Str());
-		if (ilLoadImage(alternativePath.c_str())) //try in Assets directory
+		else
 		{
-			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-			savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
-			ilSave(IL_DDS, savePath.c_str());
-			GameObject* newMap = new GameObject("Map", true);
-			newMap->InsertComponent(ComponentMap::GetMap(savePath));
-			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
+			std::string alternativePath = "Assets/" + std::string(file.C_Str());
+			if (Import(alternativePath.c_str())) //try in Assets directory
+			{
+				savePath = "Library/Textures/" + std::string(file.C_Str()) + ".dds";
+				GameObject* newMap = new GameObject("Map", true);
+				newMap->InsertComponent(ComponentMap::GetMap(savePath));
+				App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);
+			}
 		}
 		ILenum Error;
 		while ((Error = ilGetError()) != IL_NO_ERROR) {
@@ -76,7 +74,7 @@ std::string MaterialImporter::Import(const aiMaterial* material, GameObject* &ma
 	return materialPath;
 }
 
-void MaterialImporter::Import(const char path[1024]) const
+bool MaterialImporter::Import(const char path[1024]) const
 {
 	LOG("Importing texture %s", path);
 	ILenum Error;
@@ -141,6 +139,8 @@ void MaterialImporter::Import(const char path[1024]) const
 			GameObject* newMap = new GameObject("Map", true);
 			newMap->InsertComponent(ComponentMap::GetMap(savePath));
 			App->scene->ImportGameObject(newMap, ModuleScene::ImportedType::MAP);			
+			delete[] imageData;
+			return true;
 		}
 	}
 	else
@@ -151,6 +151,7 @@ void MaterialImporter::Import(const char path[1024]) const
 		LOG("Importing Texture Error %d: %s", Error, iluErrorString(Error));
 	}
 	delete[] imageData;
+	return false;
 }
 
 
