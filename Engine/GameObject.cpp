@@ -289,7 +289,7 @@ GameObject * GameObject::Clone(bool breakInstance) const //TODO:Remove recursivi
 			ComponentMesh* mesh = (ComponentMesh*)(*it);
 			ComponentMesh* newMesh;
 			
-			if (!breakInstance)
+			if (!breakInstance && strlen(mesh->meshPath) > 0)
 				newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
 			else
 				newMesh = mesh->Clone();

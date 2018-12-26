@@ -99,21 +99,15 @@ void SubModuleEditorViewPort::Show()
 				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
 				modelMatrix.Transpose();
 				float4x4 deltaMatrix;
+				
 				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());				
 				if (ImGuizmo::IsUsing())
 				{					
-					deltaMatrix.Transpose();
-					float3 translation;
-					float3 scale;
-					float3x3 rot;
-					deltaMatrix.Decompose(translation, rot, scale);
-					if (selected == ImGuizmo::OPERATION::SCALE)
-					{
-						App->scene->selected->transform->SetScale(scale);
-					}
-					else
-						App->scene->selected->transform->Translate(translation);
-
+					float3 rotation = App->scene->selected->transform->rotation;
+					App->scene->selected->transform->modelMatrixGlobal = modelMatrix.Transposed();
+					App->scene->selected->transform->NewAttachment(); //recalculate local translation & scale
+					App->scene->selected->transform->rotation = rotation; //restore local rotation
+					App->scene->selected->transform->RecalcModelMatrix(); //recalculate local model matrix
 					App->scene->selected->transform->PropagateTransform();
 				}
 			}

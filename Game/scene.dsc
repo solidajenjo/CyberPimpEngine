@@ -76,9 +76,9 @@
                     "z": 0.0
                 },
                 "rotation": {
-                    "x": 0.0,
+                    "x": -0.0,
                     "y": 0.0,
-                    "z": 0.0
+                    "z": -0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -138,9 +138,9 @@
                     "z": 0.0
                 },
                 "rotation": {
-                    "x": 0.0,
+                    "x": -0.0,
                     "y": 0.0,
-                    "z": 0.0
+                    "z": -0.0
                 },
                 "scale": {
                     "x": 1.0,
@@ -280,7 +280,46 @@
             {
                 "type": 4,
                 "mapPath": "Library/Textures//Baker_house.png.dds",
-                "useMipMaps": false
+                "useMipMaps": true
+            }
+        ]
+    },
+    {
+        "UUID": "7d5799ac-f910-4529-9ddd-159c11a6fca2",
+        "name": "Plane",
+        "isInstantiated": true,
+        "isStatic": false,
+        "isContainer": false,
+        "active": true,
+        "transform": {
+            "position": {
+                "x": 1.588836908340454,
+                "y": -0.787982702255249,
+                "z": 0.0031536882743239404
+            },
+            "rotation": {
+                "x": 0.0054876417852938179,
+                "y": -0.0005659221787936986,
+                "z": 1.1104011535644532
+            },
+            "scale": {
+                "x": 1.0000001192092896,
+                "y": 1.000000238418579,
+                "z": 1.0
+            }
+        },
+        "instanceOf": "",
+        "path": "",
+        "parentUUID": "64d9a3d7-5e07-4f69-9e02-912582cf9016",
+        "components": [
+            {
+                "type": 1,
+                "meshPath": "Library/Meshes/a0cfc719-b4a1-4c1f-b035-fa2f18525dd1.msh",
+                "primitive": 4,
+                "material": {
+                    "type": 2,
+                    "materialPath": "Library/Materials/a399a6d8-d00b-4c2d-87a9-e4a2d35fb5ef.mat"
+                }
             }
         ]
     },
@@ -354,7 +393,7 @@
             {
                 "type": 4,
                 "mapPath": "Library/Textures/Baker_house.png.dds",
-                "useMipMaps": false
+                "useMipMaps": true
             }
         ]
     },
@@ -499,24 +538,24 @@
         "active": true,
         "transform": {
             "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": -1.0538079738616944,
+                "y": 2.5256056785583498,
+                "z": 0.01980884000658989
             },
             "rotation": {
-                "x": 0.0,
+                "x": -0.0,
                 "y": 0.0,
-                "z": 0.0
+                "z": -0.48150914907455447
             },
             "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 1.5219447612762452,
+                "y": 1.1542284488677979,
+                "z": 2.1515450477600099
             }
         },
         "instanceOf": "",
         "path": "",
-        "parentUUID": "64d9a3d7-5e07-4f69-9e02-912582cf9016",
+        "parentUUID": "7d5799ac-f910-4529-9ddd-159c11a6fca2",
         "components": [
             {
                 "type": 1,
