@@ -33,6 +33,8 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ModuleInput.h"
 
+#include "TimeClock.h"
+
 void SubModuleEditorViewPort::Show()
 {
 	if (enabled)
@@ -147,7 +149,8 @@ void SubModuleEditorViewPort::Show()
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 			
 		}		
-		App->spacePartitioning->quadTree.DebugDraw();
+		//App->spacePartitioning->quadTree.DebugDraw();		
+		//App->spacePartitioning->kDTree.DebugDraw();
 		//mouse picking		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsUsing())
 		{	
@@ -161,11 +164,27 @@ void SubModuleEditorViewPort::Show()
 			picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
 			std::vector<GameObject*> intersections;
 			std::vector<GameObject*> staticIntersections;
+			std::vector<GameObject*> nonStaticIntersections;
 			App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
-			intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
+			TimeClock tc;
+			tc.StartUS();
+			App->spacePartitioning->kDTree.Calculate();
+			App->spacePartitioning->kDTree.GetIntersections(picking, nonStaticIntersections);
+			//intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
+			intersections.insert(intersections.end(), nonStaticIntersections.begin(), nonStaticIntersections.end());
 			for each (GameObject* go in intersections)
 				if (go->aaBBGlobal->Intersects(picking)) 
 					App->scene->selected = go;
+			float kdTime = tc.ReadUS();
+			tc.ResetUS();
+			AABB aa;
+			std::vector<GameObject*> nSO;
+			App->scene->GetNonStaticGlobalAABB(&aa, nSO);
+			for each (GameObject* go in nSO)
+				if (go->aaBBGlobal->Intersects(picking))
+					App->scene->selected = go;
+			float bruteTime = tc.ReadUS();
+			LOG("KDtree %.3f Checks %d Brute %.3f Checks %d", kdTime, intersections.size(), bruteTime, nSO.size());
 		}
 		App->frameBuffer->UnBind();
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));

@@ -22,6 +22,8 @@ bool ModuleScene::Init()
 	LOG("Init Scene module");
 	
 	bool staticGameObjects = false;
+	bool nonStaticGameObjects = false;
+
 	SDL_RWops* rw = SDL_RWFromFile("scene.dsc", "r");
 	if (rw == nullptr) //no previous scene found
 	{
@@ -109,6 +111,8 @@ bool ModuleScene::Init()
 							sceneGameObjects[newGO->gameObjectUUID] = newGO;
 							if (newGO->isStatic)
 								staticGameObjects = true;
+							else
+								nonStaticGameObjects = true;
 						}
 					}
 				}
@@ -117,6 +121,10 @@ bool ModuleScene::Init()
 				if (staticGameObjects)
 				{
 					App->spacePartitioning->quadTree.Calculate();
+				}
+				if (nonStaticGameObjects)
+				{
+					App->spacePartitioning->kDTree.Calculate();					
 				}
 				root->transform->PropagateTransform();
 			}
@@ -482,6 +490,32 @@ void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>
 				globalAABB->Enclose(&corners[0], 16);
 			}
 			staticGOs.push_back((*it).second);
+		}
+		RELEASE(corners);
+	}
+}
+
+void ModuleScene::GetNonStaticGlobalAABB(AABB * globalAABB, std::vector<GameObject*>& nonStaticGOs) const
+{
+	bool first = true;
+	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
+	{
+		float3* corners = new float3[16];
+		if ((*it).second->isInstantiated && !(*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
+		{
+			if (first)
+			{
+				globalAABB->SetNegativeInfinity();
+				globalAABB->Enclose(*(*it).second->aaBBGlobal);
+				first = false;
+			}
+			else
+			{
+				(*it).second->aaBBGlobal->GetCornerPoints(&corners[0]);
+				globalAABB->GetCornerPoints(&corners[8]);
+				globalAABB->Enclose(&corners[0], 16);
+			}
+			nonStaticGOs.push_back((*it).second);
 		}
 		RELEASE(corners);
 	}

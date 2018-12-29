@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "QuadTree.h"
+#include "KDTree.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 
@@ -13,11 +14,14 @@ public:
 
 	bool Init() override;
 	update_status Update() override;
-	bool CleanUp() override;
+	bool CleanUp() override;	
 
 	//members
 
+	bool newThreadReady = true;
+	unsigned currentKDTree = 0u;
 	QuadTree quadTree;
+	KDTree kDTree;
 	
 
 };

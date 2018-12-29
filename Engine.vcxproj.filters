@@ -224,6 +224,9 @@
     <ClCompile Include="Dependencies\ImGuizmo\ImGuizmo.cpp">
       <Filter>Utilities\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\KDTree.cpp">
+      <Filter>SpacePartitioners</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -834,6 +837,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\ImGuizmo\ImGuizmo.h">
       <Filter>Utilities\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\KDTree.h">
+      <Filter>SpacePartitioners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

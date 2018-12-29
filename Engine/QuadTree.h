@@ -50,7 +50,7 @@ inline void QuadTree::Calculate()
 	while (!Q.empty())
 	{
 		QTNode* currentNode = Q.front(); Q.pop();
-		if (currentNode->bucket.size() > 1 && currentNode->depth < maxDepth)
+		if (currentNode->bucket.size() > 1u && currentNode->depth < maxDepth)
 		{
 			std::vector<QTNode*> newNodes = currentNode->Flush();
 			for each (QTNode* node in newNodes)
