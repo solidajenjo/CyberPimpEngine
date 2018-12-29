@@ -14,6 +14,7 @@
 #include "ComponentMesh.h"
 #include "glew-2.1.0/include/GL/glew.h"
 #include "Assimp/include/assimp/version.h"
+#include "SDL/include/SDL_video.h"
 
 #include <list>
 
@@ -81,14 +82,20 @@ void SubModuleEditorConfig::Show()
 		}
 		if (ImGui::CollapsingHeader("Render Module"))
 		{
-			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);
-			static bool wireframe = false;
+			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);			
 			if (ImGui::Checkbox("Wireframe", &wireframe)) 
 			{
 				if (wireframe)
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			if (ImGui::Checkbox("VSync", &vsync))
+			{
+				if (vsync)
+					SDL_GL_SetSwapInterval(1);
+				else
+					SDL_GL_SetSwapInterval(0);
 			}
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))

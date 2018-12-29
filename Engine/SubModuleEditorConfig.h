@@ -28,6 +28,8 @@ public:
 		minDelta = 10000.f,
 		fpsAvgDivider = 1.f,
 		fpsAvg = 0.f;
+	bool wireframe = false;
+	bool vsync = true;
 };
 
 #endif
