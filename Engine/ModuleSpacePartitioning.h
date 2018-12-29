@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "QuadTree.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 
 class ModuleSpacePartitioning :
 	public Module
@@ -16,7 +17,8 @@ public:
 
 	//members
 
-	QuadTree<AABB> quadTree;
+	QuadTree quadTree;
+	
 
 };
 

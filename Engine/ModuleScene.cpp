@@ -3,6 +3,8 @@
 #include "ModuleFrameBuffer.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleSpacePartitioning.h"
+#include "QuadTree.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "imgui/imgui.h"
@@ -19,7 +21,7 @@ bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
 	
-
+	bool staticGameObjects = false;
 	SDL_RWops* rw = SDL_RWFromFile("scene.dsc", "r");
 	if (rw == nullptr) //no previous scene found
 	{
@@ -66,9 +68,9 @@ bool ModuleScene::Init()
 			}
 			else
 			{				
-				rapidjson::Value gameObjects = document.GetArray();				
+				rapidjson::Value gameObjects = document.GetArray();						
 				for (rapidjson::Value::ValueIterator it = gameObjects.Begin(); it != gameObjects.End(); ++it)
-				{
+				{					
 					if ((*it).HasMember("scene"))
 					{
 						root = new GameObject("");
@@ -101,13 +103,21 @@ bool ModuleScene::Init()
 					}
 					else
 					{
-						GameObject* newGO = new GameObject("");
+						GameObject* newGO = new GameObject("");						
 						if (newGO->UnSerialize(*it))
+						{
 							sceneGameObjects[newGO->gameObjectUUID] = newGO;
+							if (newGO->isStatic)
+								staticGameObjects = true;
+						}
 					}
 				}
 				
 				LinkGameObjects();					
+				if (staticGameObjects)
+				{
+					App->spacePartitioning->quadTree.Calculate();
+				}
 				root->transform->PropagateTransform();
 			}
 			delete buffer;
@@ -192,7 +202,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 	std::stack<GameObject*> S;
 	std::stack<int> depthStack;	
 	S.push(gObj);	
-	depthStack.push(0);
+	depthStack.push(0);	
 	while (!S.empty())
 	{
 		gObj = S.top(); S.pop();		

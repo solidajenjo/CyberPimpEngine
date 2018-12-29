@@ -519,7 +519,14 @@ float AABB::Distance(const Sphere &sphere) const
 {
 	return Max(0.f, Distance(sphere.pos) - sphere.r);
 }
-
+bool AABB::ContainsQTree(const AABB &aabb) const
+{
+	return Contains(aabb) || Intersects(aabb);
+}
+bool AABB::ContainsQTree(const LineSegment &line) const
+{
+	return Contains(line) || Intersects(line);
+}
 bool AABB::Contains(const float3 &point) const
 {
 	return minPoint.x <= point.x && point.x <= maxPoint.x &&

@@ -21,6 +21,7 @@
 #include "ModuleEditorCamera.h"
 #include "ImGuizmo/ImGuizmo.h"
 
+
 bool ModuleEditor::Init()
 {
 
@@ -92,7 +93,8 @@ update_status ModuleEditor::Update()
 	for (std::vector<SubModuleEditor*>::iterator it = subModules.begin(); it != subModules.end(); ++it)
 	{
 		(*it)->Show();
-	}		
+	}
+	
 	return UPDATE_CONTINUE;
 }
 

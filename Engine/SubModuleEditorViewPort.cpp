@@ -17,6 +17,7 @@
 #include "ModuleEditorCamera.h"
 #include "imgui/imgui.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleSpacePartitioning.h"
 #include "debugdraw.h"
@@ -28,7 +29,9 @@
 #include "ImGuizmo/ImGuizmo.h"
 #include "MathGeoLib/include/Math/MathFunc.h"
 #include "SceneImporter.h"
-
+#include "SDL/include/SDL_mouse.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "ModuleInput.h"
 
 void SubModuleEditorViewPort::Show()
 {
@@ -55,7 +58,8 @@ void SubModuleEditorViewPort::Show()
 			}						
 			ImGui::EndCombo();
 		}
-		ImGui::PopItemWidth();						
+		ImGui::PopItemWidth();		
+
 		if (App->scene->selected != nullptr && App->scene->selected->isInstantiated)
 		{
 			ImGui::SameLine();
@@ -144,6 +148,25 @@ void SubModuleEditorViewPort::Show()
 			
 		}		
 		App->spacePartitioning->quadTree.DebugDraw();
+		//mouse picking		
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsUsing())
+		{	
+			LineSegment	picking;
+			ImVec2 mousePos = ImGui::GetMousePos();
+			ImVec2 curPos = ImGui::GetCursorPos();
+			ImVec2 winPos = ImGui::GetWindowPos();
+			ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winPos.x - curPos.x, mousePos.y - winPos.y - curPos.y); //(0,0) is upper-left of the framebuffer
+			float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
+			float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
+			picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
+			std::vector<GameObject*> intersections;
+			std::vector<GameObject*> staticIntersections;
+			App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
+			intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
+			for each (GameObject* go in intersections)
+				if (go->aaBBGlobal->Intersects(picking)) 
+					App->scene->selected = go;
+		}
 		App->frameBuffer->UnBind();
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
 		if (ImGui::BeginDragDropTarget())

@@ -26,22 +26,22 @@ public:
 	std::vector<QTNode*> lowerNodes;
 };
 
-template<typename T>
 class QuadTree
 {
 public:
 
 	void Calculate();
-	void DebugDraw();
+	void DebugDraw() const;
+	template<typename T>
+	void GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const;
 
 //members
 
 	QTNode* treeRoot = nullptr;
-	int maxDepth = 1;
+	int maxDepth = 6;
 };
 
-template<typename T>
-inline void QuadTree<T>::Calculate()
+inline void QuadTree::Calculate()
 {			
 	treeRoot = new QTNode();
 	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket);
@@ -62,8 +62,7 @@ inline void QuadTree<T>::Calculate()
 
 }
 
-template<typename T>
-inline void QuadTree<T>::DebugDraw()
+inline void QuadTree::DebugDraw() const
 {
 	if (treeRoot == nullptr)
 		return;
@@ -83,4 +82,29 @@ inline void QuadTree<T>::DebugDraw()
 	}
 
 }
+
+template<typename T>
+inline void QuadTree::GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const
+{
+	std::queue<QTNode*> Q;
+	Q.push(treeRoot);
+
+	while (!Q.empty())
+	{
+		QTNode* node = Q.front();
+		Q.pop();
+		if (node->lowerNodes.size() == 0u && node->aabb->ContainsQTree(intersector))
+		{
+			intersections.insert(intersections.end(), node->bucket.begin(), node->bucket.end());
+		}
+		else
+		{
+			for each (QTNode* n in node->lowerNodes)
+			{
+				Q.push(n);
+			}
+		}
+	}
+}
+
 #endif
