@@ -172,8 +172,7 @@ void SubModuleEditorViewPort::Show()
 				std::vector<GameObject*> nonStaticIntersections;
 				App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
 				TimeClock tc;
-				tc.StartMS();
-				App->spacePartitioning->kDTree.Calculate();
+				tc.StartMS();				
 				LOG("Calculate %.3f", tc.ReadMS());
 				App->spacePartitioning->kDTree.GetIntersections(picking, nonStaticIntersections);
 				LOG("Intersections %.3f", tc.ReadMS());

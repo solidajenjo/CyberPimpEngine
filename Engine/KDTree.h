@@ -14,6 +14,7 @@ class KDTNode
 {
 public:
 
+	~KDTNode();
 	void SubDivideAABB(unsigned dimension, float median, KDTNode* left, KDTNode* right) const ;
 
 	//members
@@ -33,6 +34,8 @@ class KDTree
 {
 public:
 
+	~KDTree();
+
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
@@ -44,10 +47,22 @@ public:
 	int maxDepth = 6;
 };
 
+inline KDTree::~KDTree()
+{
+	RELEASE(treeRoot);
+}
+
 inline void KDTree::Calculate()
 {			
-	treeRoot = new KDTNode();
-	treeRoot->aabb = new AABB();
+	if (treeRoot == nullptr)
+	{
+		treeRoot = new KDTNode();
+		treeRoot->aabb = new AABB();
+	}
+	else
+	{
+		treeRoot->bucket.resize(0);
+	}
 	App->scene->GetNonStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket);	
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
@@ -72,9 +87,18 @@ inline void KDTree::Calculate()
 				unsigned middle = current->bucket.size() / 2;
 				current->median = current->bucket[middle]->transform->getGlobalPosition()[dimension];
 			}
-			current->leftBranch = new KDTNode();
+			if (current->leftBranch == nullptr)
+			{
+				current->leftBranch = new KDTNode();
+				current->rightBranch = new KDTNode();
+			}
+			else
+			{
+				current->leftBranch->bucket.resize(0);
+				current->rightBranch->bucket.resize(0);
+			}
+
 			current->leftBranch->depth = current->depth + 1;
-			current->rightBranch = new KDTNode();
 			current->rightBranch->depth = current->depth + 1;
 			current->SubDivideAABB(dimension, current->median, current->leftBranch, current->rightBranch);
 			Q.push(current->leftBranch);

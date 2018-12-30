@@ -1,9 +1,18 @@
 #include "KDTree.h"
 
+KDTNode::~KDTNode()
+{
+	RELEASE(aabb);
+	RELEASE(leftBranch);
+	RELEASE(rightBranch);
+}
+
 void KDTNode::SubDivideAABB(unsigned dimension, float median, KDTNode* left, KDTNode* right) const
 {
-	left->aabb = new AABB();
-	right->aabb = new AABB();
+	if (left->aabb == nullptr)
+		left->aabb = new AABB();
+	if (right->aabb == nullptr)
+		right->aabb = new AABB();
 	float3 centerLeft = aabb->CenterPoint();
 	float3 centerRight = aabb->CenterPoint();
 	float3 newSizeLeft = aabb->Size(); 

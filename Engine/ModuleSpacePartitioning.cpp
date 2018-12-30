@@ -12,6 +12,7 @@ bool ModuleSpacePartitioning::Init()
 
 update_status ModuleSpacePartitioning::Update()
 {	
+	kDTree.Calculate();
 	return UPDATE_CONTINUE;
 }
 
