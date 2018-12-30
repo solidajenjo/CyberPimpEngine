@@ -29,7 +29,7 @@ update_status ModuleEditorCamera::Update()
 	if (App->scene->selected != nullptr && App->scene->selected->aaBB != nullptr)
 		editorCamera.target = App->scene->selected->aaBBGlobal->CenterPoint();
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		float movementScale = 1.f;
 
@@ -77,7 +77,7 @@ update_status ModuleEditorCamera::Update()
 		focusLerp = 0.f;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{			
 
 		iPoint mouseMotion = App->input->GetMouseMotion();

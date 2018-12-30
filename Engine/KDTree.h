@@ -14,7 +14,7 @@ class KDTNode
 {
 public:
 
-	void SubDivideAABB(unsigned dimension, KDTNode* left, KDTNode* right) const ;
+	void SubDivideAABB(unsigned dimension, float median, KDTNode* left, KDTNode* right) const ;
 
 	//members
 
@@ -76,16 +76,16 @@ inline void KDTree::Calculate()
 			current->leftBranch->depth = current->depth + 1;
 			current->rightBranch = new KDTNode();
 			current->rightBranch->depth = current->depth + 1;
-			current->SubDivideAABB(dimension, current->leftBranch, current->rightBranch);
+			current->SubDivideAABB(dimension, current->median, current->leftBranch, current->rightBranch);
 			Q.push(current->leftBranch);
 			Q.push(current->rightBranch);
 			for each(GameObject* go in current->bucket)
 			{
-				if (go->transform->getGlobalPosition()[dimension] <= current->median)
+				if (current->leftBranch->aabb->ContainsQTree(*go->aaBBGlobal))
 				{
 					current->leftBranch->bucket.push_back(go);
 				}
-				else
+				if (current->rightBranch->aabb->ContainsQTree(*go->aaBBGlobal))
 				{
 					current->rightBranch->bucket.push_back(go);
 				}
@@ -111,8 +111,7 @@ inline void KDTree::DebugDraw() const
 		if (node->leftBranch != nullptr)
 			Q.push(node->leftBranch);
 		if (node->rightBranch != nullptr)
-			Q.push(node->rightBranch);
-		
+			Q.push(node->rightBranch);		
 	}
 	
 }

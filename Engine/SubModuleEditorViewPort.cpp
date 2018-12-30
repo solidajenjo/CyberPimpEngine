@@ -150,44 +150,53 @@ void SubModuleEditorViewPort::Show()
 			
 		}		
 		//App->spacePartitioning->quadTree.DebugDraw();		
-		//App->spacePartitioning->kDTree.DebugDraw();
+		App->spacePartitioning->kDTree.DebugDraw();
 		//mouse picking		
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsUsing())
-		{	
-			LineSegment	picking;
-			ImVec2 mousePos = ImGui::GetMousePos();
-			ImVec2 curPos = ImGui::GetCursorPos();
-			ImVec2 winPos = ImGui::GetWindowPos();
-			ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winPos.x - curPos.x, mousePos.y - winPos.y - curPos.y); //(0,0) is upper-left of the framebuffer
-			float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
-			float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
-			picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
-			std::vector<GameObject*> intersections;
-			std::vector<GameObject*> staticIntersections;
-			std::vector<GameObject*> nonStaticIntersections;
-			App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
-			TimeClock tc;
-			tc.StartUS();
-			App->spacePartitioning->kDTree.Calculate();
-			App->spacePartitioning->kDTree.GetIntersections(picking, nonStaticIntersections);
-			//intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
-			intersections.insert(intersections.end(), nonStaticIntersections.begin(), nonStaticIntersections.end());
-			for each (GameObject* go in intersections)
-				if (go->aaBBGlobal->Intersects(picking)) 
-					App->scene->selected = go;
-			float kdTime = tc.ReadUS();
-			tc.ResetUS();
-			AABB aa;
-			std::vector<GameObject*> nSO;
-			App->scene->GetNonStaticGlobalAABB(&aa, nSO);
-			for each (GameObject* go in nSO)
-				if (go->aaBBGlobal->Intersects(picking))
-					App->scene->selected = go;
-			float bruteTime = tc.ReadUS();
-			LOG("KDtree %.3f Checks %d Brute %.3f Checks %d", kdTime, intersections.size(), bruteTime, nSO.size());
-		}
+		
 		App->frameBuffer->UnBind();
+		ImVec2 curPos = ImGui::GetCursorPos();
+		ImVec2 winPos = ImGui::GetWindowPos();
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
+		if (ImGui::IsItemHovered())
+		{
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsUsing())
+			{
+				LineSegment	picking;
+				ImVec2 mousePos = ImGui::GetMousePos();				
+				ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winPos.x - curPos.x, mousePos.y - winPos.y - curPos.y); //(0,0) is upper-left of the framebuffer
+				float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
+				float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
+				picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
+				std::vector<GameObject*> intersections;
+				std::vector<GameObject*> staticIntersections;
+				std::vector<GameObject*> nonStaticIntersections;
+				App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
+				TimeClock tc;
+				tc.StartMS();
+				App->spacePartitioning->kDTree.Calculate();
+				LOG("Calculate %.3f", tc.ReadMS());
+				App->spacePartitioning->kDTree.GetIntersections(picking, nonStaticIntersections);
+				LOG("Intersections %.3f", tc.ReadMS());
+				intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
+				intersections.insert(intersections.end(), nonStaticIntersections.begin(), nonStaticIntersections.end());
+				float3 bestHitPoint = float3::inf;
+				for each (GameObject* go in intersections)
+				{
+					LineSegment localLS = picking;
+					localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
+					float3 hitPoint;
+					if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint) && localLS.a.Distance(hitPoint) < localLS.a.Distance(bestHitPoint))
+					{
+						App->scene->selected = go;
+						bestHitPoint = hitPoint;						
+					}
+
+				}
+				float kdTime = tc.ReadMS();
+
+				LOG("KDtree %.3f Checks %d", kdTime, intersections.size());
+			}
+		}
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_GAMEOBJECT_ID"))
@@ -204,7 +213,7 @@ void SubModuleEditorViewPort::Show()
 				}
 			}
 		}
-		if (ImGui::BeginPopupContextItem("Editor"))
+		/*if (ImGui::BeginPopupContextItem("Editor"))
 		{
 			if (ImGui::TreeNodeEx("Add primitive"))
 			{				
@@ -241,7 +250,7 @@ void SubModuleEditorViewPort::Show()
 				ImGui::TreePop();
 			}
 			ImGui::EndPopup();
-		}
+		}*/
 		ImGui::End();
 	}
 }

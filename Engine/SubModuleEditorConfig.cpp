@@ -153,9 +153,13 @@ void SubModuleEditorConfig::Show()
 					break;
 			}
 		}
-		if (ImGui::CollapsingHeader("QuadTree Module"))
+		if (ImGui::CollapsingHeader("QuadTree"))
 		{
 			ImGui::InputInt("Max Depth", &App->spacePartitioning->quadTree.maxDepth);
+		}
+		if (ImGui::CollapsingHeader("KDTree"))
+		{
+			ImGui::InputInt("Max Depth", &App->spacePartitioning->kDTree.maxDepth);
 		}
 		if (ImGui::CollapsingHeader("Scene Module"))
 		{

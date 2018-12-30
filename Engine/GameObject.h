@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Component.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "crossguid/include/crossguid/guid.hpp"
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
@@ -27,6 +28,7 @@ public:
 	void InsertComponent(Component* newComponent);
 	void InsertChild(GameObject* child);
 	void SetInstanceOf(char instanceOrigin[40]);
+	bool RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 &hitPoint) const;
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
 	bool UnSerialize(rapidjson::Value &value);	
@@ -45,6 +47,7 @@ public:
 
 	std::list<GameObject*> children; //Released by scene module (each one)
 	std::list<Component*> components;
+	
 
 	AABB* aaBB = nullptr;
 	AABB* aaBBGlobal = nullptr;

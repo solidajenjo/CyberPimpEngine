@@ -10,6 +10,7 @@
 #include "ModuleSpacePartitioning.h"
 #include "SceneImporter.h"
 #include "MaterialImporter.h"
+#include "MathGeoLib/include/Geometry/Triangle.h"
 #include <queue>
 
 
@@ -95,6 +96,39 @@ void GameObject::InsertChild(GameObject * child)
 void GameObject::SetInstanceOf(char instanceOrigin[40])
 {
 	sprintf_s(instanceOf, instanceOrigin);
+}
+
+bool GameObject::RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 & hitPoint) const
+{
+	bool hit = false;
+	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->type == Component::ComponentTypes::MESH_COMPONENT)
+		{
+			ComponentMesh* mesh = (ComponentMesh*)(*it);
+			Triangle tri;
+			float3 intersectionPoint;			
+			float d;
+			float bestDistance = 100000000000.f;
+			for (unsigned i = 0u; i < mesh->nIndices; i += 3u)
+			{				
+				tri.a = mesh->meshVertices[mesh->meshIndices[i]];
+				tri.b = mesh->meshVertices[mesh->meshIndices[i + 1u]];
+				tri.c = mesh->meshVertices[mesh->meshIndices[i + 2u]];
+				if (lSeg.Intersects(tri, &d, &intersectionPoint))
+				{
+					hit = true;
+					if (d < bestDistance)
+					{
+						hitPoint = intersectionPoint;
+						bestDistance = d;
+					}
+					LOG("Hit distance %.3f", d);
+				}
+			}			
+		}
+	}
+	return hit;
 }
 
 void GameObject::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)

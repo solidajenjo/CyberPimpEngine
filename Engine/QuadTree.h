@@ -86,6 +86,8 @@ inline void QuadTree::DebugDraw() const
 template<typename T>
 inline void QuadTree::GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const
 {
+	if (treeRoot == nullptr)
+		return;
 	std::queue<QTNode*> Q;
 	Q.push(treeRoot);
 
