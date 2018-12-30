@@ -100,6 +100,7 @@ void GameObject::SetInstanceOf(char instanceOrigin[40])
 
 bool GameObject::RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 & hitPoint) const
 {
+	BROFILER_CATEGORY("Ray against mesh nearest point", Profiler::Color::AntiqueWhite);
 	bool hit = false;
 	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{

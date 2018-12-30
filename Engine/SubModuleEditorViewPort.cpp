@@ -167,17 +167,13 @@ void SubModuleEditorViewPort::Show()
 				float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
 				float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
 				picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
-				std::vector<GameObject*> intersections;
-				std::vector<GameObject*> staticIntersections;
-				std::vector<GameObject*> nonStaticIntersections;
-				App->spacePartitioning->quadTree.GetIntersections(picking, staticIntersections);
+				std::set<GameObject*> intersections;
+				App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
 				TimeClock tc;
 				tc.StartMS();				
 				LOG("Calculate %.3f", tc.ReadMS());
-				App->spacePartitioning->kDTree.GetIntersections(picking, nonStaticIntersections);
+				App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
 				LOG("Intersections %.3f", tc.ReadMS());
-				intersections.insert(intersections.end(), staticIntersections.begin(), staticIntersections.end());
-				intersections.insert(intersections.end(), nonStaticIntersections.begin(), nonStaticIntersections.end());
 				float3 bestHitPoint = float3::inf;
 				for each (GameObject* go in intersections)
 				{

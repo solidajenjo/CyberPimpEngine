@@ -5,10 +5,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include <vector>
+#include <set>
 #include "GameObject.h"
 #include "debugdraw.h"
 #include <queue>
 #include <algorithm>
+#include "Brofiler/ProfilerCore/Brofiler.h"
 
 class KDTNode
 {
@@ -39,7 +41,7 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
 
 //members
 
@@ -54,6 +56,7 @@ inline KDTree::~KDTree()
 
 inline void KDTree::Calculate()
 {			
+	BROFILER_CATEGORY("Calculate KD-Tree", Profiler::Color::AliceBlue);
 	if (treeRoot == nullptr)
 	{
 		treeRoot = new KDTNode();
@@ -141,7 +144,7 @@ inline void KDTree::DebugDraw() const
 }
 
 template<typename T>
-inline void KDTree::GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const
+inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
 {
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
@@ -152,7 +155,7 @@ inline void KDTree::GetIntersections(T &intersector, std::vector<GameObject*> &i
 		Q.pop();
 		if (node->leftBranch == nullptr && node->aabb->ContainsQTree(intersector)) //check if is not outside
 		{
-			intersections.insert(intersections.end(), node->bucket.begin(), node->bucket.end());
+			intersections.insert(node->bucket.begin(), node->bucket.end());
 		}
 		if (node->leftBranch != nullptr)
 			Q.push(node->leftBranch);

@@ -219,35 +219,6 @@
         ]
     },
     {
-        "UUID": "2e550ee9-aea6-47c9-bd04-c8eb7d866dd6",
-        "name": "Root",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -0.0,
-                "y": 0.0,
-                "z": -0.0
-            },
-            "scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "79e767b1-aa06-418a-b201-90a806fd62fe",
-        "components": []
-    },
-    {
         "UUID": "41f31da4-7c48-4668-9985-97592de07c7c",
         "name": "Sphere",
         "isInstantiated": true,
@@ -507,45 +478,6 @@
         "components": []
     },
     {
-        "UUID": "68d5137d-e0e9-499d-9a30-c4b17a1134d8",
-        "name": "Baker_house",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "2e550ee9-aea6-47c9-bd04-c8eb7d866dd6",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/49a61ac5-29c4-465a-9677-ec41320e4a2e.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/95604820-cbde-4eb4-afc4-177b9030c15b.mat"
-                }
-            }
-        ]
-    },
-    {
         "UUID": "728ddcd2-dece-4cc7-a6cb-d54f2d21e036",
         "name": "Sphere",
         "isInstantiated": true,
@@ -690,9 +622,9 @@
         "active": true,
         "transform": {
             "position": {
-                "x": 1.1166075468063355,
-                "y": 0.0,
-                "z": -2.8117265701293947
+                "x": 1.4382027387619019,
+                "y": -23.878217697143556,
+                "z": -2.7831733226776125
             },
             "rotation": {
                 "x": -0.0,
@@ -716,45 +648,6 @@
                 "material": {
                     "type": 2,
                     "materialPath": "Library/Materials/65b46090-659c-4ce3-b289-352327c7b814.mat"
-                }
-            }
-        ]
-    },
-    {
-        "UUID": "ab5e12ea-00ca-408d-bc6e-0111d09e7605",
-        "name": "Chimney",
-        "isInstantiated": false,
-        "isStatic": false,
-        "isContainer": true,
-        "active": true,
-        "transform": {
-            "position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "rotation": {
-                "x": -1.5707964897155762,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "scale": {
-                "x": 100.0,
-                "y": 100.0,
-                "z": 100.0
-            }
-        },
-        "instanceOf": "",
-        "path": "",
-        "parentUUID": "2e550ee9-aea6-47c9-bd04-c8eb7d866dd6",
-        "components": [
-            {
-                "type": 1,
-                "meshPath": "Library/Meshes/9cd50759-535b-4f8c-bab1-4a20bcae9959.msh",
-                "primitive": -1,
-                "material": {
-                    "type": 2,
-                    "materialPath": "Library/Materials/95604820-cbde-4eb4-afc4-177b9030c15b.mat"
                 }
             }
         ]
