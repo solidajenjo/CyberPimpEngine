@@ -9,10 +9,6 @@ KDTNode::~KDTNode()
 
 void KDTNode::SubDivideAABB(unsigned dimension, float median, KDTNode* left, KDTNode* right) const
 {
-	if (left->aabb == nullptr)
-		left->aabb = new AABB();
-	if (right->aabb == nullptr)
-		right->aabb = new AABB();
 	float3 centerLeft = aabb->CenterPoint();
 	float3 centerRight = aabb->CenterPoint();
 	float3 newSizeLeft = aabb->Size(); 

@@ -99,8 +99,10 @@ void SubModuleEditorViewPort::Show()
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 			
 		}		
-		//App->spacePartitioning->quadTree.DebugDraw();		
-		App->spacePartitioning->kDTree.DebugDraw();
+		if (App->spacePartitioning->quadTree.showOnEditor)
+			App->spacePartitioning->quadTree.DebugDraw();		
+		if (App->spacePartitioning->kDTree.showOnEditor)
+			App->spacePartitioning->kDTree.DebugDraw();
 		//mouse picking		
 		
 		App->frameBuffer->UnBind();

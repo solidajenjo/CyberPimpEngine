@@ -6,7 +6,7 @@
 
 bool ModuleSpacePartitioning::Init()
 {
-
+	kDTree.Init();
 	return true;
 }
 

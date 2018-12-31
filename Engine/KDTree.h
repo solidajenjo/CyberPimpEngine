@@ -24,6 +24,7 @@ public:
 	KDTNode* upperNode = nullptr;
 	unsigned depth = 0u;
 	float median = .0f;
+	bool isLeaf = false;	
 	AABB* aabb = nullptr;
 	std::vector<GameObject*> bucket;
 	
@@ -38,6 +39,7 @@ public:
 
 	~KDTree();
 
+	void Init();
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
@@ -46,6 +48,7 @@ public:
 //members
 
 	KDTNode* treeRoot = nullptr;
+	bool showOnEditor = true;
 	int maxDepth = 6;
 };
 
@@ -54,18 +57,37 @@ inline KDTree::~KDTree()
 	RELEASE(treeRoot);
 }
 
+inline void KDTree::Init()
+{
+	LOG("Initializating KDTree with depth %d", maxDepth);
+	RELEASE(treeRoot);	
+	std::queue<KDTNode*> Q;
+	treeRoot = new KDTNode();
+	treeRoot->aabb = new AABB();
+	Q.push(treeRoot);
+	while (!Q.empty())
+	{
+		KDTNode* current = Q.front(); Q.pop();
+		if (current->depth <= maxDepth)
+		{
+			current->leftBranch = new KDTNode();
+			current->rightBranch = new KDTNode();
+			current->leftBranch->aabb = new AABB();
+			current->rightBranch->aabb = new AABB();
+			current->leftBranch->depth = current->depth + 1;
+			current->rightBranch->depth = current->depth + 1;
+			Q.push(current->leftBranch);
+			Q.push(current->rightBranch);
+		}
+		else
+			current->isLeaf = true;
+	}
+}
+
 inline void KDTree::Calculate()
 {			
-	BROFILER_CATEGORY("Calculate KD-Tree", Profiler::Color::AliceBlue);
-	if (treeRoot == nullptr)
-	{
-		treeRoot = new KDTNode();
-		treeRoot->aabb = new AABB();
-	}
-	else
-	{
-		treeRoot->bucket.resize(0);
-	}
+	BROFILER_CATEGORY("Calculate KD-Tree", Profiler::Color::AliceBlue);		
+	treeRoot->bucket.resize(0);	
 	App->scene->GetNonStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket);	
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
@@ -90,22 +112,13 @@ inline void KDTree::Calculate()
 				unsigned middle = current->bucket.size() / 2;
 				current->median = current->bucket[middle]->transform->getGlobalPosition()[dimension];
 			}
-			if (current->leftBranch == nullptr)
-			{
-				current->leftBranch = new KDTNode();
-				current->rightBranch = new KDTNode();
-			}
-			else
-			{
-				current->leftBranch->bucket.resize(0);
-				current->rightBranch->bucket.resize(0);
-			}
-
-			current->leftBranch->depth = current->depth + 1;
-			current->rightBranch->depth = current->depth + 1;
-			current->SubDivideAABB(dimension, current->median, current->leftBranch, current->rightBranch);
+			current->leftBranch->bucket.resize(0);
+			current->rightBranch->bucket.resize(0);
+			
+			current->SubDivideAABB(dimension, current->median, current->leftBranch, current->rightBranch);			
 			Q.push(current->leftBranch);
 			Q.push(current->rightBranch);
+			
 			for each(GameObject* go in current->bucket)
 			{
 				if (current->leftBranch->aabb->ContainsQTree(*go->aaBBGlobal))
@@ -118,8 +131,11 @@ inline void KDTree::Calculate()
 				}
 			}
 		}
+		else
+		{
+			current->isLeaf = true;
+		}
 	}
-
 }
 
 inline void KDTree::DebugDraw() const
@@ -135,10 +151,11 @@ inline void KDTree::DebugDraw() const
 		Q.pop();
 		dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
 		
-		if (node->leftBranch != nullptr)
+		if (!node->isLeaf)
+		{
 			Q.push(node->leftBranch);
-		if (node->rightBranch != nullptr)
-			Q.push(node->rightBranch);		
+			Q.push(node->rightBranch);
+		}
 	}
 	
 }
@@ -153,14 +170,15 @@ inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &inte
 	{
 		KDTNode* node = Q.front();
 		Q.pop();
-		if (node->leftBranch == nullptr && node->aabb->ContainsQTree(intersector)) //check if is not outside
+		if (node->isLeaf && node->aabb->ContainsQTree(intersector)) //check if is not outside
 		{
 			intersections.insert(node->bucket.begin(), node->bucket.end());
 		}
 		if (node->leftBranch != nullptr)
+		{
 			Q.push(node->leftBranch);
-		if (node->rightBranch != nullptr)
 			Q.push(node->rightBranch);
+		}
 	}
 }
 

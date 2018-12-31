@@ -155,11 +155,22 @@ void SubModuleEditorConfig::Show()
 		}
 		if (ImGui::CollapsingHeader("QuadTree"))
 		{
-			ImGui::InputInt("Max Depth", &App->spacePartitioning->quadTree.maxDepth);
+			ImGui::Checkbox("Show QuadTree", &App->spacePartitioning->kDTree.showOnEditor);
+			if (ImGui::InputInt("QuadTree Max Depth", &App->spacePartitioning->quadTree.maxDepth))
+			{
+				if (App->spacePartitioning->quadTree.maxDepth < 1)
+					App->spacePartitioning->quadTree.maxDepth = 1;
+			}
 		}
 		if (ImGui::CollapsingHeader("KDTree"))
 		{
-			ImGui::InputInt("Max Depth", &App->spacePartitioning->kDTree.maxDepth);
+			ImGui::Checkbox("Show KDTree", &App->spacePartitioning->kDTree.showOnEditor);
+			if (ImGui::InputInt("KDTree Max Depth", &App->spacePartitioning->kDTree.maxDepth))
+			{
+				if (App->spacePartitioning->kDTree.maxDepth < 1)
+					App->spacePartitioning->kDTree.maxDepth = 1;
+				App->spacePartitioning->kDTree.Init();
+			}
 		}
 		if (ImGui::CollapsingHeader("Scene Module"))
 		{

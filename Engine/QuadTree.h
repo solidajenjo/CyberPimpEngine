@@ -39,6 +39,7 @@ public:
 //members
 
 	QTNode* treeRoot = nullptr;
+	bool showOnEditor = true;
 	int maxDepth = 6;
 };
 
