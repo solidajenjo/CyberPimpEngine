@@ -4,7 +4,7 @@
 bool ModuleFileSystem::Init()
 {
 	char* p = SDL_GetPrefPath("DraconisEngine", "");
-	prefPath = std::string("C:\\Users\\derek\\AppData\\Roaming\\DraconisEngine\\");
+	prefPath = std::string(p);
 	SDL_free(p);
 	PHYSFS_init(prefPath.c_str());
 	PHYSFS_setWriteDir(".");
@@ -19,22 +19,38 @@ bool ModuleFileSystem::CleanUp()
 	return true;
 }
 
-bool ModuleFileSystem::Write(const std::string & path, const void * data, unsigned size) const
-{
+bool ModuleFileSystem::Write(const std::string & path, const void * data, unsigned size, bool userData) const
+{	
+	if (userData)
+	{
+		PHYSFS_setWriteDir(prefPath.c_str());
+	}
 	PHYSFS_File* file = PHYSFS_openWrite(path.c_str());
 	if (file == nullptr)
 	{
 		LOG("Error writing in %s -> %s", path.c_str(), PHYSFS_getLastError());
+		if (userData)
+		{
+			PHYSFS_setWriteDir(".");
+		}
 		return false;
 	}
 	unsigned k = PHYSFS_writeBytes(file, data, size);
 	if (k == size)
 	{
 		PHYSFS_close(file);
+		if (userData)
+		{
+			PHYSFS_setWriteDir(".");
+		}
 		return true;
 	}
 	LOG("Error writing in %s -> %s", path.c_str(), PHYSFS_getLastError());
 	PHYSFS_close(file);
+	if (userData)
+	{
+		PHYSFS_setWriteDir(".");
+	}
 	return false;
 }
 
@@ -73,7 +89,7 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 
 bool ModuleFileSystem::Exists(const std::string & path) const
 {
-	return false;
+	return PHYSFS_exists(path.c_str()) != 0;
 }
 
 unsigned ModuleFileSystem::Size(const std::string & path) const

@@ -4,11 +4,13 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleFileSystem.h"
 #include "QuadTree.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "ComponentMesh.h"
+#include "ComponentMap.h"
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include "SDL/include/SDL_rwops.h"
@@ -20,39 +22,111 @@
 bool ModuleScene::Init()
 {
 	LOG("Init Scene module");
-	
+	root = new GameObject("Scene", true);
+	directory = new GameObject("Assets", true);
+	modelFolder = new GameObject("Models", true);
+	mapFolder = new GameObject("Maps", true);
+	materialFolder = new GameObject("Materials", true);
+	App->spacePartitioning->kDTree.Init();
+	AttachToAssets(modelFolder);
+	AttachToAssets(mapFolder);
+	AttachToAssets(materialFolder);
+	return true;
+}
+
+update_status ModuleScene::Update()
+{
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleScene::CleanUp()
+{
+	LOG("Cleaning scene GameObjects.");
+	RELEASE(root);
+	RELEASE(directory);		
+	sceneGameObjects.clear();
+	LOG("Cleaning scene GameObjects. Done");
+	selected = nullptr;
+	sceneCamera = nullptr;
+	App->textures->CleanUp();
+	return true;
+}
+
+bool ModuleScene::SaveScene(const std::string & path) const
+{
+	rapidjson::StringBuffer sb;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+	writer.StartArray();
+
+	//Keep the roots to rebuild hierarchies
+	writer.StartObject();
+	writer.String("scene");
+	root->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("assets");
+	directory->Serialize(writer);
+	writer.EndObject();
+
+	//serialize folders
+	writer.StartObject();
+	writer.String("maps");
+	mapFolder->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("materials");
+	materialFolder->Serialize(writer);
+	writer.EndObject();
+	writer.StartObject();
+	writer.String("models");
+	modelFolder->Serialize(writer);
+	writer.EndObject();
+
+	//Serialize all the remaining gameobjects
+	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
+	{
+		if (!IsRoot((*it).second))
+			(*it).second->Serialize(writer);
+	}
+
+	writer.EndArray();
+
+	if (App->fileSystem->Write(path, sb.GetString(), strlen(sb.GetString()), true))
+	{
+		LOG("Scene saved.");
+	}
+	return true;
+}
+
+bool ModuleScene::LoadScene(const std::string & path) 
+{
+	LOG("Loading scene %s", path.c_str());
+	CleanUp();
 	bool staticGameObjects = false;
 	bool nonStaticGameObjects = false;
 
-	SDL_RWops* rw = SDL_RWFromFile("scene.dsc", "r");
-	if (rw == nullptr) //no previous scene found
+	SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "r");
+	if (!App->fileSystem->Exists(path)) //no previous scene found
 	{
-		root = new GameObject("Scene", true);
-		directory = new GameObject("Assets", true);
-		modelFolder = new GameObject("Models", true);
-		mapFolder = new GameObject("Maps", true);
-		materialFolder = new GameObject("Materials", true);
-		AttachToAssets(modelFolder);
-		AttachToAssets(mapFolder);
-		AttachToAssets(materialFolder);
+		Init();
 		sceneGameObjects[root->gameObjectUUID] = root;
 		sceneGameObjects[directory->gameObjectUUID] = directory;
 		sceneGameObjects[modelFolder->gameObjectUUID] = modelFolder;
 		sceneGameObjects[mapFolder->gameObjectUUID] = mapFolder;
 		sceneGameObjects[materialFolder->gameObjectUUID] = materialFolder;
+		LOG("Error loading scene %s. Not found", path.c_str());
 	}
 	else
 	{
 		//restore instantiated gameobjects
-		unsigned fileSize = SDL_RWsize(rw);
+		unsigned fileSize = App->fileSystem->Size(path);
 		char* buffer = new char[fileSize];
-		if (SDL_RWread(rw, buffer, fileSize, 1) == 1)
+		if (App->fileSystem->Read(path, buffer, fileSize))
 		{
-			SDL_RWclose(rw);
 			rapidjson::Document document;
 			if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
 			{
-				LOG("Error loading previous scene. Scene file corrupted.");
+				LOG("Error loading scene %s. Scene file corrupted.", path.c_str());
 				root = new GameObject("Scene", true);
 				directory = new GameObject("Assets", true);
 				modelFolder = new GameObject("Models", true);
@@ -69,14 +143,14 @@ bool ModuleScene::Init()
 				sceneGameObjects[materialFolder->gameObjectUUID] = materialFolder;
 			}
 			else
-			{				
-				rapidjson::Value gameObjects = document.GetArray();						
+			{
+				rapidjson::Value gameObjects = document.GetArray();
 				for (rapidjson::Value::ValueIterator it = gameObjects.Begin(); it != gameObjects.End(); ++it)
-				{					
+				{
 					if ((*it).HasMember("scene"))
 					{
 						root = new GameObject("");
-						root->UnSerialize((*it)["scene"]);	
+						root->UnSerialize((*it)["scene"]);
 						sceneGameObjects[root->gameObjectUUID] = root;
 					}
 					else if ((*it).HasMember("assets"))
@@ -105,7 +179,7 @@ bool ModuleScene::Init()
 					}
 					else
 					{
-						GameObject* newGO = new GameObject("");						
+						GameObject* newGO = new GameObject("");
 						if (newGO->UnSerialize(*it))
 						{
 							sceneGameObjects[newGO->gameObjectUUID] = newGO;
@@ -116,15 +190,16 @@ bool ModuleScene::Init()
 						}
 					}
 				}
-				
-				LinkGameObjects();					
+
+				LinkGameObjects();
 				if (staticGameObjects)
 				{
 					App->spacePartitioning->quadTree.Calculate();
 				}
 				if (nonStaticGameObjects)
 				{
-					App->spacePartitioning->kDTree.Calculate();					
+					App->spacePartitioning->kDTree.Init();
+					App->spacePartitioning->kDTree.Calculate();
 				}
 				root->transform->PropagateTransform();
 			}
@@ -132,33 +207,9 @@ bool ModuleScene::Init()
 		}
 		else
 		{
-			LOG("Error loading previous scene %s", SDL_GetError());
-			SDL_RWclose(rw);
+			LOG("Error loading scene %s",  path.c_str());			
 		}
-	}	
-	return true;
-}
-
-update_status ModuleScene::Update()
-{
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
-		|| App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN
-		|| App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		Serialize();
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleScene::CleanUp()
-{
-	LOG("Cleaning scene GameObjects.");
-
-	RELEASE(root);
-	RELEASE(directory);
-	
-	sceneGameObjects.clear();
-	LOG("Cleaning scene GameObjects. Done");
-	selected = nullptr;
-	sceneCamera = nullptr;
+	}
 	return true;
 }
 
@@ -521,66 +572,6 @@ void ModuleScene::GetNonStaticGlobalAABB(AABB * globalAABB, std::vector<GameObje
 	}
 }
 
-
-void ModuleScene::Serialize()
-{
-	rapidjson::StringBuffer sb;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
-	writer.StartArray();
-
-	//Keep the roots to rebuild hierarchies
-	writer.StartObject(); 
-	writer.String("scene");
-	root->Serialize(writer);
-	writer.EndObject();
-	writer.StartObject();
-	writer.String("assets");
-	directory->Serialize(writer);
-	writer.EndObject();
-
-	//serialize folders
-	writer.StartObject();
-	writer.String("maps");	
-	mapFolder->Serialize(writer);
-	writer.EndObject();
-	writer.StartObject();
-	writer.String("materials");
-	materialFolder->Serialize(writer);
-	writer.EndObject();
-	writer.StartObject();
-	writer.String("models");
-	modelFolder->Serialize(writer);
-	writer.EndObject();
-
-	//Serialize all the remaining gameobjects
-	for (std::map<std::string, GameObject*>::iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
-	{
-		if (!IsRoot((*it).second))
-			(*it).second->Serialize(writer);
-	}
-
-	writer.EndArray();
-
-	//save scene
-	SDL_RWops *rw = SDL_RWFromFile("scene.dsc", "w");
-	if (rw == nullptr)
-	{
-		LOG("Couldn't save scene. %s", SDL_GetError());
-	}
-	else
-	{
-		if (SDL_RWwrite(rw, sb.GetString(), strlen(sb.GetString()), 1) == 1)
-		{
-			LOG("Scene saved.");
-		}
-		else
-		{
-			LOG("Couldn't save scene. %s", SDL_GetError());
-		}
-		SDL_RWclose(rw);
-	}
-	
-}
 
 void ModuleScene::LinkGameObjects()
 {

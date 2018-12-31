@@ -17,6 +17,7 @@ public:
 	char title[100] = "File Explorer";
 	char filename[1024] = "";
 	std::string path = "";
+	std::string rawPath = "";
 	std::stack<std::string> pathStack;
 };
 

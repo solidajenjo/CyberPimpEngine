@@ -73,3 +73,4 @@ ComponentMap* ComponentMap::GetMap(const std::string path, bool useMipMaps)
 		return newMap;
 	}
 }
+

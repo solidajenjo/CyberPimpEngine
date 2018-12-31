@@ -22,20 +22,29 @@ void SubModuleEditorMenu::Show()
 	bool openFileExplorer = false;
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("Save"))
+		if (ImGui::BeginMenu("File")) 
+		{
+			if (ImGui::TreeNode("Scene"))
 			{
-				App->scene->Serialize();
-				openFileExplorer = true;
-				fileExplorer->Reset();
-				currentOperation = MenuOperations::SAVE;
+				if (ImGui::MenuItem("New"))
+				{
+					App->scene->CleanUp();
+					App->scene->Init();										
+				}
+				if (ImGui::MenuItem("Save"))
+				{
+					openFileExplorer = true;
+					fileExplorer->Reset();
+					currentOperation = MenuOperations::SAVE;					
+				}
+				if (ImGui::MenuItem("Load"))
+				{
+					openFileExplorer = true;
+					fileExplorer->Reset();
+					currentOperation = MenuOperations::LOAD;					
+				}				
+				ImGui::TreePop();
 			}
-			if (ImGui::MenuItem("Load"))
-			{
-				openFileExplorer = true;
-				fileExplorer->Reset();
-				currentOperation = MenuOperations::LOAD;
-			}			
 			ImGui::Separator();
 			if (ImGui::MenuItem("Exit"))
 			{
@@ -75,10 +84,14 @@ void SubModuleEditorMenu::Show()
 		switch (currentOperation)
 		{
 		case MenuOperations::SAVE:
-			LOG("Save scene -> %s", fileExplorer->path.c_str());
+			LOG("Save scene -> %s", fileExplorer->path.c_str());	
+			App->scene->SaveScene(fileExplorer->rawPath);
+			currentOperation = MenuOperations::NONE;
 			break;
 		case MenuOperations::LOAD:
 			LOG("Load scene -> %s", fileExplorer->path.c_str()); 
+			App->scene->LoadScene(fileExplorer->path);
+			currentOperation = MenuOperations::NONE;
 			break;
 		}
 

@@ -139,7 +139,8 @@ void ComponentMesh::EditorDraw()
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
 		}
-			ImGui::EndCombo();
+		ImGui::EndCombo();
+		delete[] mats;
 	}	
 	ImGui::PopID();
 	//show info from his material
@@ -252,6 +253,7 @@ void ComponentMesh::UnSerialize(rapidjson::Value & value)
 	if (primitiveType != Primitives::VOID_PRIMITIVE)
 	{
 		FromPrimitive(primitiveType);
+		RELEASE(material);
 		material = ComponentMaterial::GetMaterial(value["material"]["materialPath"].GetString());
 	}	
 	
@@ -259,6 +261,9 @@ void ComponentMesh::UnSerialize(rapidjson::Value & value)
 
 bool ComponentMesh::Release()
 {
+	if (primitiveType != Primitives::VOID_PRIMITIVE)
+		return true;
+
 	if (clients > 1) //still have clients -> no destroy
 	{
 		--clients;

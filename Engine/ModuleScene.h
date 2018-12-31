@@ -28,6 +28,9 @@ public:
 	update_status Update() override;
 	bool CleanUp() override; //clean when a new model is loaded & on exit
 
+	bool SaveScene(const std::string &path) const;
+	bool LoadScene(const std::string &path);
+
 	void InsertGameObject(GameObject* newGO); //Insert instantiated Game Object
 	void ImportGameObject(GameObject* newGO, ImportedType type); //Insert imported game Object
 	void DestroyGameObject(GameObject* destroyableGO);
@@ -51,7 +54,6 @@ public:
 	void GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs) const; //get the global enclosing BB of the instantiated static gameobjects & the static gameObjects by reference
 	void GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &nonStaticGOs) const; //get the global enclosing BB of the instantiated non static gameobjects & the non static gameObjects by reference
 
-	void Serialize();
 	void LinkGameObjects();
 
 	//members

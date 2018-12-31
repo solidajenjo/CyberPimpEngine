@@ -6,6 +6,7 @@
 void FileExplorer::Reset()
 {
 	path = App->fileSystem->userDataMountPoint;
+	rawPath = "";
 	while (!pathStack.empty())
 		pathStack.pop();
 }
@@ -19,6 +20,7 @@ bool FileExplorer::Open()
 			ImGui::CloseCurrentPopup();
 			ImGui::EndPopup();
 			path = path + "/" + std::string(filename);
+			rawPath = rawPath + "/" + std::string(filename);
 			return true;
 		}
 		ImGui::SameLine();
@@ -52,6 +54,7 @@ bool FileExplorer::Open()
 			{
 				pathStack.push(path);
 				path = path + "/" + s;
+				rawPath = rawPath + "/" + s;
 			}
 		}
 		for each (std::string s in files)
