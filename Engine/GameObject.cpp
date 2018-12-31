@@ -123,8 +123,7 @@ bool GameObject::RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 &
 					{
 						hitPoint = intersectionPoint;
 						bestDistance = d;
-					}
-					LOG("Hit distance %.3f", d);
+					}					
 				}
 			}			
 		}

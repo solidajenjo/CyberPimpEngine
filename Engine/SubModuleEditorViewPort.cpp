@@ -70,56 +70,6 @@ void SubModuleEditorViewPort::Show()
 		}
 		cursorIn = ImGui::IsWindowHovered();
 
-		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
-		{
-
-			ImGuiIO& io = ImGui::GetIO();
-			ImVec2 winPos = ImGui::GetWindowPos();
-			ImVec2 winSize = ImGui::GetContentRegionMax();			
-			
-			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
-			
-			App->camera->guizmoLock = ImGuizmo::IsOver();
-						
-			ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
-			float4x4 modelMatrix;
-			if (selected == ImGuizmo::OPERATION::ROTATE)
-			{
-				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
-				float3 originalPos = modelMatrix.Col3(3);
-				modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
-				modelMatrix.Transpose();				
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());								
-				if (ImGuizmo::IsUsing())
-				{
-					modelMatrix.Transpose();
-					modelMatrix.SetCol3(3, originalPos); //restore local position
-					App->scene->selected->transform->modelMatrixLocal = modelMatrix;
-					App->scene->selected->transform->ExtractLocalTransformFromMatrix();
-					App->scene->selected->transform->PropagateTransform();
-				}
-				
-			}
-			else
-			{
-				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
-				modelMatrix.Transpose();
-				float4x4 deltaMatrix;
-				
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());				
-				if (ImGuizmo::IsUsing())
-				{					
-					float3 rotation = App->scene->selected->transform->rotation;
-					App->scene->selected->transform->modelMatrixGlobal = modelMatrix.Transposed();
-					App->scene->selected->transform->NewAttachment(); //recalculate local translation & scale
-					App->scene->selected->transform->rotation = rotation; //restore local rotation
-					App->scene->selected->transform->RecalcModelMatrix(); //recalculate local model matrix
-					App->scene->selected->transform->PropagateTransform();
-				}
-			}
-			
-		}
-				
 		ImVec2 size = ImGui::GetWindowSize();			
 		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 60); //padding
 		if (width != size.x || height != size.y) //viewport changed
@@ -169,11 +119,11 @@ void SubModuleEditorViewPort::Show()
 				picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
 				std::set<GameObject*> intersections;
 				App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
-				TimeClock tc;
-				tc.StartMS();				
-				LOG("Calculate %.3f", tc.ReadMS());
+				//TimeClock tc;
+				//tc.StartMS();				
+				//LOG("Calculate %.3f", tc.ReadMS());
 				App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
-				LOG("Intersections %.3f", tc.ReadMS());
+				//LOG("Intersections %.3f", tc.ReadMS());
 				float3 bestHitPoint = float3::inf;
 				for each (GameObject* go in intersections)
 				{
@@ -187,10 +137,60 @@ void SubModuleEditorViewPort::Show()
 					}
 
 				}
-				float kdTime = tc.ReadMS();
+				//float kdTime = tc.ReadMS();
 
-				LOG("KDtree %.3f Checks %d", kdTime, intersections.size());
+				//LOG("KDtree %.3f Checks %d", kdTime, intersections.size());
 			}
+		}
+		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
+		{
+
+			ImGuiIO& io = ImGui::GetIO();
+			ImVec2 winPos = ImGui::GetWindowPos();
+			ImVec2 winSize = ImGui::GetContentRegionMax();
+
+			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
+
+			App->camera->guizmoLock = ImGuizmo::IsOver();
+
+			ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
+			ImGuizmo::SetDrawlist();
+			float4x4 modelMatrix;
+			if (selected == ImGuizmo::OPERATION::ROTATE)
+			{
+				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
+				float3 originalPos = modelMatrix.Col3(3);
+				modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
+				modelMatrix.Transpose();
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());
+				if (ImGuizmo::IsUsing())
+				{
+					modelMatrix.Transpose();
+					modelMatrix.SetCol3(3, originalPos); //restore local position
+					App->scene->selected->transform->modelMatrixLocal = modelMatrix;
+					App->scene->selected->transform->ExtractLocalTransformFromMatrix();
+					App->scene->selected->transform->PropagateTransform();
+				}
+
+			}
+			else
+			{
+				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
+				modelMatrix.Transpose();
+				float4x4 deltaMatrix;
+
+				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());
+				if (ImGuizmo::IsUsing())
+				{
+					float3 rotation = App->scene->selected->transform->rotation;
+					App->scene->selected->transform->modelMatrixGlobal = modelMatrix.Transposed();
+					App->scene->selected->transform->NewAttachment(); //recalculate local translation & scale
+					App->scene->selected->transform->rotation = rotation; //restore local rotation
+					App->scene->selected->transform->RecalcModelMatrix(); //recalculate local model matrix
+					App->scene->selected->transform->PropagateTransform();
+				}
+			}
+
 		}
 		if (ImGui::BeginDragDropTarget())
 		{
