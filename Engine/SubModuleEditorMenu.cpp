@@ -3,18 +3,39 @@
 #include "ModuleScene.h"
 #include "Application.h"
 #include "imgui/imgui.h"
+#include "FileExplorer.h"
 #include <vector>
 
 
+SubModuleEditorMenu::SubModuleEditorMenu(const std::string & editorModuleName) : SubModuleEditor(editorModuleName)
+{
+	fileExplorer = new FileExplorer();
+}
+
+SubModuleEditorMenu::~SubModuleEditorMenu()
+{
+	RELEASE(fileExplorer);
+}
+
 void SubModuleEditorMenu::Show()
 {
+	bool openFileExplorer = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("Save"))
 			{
 				App->scene->Serialize();
+				openFileExplorer = true;
+				fileExplorer->Reset();
+				currentOperation = MenuOperations::SAVE;
 			}
+			if (ImGui::MenuItem("Load"))
+			{
+				openFileExplorer = true;
+				fileExplorer->Reset();
+				currentOperation = MenuOperations::LOAD;
+			}			
 			ImGui::Separator();
 			if (ImGui::MenuItem("Exit"))
 			{
@@ -35,7 +56,7 @@ void SubModuleEditorMenu::Show()
 				ShellExecute(NULL, "open", "https://github.com/solidajenjo/DraconisEngine/wiki",
 					NULL, NULL, SW_SHOWNORMAL);
 			if (ImGui::MenuItem("Download latest"))
-				ShellExecute(NULL, "open", "https://github.com/solidajenjo/DraconisEngine/tree/master/Draconis_Release",
+				ShellExecute(NULL, "open", "https://github.com/solidajenjo/DraconisEngine/releases",
 					NULL, NULL, SW_SHOWNORMAL);
 			if (ImGui::MenuItem("Report a bug"))
 				ShellExecute(NULL, "open", "https://github.com/solidajenjo/DraconisEngine/issues",
@@ -44,4 +65,23 @@ void SubModuleEditorMenu::Show()
 		}
 		ImGui::EndMainMenuBar();
 	}
+	if (openFileExplorer)
+	{
+		ImGui::OpenPopup(fileExplorer->title);
+	}
+		
+	if (fileExplorer->Open())
+	{
+		switch (currentOperation)
+		{
+		case MenuOperations::SAVE:
+			LOG("Save scene -> %s", fileExplorer->path.c_str());
+			break;
+		case MenuOperations::LOAD:
+			LOG("Load scene -> %s", fileExplorer->path.c_str()); 
+			break;
+		}
+
+	}		
+	
 }

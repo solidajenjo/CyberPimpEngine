@@ -4,11 +4,12 @@
 bool ModuleFileSystem::Init()
 {
 	char* p = SDL_GetPrefPath("DraconisEngine", "");
-	prefPath = std::string(p);
+	prefPath = std::string("C:\\Users\\derek\\AppData\\Roaming\\DraconisEngine\\");
 	SDL_free(p);
 	PHYSFS_init(prefPath.c_str());
 	PHYSFS_setWriteDir(".");
 	PHYSFS_mount(".", "", 0);
+	PHYSFS_mount(prefPath.c_str(), userDataMountPoint, 0);	
 	return true;
 }
 
@@ -104,11 +105,36 @@ bool ModuleFileSystem::CreateDir(const std::string & path) const
 
 bool ModuleFileSystem::IsDir(const std::string & path) const
 {
-	return false;
+	PHYSFS_Stat fStat;
+	if (PHYSFS_stat(path.c_str(), &fStat) == 0)
+		LOG("Error guessing if is a dir -> %s", PHYSFS_getLastError());
+	return fStat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY;
 }
 
 bool ModuleFileSystem::Delete(const std::string & path) const
 {
 	return false;
+}
+
+void ModuleFileSystem::GetContentList(const std::string & path, std::vector<std::string>& files, std::vector<std::string>& dirs) const
+{
+	char** filesList = PHYSFS_enumerateFiles(path.c_str());
+	
+	char **i;
+	
+	for (i = filesList; *i != nullptr; i++)
+	{
+		std::string completePath = path + "/" + *i;
+		if (IsDir(completePath.c_str()))
+		{
+			dirs.push_back(*i);
+		}
+		else
+		{
+			files.push_back(*i);
+		}
+	}		
+	
+	PHYSFS_freeList(filesList);
 }
 

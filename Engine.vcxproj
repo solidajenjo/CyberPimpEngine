@@ -249,6 +249,7 @@
     <ClInclude Include="Engine\ComponentMaterial.h" />
     <ClInclude Include="Engine\ComponentMesh.h" />
     <ClInclude Include="Engine\debugdraw.h" />
+    <ClInclude Include="Engine\FileExplorer.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\KDTree.h" />
@@ -325,6 +326,7 @@
     <ClCompile Include="Engine\ComponentMap.cpp" />
     <ClCompile Include="Engine\ComponentMaterial.cpp" />
     <ClCompile Include="Engine\ComponentMesh.cpp" />
+    <ClCompile Include="Engine\FileExplorer.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\KDTree.cpp" />
     <ClCompile Include="Engine\log.cpp" />

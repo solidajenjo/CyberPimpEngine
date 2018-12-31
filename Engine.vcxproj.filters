@@ -227,6 +227,9 @@
     <ClCompile Include="Engine\KDTree.cpp">
       <Filter>SpacePartitioners</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\FileExplorer.cpp">
+      <Filter>EditorModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -840,6 +843,9 @@
     </ClInclude>
     <ClInclude Include="Engine\KDTree.h">
       <Filter>SpacePartitioners</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FileExplorer.h">
+      <Filter>EditorModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

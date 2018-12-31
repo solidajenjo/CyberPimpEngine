@@ -3,15 +3,28 @@
 
 #include "SubModuleEditor.h"
 
+class FileExplorer;
+
 class SubModuleEditorMenu : public SubModuleEditor
 {
 public:
 
-	~SubModuleEditorMenu() {};
+	enum class MenuOperations
+	{
+		NONE,
+		LOAD,
+		SAVE
+	};
 
-	SubModuleEditorMenu(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
+	SubModuleEditorMenu(const std::string& editorModuleName);
+	~SubModuleEditorMenu();
 
 	void Show();
+
+	//members
+
+	FileExplorer* fileExplorer = nullptr;
+	MenuOperations currentOperation = MenuOperations::NONE;
 };
 
 #endif

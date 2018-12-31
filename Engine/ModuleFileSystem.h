@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "physfs-3.0.1/src/physfs.h"
 #include <string>
+#include <vector>
 
 class ModuleFileSystem :
 	public Module
@@ -25,10 +26,14 @@ public:
 	bool IsDir(const std::string &path) const;
 
 	bool Delete(const std::string &path) const;
-	
-private:
+
+	void GetContentList(const std::string & path, std::vector<std::string>& files, std::vector<std::string>& dirs) const;
+
+	//members 
 
 	std::string prefPath;
+
+	char userDataMountPoint[20] = "User Data";
 };
 
 #endif
