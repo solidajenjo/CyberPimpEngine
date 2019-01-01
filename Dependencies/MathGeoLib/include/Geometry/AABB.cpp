@@ -527,6 +527,10 @@ bool AABB::ContainsQTree(const LineSegment &line) const
 {
 	return Contains(line) || Intersects(line);
 }
+bool AABB::ContainsQTree(const Frustum &frustum) const
+{
+	return Contains(frustum) || Intersects(frustum);
+}
 bool AABB::Contains(const float3 &point) const
 {
 	return minPoint.x <= point.x && point.x <= maxPoint.x &&

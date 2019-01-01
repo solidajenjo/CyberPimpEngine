@@ -111,7 +111,7 @@ void SubModuleEditorViewPort::Show()
 		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
 		if (ImGui::IsItemHovered())
 		{
-			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsUsing())
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsOver() && !ImGuizmo::IsUsing())
 			{
 				LineSegment	picking;
 				ImVec2 mousePos = ImGui::GetMousePos();				
@@ -119,13 +119,9 @@ void SubModuleEditorViewPort::Show()
 				float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
 				float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
 				picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
-				std::set<GameObject*> intersections;
+				std::vector<GameObject*> intersections;
 				App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
-				//TimeClock tc;
-				//tc.StartMS();				
-				//LOG("Calculate %.3f", tc.ReadMS());
 				App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
-				//LOG("Intersections %.3f", tc.ReadMS());
 				float3 bestHitPoint = float3::inf;
 				for each (GameObject* go in intersections)
 				{
@@ -139,9 +135,6 @@ void SubModuleEditorViewPort::Show()
 					}
 
 				}
-				//float kdTime = tc.ReadMS();
-
-				//LOG("KDtree %.3f Checks %d", kdTime, intersections.size());
 			}
 		}
 		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)

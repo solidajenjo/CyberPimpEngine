@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleFrameBuffer.h"
+#include "ModuleSpacePartitioning.h"
 #include "ModuleScene.h"
 #include "ModuleEditorCamera.h"
 #include "GameObject.h"
@@ -81,20 +82,37 @@ bool ModuleRender::CleanUp()
 void ModuleRender::Render(const ComponentCamera* camera) const
 {
 	assert(camera != nullptr);
-	for (std::list<const GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes //TODO: Check what happens with shared meshes
+	
+	if (App->scene->sceneCamera != nullptr)	
 	{
-		if (*it == nullptr) 
+		std::vector<GameObject*> intersections;
+		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
+		App->spacePartitioning->quadTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
+		for (GameObject* go : intersections)
 		{
-			LOG("Missing mesh. Couldn't render.");
+			if (!frustumCulling || App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal))
+			{
+				for (Component* comp : go->components)
+				{
+					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
+					{
+						((ComponentMesh*)comp)->Render(camera, go->transform);
+					}
+				}
+			}
 		}
-		else
+	}
+	else
+	{
+		for (std::list<const GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes 
 		{
+			assert((*it) != nullptr);
 			bool render = true;
 			if (!(*it)->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects(*(*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains(*(*it)->aaBBGlobal)))
 			{
 				render = false;
 			}
-			if(render)
+			if (render)
 			{
 				for (std::list<Component*>::const_iterator it2 = (*it)->components.cbegin(); it2 != (*it)->components.cend(); ++it2)
 				{
@@ -103,11 +121,9 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform);
 					}
 				}
-			}			
+			}
 			glEnd();
-	
 		}
-		
 	}
 	glBindVertexArray(0);
 }

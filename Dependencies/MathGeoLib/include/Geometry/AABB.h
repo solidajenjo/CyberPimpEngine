@@ -389,6 +389,7 @@ public:
 
 	bool ContainsQTree(const AABB &aabb) const;
 	bool ContainsQTree(const LineSegment & line) const;
+	bool ContainsQTree(const Frustum & frustum) const;
 	/// Tests whether this AABB and the given object intersect.
 	/** Both objects are treated as "solid", meaning that if one of the objects is fully contained inside
 		another, this function still returns true. (e.g. in case a line segment is contained inside this AABB,

@@ -5,7 +5,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include <vector>
-#include <set>
 #include "GameObject.h"
 #include "debugdraw.h"
 #include <queue>
@@ -34,7 +33,7 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const; 
+	void GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const; 
 
 //members
 
@@ -86,7 +85,7 @@ inline void QuadTree::DebugDraw() const
 }
 
 template<typename T>
-inline void QuadTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
+inline void QuadTree::GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const
 {
 	if (treeRoot == nullptr)
 		return;
@@ -99,7 +98,7 @@ inline void QuadTree::GetIntersections(T &intersector, std::set<GameObject*> &in
 		Q.pop();
 		if (node->lowerNodes.size() == 0u && node->aabb->ContainsQTree(intersector))
 		{
-			intersections.insert(node->bucket.begin(), node->bucket.end());
+			intersections.insert(intersections.end(), node->bucket.begin(), node->bucket.end());
 		}
 		else
 		{

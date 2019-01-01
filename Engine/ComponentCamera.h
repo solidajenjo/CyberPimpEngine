@@ -13,6 +13,8 @@ public:
 
 	ComponentCamera(bool mainCamera);
 
+	~ComponentCamera();
+
 	void EditorDraw() override;
 
 	void Update();

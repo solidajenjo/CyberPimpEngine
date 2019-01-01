@@ -43,7 +43,7 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const;
 
 //members
 
@@ -161,7 +161,7 @@ inline void KDTree::DebugDraw() const
 }
 
 template<typename T>
-inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
+inline void KDTree::GetIntersections(T &intersector, std::vector<GameObject*> &intersections) const
 {
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
@@ -172,7 +172,7 @@ inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &inte
 		Q.pop();
 		if (node->isLeaf && node->aabb->ContainsQTree(intersector)) //check if is not outside
 		{
-			intersections.insert(node->bucket.begin(), node->bucket.end());
+			intersections.insert(intersections.end(), node->bucket.begin(), node->bucket.end());
 		}
 		if (node->leftBranch != nullptr)
 		{

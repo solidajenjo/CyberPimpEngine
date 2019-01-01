@@ -14,6 +14,12 @@ ComponentCamera::ComponentCamera(bool mainCamera) : Component(ComponentTypes::CA
 		App->scene->sceneCamera = this;
 }
 
+ComponentCamera::~ComponentCamera()
+{
+	if (mainCamera)
+		App->scene->sceneCamera = nullptr;
+}
+
 void ComponentCamera::EditorDraw()
 {
 	ImGui::PushID(this);
