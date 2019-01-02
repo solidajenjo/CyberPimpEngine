@@ -245,6 +245,7 @@
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\ComponentCamera.h" />
+    <ClInclude Include="Engine\ComponentLight.h" />
     <ClInclude Include="Engine\ComponentMap.h" />
     <ClInclude Include="Engine\ComponentMaterial.h" />
     <ClInclude Include="Engine\ComponentMesh.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_haiku.cpp" />
     <ClCompile Include="Engine\Application.cpp" />
     <ClCompile Include="Engine\ComponentCamera.cpp" />
+    <ClCompile Include="Engine\ComponentLight.cpp" />
     <ClCompile Include="Engine\ComponentMap.cpp" />
     <ClCompile Include="Engine\ComponentMaterial.cpp" />
     <ClCompile Include="Engine\ComponentMesh.cpp" />

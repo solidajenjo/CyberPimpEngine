@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
 #include <list>
 
 
@@ -50,13 +51,17 @@ void SubModuleEditorInspector::Show()
 			ImGui::InputText("Name", &App->scene->selected->name[0], 40);
 			if (!App->scene->selected->isContainer)
 			{
-				if (ImGui::Combo("Add component", &selectedNewComponent, "Camera\0Dummy\0")) {
-					if (selectedNewComponent == (int)Component::ComponentTypes::CAMERA_COMPONENT)
+				if (ImGui::Combo("Add component", &selectedNewComponent, "None\0Camera\0Light\0")) {
+					if (selectedNewComponent - 1 == (int)Component::ComponentTypes::CAMERA_COMPONENT)
 					{
 						ComponentCamera* newCam = new ComponentCamera(false);
 						newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
-						newCam->owner = App->scene->selected;
-						App->scene->selected->components.push_back(newCam);
+						App->scene->selected->InsertComponent(newCam);
+					}
+					if (selectedNewComponent - 1 == (int)Component::ComponentTypes::LIGHT_COMPONENT)
+					{
+						ComponentLight* newLight = new ComponentLight();
+						App->scene->selected->InsertComponent(newLight);
 					}
 				}
 			}

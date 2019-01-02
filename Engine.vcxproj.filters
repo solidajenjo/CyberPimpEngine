@@ -230,6 +230,9 @@
     <ClCompile Include="Engine\FileExplorer.cpp">
       <Filter>EditorModules</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ComponentLight.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -846,6 +849,9 @@
     </ClInclude>
     <ClInclude Include="Engine\FileExplorer.h">
       <Filter>EditorModules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentLight.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

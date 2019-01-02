@@ -3,6 +3,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentMap.h"
+#include "ComponentLight.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
@@ -213,6 +214,13 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 					map->useMipMaps = useMipMaps;
 					InsertComponent(map);
 				}
+				break;
+			}
+			case (unsigned)Component::ComponentTypes::LIGHT_COMPONENT:
+			{
+				ComponentLight* newLight = new ComponentLight();
+				newLight->UnSerialize(*it);
+				InsertComponent(newLight);
 				break;
 			}
 
