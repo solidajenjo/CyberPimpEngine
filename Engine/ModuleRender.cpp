@@ -90,7 +90,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 		App->spacePartitioning->quadTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		for (GameObject* go : intersections)
 		{
-			if (!frustumCulling || App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal))
+			if (go->enabled && (!frustumCulling || App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
 			{
 				for (Component* comp : go->components)
 				{

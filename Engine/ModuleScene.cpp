@@ -260,13 +260,16 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 		
 	std::stack<GameObject*> S;
 	std::stack<int> depthStack;	
+	std::stack<ImVec2> parentPosition;
 	S.push(gObj);	
 	depthStack.push(0);	
+	parentPosition.push(ImGui::GetCursorPos());
 	while (!S.empty())
 	{
 		gObj = S.top(); S.pop();		
 		ImGui::PushID(gObj->gameObjectUUID);
 		unsigned depth = depthStack.top(); depthStack.pop();
+		ImVec2 parentPos = parentPosition.top(); parentPosition.pop();
 		if (gObj->children.size() == 0)
 			flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_Leaf;
 		else
@@ -277,56 +280,62 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 			flags |= ImGuiTreeNodeFlags_Selected;
 
 		}
-
-		ImVec2 pos = ImGui::GetCursorPos();
+		ImVec2 pos = ImGui::GetCursorPos();		
 		ImGui::SetCursorPos(ImVec2(pos.x + depth, pos.y));
+		pos = ImGui::GetCursorScreenPos();
+		if (!IsRoot(gObj))
+		{
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(pos.x, pos.y + 5.f), ImVec2(pos.x, parentPos.y), ImColor(1.f, 1.f, 1.f, 1.f));
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(pos.x, pos.y + 5.f), ImVec2(pos.x + depth * .8f, pos.y + 5.f), ImColor(1.f, 1.f, 1.f, 1.f));
+		}
 		if (ImGui::TreeNodeEx(gObj->name, flags))
-		{			
-			if (isWorld)
-			{
-				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
-				{
-					ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
-					ImGui::EndDragDropSource();
-				}
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
-					{
-						char movedId[40];
-						sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
-						GameObject* movedGO = FindInstanceOrigin(movedId);
-						if (movedGO != nullptr)
-						{
-							movedGO->parent->children.remove(movedGO);
-
-							movedGO->parent = gObj;
-							LOG("Moved gameobject %s", movedGO->gameObjectUUID);
-							gObj->InsertChild(movedGO);
-							movedGO->transform->NewAttachment();
-						}
-					}
-				}
-			}
-			else
-			{
-				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
-				{
-					ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
-					ImGui::EndDragDropSource();
-				}
-			}			
-
+		{		
+			
 			if (gObj->children.size() > 0)
 			{
 				for (std::list<GameObject*>::iterator it = gObj->children.begin(); it != gObj->children.end(); ++it)
 				{
 					S.push(*it);	
 					depthStack.push(depth + HIERARCHY_DRAW_TAB);
+					parentPosition.push(ImGui::GetCursorScreenPos());
 				}
 			}
 			ImGui::TreePop();			
 
+		}
+		if (isWorld)
+		{
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+				ImGui::EndDragDropSource();
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
+				{
+					char movedId[40];
+					sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
+					GameObject* movedGO = FindInstanceOrigin(movedId);
+					if (movedGO != nullptr)
+					{
+						movedGO->parent->children.remove(movedGO);
+
+						movedGO->parent = gObj;
+						LOG("Moved gameobject %s", movedGO->name);
+						gObj->InsertChild(movedGO);
+						movedGO->transform->NewAttachment();
+					}
+				}
+			}
+		}
+		else
+		{
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+			{
+				ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+				ImGui::EndDragDropSource();
+			}
 		}
 		if (ImGui::IsItemClicked())
 		{
