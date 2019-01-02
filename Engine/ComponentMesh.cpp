@@ -278,7 +278,7 @@ bool ComponentMesh::Release()
 
 void ComponentMesh::SendToGPU()
 {
-	if (VAO > 0) //only once at gpu -- TODO: Keep a suscriber counter to know how many gameobjects remain expecting this to be rendered
+	if (VAO > 0) //only once at gpu 
 		return;
 	GLuint vbo, vao, vio;
 	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices);

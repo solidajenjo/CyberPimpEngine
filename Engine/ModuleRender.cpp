@@ -83,14 +83,14 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 {
 	assert(camera != nullptr);
 	
-	if (App->scene->sceneCamera != nullptr)	
+	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
 		std::vector<GameObject*> intersections;
 		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		App->spacePartitioning->quadTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		for (GameObject* go : intersections)
 		{
-			if (go->enabled && (!frustumCulling || App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
+			if (go->enabled && (App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
 			{
 				for (Component* comp : go->components)
 				{

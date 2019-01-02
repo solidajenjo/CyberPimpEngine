@@ -304,7 +304,7 @@ GameObject* GameObject::MakeInstanceOf() const
 	return clonedGO;
 }
 
-GameObject * GameObject::Clone(bool breakInstance) const //TODO:Remove recursivity
+GameObject * GameObject::Clone(bool breakInstance) const 
 {
 	GameObject* clonedGO = new GameObject(name);
 	if (!breakInstance)

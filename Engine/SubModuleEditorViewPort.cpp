@@ -130,7 +130,10 @@ void SubModuleEditorViewPort::Show()
 					float3 hitPoint;
 					if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint) && localLS.a.Distance(hitPoint) < localLS.a.Distance(bestHitPoint))
 					{
+						if (App->scene->selected != nullptr)
+							App->scene->selected->selected = false;
 						App->scene->selected = go;
+						App->scene->selected->selected = true;
 						bestHitPoint = hitPoint;						
 					}
 
@@ -191,8 +194,8 @@ void SubModuleEditorViewPort::Show()
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMPORTED_GAMEOBJECT_ID"))
 			{
-				char movedId[40];
-				sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
+				char movedId[sizeof(App->scene->selected->gameObjectUUID)];
+				sprintf_s(movedId, (char*)payload->Data); 
 				GameObject* movedGO = App->scene->FindInstanceOrigin(movedId);
 				if (movedGO != nullptr)
 				{

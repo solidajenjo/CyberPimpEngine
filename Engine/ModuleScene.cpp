@@ -286,7 +286,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 		if (!IsRoot(gObj))
 		{
 			ImGui::GetWindowDrawList()->AddLine(ImVec2(pos.x, pos.y + 5.f), ImVec2(pos.x, parentPos.y), ImColor(1.f, 1.f, 1.f, 1.f));
-			ImGui::GetWindowDrawList()->AddLine(ImVec2(pos.x, pos.y + 5.f), ImVec2(pos.x + depth * .8f, pos.y + 5.f), ImColor(1.f, 1.f, 1.f, 1.f));
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(pos.x, pos.y + 5.f), ImVec2(pos.x + 5.f, pos.y + 5.f), ImColor(1.f, 1.f, 1.f, 1.f));
 		}
 		if (ImGui::TreeNodeEx(gObj->name, flags))
 		{		
@@ -307,15 +307,15 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 		{
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
-				ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+				ImGui::SetDragDropPayload("GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(gObj->gameObjectUUID));
 				ImGui::EndDragDropSource();
 			}
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT_ID"))
 				{
-					char movedId[40];
-					sprintf_s(movedId, (char*)payload->Data); //TODO: use constant to 40
+					char movedId[sizeof(gObj->gameObjectUUID)];
+					sprintf_s(movedId, (char*)payload->Data); 
 					GameObject* movedGO = FindInstanceOrigin(movedId);
 					if (movedGO != nullptr)
 					{
@@ -333,7 +333,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 		{
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
-				ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(char) * 40); //TODO: use constant to 40
+				ImGui::SetDragDropPayload("IMPORTED_GAMEOBJECT_ID", &gObj->gameObjectUUID, sizeof(gObj->gameObjectUUID)); 
 				ImGui::EndDragDropSource();
 			}
 		}
