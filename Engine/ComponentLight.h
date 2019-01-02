@@ -6,6 +6,8 @@
 
 class ComponentLight : public Component
 {
+public:
+
 	enum class LightTypes
 	{
 		DIRECTIONAL = 0,
@@ -13,7 +15,6 @@ class ComponentLight : public Component
 		SPOT
 	};
 
-public:
 	ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) {}
 
 	~ComponentLight();
@@ -26,7 +27,6 @@ public:
 
 	//members
 
-	GameObject* owner = nullptr;
 	LightTypes lightType = LightTypes::POINT;
 	float3 color = float3::one;
 	float3 attenuation = float3::one; // 0 - Constant | 1 - Linear | 2 - Quadric

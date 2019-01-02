@@ -1,21 +1,41 @@
 #version 330 core
 
-uniform sampler2D diffuseMap;
-uniform sampler2D emissiveMap;
-uniform sampler2D occlusionMap;
-uniform sampler2D specularMap;
+struct Material
+{
+	sampler2D diffuseMap;
+	sampler2D emissiveMap;
+	sampler2D occlusionMap;
+	sampler2D specularMap;
+	vec4 diffuseColor;
+	vec4 emissiveColor;
+	vec4 specularColor;	
+	float ambient;
+	float shininess;
+	float k_ambient;
+	float k_diffuse;
+	float k_specular;
+};
 
-uniform vec4 diffuseColor;
-uniform vec4 emissiveColor;
-uniform vec4 specularColor;
+struct DirectionalLight
+{
+	vec3 position;
+	vec3 color;
+};
 
+struct PointLight
+{
+	vec3 position;
+	vec3 color;
+	vec3 attenuation; // 0 - Constant | 1 - Linear | 2 - Quadric
+};
 
-uniform vec3  light_pos;
-uniform float ambient;
-uniform float shininess;
-uniform float k_ambient;
-uniform float k_diffuse;
-uniform float k_specular;
+uniform Material mat;
+
+uniform int nPoints;
+uniform PointLight lightPoints[10];
+uniform int nDirectionals;
+uniform DirectionalLight lightDirectionals[10];
+
 uniform mat4 view;
 
 out vec4 color;
@@ -24,36 +44,65 @@ in vec2 UV0;
 in vec3 normal;
 in vec3 position;
 
-vec3 half;
-vec3 light_dir;
-vec3 eye_pos;
 
+vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex)
+{
+	
+    float NL = max(0.0f, dot(normal, light_dir));
+	vec4 emissive = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
+	float intensity = mat.ambient * mat.k_ambient * occlusionTex.r + mat.k_diffuse * NL;
+	return diffuseTex * mat.diffuseColor * intensity;
+}
+
+vec4 specular(vec3 half, vec4 specularTex)
+{
+	float frag_shininess = min(mat.shininess, mix(0, 128, specularTex.a));
+	float spec = pow(max(0.0f, dot(half, normal)), frag_shininess);
+	return vec4(specularTex.r * mat.specularColor.r * mat.k_specular * spec, 
+						 specularTex.g * mat.specularColor.g * mat.k_specular * spec,
+						 specularTex.b * mat.specularColor.b * mat.k_specular * spec, 1.0f);
+}
+
+vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex, vec4 specularTex)
+{
+	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
+
+	vec4 lambertColor = lambert(light_dir, occlusionTex, emissiveTex, diffuseTex);
+	vec4 specColor = specular(half, specularTex);
+
+	return (lambertColor + specColor) * light_color;
+}
+
+/*vec3 point_blinn(const vec3 pos, const vec3 normal, const vec3 view_pos, const PointLight light, const Material mat,
+const vec3 diffuse_color, const vec3 specular_color, float shininess)
+{
+	vec3 light_dir = pos - light.position;
+	float distance = length(light_dir);
+	light_dir = light_dir / distance;
+	float att = 1.0 / (light.constant + light.linear * distance + light.quadric * (distance * distance));
+	float diffuse = att * lambert(light_dir, normal);
+	float specular = att * specular_blinn(light_dir, pos, normal, view_pos, shininess);
+	return light.color * (diffuse_color * (diffuse * material.k_diffuse) + specular_color * (specular * material.k_specular));
+}
+*/
 void main()
 {
-	light_dir = normalize(light_pos-position);
-	eye_pos = -(transpose(mat3(view)) * view[3].xyz);
-	half = normalize(normalize(eye_pos - position) + light_dir);
-    float NL = max(0.0f, dot(normal, light_dir));
 
-	vec4 occlusionTex = texture2D(occlusionMap, UV0);		
-	vec4 emissiveTex = texture2D(emissiveMap, UV0);
-	vec4 diffuseTex = texture2D(diffuseMap, UV0);
-	vec4 specularTex = texture2D(specularMap, UV0);
+	vec4 occlusionTex = texture2D(mat.occlusionMap, UV0);		
+	vec4 emissiveTex = texture2D(mat.emissiveMap, UV0);
+	vec4 diffuseTex = texture2D(mat.diffuseMap, UV0);
+	vec4 specularTex = texture2D(mat.specularMap, UV0);
 
-	float frag_shininess = min(shininess, mix(0, 128, specularTex.a));
+	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
 
-	float spec = pow(max(0.0f, dot(half, normal)), frag_shininess);
-	
+	color = vec4(0,0,0,0);
 
-	vec4 emissive = vec4(emissiveTex.r * emissiveColor.r, emissiveTex.g * emissiveColor.g, emissiveTex.b * emissiveColor.b, 1.0f);
-	
-	float intensity = ambient * k_ambient * occlusionTex.r + k_diffuse * NL;
-	vec4 diffuse = diffuseTex * diffuseColor * intensity;
+	for (int i = 0; i < nDirectionals; ++i)
+	{
+		vec3 light_dir = normalize(lightDirectionals[i].position - position);
+		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1), light_dir, eye_pos, occlusionTex, emissiveTex, diffuseTex, specularTex);	
+	}
 
-	vec4 specular = vec4(specularTex.r * specularColor.r * k_specular * spec, 
-						 specularTex.g * specularColor.g * k_specular * spec,
-						 specularTex.b * specularColor.b * k_specular * spec, 1.0f);
+	color.a = 1.0f;
 
-	color = emissive + diffuse + specular;	
-	
 }

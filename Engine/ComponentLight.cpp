@@ -19,11 +19,6 @@ void ComponentLight::EditorDraw()
 		ImGui::ColorEdit4("Diffuse Color", &color[0]);
 		switch (lightType)
 		{
-		case LightTypes::POINT:
-			ImGui::InputFloat("Constant attenuation", &attenuation[0]);
-			ImGui::InputFloat("Linear attenuation", &attenuation[1]);
-			ImGui::InputFloat("Quadric attenuation", &attenuation[2]);
-			break;
 		case LightTypes::SPOT:
 			if (ImGui::InputFloat("Inner angle", &innerAngle, .01f, .1f))
 			{
@@ -36,7 +31,10 @@ void ComponentLight::EditorDraw()
 				if (outterAngle < innerAngle)
 					outterAngle = innerAngle;
 			}
-
+		case LightTypes::POINT:
+			ImGui::InputFloat("Constant attenuation", &attenuation[0]);
+			ImGui::InputFloat("Linear attenuation", &attenuation[1]);
+			ImGui::InputFloat("Quadric attenuation", &attenuation[2]);
 			break;
 		}
 	}
@@ -82,5 +80,11 @@ void ComponentLight::UnSerialize(rapidjson::Value & value)
 
 ComponentLight * ComponentLight::Clone()
 {
-	return nullptr;
+	ComponentLight* clone = new ComponentLight();
+	clone->lightType = lightType;
+	clone->color = color;
+	clone->attenuation = attenuation;
+	clone->innerAngle = innerAngle;
+	clone->outterAngle = outterAngle;
+	return clone;
 }

@@ -3,6 +3,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "ComponentMap.h"
+#include "ComponentLight.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
@@ -149,10 +150,41 @@ void ComponentMesh::EditorDraw()
 
 void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform) const
 {
+	//Temporary - Collect all lights
+	std::vector<ComponentLight*> directionals;
+	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
+	{
+		for (Component* comp : (*it).second->components)
+		{
+			if (comp->type == Component::ComponentTypes::LIGHT_COMPONENT)
+			{
+				ComponentLight* cL = (ComponentLight*)comp;
+				switch (cL->lightType)
+				{
+				case ComponentLight::LightTypes::DIRECTIONAL:
+					directionals.push_back(cL);
+				}
+			}
+		}
+	}
+	//
 	unsigned program = *App->program->directRenderingProgram;
 	//unsigned program = *App->program->normalInspectorProgram;
 	glUseProgram(program);	
-	math::float4x4 model = float4x4::identity;
+
+	unsigned lightNum = 0u;
+	glUniform1i(glGetUniformLocation(program, "nDirectionals"), directionals.size());
+	for (ComponentLight* cL : directionals)
+	{
+		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "].position";
+		glUniform3fv(glGetUniformLocation(program, 
+			posStr.c_str()), 1, &cL->owner->transform->position[0]);
+		posStr = "lightDirectionals[" + std::to_string(lightNum) + "].color";
+		glUniform3fv(glGetUniformLocation(program,
+			posStr.c_str()), 1, &cL->color[0]);
+		++lightNum;
+	}
+
 	glUniformMatrix4fv(glGetUniformLocation(program,
 		"model"), 1, GL_TRUE, transform->GetModelMatrix());
 
@@ -163,46 +195,45 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
 	if (material->texture != nullptr && material->texture->mapId > 0)
 	{				
-		glUniform1i(glGetUniformLocation(program, "diffuseMap"), 0);
+		glUniform1i(glGetUniformLocation(program, "mat.diffuseMap"), 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, material->texture->mapId);
 	}
 	
 	if (material->emissive != nullptr && material->emissive->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(program, "emissiveMap"), 1);
+		glUniform1i(glGetUniformLocation(program, "mat.emissiveMap"), 1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, material->emissive->mapId);
 	}
 
 	if (material->occlusion != nullptr && material->occlusion->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(program, "occlusionMap"), 2);
+		glUniform1i(glGetUniformLocation(program, "mat.occlusionMap"), 2);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, material->occlusion->mapId);
 	}
 
 	if (material->specular != nullptr && material->specular->mapId > 0)
 	{
-		glUniform1i(glGetUniformLocation(program, "specularMap"), 3);
+		glUniform1i(glGetUniformLocation(program, "mat.specularMap"), 3);
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, material->specular->mapId);
 	}
 
 
-	glUniform4f(glGetUniformLocation(program, "diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
-	glUniform4f(glGetUniformLocation(program, "emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
-	glUniform4f(glGetUniformLocation(program, "specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "mat.diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "mat.emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "mat.specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
 	
 	
 	float3 lightPos = float3(0.f, 200.f, 1000.f);
 	
-	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, &lightPos[0]);
-	glUniform1f(glGetUniformLocation(program, "ambient"), 0.9f);
-	glUniform1f(glGetUniformLocation(program, "shininess"), material->shininess);
-	glUniform1f(glGetUniformLocation(program, "k_ambient"), material->kAmbient);
-	glUniform1f(glGetUniformLocation(program, "k_diffuse"), material->kDiffuse);
-	glUniform1f(glGetUniformLocation(program, "k_specular"), material->kSpecular);
+	glUniform1f(glGetUniformLocation(program, "mat.ambient"), 0.9f);
+	glUniform1f(glGetUniformLocation(program, "mat.shininess"), material->shininess);
+	glUniform1f(glGetUniformLocation(program, "mat.k_ambient"), material->kAmbient);
+	glUniform1f(glGetUniformLocation(program, "mat.k_diffuse"), material->kDiffuse);
+	glUniform1f(glGetUniformLocation(program, "mat.k_specular"), material->kSpecular);
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);

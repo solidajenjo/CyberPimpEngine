@@ -60,6 +60,7 @@ public:
 
 	GameObject* selected = nullptr;
 	ComponentCamera* sceneCamera = nullptr;
+	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
 
 private:
 
@@ -67,8 +68,6 @@ private:
 
 	//members
 
-	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
-	
 	GameObject* root = nullptr; //scene root
 	GameObject* directory = nullptr; //handles all imported files
 	GameObject* mapFolder = nullptr; //cleaned on directory destroy
