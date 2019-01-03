@@ -1,10 +1,12 @@
 #include "ComponentLight.h"
+#include "Globals.h"
 #include "imgui/imgui.h"
 
-
-ComponentLight::~ComponentLight()
+ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT)
 {
-	
+	float p = -(.1f * attenuation[1]) + sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+	float n = -(.1f * attenuation[1]) - sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+	pointSphere.r = max(abs(p), abs(n));
 }
 
 void ComponentLight::EditorDraw()
@@ -32,9 +34,15 @@ void ComponentLight::EditorDraw()
 					outterAngle = innerAngle;
 			}
 		case LightTypes::POINT:
-			ImGui::InputFloat("Constant attenuation", &attenuation[0]);
-			ImGui::InputFloat("Linear attenuation", &attenuation[1]);
-			ImGui::InputFloat("Quadric attenuation", &attenuation[2]);
+			if (ImGui::InputFloat("Constant attenuation", &attenuation[0], .001f, .01f) ||
+				ImGui::InputFloat("Linear attenuation", &attenuation[1], .001f, .01f) ||
+				ImGui::InputFloat("Quadric attenuation", &attenuation[2], .001f, .01f))
+			{
+				float p = -(.1f * attenuation[1]) + sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+				float n = -(.1f * attenuation[1]) - sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+				pointSphere.r = max(abs(p), abs(n));				
+
+			}
 			break;
 		}
 	}
@@ -76,6 +84,9 @@ void ComponentLight::UnSerialize(rapidjson::Value & value)
 	attenuation.z = value["attenuation"][2].GetDouble();
 	innerAngle = value["inner"].GetDouble();
 	outterAngle = value["outter"].GetDouble();
+	float p = -(.1f * attenuation[1]) + sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+	float n = -(.1f * attenuation[1]) - sqrt((.1f * attenuation[1]) * (.1f * attenuation[1]) - (4 * (.1f * attenuation[2]) * (.1f * attenuation[0]))) / (2 * (.1f * attenuation[2]));
+	pointSphere.r = max(abs(p), abs(n));
 }
 
 ComponentLight * ComponentLight::Clone()

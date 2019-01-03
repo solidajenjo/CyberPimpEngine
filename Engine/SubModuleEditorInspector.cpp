@@ -1,6 +1,9 @@
 #include "SubModuleEditorInspector.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleDebugDraw.h"
+#include "ModuleFrameBuffer.h"
+#include "debugdraw.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "GameObject.h"
@@ -77,9 +80,26 @@ void SubModuleEditorInspector::Show()
 						}
 					}
 					(*it)->EditorDraw();
+					switch((*it)->type)
+					{
+						case Component::ComponentTypes::LIGHT_COMPONENT:
+						{
+							ComponentLight* cL = (ComponentLight*)(*it);
+							switch (cL->lightType)
+							{
+							case ComponentLight::LightTypes::POINT:
+								App->frameBuffer->Bind();
+								cL->pointSphere.pos = App->scene->selected->transform->getGlobalPosition();
+								dd::sphere(cL->pointSphere.pos, dd::colors::Gold, cL->pointSphere.r);
+								App->frameBuffer->UnBind();
+								break;
+							}
+						}
+					}
 				}
 				else if (!firstMesh) //if it's a mesh a different behaviour needed when multi-mesh gameobjects
 				{
+
 					firstMesh = true;
 					ImGui::PushID(this);
 					if (!App->scene->selected->isContainer)

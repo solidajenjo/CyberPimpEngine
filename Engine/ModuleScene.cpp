@@ -386,6 +386,7 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 				{
 					DeleteGameObject(gObj);
 					selected = nullptr;
+					App->spacePartitioning->kDTree.Calculate();
 					ImGui::CloseCurrentPopup();
 				}
 				ImGui::EndPopup();

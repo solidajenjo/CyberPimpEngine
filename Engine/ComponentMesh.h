@@ -9,6 +9,7 @@
 
 class ComponentMaterial;
 class ComponentCamera;
+class ComponentLight;
 class Transform;
 
 struct par_shapes_mesh_s;
@@ -35,7 +36,7 @@ public:
 	void FromPrimitive(Primitives primitive);
 	void EditorDraw() override;
 
-	void Render(const ComponentCamera* camera, Transform* transform) const;
+	void Render(const ComponentCamera* camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points) const;
 	ComponentMesh* Clone() override;
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;

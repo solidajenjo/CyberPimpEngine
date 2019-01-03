@@ -15,6 +15,7 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentLight.h"
 
 
 // Called before render is available
@@ -81,11 +82,34 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::Render(const ComponentCamera* camera) const
 {
+	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
-	
+	//Temporary - Collect all lights
+	std::vector<ComponentLight*> directionals;
+	std::vector<ComponentLight*> points;
+	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
+	{
+		for (Component* comp : (*it).second->components)
+		{
+			if (comp->type == Component::ComponentTypes::LIGHT_COMPONENT)
+			{
+				ComponentLight* cL = (ComponentLight*)comp;
+				switch (cL->lightType)
+				{
+				case ComponentLight::LightTypes::DIRECTIONAL:
+					directionals.push_back(cL);
+					break;
+				case ComponentLight::LightTypes::POINT:
+					cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();					
+					points.push_back(cL);
+					break;
+				}
+			}
+		}
+	}
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
-		std::vector<GameObject*> intersections;
+		std::set<GameObject*> intersections;
 		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		App->spacePartitioning->quadTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		for (GameObject* go : intersections)
@@ -96,7 +120,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)comp)->Render(camera, go->transform);
+						((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points);
 					}
 				}
 			}
@@ -118,7 +142,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform);
+						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points);
 					}
 				}
 			}

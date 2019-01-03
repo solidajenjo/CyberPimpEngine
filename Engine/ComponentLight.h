@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "MathGeoLib/include/Math/float3.h"
+#include "MathGeoLib/include/Geometry/Sphere.h"
 
 class ComponentLight : public Component
 {
@@ -15,9 +16,7 @@ public:
 		SPOT
 	};
 
-	ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) {}
-
-	~ComponentLight();
+	ComponentLight();
 
 	void EditorDraw() override;
 
@@ -32,6 +31,8 @@ public:
 	float3 attenuation = float3(.001f, .05f, .1f); // 0 - Constant | 1 - Linear | 2 - Quadric
 	float innerAngle = .3f;
 	float outterAngle = .8f;
+
+	Sphere pointSphere;
 };
 
 #endif
