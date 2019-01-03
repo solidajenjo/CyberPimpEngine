@@ -125,18 +125,20 @@ void SubModuleEditorViewPort::Show()
 				float3 bestHitPoint = float3::inf;
 				for each (GameObject* go in intersections)
 				{
-					LineSegment localLS = picking;
-					localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
-					float3 hitPoint;
-					if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint) && localLS.a.Distance(hitPoint) < localLS.a.Distance(bestHitPoint))
+					if (App->scene->IsRoot(go))
 					{
-						if (App->scene->selected != nullptr)
-							App->scene->selected->selected = false;
-						App->scene->selected = go;
-						App->scene->selected->selected = true;
-						bestHitPoint = hitPoint;						
+						LineSegment localLS = picking;
+						localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
+						float3 hitPoint;
+						if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint) && localLS.a.Distance(hitPoint) < localLS.a.Distance(bestHitPoint))
+						{
+							if (App->scene->selected != nullptr)
+								App->scene->selected->selected = false;
+							App->scene->selected = go;
+							App->scene->selected->selected = true;
+							bestHitPoint = hitPoint;
+						}
 					}
-
 				}
 			}
 		}

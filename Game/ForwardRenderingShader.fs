@@ -73,18 +73,19 @@ vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlu
 	return (lambertColor + specColor) * light_color;
 }
 
-/*vec3 point_blinn(const vec3 pos, const vec3 normal, const vec3 view_pos, const PointLight light, const Material mat,
-const vec3 diffuse_color, const vec3 specular_color, float shininess)
-{
-	vec3 light_dir = pos - light.position;
+vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex, vec4 specularTex)
+{	
 	float distance = length(light_dir);
-	light_dir = light_dir / distance;
-	float att = 1.0 / (light.constant + light.linear * distance + light.quadric * (distance * distance));
-	float diffuse = att * lambert(light_dir, normal);
-	float specular = att * specular_blinn(light_dir, pos, normal, view_pos, shininess);
-	return light.color * (diffuse_color * (diffuse * material.k_diffuse) + specular_color * (specular * material.k_specular));
+	light_dir = -normalize(light_dir);
+	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
+
+	float att = 1.0 / (light.attenuation[0] + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
+	vec4 lambertColor = att * lambert(light_dir, occlusionTex, emissiveTex, diffuseTex);
+	vec4 specColor = att * specular(half, specularTex);
+
+	return (lambertColor + specColor) * vec4(light.color, 1.0f);
 }
-*/
+
 void main()
 {
 
@@ -99,8 +100,14 @@ void main()
 
 	for (int i = 0; i < nDirectionals; ++i)
 	{
-		vec3 light_dir = normalize(lightDirectionals[i].position - position);
+		vec3 light_dir = normalize(lightDirectionals[i].position);
 		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1), light_dir, eye_pos, occlusionTex, emissiveTex, diffuseTex, specularTex);	
+	}
+
+	for (int i = 0; i < nPoints; ++i)
+	{
+		vec3 light_dir = position - lightPoints[i].position;
+		color = color + pointBlinn(lightPoints[i], light_dir, eye_pos, occlusionTex, emissiveTex, diffuseTex, specularTex);	
 	}
 
 	color.a = 1.0f;

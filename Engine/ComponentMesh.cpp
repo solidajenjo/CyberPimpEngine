@@ -152,6 +152,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 {
 	//Temporary - Collect all lights
 	std::vector<ComponentLight*> directionals;
+	std::vector<ComponentLight*> points;
 	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
 	{
 		for (Component* comp : (*it).second->components)
@@ -163,7 +164,11 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 				{
 				case ComponentLight::LightTypes::DIRECTIONAL:
 					directionals.push_back(cL);
-				}
+					break;
+				case ComponentLight::LightTypes::POINT:
+					points.push_back(cL);
+					break;
+				}			
 			}
 		}
 	}
@@ -178,10 +183,26 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform)
 	{
 		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "].position";
 		glUniform3fv(glGetUniformLocation(program, 
-			posStr.c_str()), 1, &cL->owner->transform->position[0]);
+			posStr.c_str()), 1, &cL->owner->transform->getGlobalPosition()[0]);
 		posStr = "lightDirectionals[" + std::to_string(lightNum) + "].color";
 		glUniform3fv(glGetUniformLocation(program,
 			posStr.c_str()), 1, &cL->color[0]);
+		++lightNum;
+	}
+
+	lightNum = 0u;
+	glUniform1i(glGetUniformLocation(program, "nPoints"), points.size());
+	for (ComponentLight* cL : points)
+	{
+		std::string posStr = "lightPoints[" + std::to_string(lightNum) + "].position";
+		glUniform3fv(glGetUniformLocation(program,
+			posStr.c_str()), 1, &cL->owner->transform->getGlobalPosition()[0]);
+		posStr = "lightPoints[" + std::to_string(lightNum) + "].color";
+		glUniform3fv(glGetUniformLocation(program,
+			posStr.c_str()), 1, &cL->color[0]);
+		posStr = "lightPoints[" + std::to_string(lightNum) + "].attenuation";
+		glUniform3fv(glGetUniformLocation(program,
+			posStr.c_str()), 1, &cL->attenuation[0]);
 		++lightNum;
 	}
 

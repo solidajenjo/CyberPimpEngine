@@ -29,7 +29,7 @@ public:
 
 	LightTypes lightType = LightTypes::POINT;
 	float3 color = float3::one;
-	float3 attenuation = float3::one; // 0 - Constant | 1 - Linear | 2 - Quadric
+	float3 attenuation = float3(.001f, .05f, .1f); // 0 - Constant | 1 - Linear | 2 - Quadric
 	float innerAngle = .3f;
 	float outterAngle = .8f;
 };
