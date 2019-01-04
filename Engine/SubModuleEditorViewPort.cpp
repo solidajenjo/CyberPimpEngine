@@ -125,7 +125,7 @@ void SubModuleEditorViewPort::Show()
 				float3 bestHitPoint = float3::inf;
 				for each (GameObject* go in intersections)
 				{
-					if (App->scene->IsRoot(go))
+					if (!App->scene->IsRoot(go))
 					{
 						LineSegment localLS = picking;
 						localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
