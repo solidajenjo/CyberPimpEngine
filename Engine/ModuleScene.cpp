@@ -181,7 +181,7 @@ bool ModuleScene::LoadScene(const std::string & path)
 					{
 						GameObject* newGO = new GameObject("");
 						if (newGO->UnSerialize(*it))
-						{
+						{							
 							sceneGameObjects[newGO->gameObjectUUID] = newGO;
 							if (newGO->isStatic)
 								staticGameObjects = true;
@@ -530,7 +530,7 @@ void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>
 	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
 		float3* corners = new float3[16];
-		if ((*it).second->isInstantiated && (*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
+		if ((*it).second->layer == GameObject::GameObjectLayers::WORLD_VOLUME && (*it).second->isInstantiated && (*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
 		{	
 			if (first)
 			{				
@@ -556,7 +556,7 @@ void ModuleScene::GetNonStaticGlobalAABB(AABB * globalAABB, std::vector<GameObje
 	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
 		float3* corners = new float3[16];
-		if ((*it).second->isInstantiated && !(*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
+		if ((*it).second->layer == GameObject::GameObjectLayers::WORLD_VOLUME && (*it).second->isInstantiated && !(*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
 		{
 			if (first)
 			{

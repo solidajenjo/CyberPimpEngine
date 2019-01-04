@@ -25,7 +25,7 @@ public:
 //members
 
 	unsigned* default = nullptr;
-	unsigned* directRenderingProgram = nullptr;
+	unsigned* forwardRenderingProgram = nullptr;
 	unsigned* normalInspectorProgram = nullptr;
 
 private:

@@ -92,5 +92,6 @@ ComponentLight * ComponentLight::Clone()
 	clone->attenuation = attenuation;
 	clone->innerAngle = innerAngle;
 	clone->outterAngle = outterAngle;
+	clone->CalculateSphereRadius();
 	return clone;
 }

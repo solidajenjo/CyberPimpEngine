@@ -94,9 +94,8 @@ void Transform::ExtractLocalTransformFromMatrix()
 
 void Transform::RecalcModelMatrix()
 {	
-	rotQuat = Quat::FromEulerXZY(rotation.x, rotation.z, rotation.y);
-
-	modelMatrixLocal = float4x4::FromTRS(position, rotQuat.ToFloat4x4(), scale);
+	float4x4 rotMat = float4x4::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+	modelMatrixLocal = float4x4::FromTRS(position, rotMat, scale);
 
 	if (owner->parent != nullptr)
 		modelMatrixGlobal = owner->parent->transform->modelMatrixGlobal.Mul(modelMatrixLocal); //set relative to parent transform
@@ -162,7 +161,7 @@ void Transform::EditorDraw()
 	static float3 oldPos = pos;
 	static float3 oldRot = rot;
 	static float3 oldScl = scl;
-	static bool windowJumped = false;
+	static bool windowJumped = false; //TODO:REmove static
 	static bool jumpRefresh = false;
 	if (jumpRefresh) //it tooks 2 frames to change the value with the new pos after a big jump
 	{
@@ -269,6 +268,7 @@ void Transform::UpdateAABB() const
 }
 void Transform::PropagateTransform() // update & propagate transform matrix
 {
+
 	if (owner->parent != nullptr)
 	{
 		modelMatrixGlobal = owner->parent->transform->modelMatrixGlobal.Mul(modelMatrixLocal);
@@ -311,9 +311,10 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 
 void Transform::NewAttachment()
 {
-	modelMatrixLocal = owner->parent->transform->modelMatrixGlobal.Inverted().Mul(modelMatrixGlobal);
-	float4x4 rotMat;
-	modelMatrixLocal.Decompose(position, rotMat, scale);
-	rotation = rotMat.ToEulerXYZ();
-	
+	if (strcmp(owner->name, "Zombunny_rebel") == 0)
+	{
+		LOG("EEI");
+	}
+	modelMatrixLocal = owner->parent->transform->modelMatrixGlobal.Inverted().Mul(modelMatrixGlobal);		
+	ExtractLocalTransformFromMatrix();
 }

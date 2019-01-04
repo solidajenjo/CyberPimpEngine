@@ -41,7 +41,6 @@ public:
 	void UnSerialize(rapidjson::Value &value) override;
 
 	//members
-	Quat rotQuat = Quat::identity;
 	
 	float3 position = float3(0.f, 0.f, 0.f); 
 	float3 localPosition = float3(0.f, 0.f, 0.f); 

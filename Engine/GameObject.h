@@ -18,6 +18,11 @@ class GameObject
 {
 public:
 
+	enum class GameObjectLayers
+	{
+		DEFAULT,			// General layer
+		WORLD_VOLUME		// QuadTree && KDTree detectable - Used to discard lights, cameras & other non volumetric instantiated gameobjects
+	};
 
 	GameObject(const char name[1024], bool isContainer = false);
 
@@ -48,6 +53,7 @@ public:
 	std::list<GameObject*> children; //Released by scene module (each one)
 	std::list<Component*> components;
 	
+	GameObjectLayers layer = GameObjectLayers::DEFAULT;
 
 	AABB* aaBB = nullptr;
 	AABB* aaBBGlobal = nullptr;

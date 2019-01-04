@@ -52,7 +52,7 @@ vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTe
     float NL = max(0.0f, dot(normal, light_dir));
 	vec4 emissive = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
 	float intensity = mat.ambient * mat.k_ambient * occlusionTex.r + mat.k_diffuse * NL;
-	return diffuseTex * mat.diffuseColor * intensity;
+	return emissive + diffuseTex * mat.diffuseColor * intensity;
 }
 
 vec4 specular(vec3 half, vec4 specularTex)

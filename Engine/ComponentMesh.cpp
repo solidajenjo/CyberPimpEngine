@@ -152,8 +152,7 @@ void ComponentMesh::EditorDraw()
 void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points) const
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
-
-	unsigned program = *App->program->directRenderingProgram;
+	unsigned program = *App->program->forwardRenderingProgram;
 	//unsigned program = *App->program->normalInspectorProgram;
 	glUseProgram(program);	
 
@@ -176,7 +175,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	for (ComponentLight* cL : points)
 	{
 		cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
-		if (cL->pointSphere.Intersects(*owner->aaBBGlobal)/* || cL->pointSphere.Contains(*owner->aaBBGlobal)*/)
+		if (cL->pointSphere.Intersects(*owner->aaBBGlobal) || cL->pointSphere.Contains(*owner->aaBBGlobal))
 		{
 			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "].position";
 			glUniform3fv(glGetUniformLocation(program,

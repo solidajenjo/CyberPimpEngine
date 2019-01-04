@@ -19,7 +19,7 @@ std::map<std::string, ComponentMaterial*>ComponentMaterial::materialsLoaded;
 ComponentMaterial::ComponentMaterial(float r, float g, float b, float a) : Component(ComponentTypes::MATERIAL_COMPONENT)
 {
 	diffuseColor = float4(r, g, b, a);
-	program = App->program->directRenderingProgram;
+	program = App->program->forwardRenderingProgram;
 
 	texture = new ComponentMap();
 	texture->mapId = App->textures->whiteFallback;

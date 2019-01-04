@@ -61,6 +61,8 @@ void GameObject::InsertComponent(Component * newComponent)
 	newComponent->owner = this;
 	if (newComponent->type == Component::ComponentTypes::MESH_COMPONENT)
 	{
+		layer = GameObjectLayers::WORLD_VOLUME;
+
 		ComponentMesh* mesh = (ComponentMesh*)newComponent;		
 		if (aaBB != nullptr)
 		{
@@ -111,17 +113,17 @@ bool GameObject::RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 &
 			Triangle tri;
 			float3 intersectionPoint;			
 			float d;
-			float bestDistance = 100000000000.f;
+			float bestDistance = .0f;
 			for (unsigned i = 0u; i < mesh->nIndices; i += 3u)
 			{				
 				tri.a = mesh->meshVertices[mesh->meshIndices[i]];
 				tri.b = mesh->meshVertices[mesh->meshIndices[i + 1u]];
 				tri.c = mesh->meshVertices[mesh->meshIndices[i + 2u]];
 				if (lSeg.Intersects(tri, &d, &intersectionPoint))
-				{
-					hit = true;
-					if (d < bestDistance)
+				{					
+					if (hit == false || d < bestDistance)
 					{
+						hit = true;
 						hitPoint = intersectionPoint;
 						bestDistance = d;
 					}					

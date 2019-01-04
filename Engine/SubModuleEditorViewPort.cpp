@@ -32,7 +32,7 @@
 #include "SDL/include/SDL_mouse.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ModuleInput.h"
-
+#include "ModuleTime.h"
 #include "TimeClock.h"
 
 void SubModuleEditorViewPort::Show()
@@ -103,94 +103,112 @@ void SubModuleEditorViewPort::Show()
 			App->spacePartitioning->quadTree.DebugDraw();		
 		if (App->spacePartitioning->kDTree.showOnEditor)
 			App->spacePartitioning->kDTree.DebugDraw();
-		//mouse picking		
 		
 		App->frameBuffer->UnBind();
 		ImVec2 curPos = ImGui::GetCursorPos();
 		ImVec2 winPos = ImGui::GetWindowPos();
-		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0,1), ImVec2(1,0));
-		if (ImGui::IsItemHovered())
+		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
+
+		//mouse picking		
+		if (pickingDelay > 0.f)
+			pickingDelay -= App->appTime->realDeltaTime;
+		else
 		{
-			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsOver() && !ImGuizmo::IsUsing())
+			if (ImGui::IsItemHovered())
 			{
-				LineSegment	picking;
-				ImVec2 mousePos = ImGui::GetMousePos();				
-				ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winPos.x - curPos.x, mousePos.y - winPos.y - curPos.y); //(0,0) is upper-left of the framebuffer
-				float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
-				float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
-				picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
-				std::set<GameObject*> intersections;
-				App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
-				App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
-				float3 bestHitPoint = float3::inf;
-				for each (GameObject* go in intersections)
+				if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && !ImGuizmo::IsOver() && !ImGuizmo::IsUsing())
 				{
-					if (!App->scene->IsRoot(go))
+					LineSegment	picking;
+					ImVec2 mousePos = ImGui::GetMousePos();
+					ImVec2 mouseInWindowPos = ImVec2(mousePos.x - winPos.x - curPos.x, mousePos.y - winPos.y - curPos.y); //(0,0) is upper-left of the framebuffer
+					float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
+					float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
+					picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
+					std::set<GameObject*> intersections;
+					App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
+					App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
+					float bestDistance = .0f;
+					for each (GameObject* go in intersections)
 					{
-						LineSegment localLS = picking;
-						localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
-						float3 hitPoint;
-						if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint) && localLS.a.Distance(hitPoint) < localLS.a.Distance(bestHitPoint))
+						if (!App->scene->IsRoot(go))
 						{
-							if (App->scene->selected != nullptr)
-								App->scene->selected->selected = false;
-							App->scene->selected = go;
-							App->scene->selected->selected = true;
-							bestHitPoint = hitPoint;
+							LineSegment localLS = picking;
+							localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
+							float3 hitPoint;
+							if (go->RayAgainstMeshNearestHitPoint(localLS, hitPoint))
+							{
+								hitPoint = (go->transform->modelMatrixGlobal.Mul(hitPoint.ToPos4())).xyz();
+								float d = App->camera->editorCamera.frustum.pos.Distance(hitPoint);
+								if (pickingDelay <= .0f || d < bestDistance)
+								{
+									if (App->scene->selected != nullptr)
+										App->scene->selected->selected = false;
+									App->scene->selected = go;
+									App->scene->selected->selected = true;
+									bestDistance = d;
+									pickingDelay = .5f; // wait 1/2 second to do something else
+								}
+							}
 						}
+					}
+					if (pickingDelay > .0f)
+					{
+						ImGui::End();
+						return;
 					}
 				}
 			}
-		}
-		if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
-		{
-
-			ImGuiIO& io = ImGui::GetIO();
-			ImVec2 winPos = ImGui::GetWindowPos();
-			ImVec2 winSize = ImGui::GetContentRegionMax();
-
-			float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
-
-			App->camera->guizmoLock = ImGuizmo::IsOver();
-
-			ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
-			ImGuizmo::SetDrawlist();
-			float4x4 modelMatrix;
-			if (selected == ImGuizmo::OPERATION::ROTATE)
+			if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected) && App->scene->selected->isInstantiated)
 			{
-				modelMatrix = App->scene->selected->transform->modelMatrixLocal;
-				float3 originalPos = modelMatrix.Col3(3);
-				modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
-				modelMatrix.Transpose();
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());
-				if (ImGuizmo::IsUsing())
+
+				ImGuiIO& io = ImGui::GetIO();
+				ImVec2 winPos = ImGui::GetWindowPos();
+				ImVec2 winSize = ImGui::GetContentRegionMax();
+
+				float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
+
+				App->camera->guizmoLock = ImGuizmo::IsOver();
+
+				ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
+				ImGuizmo::SetDrawlist();
+				float4x4 modelMatrix;
+				if (selected == ImGuizmo::OPERATION::ROTATE)
 				{
+					modelMatrix = App->scene->selected->transform->modelMatrixLocal;
+					float3 originalPos = modelMatrix.Col3(3);
+					modelMatrix.SetCol3(3, App->scene->selected->transform->modelMatrixGlobal.Col3(3)); //move guizmo to pivot world coordinates
 					modelMatrix.Transpose();
-					modelMatrix.SetCol3(3, originalPos); //restore local position
-					App->scene->selected->transform->modelMatrixLocal = modelMatrix;
-					App->scene->selected->transform->ExtractLocalTransformFromMatrix();
-					App->scene->selected->transform->PropagateTransform();
+					ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::LOCAL, modelMatrix.ptr());
+					if (ImGuizmo::IsUsing())
+					{
+						modelMatrix.Transpose();
+						modelMatrix.SetCol3(3, originalPos); //restore local position
+						App->scene->selected->transform->modelMatrixLocal = modelMatrix;
+						App->scene->selected->transform->ExtractLocalTransformFromMatrix();
+						App->scene->selected->transform->PropagateTransform();
+					}
+
 				}
-
-			}
-			else
-			{
-				modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
-				modelMatrix.Transpose();
-				float4x4 deltaMatrix;
-
-				ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());
-				if (ImGuizmo::IsUsing())
+				else
 				{
-					float3 rotation = App->scene->selected->transform->rotation;
-					App->scene->selected->transform->modelMatrixGlobal = modelMatrix.Transposed();
-					App->scene->selected->transform->NewAttachment(); //recalculate local translation & scale
-					App->scene->selected->transform->rotation = rotation; //restore local rotation
-					App->scene->selected->transform->RecalcModelMatrix(); //recalculate local model matrix
-					App->scene->selected->transform->PropagateTransform();
-				}
-			}
+					modelMatrix = App->scene->selected->transform->modelMatrixGlobal;
+					modelMatrix.Transpose();
+					float4x4 deltaMatrix;
 
+					ImGuizmo::Manipulate(view.Transposed().ptr(), App->camera->editorCamera.frustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)selected, ImGuizmo::WORLD, modelMatrix.ptr(), deltaMatrix.ptr());
+					if (ImGuizmo::IsUsing())
+					{
+						float3 rotation = App->scene->selected->transform->rotation;
+						App->scene->selected->transform->modelMatrixGlobal = modelMatrix.Transposed();
+						App->scene->selected->transform->NewAttachment(); //recalculate local translation & scale
+						App->scene->selected->transform->rotation = rotation; //restore local rotation
+						if (selected == ImGuizmo::OPERATION::SCALE)
+							App->scene->selected->transform->RecalcModelMatrix(); //recalculate local model matrix
+						App->scene->selected->transform->PropagateTransform();
+					}
+				}
+
+			}
 		}
 		if (ImGui::BeginDragDropTarget())
 		{

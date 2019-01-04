@@ -89,8 +89,8 @@ bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string 
 		*default = program;
 		break;
 	case Shaders::FORWARD_RENDERING:
-		directRenderingProgram = new unsigned;
-		*directRenderingProgram = program;
+		forwardRenderingProgram = new unsigned;
+		*forwardRenderingProgram = program;
 		break;
 	case Shaders::NORMAL_INSPECTOR:
 		normalInspectorProgram = new unsigned;
@@ -108,9 +108,9 @@ bool ModuleProgram::CleanUp()
 {
 	LOG("Cleaning Module Program");
 	glDeleteProgram(*default);
-	glDeleteProgram(*directRenderingProgram);
+	glDeleteProgram(*forwardRenderingProgram);
 	RELEASE(default);
-	RELEASE(directRenderingProgram);
+	RELEASE(forwardRenderingProgram);
 	LOG("Cleaning Module Program. Done");
 	return true;
 }
