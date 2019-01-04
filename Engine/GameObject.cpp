@@ -68,7 +68,7 @@ void GameObject::InsertComponent(Component * newComponent)
 			AABB tempAABB;
 			tempAABB.SetFrom(&mesh->meshVertices[0], mesh->nVertices);
 
-			aaBB->GetCornerPoints(&corners[0]);
+			aaBB->GetCornerPoints(&corners[0]); //TODO: Check global aabb. Not fitting the mesh
 			tempAABB.GetCornerPoints(&corners[8]);
 			aaBB->Enclose(&corners[0], 16);		
 		}

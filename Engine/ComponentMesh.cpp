@@ -152,12 +152,14 @@ void ComponentMesh::EditorDraw()
 void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points) const
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
+
 	unsigned program = *App->program->directRenderingProgram;
 	//unsigned program = *App->program->normalInspectorProgram;
 	glUseProgram(program);	
 
+	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
+
 	unsigned lightNum = 0u;
-	glUniform1i(glGetUniformLocation(program, "nDirectionals"), directionals.size());
 	for (ComponentLight* cL : directionals)
 	{
 		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "].position";
@@ -168,13 +170,13 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 			posStr.c_str()), 1, &cL->color[0]);
 		++lightNum;
 	}
+	glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
 
 	lightNum = 0u;
-	glUniform1i(glGetUniformLocation(program, "nPoints"), points.size());
 	for (ComponentLight* cL : points)
 	{
-		cL->pointSphere.pos = owner->transform->getGlobalPosition();
-		if (cL->pointSphere.Intersects(*owner->aaBBGlobal) || cL->pointSphere.Contains(*owner->aaBBGlobal))
+		cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
+		if (cL->pointSphere.Intersects(*owner->aaBBGlobal)/* || cL->pointSphere.Contains(*owner->aaBBGlobal)*/)
 		{
 			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "].position";
 			glUniform3fv(glGetUniformLocation(program,
@@ -188,6 +190,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 			++lightNum;
 		}
 	}
+	glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
 
 	glUniformMatrix4fv(glGetUniformLocation(program,
 		"model"), 1, GL_TRUE, transform->GetModelMatrix());

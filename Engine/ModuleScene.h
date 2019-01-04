@@ -37,7 +37,11 @@ public:
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
 	void DrawNode(GameObject* gObj, bool isWorld = true);
 
-	inline bool IsRoot(const GameObject* go) const;
+	inline bool IsRoot(const GameObject* go) const
+	{
+		return go == root || go == directory || go == mapFolder || go == modelFolder || go == materialFolder;
+	};
+
 	void AttachToRoot(GameObject* go);
 	void AttachToAssets(GameObject* go);
 	void AttachToMaps(GameObject* go);

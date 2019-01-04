@@ -3,6 +3,7 @@
 
 bool ModuleFileSystem::Init()
 {
+	//TODO: Search for dirs if not exist create
 	char* p = SDL_GetPrefPath("DraconisEngine", "");
 	prefPath = std::string(p);
 	SDL_free(p);
@@ -64,7 +65,10 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
-			return false;
+		{
+			LOG("Impossible to read %s", path.c_str());
+			return 0;
+		}
 		fread_s(data, size, 1, size, file);
 		fclose(file);
 		return true;
@@ -102,7 +106,10 @@ unsigned ModuleFileSystem::Size(const std::string & path) const
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
+		{
+			LOG("Impossible to read %s", path.c_str());
 			return 0;
+		}
 		fseek(file, 0L, SEEK_END);
 		return ftell(file);
 	}

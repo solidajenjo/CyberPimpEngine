@@ -415,12 +415,6 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 
 }
 
-
-bool ModuleScene::IsRoot(const GameObject * go) const
-{
-	return go == root || go == directory || go == mapFolder || go == modelFolder || go == materialFolder;
-}
-
 void ModuleScene::AttachToRoot(GameObject * go)
 {
 	assert(go != nullptr);

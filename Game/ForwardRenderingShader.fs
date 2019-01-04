@@ -31,6 +31,7 @@ struct PointLight
 
 uniform Material mat;
 
+uniform float appScale;
 uniform int nPoints;
 uniform PointLight lightPoints[10];
 uniform int nDirectionals;
@@ -79,10 +80,9 @@ vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTe
 	light_dir = -normalize(light_dir);
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
-	float att = 1.0 / (light.attenuation[0] + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
+	float att = 1.0f / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
 	vec4 lambertColor = att * lambert(light_dir, occlusionTex, emissiveTex, diffuseTex);
 	vec4 specColor = att * specular(half, specularTex);
-
 	return (lambertColor + specColor) * vec4(light.color, 1.0f);
 }
 
@@ -96,7 +96,7 @@ void main()
 
 	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
 
-	color = vec4(0,0,0,0);
+	color = vec4(0.f,0.f,0.f,0.f);
 
 	for (int i = 0; i < nDirectionals; ++i)
 	{
