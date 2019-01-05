@@ -19,7 +19,14 @@ void SubModuleEditorGameViewPort::Show()
 		ImGui::Begin("Game");
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30); //padding
-		if (width != size.x || height != size.y) //viewport changed
+		ImVec2 viewPortRegionUnscaled = viewPortRegion;
+		unsigned multiplier = 0u;
+		if (antialiasing == AntiaAliasing::SSAA2)
+		{
+			multiplier = 2u;
+			viewPortRegion = ImVec2(viewPortRegion.x * multiplier, viewPortRegion.y * multiplier);
+		}
+		if (framebufferDirty || multiplier > 0u || width != size.x || height != size.y) //viewport changed
 		{					
 			width = size.x;
 			height = size.y;
@@ -49,7 +56,7 @@ void SubModuleEditorGameViewPort::Show()
 			App->gameFrameBuffer->Bind();
 			App->renderer->Render(App->scene->sceneCamera);
 			App->gameFrameBuffer->UnBind();
-			ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, viewPortRegionUnscaled, ImVec2(0, 1), ImVec2(1, 0));
 		}		
 		ImGui::End();
 		

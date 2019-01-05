@@ -9,6 +9,13 @@ class ModuleFrameBuffer;
 class SubModuleEditorGameViewPort : public SubModuleEditor
 {
 public:
+
+	enum class AntiaAliasing
+	{
+		NONE = 0,
+		SSAA2
+	};
+
 	SubModuleEditorGameViewPort(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};
 
 	void Show();
@@ -16,6 +23,8 @@ public:
 //members
 
 	float height = 0, width = 0;
+	AntiaAliasing antialiasing = AntiaAliasing::NONE;
+	bool framebufferDirty = false;
 };
 
 #endif

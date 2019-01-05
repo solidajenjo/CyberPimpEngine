@@ -47,7 +47,7 @@ bool ModuleFrameBuffer::CleanUp()
 bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 {
 	bool ret = true;
-		
+
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer); 
 
 	glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
