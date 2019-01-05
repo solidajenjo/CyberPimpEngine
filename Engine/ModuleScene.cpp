@@ -550,13 +550,13 @@ void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>
 	}
 }
 
-void ModuleScene::GetNonStaticGlobalAABB(AABB * globalAABB, std::vector<GameObject*>& nonStaticGOs) const
+void ModuleScene::GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>& nonStaticGOs, unsigned &GOCount) const
 {
 	bool first = true;
 	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
 	{
 		float3* corners = new float3[16];
-		if ((*it).second->layer == GameObject::GameObjectLayers::WORLD_VOLUME && (*it).second->isInstantiated && !(*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
+		if ((*it).second->isInstantiated && (*it).second->layer == GameObject::GameObjectLayers::WORLD_VOLUME && !(*it).second->isStatic && (*it).second->aaBBGlobal != nullptr)
 		{
 			if (first)
 			{
@@ -570,7 +570,8 @@ void ModuleScene::GetNonStaticGlobalAABB(AABB * globalAABB, std::vector<GameObje
 				globalAABB->GetCornerPoints(&corners[8]);
 				globalAABB->Enclose(&corners[0], 16);
 			}
-			nonStaticGOs.push_back((*it).second);
+			nonStaticGOs[++GOCount] = (*it).second;
+			assert(GOCount < BUCKET_MAX);
 		}
 		RELEASE(corners);
 	}

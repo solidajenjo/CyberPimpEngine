@@ -163,7 +163,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	{
 		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "].position";
 		glUniform3fv(glGetUniformLocation(program, 
-			posStr.c_str()), 1, &cL->owner->transform->getGlobalPosition()[0]);
+			posStr.c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
 		posStr = "lightDirectionals[" + std::to_string(lightNum) + "].color";
 		glUniform3fv(glGetUniformLocation(program,
 			posStr.c_str()), 1, &cL->color[0]);
@@ -175,11 +175,11 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	for (ComponentLight* cL : points)
 	{
 		cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
-		if (cL->pointSphere.Intersects(*owner->aaBBGlobal) || cL->pointSphere.Contains(*owner->aaBBGlobal))
+		if (cL->pointSphere.Intersects(*transform->owner->aaBBGlobal) || cL->pointSphere.Contains(*transform->owner->aaBBGlobal))
 		{
 			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "].position";
 			glUniform3fv(glGetUniformLocation(program,
-				posStr.c_str()), 1, &cL->owner->transform->getGlobalPosition()[0]);
+				posStr.c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
 			posStr = "lightPoints[" + std::to_string(lightNum) + "].color";
 			glUniform3fv(glGetUniformLocation(program,
 				posStr.c_str()), 1, &cL->color[0]);
@@ -192,13 +192,13 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
 
 	glUniformMatrix4fv(glGetUniformLocation(program,
-		"model"), 1, GL_TRUE, transform->GetModelMatrix());
+		"model"), 1, GL_TRUE, transform->modelMatrixGlobal.ptr());
 
 	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
 	glUniformMatrix4fv(glGetUniformLocation(program,
-		"view"), 1, GL_TRUE, &view[0][0]);
+		"view"), 1, GL_TRUE, view.ptr());
 	glUniformMatrix4fv(glGetUniformLocation(program,
-		"proj"), 1, GL_TRUE, &camera->frustum.ProjectionMatrix()[0][0]);
+		"proj"), 1, GL_TRUE, camera->frustum.ProjectionMatrix().ptr());
 	if (material->texture != nullptr && material->texture->mapId > 0)
 	{				
 		glUniform1i(glGetUniformLocation(program, "mat.diffuseMap"), 0);

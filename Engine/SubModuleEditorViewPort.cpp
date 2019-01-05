@@ -66,7 +66,7 @@ void SubModuleEditorViewPort::Show()
 		{
 			ImGui::SameLine();
 			float distance = App->scene->selected->transform->getGlobalPosition().Distance(App->camera->editorCamera.camPos);
-			ImGui::Text("Distance from selected %.3f", distance);
+			ImGui::Text("| Distance from selected %.3f", distance);
 		}
 		cursorIn = ImGui::IsWindowHovered();
 

@@ -25,7 +25,6 @@ public:
 	void SetScale(const float3& newScale); //Sets the local scale relative to his parent
 	void SetTransform(const float3& pos, const float3& rot, const float3& scl);
 
-	float* GetModelMatrix(); //returns pointer the model matrix[0][0]
 	float3 getGlobalPosition();
 	void UpdateAABB() const;
 	void PropagateTransform();

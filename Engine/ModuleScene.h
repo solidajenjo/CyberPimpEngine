@@ -56,7 +56,7 @@ public:
 	void SetSkyBox(); //sets skybox on framebuffer
 
 	void GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs) const; //get the global enclosing BB of the instantiated static gameobjects & the static gameObjects by reference
-	void GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &nonStaticGOs) const; //get the global enclosing BB of the instantiated non static gameobjects & the non static gameObjects by reference
+	void GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &nonStaticGOs, unsigned &GOCount) const; //get the global enclosing BB of the instantiated non static gameobjects & the non static gameObjects by reference
 
 	void LinkGameObjects();
 

@@ -14,10 +14,6 @@
 #include "imgui/imgui.h"
 #include "SDL/include/SDL_mouse.h"
 
-float* Transform::GetModelMatrix()
-{	
-	return &modelMatrixGlobal[0][0]; 
-}
 
 float3 Transform::getGlobalPosition()
 {
@@ -311,10 +307,6 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 
 void Transform::NewAttachment()
 {
-	if (strcmp(owner->name, "Zombunny_rebel") == 0)
-	{
-		LOG("EEI");
-	}
 	modelMatrixLocal = owner->parent->transform->modelMatrixGlobal.Inverted().Mul(modelMatrixGlobal);		
 	ExtractLocalTransformFromMatrix();
 }
