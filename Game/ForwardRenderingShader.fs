@@ -46,13 +46,12 @@ in vec3 normal;
 in vec3 position;
 
 
-vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex)
+vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 diffuseTex)
 {
 	
-    float NL = max(0.0f, dot(normal, light_dir));
-	vec4 emissive = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
+    float NL = max(0.0f, dot(normal, light_dir));	
 	float intensity = mat.ambient * mat.k_ambient * occlusionTex.r + mat.k_diffuse * NL;
-	return emissive + diffuseTex * mat.diffuseColor * intensity;
+	return diffuseTex * mat.diffuseColor * intensity;
 }
 
 vec4 specular(vec3 half, vec4 specularTex)
@@ -64,24 +63,24 @@ vec4 specular(vec3 half, vec4 specularTex)
 						 specularTex.b * mat.specularColor.b * mat.k_specular * spec, 1.0f);
 }
 
-vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex, vec4 specularTex)
+vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
 {
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
-	vec4 lambertColor = lambert(light_dir, occlusionTex, emissiveTex, diffuseTex);
+	vec4 lambertColor = lambert(light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = specular(half, specularTex);
 
 	return (lambertColor + specColor) * light_color;
 }
 
-vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 emissiveTex, vec4 diffuseTex, vec4 specularTex)
+vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
 {	
 	float distance = length(light_dir);
 	light_dir = -normalize(light_dir);
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
 	float att = 1.0f / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
-	vec4 lambertColor = att * lambert(light_dir, occlusionTex, emissiveTex, diffuseTex);
+	vec4 lambertColor = att * lambert(light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = att * specular(half, specularTex);
 	return (lambertColor + specColor) * vec4(light.color, 1.0f);
 }
@@ -96,18 +95,18 @@ void main()
 
 	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
 
-	color = vec4(0.f,0.f,0.f,0.f);
+	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
 
 	for (int i = 0; i < nDirectionals; ++i)
 	{
 		vec3 light_dir = normalize(lightDirectionals[i].position);
-		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1), light_dir, eye_pos, occlusionTex, emissiveTex, diffuseTex, specularTex);	
+		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1), light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
 	for (int i = 0; i < nPoints; ++i)
 	{
 		vec3 light_dir = position - lightPoints[i].position;
-		color = color + pointBlinn(lightPoints[i], light_dir, eye_pos, occlusionTex, emissiveTex, diffuseTex, specularTex);	
+		color = color + pointBlinn(lightPoints[i], light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
 	color.a = 1.0f;
