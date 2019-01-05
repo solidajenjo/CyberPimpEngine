@@ -16,49 +16,44 @@ void SubModuleEditorToolBar::Show()
 	ImGui::SetNextWindowViewport(viewport->ID);
 
 	ImGui::Begin("ToolBar", nullptr, window_flags);
+	
+	ImGui::PushItemWidth(100.f);
+	if (ImGui::BeginCombo("Scale", scale_item_current))
 	{
-		const char* items[] = { "1", "10", "100", "1000" };
-		static const char* item_current = items[0];
-		ImGui::PushItemWidth(100.f);
-		if (ImGui::BeginCombo("Scale", item_current))
+		for (int n = 0; n < IM_ARRAYSIZE(scale_items); n++)
 		{
-			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			bool is_selected = (scale_item_current == scale_items[n]);
+			if (ImGui::Selectable(scale_items[n], is_selected))
 			{
-				bool is_selected = (item_current == items[n]);
-				if (ImGui::Selectable(items[n], is_selected))
-				{
-					item_current = items[n];
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
+				scale_item_current = scale_items[n];
 			}
-			App->appScale = (float)atoi(item_current);
-			ImGui::EndCombo();
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::PopItemWidth();
+		App->appScale = (float)atoi(scale_item_current);
+		ImGui::EndCombo();
 	}
+	ImGui::PopItemWidth();
+	
 	ImGui::SameLine();
+
+	ImGui::PushItemWidth(100.f);
+	if (ImGui::BeginCombo("AA", aa_item_current))
 	{
-		const char* items[] = { "None", "SSAAx2"};
-		static const char* item_current = items[0];
-		ImGui::PushItemWidth(100.f);
-		if (ImGui::BeginCombo("AA", item_current))
+		for (int n = 0; n < IM_ARRAYSIZE(aa_items); n++)
 		{
-			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			bool is_selected = (aa_item_current == aa_items[n]);
+			if (ImGui::Selectable(aa_items[n], is_selected))
 			{
-				bool is_selected = (item_current == items[n]);
-				if (ImGui::Selectable(items[n], is_selected))
-				{
-					item_current = items[n];
-					App->editor->gameViewPort->framebufferDirty = true;
-					App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)n;
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
+				aa_item_current = aa_items[n];
+				App->editor->gameViewPort->framebufferDirty = true;
+				App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)n;
 			}
-			ImGui::EndCombo();
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::PopItemWidth();
+		ImGui::EndCombo();
 	}
+	ImGui::PopItemWidth();
 	ImGui::End();
 }

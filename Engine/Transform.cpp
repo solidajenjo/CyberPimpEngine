@@ -177,7 +177,7 @@ void Transform::EditorDraw()
 	}
 
 	ImGui::PushID(1);
-	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f))
+	if (ImGui::DragFloat3("Position (Relative)", &pos.x, 0.01f * App->appScale))
 	{		
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 winPos = ImGui::GetMousePos();
@@ -288,13 +288,11 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 		GameObject* GO = stackGO.front(); stackGO.pop();
 		for (std::list<GameObject*>::iterator it = GO->children.begin(); it != GO->children.end(); ++it)
 		{
-			if ((*it)->transform != nullptr)
+			if ((*it)->transform != this && (*it)->transform != nullptr)
 			{
 				stackGO.push(*it); //push the children to propagate later
 				//propagate transforms
 				(*it)->transform->modelMatrixGlobal = (*it)->parent->transform->modelMatrixGlobal.Mul((*it)->transform->modelMatrixLocal);
-				if (owner->parent != nullptr)
-					NewAttachment();
 				(*it)->transform->front = -(*it)->transform->modelMatrixGlobal.Col3(2);
 				(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
 				(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);

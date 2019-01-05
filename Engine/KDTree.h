@@ -97,7 +97,7 @@ inline void KDTree::Calculate()
 	Q.push(treeRoot);
 	while (!Q.empty())
 	{
-		KDTNode* current = Q.front(); Q.pop();
+		KDTNode* current = Q.front(); Q.pop();		
 		if (current->bucketOccupation > 1u && current->depth <= maxDepth)
 		{
 			unsigned dimension = current->depth % 3;
@@ -126,6 +126,10 @@ inline void KDTree::Calculate()
 			
 			for (unsigned i = 1u; i <= current->bucketOccupation; ++i) //the first is always null due the preincrement on filling the bucket
 			{
+				if (strcmp(current->bucket[i]->name, "Buggy_Wall") == 0)
+				{
+					LOG("ERE");
+				}
 				if (current->leftBranch->aabb->ContainsQTree(*current->bucket[i]->aaBBGlobal))
 				{
 					current->leftBranch->bucket[++current->leftBranch->bucketOccupation] = current->bucket[i];
@@ -180,7 +184,7 @@ inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &inte
 		Q.pop();
 		if (node->isLeaf && node->bucketOccupation > 0u && node->aabb->ContainsQTree(intersector)) //check if is not outside
 		{
-			intersections.insert(node->bucket.begin() + 1, node->bucket.begin() + node->bucketOccupation); //the first is always null due the preincrement on filling the bucket
+			intersections.insert(node->bucket.begin() + 1, node->bucket.begin() + node->bucketOccupation + 1); //the first is always null due the preincrement on filling the bucket
 		}
 		if (!node->isLeaf)
 		{

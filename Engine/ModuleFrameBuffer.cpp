@@ -26,6 +26,7 @@ void ModuleFrameBuffer::Start()
 		glGenRenderbuffers(1, &depthRenderbuffer);
 		// generate textures
 		glGenTextures(1, &texColorBuffer);
+		glGenTextures(1, &depthBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -40,6 +41,7 @@ bool ModuleFrameBuffer::CleanUp()
 	LOG("Cleaning Module Framebuffer");
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteTextures(1, &texColorBuffer);
+	glDeleteTextures(1, &depthBuffer);
 	LOG("Cleaning Module Framebuffer. Done");
 	return true;
 }
@@ -61,6 +63,13 @@ bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, viewPortWidth, viewPortHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	glBindTexture(GL_TEXTURE_2D, depthRenderbuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, viewPortWidth, viewPortHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

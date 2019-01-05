@@ -3,14 +3,19 @@
 #include "ModuleFrameBuffer.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleFileSystem.h"
+#include "ModuleEditor.h"
+#include "SubModuleEditorGameViewPort.h"
+#include "SubModuleEditorToolBar.h"
 #include "QuadTree.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "ComponentMesh.h"
 #include "ComponentMap.h"
+#include "ComponentCamera.h";
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include "SDL/include/SDL_rwops.h"
@@ -95,6 +100,23 @@ bool ModuleScene::SaveScene(const std::string & path) const
 	{
 		LOG("Scene saved.");
 	}
+
+	rapidjson::StringBuffer sbConfig;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writerConfig(sbConfig);
+
+	writerConfig.StartObject();
+	writerConfig.String("scale"); writerConfig.Double(App->appScale);
+	writerConfig.String("kdTreeDepth"); writerConfig.Int(App->spacePartitioning->kDTree.maxDepth);
+	writerConfig.String("quadTreeDepth"); writerConfig.Int(App->spacePartitioning->quadTree.maxDepth);
+	writerConfig.String("aa"); writerConfig.Int((int)App->editor->gameViewPort->antialiasing);
+	writerConfig.String("editorCamera");
+	App->camera->editorCamera.Serialize(writerConfig);
+	writerConfig.EndObject();
+
+	if (App->fileSystem->Write(path + ".cfg", sbConfig.GetString(), strlen(sbConfig.GetString()), true))
+	{
+		LOG("Scene configuration saved.");
+	}
 	return true;
 }
 
@@ -104,8 +126,49 @@ bool ModuleScene::LoadScene(const std::string & path)
 	CleanUp();
 	bool staticGameObjects = false;
 	bool nonStaticGameObjects = false;
-
-	SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "r");
+	if (!App->fileSystem->Exists(path + ".cfg"))
+	{
+		LOG("Error loading scene configuration %s", (path + ".cfg").c_str());
+	}
+	else
+	{
+		unsigned fileSize = App->fileSystem->Size(path + ".cfg");
+		char* buffer = new char[fileSize];
+		if (App->fileSystem->Read(path + ".cfg", buffer, fileSize))
+		{
+			rapidjson::Document document;
+			if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
+			{
+				LOG("Error loading scene %s. Scene file corrupted.", (path + ".cfg").c_str());
+			}
+			else
+			{
+				rapidjson::Value config = document.GetObjectA();
+				App->appScale = config["scale"].GetDouble();
+				switch ((int)App->appScale)
+				{
+				case 1:
+					App->editor->toolBar->scale_item_current = App->editor->toolBar->scale_items[0];
+					break;
+				case 10:
+					App->editor->toolBar->scale_item_current = App->editor->toolBar->scale_items[1];
+					break;
+				case 100:
+					App->editor->toolBar->scale_item_current = App->editor->toolBar->scale_items[2];
+					break;
+				case 1000:
+					App->editor->toolBar->scale_item_current = App->editor->toolBar->scale_items[3];
+					break;
+				}
+				App->spacePartitioning->kDTree.maxDepth = config["kdTreeDepth"].GetInt();
+				App->spacePartitioning->quadTree.maxDepth = config["quadTreeDepth"].GetInt();
+				App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)config["aa"].GetInt();
+				App->editor->toolBar->aa_item_current = App->editor->toolBar->aa_items[(unsigned)App->editor->gameViewPort->antialiasing];
+				rapidjson::Value serializedCam = config["editorCamera"].GetObjectA();
+				App->camera->editorCamera.UnSerialize(serializedCam);
+			}
+		}
+	}
 	if (!App->fileSystem->Exists(path)) //no previous scene found
 	{
 		Init();

@@ -43,7 +43,11 @@ void ComponentCamera::EditorDraw()
 		ImGui::SameLine();
 		ImGui::Checkbox("SkyBox", &useSkyBox);
 		ImGui::SliderFloat("FOV", &vFov, 10, 180);
-		ImGui::SliderFloat("Z Near", &zNear, 0.01f, 20000.f);
+		float zNearScaled = zNear * App->appScale;
+		if (ImGui::SliderFloat("Z Near", &zNearScaled, 0.01f, 20000.f))
+		{
+			zNear = zNearScaled / App->appScale;
+		}
 		ImGui::SliderFloat("Z Far", &zFar, 0.01f, 20000.f);
 		ImGui::Separator();		
 	}
