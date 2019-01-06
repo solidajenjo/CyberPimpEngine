@@ -48,6 +48,7 @@ public:
 
 inline void QuadTree::Calculate()
 {			
+	RELEASE(treeRoot);
 	treeRoot = new QTNode();
 	leaves.resize(0);
 	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket);

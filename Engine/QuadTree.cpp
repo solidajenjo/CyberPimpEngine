@@ -8,6 +8,10 @@ QTNode::QTNode()
 QTNode::~QTNode()
 {
 	RELEASE(aabb);
+	for (QTNode* node : lowerNodes)
+	{
+		RELEASE(node);
+	}
 }
 
 std::vector<QTNode*>& QTNode::Flush()
