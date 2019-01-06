@@ -13,6 +13,7 @@
 #include "Brofiler/ProfilerCore/Brofiler.h"
 
 #define BUCKET_MAX 1024
+#define MAX_LEAVES 1024
 
 class KDTNode
 {
@@ -26,7 +27,6 @@ public:
 	KDTNode* upperNode = nullptr;
 	unsigned depth = 0u;
 	float median = .0f;
-	bool isLeaf = false;	
 	AABB* aabb = nullptr;
 	std::vector<GameObject*> bucket;
 	unsigned bucketOccupation = 0u;
@@ -50,9 +50,12 @@ public:
 
 //members
 
+	std::vector<KDTNode*> leaves;
+	unsigned leavesAmount = 0u;
 	KDTNode* treeRoot = nullptr;
 	bool showOnEditor = true;
 	int maxDepth = 6;
+	int bucketSize = 5;
 };
 
 inline KDTree::~KDTree()
@@ -83,9 +86,8 @@ inline void KDTree::Init()
 			Q.push(current->leftBranch);
 			Q.push(current->rightBranch);
 		}
-		else
-			current->isLeaf = true;
 	}
+	leaves.resize(MAX_LEAVES);
 }
 
 inline void KDTree::Calculate()
@@ -94,16 +96,17 @@ inline void KDTree::Calculate()
 	treeRoot->bucketOccupation = 0u;
 	App->scene->GetNonStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket, treeRoot->bucketOccupation);	
 	std::queue<KDTNode*> Q;
+	leavesAmount = 0u;
 	Q.push(treeRoot);
 	while (!Q.empty())
 	{
 		KDTNode* current = Q.front(); Q.pop();		
-		if (current->bucketOccupation > 1u && current->depth <= maxDepth)
+		if (current->bucketOccupation > bucketSize && current->depth <= maxDepth)
 		{
 			unsigned dimension = current->depth % 3;
 			std::sort(current->bucket.begin(), current->bucket.begin() + current->bucketOccupation, [dimension](const GameObject* go1, const GameObject *go2)
 			{
-				if (go2 == nullptr)
+				if (go2 == nullptr) // odd bucket occupation
 					return false;
 				return go1->transform->getGlobalPosition()[dimension] > go2->transform->getGlobalPosition()[dimension];				
 			});
@@ -135,57 +138,44 @@ inline void KDTree::Calculate()
 					current->rightBranch->bucket[++current->rightBranch->bucketOccupation] = current->bucket[i];
 				}
 			}
-			current->isLeaf = false;
 		}
 		else
 		{
-			current->isLeaf = true;
+			leaves[++leavesAmount] = current;
 		}
 	}
 }
 
 inline void KDTree::DebugDraw() const
 {
-	if (treeRoot == nullptr)
-		return;
-	std::queue<KDTNode*> Q;
-	Q.push(treeRoot);
-
-	while (!Q.empty())
+	for (unsigned i = 1u; i <= leavesAmount; ++i)
 	{
-		KDTNode* node = Q.front();
-		Q.pop();
 		
-		if (!node->isLeaf)
+		switch (leaves[i]->depth % 3)
 		{
-			Q.push(node->leftBranch);
-			Q.push(node->rightBranch);
+		case 0:
+			dd::aabb(leaves[i]->aabb->minPoint * .99f, leaves[i]->aabb->maxPoint * .99f, dd::colors::Red);
+			break;
+		case 1:
+			dd::aabb(leaves[i]->aabb->minPoint * .99f, leaves[i]->aabb->maxPoint * .99f, dd::colors::Green);
+			break;
+		case 2:
+			dd::aabb(leaves[i]->aabb->minPoint * .99f, leaves[i]->aabb->maxPoint * .99f, dd::colors::Blue);
+			break;
 		}
-		else
-			dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
-	}
-	
+	}	
 }
 
 template<typename T>
 inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
 {
 	BROFILER_CATEGORY("KDTree intersections", Profiler::Color::Azure);
-	std::queue<KDTNode*> Q;
-	Q.push(treeRoot);
-
-	while (!Q.empty())
-	{
-		KDTNode* node = Q.front();
-		Q.pop();
-		if (node->isLeaf && node->bucketOccupation > 0u && node->aabb->ContainsQTree(intersector)) //check if is not outside
+	assert(leavesAmount < MAX_LEAVES);
+	for (unsigned i = 1u; i <= leavesAmount; ++i)
+	{		
+		if (leaves[i]->aabb->ContainsQTree(intersector)) //check if is not outside
 		{
-			intersections.insert(node->bucket.begin() + 1, node->bucket.begin() + node->bucketOccupation + 1); //the first is always null due the preincrement on filling the bucket
-		}
-		if (!node->isLeaf)
-		{
-			Q.push(node->leftBranch);
-			Q.push(node->rightBranch);
+			intersections.insert(leaves[i]->bucket.begin() + 1, leaves[i]->bucket.begin() + leaves[i]->bucketOccupation + 1); //the first is always null due the preincrement on filling the bucket
 		}
 	}
 }

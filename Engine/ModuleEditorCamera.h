@@ -16,10 +16,11 @@ public:
 	//members
 
 	ComponentCamera editorCamera;
-	bool guizmoLock = false;
 
 private:
 	float focusLerp = 0.f;
+	bool isRotating = false;
+	bool isOrbiting = false;
 	bool movementStart = false;	
 };
 

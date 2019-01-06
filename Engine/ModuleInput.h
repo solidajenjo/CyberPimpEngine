@@ -45,11 +45,12 @@ public:
 	const iPoint& GetMouseMotion() const;
 	const iPoint& GetMousePosition() const;
 	int wheelAmount = 0;
+	iPoint mouse_motion;
+
 
 private:
 	KeyState*	keyboard = nullptr;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	iPoint mouse_motion;
 	iPoint mouse;
 };
 

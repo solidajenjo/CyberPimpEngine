@@ -158,8 +158,6 @@ void SubModuleEditorViewPort::Show()
 
 				float4x4 view = App->camera->editorCamera.frustum.ViewMatrix();
 
-				App->camera->guizmoLock = ImGuizmo::IsOver();
-
 				ImGuizmo::SetRect(winPos.x, winPos.y, winSize.x, winSize.y);
 				ImGuizmo::SetDrawlist();
 				float4x4 modelMatrix;

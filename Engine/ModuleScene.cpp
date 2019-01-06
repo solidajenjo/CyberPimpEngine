@@ -107,7 +107,9 @@ bool ModuleScene::SaveScene(const std::string & path) const
 	writerConfig.StartObject();
 	writerConfig.String("scale"); writerConfig.Double(App->appScale);
 	writerConfig.String("kdTreeDepth"); writerConfig.Int(App->spacePartitioning->kDTree.maxDepth);
+	writerConfig.String("kdTreeBucketSize"); writerConfig.Int(App->spacePartitioning->kDTree.bucketSize);
 	writerConfig.String("quadTreeDepth"); writerConfig.Int(App->spacePartitioning->quadTree.maxDepth);
+	writerConfig.String("quadTreeBucketSize"); writerConfig.Int(App->spacePartitioning->quadTree.bucketSize);
 	writerConfig.String("aa"); writerConfig.Int((int)App->editor->gameViewPort->antialiasing);
 	writerConfig.String("editorCamera");
 	App->camera->editorCamera.Serialize(writerConfig);
@@ -161,7 +163,9 @@ bool ModuleScene::LoadScene(const std::string & path)
 					break;
 				}
 				App->spacePartitioning->kDTree.maxDepth = config["kdTreeDepth"].GetInt();
+				App->spacePartitioning->kDTree.bucketSize = config["kdTreeBucketSize"].GetInt();
 				App->spacePartitioning->quadTree.maxDepth = config["quadTreeDepth"].GetInt();
+				App->spacePartitioning->quadTree.bucketSize = config["quadTreeBucketSize"].GetInt();
 				App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)config["aa"].GetInt();
 				App->editor->toolBar->aa_item_current = App->editor->toolBar->aa_items[(unsigned)App->editor->gameViewPort->antialiasing];
 				rapidjson::Value serializedCam = config["editorCamera"].GetObjectA();

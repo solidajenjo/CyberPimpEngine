@@ -69,6 +69,13 @@ void SubModuleEditorConfig::Show()
 			ImGui::Text("Max FPS        %.3f", maxFps);
 			ImGui::Text("Game time scale");
 			ImGui::Columns(1);
+			if (ImGui::Checkbox("VSync", &vsync))
+			{
+				if (vsync)
+					SDL_GL_SetSwapInterval(1);
+				else
+					SDL_GL_SetSwapInterval(0);
+			}
 		}
 		if (ImGui::CollapsingHeader("Editor Camera"))
 		{
@@ -90,13 +97,7 @@ void SubModuleEditorConfig::Show()
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
-			if (ImGui::Checkbox("VSync", &vsync))
-			{
-				if (vsync)
-					SDL_GL_SetSwapInterval(1);
-				else
-					SDL_GL_SetSwapInterval(0);
-			}
+
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))
 		{
@@ -161,6 +162,11 @@ void SubModuleEditorConfig::Show()
 				if (App->spacePartitioning->quadTree.maxDepth < 1)
 					App->spacePartitioning->quadTree.maxDepth = 1;
 			}
+			if (ImGui::InputInt("QuadTree Bucket Size", &App->spacePartitioning->quadTree.bucketSize))
+			{
+				if (App->spacePartitioning->quadTree.bucketSize < 1)
+					App->spacePartitioning->quadTree.bucketSize = 1;
+			}
 		}
 		if (ImGui::CollapsingHeader("KDTree"))
 		{
@@ -170,6 +176,14 @@ void SubModuleEditorConfig::Show()
 				if (App->spacePartitioning->kDTree.maxDepth < 1)
 					App->spacePartitioning->kDTree.maxDepth = 1;
 				App->spacePartitioning->kDTree.Init();
+				App->spacePartitioning->kDTree.Calculate();
+			}
+			if (ImGui::InputInt("KDTree Bucket Size", &App->spacePartitioning->kDTree.bucketSize))
+			{
+				if (App->spacePartitioning->kDTree.bucketSize < 1)
+					App->spacePartitioning->kDTree.bucketSize = 1;
+				App->spacePartitioning->kDTree.Init();
+				App->spacePartitioning->kDTree.Calculate();
 			}
 		}
 		if (ImGui::CollapsingHeader("Scene Module"))

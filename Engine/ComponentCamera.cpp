@@ -67,7 +67,7 @@ void ComponentCamera::RecalculateFrustum(float3 front, float3 up)
 	frustum.up = up.Normalized();
 	float3::Orthonormalize(frustum.front, frustum.up);
 	frustum.nearPlaneDistance = zNear * App->appScale;
-	frustum.farPlaneDistance = zFar;
+	frustum.farPlaneDistance = zFar * App->appScale;;
 	frustum.verticalFov = (vFov * math::pi / 2) / 180.f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 }
