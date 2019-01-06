@@ -41,7 +41,8 @@ public:
 
 	QTNode* treeRoot = nullptr;
 	bool showOnEditor = true;
-	int maxDepth = 6;
+	int maxDepth = 3;
+	int bucketSize = 5;
 };
 
 inline void QuadTree::Calculate()
@@ -53,7 +54,7 @@ inline void QuadTree::Calculate()
 	while (!Q.empty())
 	{
 		QTNode* currentNode = Q.front(); Q.pop();
-		if (currentNode->bucket.size() > 1u && currentNode->depth < maxDepth)
+		if (currentNode->bucket.size() > bucketSize && currentNode->depth < maxDepth)
 		{
 			std::vector<QTNode*> newNodes = currentNode->Flush();
 			for each (QTNode* node in newNodes)

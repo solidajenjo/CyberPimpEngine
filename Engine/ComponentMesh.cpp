@@ -149,7 +149,7 @@ void ComponentMesh::EditorDraw()
 	material->EditorDraw();
 }
 
-void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points) const
+void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
 	unsigned program = *App->program->forwardRenderingProgram;
@@ -161,12 +161,11 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	unsigned lightNum = 0u;
 	for (ComponentLight* cL : directionals)
 	{
-		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "].position";
-		glUniform3fv(glGetUniformLocation(program, 
-			posStr.c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-		posStr = "lightDirectionals[" + std::to_string(lightNum) + "].color";
+		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "]";
 		glUniform3fv(glGetUniformLocation(program,
-			posStr.c_str()), 1, &cL->color[0]);
+			(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".color").c_str()), 1, cL->color.ptr());
 		++lightNum;
 	}
 	glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
@@ -177,19 +176,37 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 		cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
 		if (cL->pointSphere.Intersects(*transform->owner->aaBBGlobal) || cL->pointSphere.Contains(*transform->owner->aaBBGlobal))
 		{
-			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "].position";
+			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "]";
 			glUniform3fv(glGetUniformLocation(program,
-				posStr.c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-			posStr = "lightPoints[" + std::to_string(lightNum) + "].color";
+				(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
 			glUniform3fv(glGetUniformLocation(program,
-				posStr.c_str()), 1, &cL->color[0]);
-			posStr = "lightPoints[" + std::to_string(lightNum) + "].attenuation";
+				(posStr + ".color").c_str()), 1, cL->color.ptr());
 			glUniform3fv(glGetUniformLocation(program,
-				posStr.c_str()), 1, &cL->attenuation[0]);
+				(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
 			++lightNum;
 		}
 	}
 	glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
+
+	lightNum = 0u;
+	for (ComponentLight* cL : spots)
+	{
+		std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]"; 
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr+".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr+".color").c_str()), 1, cL->color.ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr+".attenuation").c_str()), 1, cL->attenuation.ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
+		glUniform1f(glGetUniformLocation(program,
+			(posStr+".inner").c_str()), cos(cL->innerAngle));
+		glUniform1f(glGetUniformLocation(program,
+			(posStr + ".outter").c_str()), cos(cL->outterAngle));
+		++lightNum;
+	}
+	glUniform1i(glGetUniformLocation(program, "nSpots"), lightNum);
 
 	glUniformMatrix4fv(glGetUniformLocation(program,
 		"model"), 1, GL_TRUE, transform->modelMatrixGlobal.ptr());

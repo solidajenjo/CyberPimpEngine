@@ -155,7 +155,7 @@ void SubModuleEditorConfig::Show()
 		}
 		if (ImGui::CollapsingHeader("QuadTree"))
 		{
-			ImGui::Checkbox("Show QuadTree", &App->spacePartitioning->kDTree.showOnEditor);
+			ImGui::Checkbox("Show QuadTree", &App->spacePartitioning->quadTree.showOnEditor);
 			if (ImGui::InputInt("QuadTree Max Depth", &App->spacePartitioning->quadTree.maxDepth))
 			{
 				if (App->spacePartitioning->quadTree.maxDepth < 1)

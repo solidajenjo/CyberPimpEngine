@@ -87,6 +87,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 	//Temporary - Collect all lights
 	std::vector<ComponentLight*> directionals;
 	std::vector<ComponentLight*> points;
+	std::vector<ComponentLight*> spots;
 	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
 	{
 		for (Component* comp : (*it).second->components)
@@ -100,8 +101,11 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 					directionals.push_back(cL);
 					break;
 				case ComponentLight::LightTypes::POINT:
-					cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();					
+					cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
 					points.push_back(cL);
+					break;
+				case ComponentLight::LightTypes::SPOT:
+					spots.push_back(cL);
 					break;
 				}
 			}
@@ -120,7 +124,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points);
+						((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points, spots);
 					}
 				}
 			}
@@ -142,7 +146,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points);
+						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points, spots);
 					}
 				}
 			}

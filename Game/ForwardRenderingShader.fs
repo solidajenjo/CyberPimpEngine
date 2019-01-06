@@ -29,11 +29,23 @@ struct PointLight
 	vec3 attenuation; // 0 - Constant | 1 - Linear | 2 - Quadric
 };
 
+struct SpotLight
+{
+	vec3 position;
+	vec3 direction;
+	vec3 color;
+	float inner;
+	float outter;
+	vec3 attenuation; // 0 - Constant | 1 - Linear | 2 - Quadric
+};
+
 uniform Material mat;
 
 uniform float appScale;
 uniform int nPoints;
 uniform PointLight lightPoints[10];
+uniform int nSpots;
+uniform SpotLight lightSpots[10];
 uniform int nDirectionals;
 uniform DirectionalLight lightDirectionals[10];
 
@@ -76,10 +88,24 @@ vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlu
 vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
 {	
 	float distance = length(light_dir);
-	light_dir = -normalize(light_dir);
+	light_dir = light_dir / distance;
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
 	float att = 1.0f / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
+	vec4 lambertColor = att * lambert(light_dir, occlusionTex, diffuseTex);
+	vec4 specColor = att * specular(half, specularTex);
+	return (lambertColor + specColor) * vec4(light.color, 1.0f);
+}
+
+vec4 spotBlinn(SpotLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
+{	
+	float distance = length(light_dir);
+	light_dir = light_dir / distance;
+	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
+
+	vec3 light_direction = normalize(light.direction);
+	float cos_a = min(1.0, max(0.0, (dot(light_dir, light.direction)-light.outter)/max(0.0001, light.inner-light.outter)));
+	float att = cos_a / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
 	vec4 lambertColor = att * lambert(light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = att * specular(half, specularTex);
 	return (lambertColor + specColor) * vec4(light.color, 1.0f);
@@ -107,6 +133,12 @@ void main()
 	{
 		vec3 light_dir = position - lightPoints[i].position;
 		color = color + pointBlinn(lightPoints[i], light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
+	}
+
+	for (int i = 0; i < nSpots; ++i)
+	{
+		vec3 light_dir = position - lightSpots[i].position;
+		color = color + spotBlinn(lightSpots[i], light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
 	color.a = 1.0f;

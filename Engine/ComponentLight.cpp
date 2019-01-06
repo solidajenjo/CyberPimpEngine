@@ -25,12 +25,16 @@ void ComponentLight::EditorDraw()
 			{
 				if (innerAngle > outterAngle)
 					innerAngle = outterAngle;
+				if (innerAngle < .0f)
+					innerAngle = .0f;
 
 			}
 			if (ImGui::InputFloat("Outter angle", &outterAngle, .01f, .1f))
 			{
 				if (outterAngle < innerAngle)
 					outterAngle = innerAngle;
+				if (outterAngle < .0f)
+					innerAngle = .0f;
 			}
 		case LightTypes::POINT:			
 			if (ImGui::InputFloat("Constant attenuation", &attenuation[0], .001f, .1f, "%.15f") ||

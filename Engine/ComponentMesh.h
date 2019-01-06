@@ -36,7 +36,7 @@ public:
 	void FromPrimitive(Primitives primitive);
 	void EditorDraw() override;
 
-	void Render(const ComponentCamera* camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points) const;
+	void Render(const ComponentCamera* camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const;
 	ComponentMesh* Clone() override;
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;
