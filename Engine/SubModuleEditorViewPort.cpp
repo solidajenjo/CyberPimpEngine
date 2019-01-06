@@ -1,13 +1,4 @@
-#define PROCESS_PRIMITIVE(){\
-								newMesh->material->owner = newGO;\
-								App->renderer->insertRenderizable(newGO);\
-								newMesh->SendToGPU();\
-								newGO->InsertComponent(newMesh);\
-								newGO->isInstantiated = true; \
-								App->scene->InsertGameObject(newGO);\
-								App->scene->AttachToRoot(newGO);\
-								newGO->transform->PropagateTransform();\
-								ImGui::CloseCurrentPopup(); }
+
 
 #include "SubModuleEditorViewPort.h"
 #include "Application.h"
@@ -226,44 +217,6 @@ void SubModuleEditorViewPort::Show()
 				}
 			}
 		}
-		/*if (ImGui::BeginPopupContextItem("Editor"))
-		{
-			if (ImGui::TreeNodeEx("Add primitive"))
-			{				
-				if (ImGui::Button("Cube", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
-				{
-					GameObject* newGO = new GameObject("Cube");
-					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CUBE);
-					PROCESS_PRIMITIVE();
-				}
-				if (ImGui::Button("Sphere", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
-				{
-					GameObject* newGO = new GameObject("Sphere");
-					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::SPHERE);
-					PROCESS_PRIMITIVE();
-				}
-				if (ImGui::Button("Torus", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
-				{
-					GameObject* newGO = new GameObject("Torus");
-					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::TORUS);
-					PROCESS_PRIMITIVE();
-				}
-				if (ImGui::Button("Cylinder", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
-				{
-					GameObject* newGO = new GameObject("Cylinder");
-					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::CYLINDER);
-					PROCESS_PRIMITIVE();
-				}
-				if (ImGui::Button("Plane", ImVec2(ImGui::GetContentRegionAvailWidth(), 20)))
-				{
-					GameObject* newGO = new GameObject("Plane");
-					ComponentMesh* newMesh = new ComponentMesh(ComponentMesh::Primitives::PLANE);
-					PROCESS_PRIMITIVE();
-				}
-				ImGui::TreePop();
-			}
-			ImGui::EndPopup();
-		}*/
 		ImGui::End();
 	}
 }

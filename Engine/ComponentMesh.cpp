@@ -43,7 +43,7 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 	switch (primitive)
 	{
 		case Primitives::CUBE:
-			mesh = par_shapes_create_cube();
+			mesh = par_shapes_create_cube_with_normals();
 			break;
 		case Primitives::SPHERE:
 			mesh = par_shapes_create_parametric_sphere(20, 20);
@@ -52,10 +52,10 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 			mesh = par_shapes_create_torus(20, 20, 0.5f);
 			break;
 		case Primitives::CYLINDER:
-			mesh = par_shapes_create_cylinder(12, 12);
+			mesh = par_shapes_create_cylinder_complete(12, 12);
 			break;
 		case Primitives::PLANE:
-			mesh = par_shapes_create_plane(2, 2);
+			mesh = par_shapes_create_plane(8, 8);
 			break;
 	}
 	

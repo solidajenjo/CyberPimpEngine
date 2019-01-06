@@ -311,7 +311,19 @@ static void par_shapes__compute_welded_normals(par_shapes_mesh* m)
     PAR_FREE(weldmap);
     par_shapes_free_mesh(welded);
 }
-
+par_shapes_mesh* par_shapes_create_cylinder_complete(int slices, int stacks)
+{
+	par_shapes_mesh* cylinder = par_shapes_create_cylinder(slices, stacks);
+	par_shapes_rotate(cylinder, PAR_PI * .5f, (float*)&math::float3::unitX);
+	par_shapes_translate(cylinder, .0f, .5f, .0f);
+	par_shapes_mesh* top = par_shapes_create_disk(1.f, slices, (float*)float3::zero.ptr(), (float*)&math::float3::unitY);
+	par_shapes_translate(top, .0f, .5f, .0f);
+	par_shapes_mesh* bottom = par_shapes_create_disk(1.f, slices, (float*)float3::zero.ptr(), (float*)&(-math::float3::unitY));
+	par_shapes_translate(bottom, .0f, -.5f, .0f);
+	par_shapes_merge_and_free(cylinder, top);
+	par_shapes_merge_and_free(cylinder, bottom);
+	return cylinder;
+}
 par_shapes_mesh* par_shapes_create_cylinder(int slices, int stacks)
 {
     if (slices < 3 || stacks < 1) {
@@ -974,6 +986,47 @@ par_shapes_mesh* par_shapes_create_tetrahedron()
         *tris++ = *triangle++;
     }
     return mesh;
+}
+par_shapes_mesh* par_shapes_create_cube_with_normals()
+{
+	float4x4 translator;
+	translator = translator.FromTRS(float3(.5f, .5f, .5f), float4x4::identity, float3::one);
+	par_shapes_mesh* sides[6];
+	for (unsigned i = 0u; i < 6; ++i) 
+	{
+		sides[i] = par_shapes_create_plane(8, 8);
+		par_shapes_translate(sides[i], -.5f, -.5f, .0f);
+		switch (i)
+		{
+		case 0://front
+			par_shapes_translate(sides[i], .0f, .0f, .5f);
+			break;
+		case 1: //left
+			par_shapes_rotate(sides[i], float(PAR_PI * .5f), (float*)&math::float3::unitY);
+			par_shapes_translate(sides[i], .5f, .0f, .0f);	
+			break;
+		case 2: //right
+			par_shapes_rotate(sides[i], float(-PAR_PI * .5f), (float*)&math::float3::unitY);
+			par_shapes_translate(sides[i], -.5f, .0f, .0f);
+			break;
+		case 3: //back
+			par_shapes_rotate(sides[i], float(PAR_PI), (float*)&math::float3::unitY);
+			par_shapes_translate(sides[i], .0f, .0f, -.5f);
+			break;
+		case 4: //bottom
+			par_shapes_rotate(sides[i], float(PAR_PI * .5f), (float*)&math::float3::unitX);
+			par_shapes_translate(sides[i], .0f, -.5f, .0f);
+			break;
+		case 5: //top
+			par_shapes_rotate(sides[i], float(-PAR_PI * .5f), (float*)&math::float3::unitX);
+			par_shapes_translate(sides[i], .0f, .5f, .0f);
+			break;
+		}
+		if (i != 0u)
+			par_shapes_merge_and_free(sides[0], sides[i]);
+
+	}
+	return sides[0];
 }
 
 par_shapes_mesh* par_shapes_create_cube()

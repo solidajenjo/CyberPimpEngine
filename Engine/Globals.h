@@ -13,6 +13,16 @@
 	} \
 }
 
+#define PROCESS_PRIMITIVE(){\
+								newMesh->material->owner = newGO;\
+								App->renderer->insertRenderizable(newGO);\
+								newMesh->SendToGPU();\
+								newGO->InsertComponent(newMesh);\
+								newGO->isInstantiated = true; \
+								App->scene->InsertGameObject(newGO);\
+								App->scene->AttachToRoot(newGO);\
+								newGO->transform->PropagateTransform();\
+								ImGui::CloseCurrentPopup(); }
 
 void log(const char file[], int line, const char* format, ...);
 

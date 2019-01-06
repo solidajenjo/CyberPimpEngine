@@ -126,10 +126,6 @@ inline void KDTree::Calculate()
 			
 			for (unsigned i = 1u; i <= current->bucketOccupation; ++i) //the first is always null due the preincrement on filling the bucket
 			{
-				if (strcmp(current->bucket[i]->name, "Buggy_Wall") == 0)
-				{
-					LOG("ERE");
-				}
 				if (current->leftBranch->aabb->ContainsQTree(*current->bucket[i]->aaBBGlobal))
 				{
 					current->leftBranch->bucket[++current->leftBranch->bucketOccupation] = current->bucket[i];

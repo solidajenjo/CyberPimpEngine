@@ -36,7 +36,7 @@ public:
 	float4 specularColor = float4(1.f, 1.f, 1.f, 1.f);
 	float4 emissiveColor = float4(0.f, 0.f, 0.f, 0.f);
 
-	float kDiffuse = 0.f, kAmbient = 0.f, kSpecular = 0.f, shininess = 64.f;
+	float kDiffuse = 0.9f, kAmbient = 0.3f, kSpecular = 0.6f, shininess = 64.f;
 	
 	char materialPath[1024] = "";
 
