@@ -1,11 +1,15 @@
 #include "ComponentLight.h"
 #include "Globals.h"
+#include "GameObject.h"
+#include "Transform.h"
 #include "Application.h"
 #include "imgui/imgui.h"
+#include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "MathGeoLib/include/Geometry/Plane.h"
 
 ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT)
 {
-	CalculateSphereRadius();
+	CalculateGuizmos();
 }
 
 void ComponentLight::EditorDraw()
@@ -21,13 +25,14 @@ void ComponentLight::EditorDraw()
 		switch (lightType)
 		{
 		case LightTypes::SPOT:
+			ImGui::Text("%.3f %.3f %.3f", spotDistance, spotEndRadius, cos(outterAngle));
 			if (ImGui::InputFloat("Inner angle", &innerAngle, .01f, .1f))
 			{
 				if (innerAngle > outterAngle)
 					innerAngle = outterAngle;
 				if (innerAngle < .0f)
 					innerAngle = .0f;
-
+				CalculateGuizmos();
 			}
 			if (ImGui::InputFloat("Outter angle", &outterAngle, .01f, .1f))
 			{
@@ -35,6 +40,7 @@ void ComponentLight::EditorDraw()
 					outterAngle = innerAngle;
 				if (outterAngle < .0f)
 					innerAngle = .0f;
+				CalculateGuizmos();
 			}
 		case LightTypes::POINT:			
 			if (ImGui::InputFloat("Constant attenuation", &attenuation[0], .001f, .1f, "%.15f") ||
@@ -42,7 +48,7 @@ void ComponentLight::EditorDraw()
 				ImGui::InputFloat("Quadric attenuation", &attenuation[2], .001f, .1f, "%.15f") ||
 				ImGui::SliderFloat("Influence zone (0.1 ~ Real)", &influence, .1f, 1.f))
 			{
-				CalculateSphereRadius();
+				CalculateGuizmos();
 			}
 			break;
 		}
@@ -85,7 +91,7 @@ void ComponentLight::UnSerialize(rapidjson::Value & value)
 	attenuation.z = value["attenuation"][2].GetDouble();
 	innerAngle = value["inner"].GetDouble();
 	outterAngle = value["outter"].GetDouble();
-	CalculateSphereRadius();
+	CalculateGuizmos();
 }
 
 ComponentLight * ComponentLight::Clone()
@@ -96,6 +102,29 @@ ComponentLight * ComponentLight::Clone()
 	clone->attenuation = attenuation;
 	clone->innerAngle = innerAngle;
 	clone->outterAngle = outterAngle;
-	clone->CalculateSphereRadius();
+	clone->CalculateGuizmos();
 	return clone;
+}
+
+bool ComponentLight::ConeContainsAABB(const AABB &aabb) const
+{
+	float3 lightPos = owner->transform->getGlobalPosition();
+	//check if spot light center passes through the aabb
+	LineSegment line;
+	line.a = lightPos + owner->transform->front * spotDistance;
+	line.b = lightPos;
+	if (line.Intersects(aabb))
+		return true;
+	
+	//otherwise check if the cone contains any corner
+	for (unsigned i = 0u; i < 8u; ++i)
+	{
+		float h = aabb.CornerPoint(i).Distance(lightPos);
+		float phi = owner->transform->front.AngleBetween(aabb.CornerPoint(i) - lightPos);
+		if (phi < outterAngle && h < spotOutterDistance)
+			return true;
+	}
+	
+	return false;
+
 }

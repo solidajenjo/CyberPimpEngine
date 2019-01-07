@@ -85,15 +85,21 @@ void SubModuleEditorInspector::Show()
 						case Component::ComponentTypes::LIGHT_COMPONENT:
 						{
 							ComponentLight* cL = (ComponentLight*)(*it);
+							App->frameBuffer->Bind();
 							switch (cL->lightType)
 							{
+							case ComponentLight::LightTypes::DIRECTIONAL:
+								dd::arrow(cL->owner->transform->getGlobalPosition(), cL->owner->transform->getGlobalPosition() + cL->owner->transform->getGlobalPosition().Normalized(), dd::colors::Gold, App->appScale);								
+								break;
 							case ComponentLight::LightTypes::POINT:
-								App->frameBuffer->Bind();
 								cL->pointSphere.pos = App->scene->selected->transform->getGlobalPosition();
 								dd::sphere(cL->pointSphere.pos, dd::colors::Gold, cL->pointSphere.r);
-								App->frameBuffer->UnBind();
+								break;
+							case ComponentLight::LightTypes::SPOT:
+								dd::cone(App->scene->selected->transform->getGlobalPosition(), App->scene->selected->transform->front * cL->spotDistance, dd::colors::Gold, cL->spotEndRadius, .01f);
 								break;
 							}
+							App->frameBuffer->UnBind();
 						}
 					}
 				}

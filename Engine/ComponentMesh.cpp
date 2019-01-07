@@ -191,20 +191,23 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	lightNum = 0u;
 	for (ComponentLight* cL : spots)
 	{
-		std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]"; 
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr+".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr+".color").c_str()), 1, cL->color.ptr());
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr+".attenuation").c_str()), 1, cL->attenuation.ptr());
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
-		glUniform1f(glGetUniformLocation(program,
-			(posStr+".inner").c_str()), cos(cL->innerAngle));
-		glUniform1f(glGetUniformLocation(program,
-			(posStr + ".outter").c_str()), cos(cL->outterAngle));
-		++lightNum;
+		if (cL->ConeContainsAABB(*transform->owner->aaBBGlobal))
+		{
+			std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]";
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".color").c_str()), 1, cL->color.ptr());
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
+			glUniform1f(glGetUniformLocation(program,
+				(posStr + ".inner").c_str()), cos(cL->innerAngle));
+			glUniform1f(glGetUniformLocation(program,
+				(posStr + ".outter").c_str()), cos(cL->outterAngle));
+			++lightNum;
+		}
 	}
 	glUniform1i(glGetUniformLocation(program, "nSpots"), lightNum);
 
