@@ -111,6 +111,15 @@ bool ModuleScene::SaveScene(const std::string & path) const
 	writerConfig.String("quadTreeDepth"); writerConfig.Int(App->spacePartitioning->quadTree.maxDepth);
 	writerConfig.String("quadTreeBucketSize"); writerConfig.Int(App->spacePartitioning->quadTree.bucketSize);
 	writerConfig.String("aa"); writerConfig.Int((int)App->editor->gameViewPort->antialiasing);
+	writerConfig.String("fogEnabled"); writerConfig.Bool(App->renderer->fog);
+	writerConfig.String("fogFalloff"); writerConfig.Double(App->renderer->fogFalloff);
+	writerConfig.String("fogQuadratic"); writerConfig.Double(App->renderer->fogQuadratic);
+	writerConfig.String("fogColor"); 
+	writerConfig.StartArray();
+	writerConfig.Double(App->renderer->fogColor[0]);
+	writerConfig.Double(App->renderer->fogColor[1]);
+	writerConfig.Double(App->renderer->fogColor[2]);
+	writerConfig.EndArray();
 	writerConfig.String("editorCamera");
 	App->camera->editorCamera.Serialize(writerConfig);
 	writerConfig.EndObject();
@@ -170,6 +179,13 @@ bool ModuleScene::LoadScene(const std::string & path)
 				App->editor->toolBar->aa_item_current = App->editor->toolBar->aa_items[(unsigned)App->editor->gameViewPort->antialiasing];
 				rapidjson::Value serializedCam = config["editorCamera"].GetObjectJSON();
 				App->camera->editorCamera.UnSerialize(serializedCam);
+				App->renderer->fog = config["fogEnabled"].GetBool();
+				App->renderer->fogFalloff = config["fogFalloff"].GetDouble();
+				App->renderer->fogQuadratic = config["fogQuadratic"].GetDouble();
+				App->renderer->fogColor[0] = config["fogColor"][0].GetDouble();
+				App->renderer->fogColor[1] = config["fogColor"][1].GetDouble();
+				App->renderer->fogColor[2] = config["fogColor"][2].GetDouble();
+				
 			}
 		}
 	}

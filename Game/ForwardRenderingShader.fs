@@ -39,8 +39,16 @@ struct SpotLight
 	vec3 attenuation; // 0 - Constant | 1 - Linear | 2 - Quadric
 };
 
+struct Fog
+{
+	vec3 fogColor;
+	float fogQuadratic;
+	float fogFalloff;
+};
+
 uniform Material mat;
 
+//lighting
 uniform float appScale;
 uniform int nPoints;
 uniform PointLight lightPoints[10];
@@ -48,6 +56,7 @@ uniform int nSpots;
 uniform SpotLight lightSpots[10];
 uniform int nDirectionals;
 uniform DirectionalLight lightDirectionals[10];
+uniform Fog fogParameters;
 
 uniform mat4 view;
 
@@ -120,7 +129,6 @@ void main()
 	vec4 specularTex = texture2D(mat.specularMap, UV0);
 
 	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
-	float dist = 0.00005 * length(position - eye_pos);
 
 	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
 
@@ -142,7 +150,10 @@ void main()
 		color = color + spotBlinn(lightSpots[i], light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
-	color = color + vec4(dist, dist, dist, 1.0f) * vec4(1,0,0,1);
+	float fragDistance = length(position - eye_pos);
+	float fogAmount = fogParameters.fogFalloff * fragDistance + fogParameters.fogFalloff * fogParameters.fogQuadratic * fragDistance * fragDistance;	
+
+	color = color + vec4(fogAmount, fogAmount, fogAmount, 1.0f) * vec4(fogParameters.fogColor, 1.0f);
 	color.a = 1.0f;
 
 }

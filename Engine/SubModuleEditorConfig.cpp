@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "ModuleFrameBuffer.h"
+#include "ModuleProgram.h"
 #include "ModuleSpacePartitioning.h"
 #include "QuadTree.h"
 #include "imgui/imgui.h"
@@ -89,6 +90,26 @@ void SubModuleEditorConfig::Show()
 		}
 		if (ImGui::CollapsingHeader("Render Module"))
 		{
+			if (ImGui::Button("Show forward rendering active uniform data"))
+			{
+				
+				GLint i;
+				GLint count;
+				GLint size; 
+				GLenum type; 
+				const GLsizei bufSize = 1024; 
+				GLchar name[bufSize]; 
+				GLsizei length; 
+				glGetProgramiv(*App->program->forwardRenderingProgram, GL_ACTIVE_UNIFORMS, &count);
+				LOG("Active Uniforms: %d", count);
+
+				for (int i = 0; i < count; i++)
+				{
+					glGetActiveUniform(*App->program->forwardRenderingProgram, (GLuint)i, bufSize, &length, &size, &type, name);
+					LOG("Uniform #%d Type: %u Name: %s", i, type, name);
+				}
+			}
+
 			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);			
 			if (ImGui::Checkbox("Wireframe", &wireframe)) 
 			{
@@ -97,7 +118,13 @@ void SubModuleEditorConfig::Show()
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
-
+			ImGui::Separator();
+			
+			ImGui::Checkbox("Distance Fog", &App->renderer->fog);
+			ImGui::ColorEdit3("Fog color", &App->renderer->fogColor[0]);
+			ImGui::SliderFloat("Fog falloff", &App->renderer->fogFalloff, 1, 10000 * App->appScale);
+			ImGui::SliderFloat("Fog Quadratic factor", &App->renderer->fogQuadratic, 1, 20 * App->appScale);
+			
 		}
 		if (ImGui::CollapsingHeader("Textures Module"))
 		{

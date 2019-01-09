@@ -30,6 +30,11 @@ public:
 
 	bool frustumCulling = true;
 
+	bool fog = true;
+	float fogColor[3] = { 1.f, 1.f, 1.f };
+	float fogFalloff = 5000.f;
+	float fogQuadratic = 1000.f;
+
 private:
 	std::list<const GameObject*> renderizables;  //The owner of the component should clean this
 };

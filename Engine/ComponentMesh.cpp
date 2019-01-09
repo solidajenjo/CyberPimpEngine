@@ -8,6 +8,7 @@
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "crossguid/include/crossguid/guid.hpp"
@@ -156,9 +157,18 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	unsigned program = *App->program->forwardRenderingProgram;
 	//unsigned program = *App->program->normalInspectorProgram;
 	glUseProgram(program);	
-
 	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
-
+	if (App->renderer->fog)
+	{
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), 1.f / App->renderer->fogFalloff);
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), 1.f / App->renderer->fogQuadratic);
+		glUniform3fv(glGetUniformLocation(program, "fogParameters.fogColor"), 1, &App->renderer->fogColor[0]);			
+	}
+	else
+	{
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), .0f);
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
+	}
 	unsigned lightNum = 0u;
 	for (ComponentLight* cL : directionals)
 	{
