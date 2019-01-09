@@ -88,7 +88,7 @@ vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlu
 vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
 {	
 	float distance = length(light_dir);
-	light_dir = light_dir / distance;
+	light_dir = -(light_dir / distance);
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
 	float att = 1.0f / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
@@ -120,6 +120,7 @@ void main()
 	vec4 specularTex = texture2D(mat.specularMap, UV0);
 
 	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
+	float dist = 0.00005 * length(position - eye_pos);
 
 	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
 
@@ -141,6 +142,7 @@ void main()
 		color = color + spotBlinn(lightSpots[i], light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
+	color = color + vec4(dist, dist, dist, 1.0f) * vec4(1,0,0,1);
 	color.a = 1.0f;
 
 }

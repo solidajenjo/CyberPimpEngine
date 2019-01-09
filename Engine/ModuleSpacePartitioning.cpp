@@ -4,21 +4,21 @@
 #include "debugdraw.h"
 
 
-bool ModuleSpacePartitioning::Init()
+bool ModuleSpacePartitioning::Init() //TODO:Clear Trees on new
 {
 	kDTree.Init();
+	aabbTree.Init();
 	return true;
 }
 
 update_status ModuleSpacePartitioning::Update()
-{	
-	kDTree.Calculate();
+{		
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleSpacePartitioning::CleanUp()
 {
-
+	aabbTree.CleanUp();
 	return true;
 }
 

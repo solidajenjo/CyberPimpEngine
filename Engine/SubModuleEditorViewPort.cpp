@@ -24,7 +24,8 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ModuleInput.h"
 #include "ModuleTime.h"
-#include "TimeClock.h"
+#include "Transform.h"
+#include "TimeClock.h" //TODO: Check if all includes are needed
 
 void SubModuleEditorViewPort::Show()
 {
@@ -89,12 +90,11 @@ void SubModuleEditorViewPort::Show()
 			}
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
 			
-		}		
-		if (App->spacePartitioning->quadTree.showOnEditor)
-			App->spacePartitioning->quadTree.DebugDraw();		
+		}			
 		if (App->spacePartitioning->kDTree.showOnEditor)
 			App->spacePartitioning->kDTree.DebugDraw();
-		
+		if (App->spacePartitioning->aabbTree.showOnEditor)
+			App->spacePartitioning->aabbTree.Draw();
 		App->frameBuffer->UnBind();
 		ImVec2 curPos = ImGui::GetCursorPos();
 		ImVec2 winPos = ImGui::GetWindowPos();
@@ -116,7 +116,7 @@ void SubModuleEditorViewPort::Show()
 					float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
 					picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
 					std::set<GameObject*> intersections;
-					App->spacePartitioning->quadTree.GetIntersections(picking, intersections);
+					App->spacePartitioning->aabbTree.GetIntersections(picking, intersections);
 					App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
 					float bestDistance = .0f;
 					for each (GameObject* go in intersections)
@@ -137,7 +137,7 @@ void SubModuleEditorViewPort::Show()
 									App->scene->selected = go;
 									App->scene->selected->selected = true;
 									bestDistance = d;
-									pickingDelay = .5f; // wait 1/2 second to do something else
+									pickingDelay = .25f; // wait 1/4 second to do something else to avoid weird movements
 								}
 							}
 						}

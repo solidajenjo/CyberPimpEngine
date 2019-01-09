@@ -35,64 +35,41 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const; 
+	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
 
-//members
+	//members
 
 	QTNode* treeRoot = nullptr;
 	bool showOnEditor = true;
 	int maxDepth = 3;
-	int bucketSize = 1;
-	std::vector<QTNode*> leaves;
+	int bucketSize = 5;
 };
-
-inline void QuadTree::Calculate()
-{			
-	RELEASE(treeRoot);
-	treeRoot = new QTNode();
-	leaves.resize(0);
-	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket);
-	std::queue<QTNode*> Q;
-	Q.push(treeRoot);
-	while (!Q.empty())
-	{
-		QTNode* currentNode = Q.front(); Q.pop();
-		if (currentNode->bucket.size() > bucketSize && currentNode->depth < maxDepth)
-		{
-			std::vector<QTNode*> newNodes = currentNode->Flush();
-			for each (QTNode* node in newNodes)
-			{
-				Q.push(node);
-			}
-		}
-		else
-			leaves.push_back(currentNode);
-	}
-
-}
-
-inline void QuadTree::DebugDraw() const
-{
-	for (QTNode* node : leaves)
-	{
-		dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
-	}
-}
 
 template<typename T>
 inline void QuadTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
 {
 	BROFILER_CATEGORY("QuadTree intersections", Profiler::Color::Beige);
+	if (treeRoot == nullptr)
+		return;
+	std::queue<QTNode*> Q;
+	Q.push(treeRoot);
 
-	for (QTNode* node : leaves)
+	while (!Q.empty())
 	{
-		if (node->aabb->ContainsQTree(intersector))
+		QTNode* node = Q.front();
+		Q.pop();
+		if (node->lowerNodes.size() == 0u && node->aabb->ContainsQTree(intersector))
 		{
-			BROFILER_CATEGORY("QuadTree Set inserts", Profiler::Color::Bisque);
 			intersections.insert(node->bucket.begin(), node->bucket.end());
 		}
+		else
+		{
+			for each (QTNode* n in node->lowerNodes)
+			{
+				Q.push(n);
+			}
+		}
 	}
-
 }
 
 #endif

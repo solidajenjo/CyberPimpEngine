@@ -6,10 +6,10 @@
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "GameObject.h"
 #include "Application.h"
-#include "ModuleEditor.h"
 #include "ModuleScene.h"
-#include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleSpacePartitioning.h"
+#include "AABBTree.h"
 #include <queue>
 #include "imgui/imgui.h"
 #include "SDL/include/SDL_mouse.h"
@@ -264,7 +264,12 @@ void Transform::UpdateAABB() const
 }
 void Transform::PropagateTransform() // update & propagate transform matrix
 {
-
+	if (owner->treeNode != nullptr && !owner->aaBBGlobal->Contains(owner->treeNode->aabb))
+	{
+		App->spacePartitioning->aabbTree.ReleaseNode(owner->treeNode);
+		owner->treeNode = nullptr;
+		App->spacePartitioning->aabbTree.InsertGO(owner);
+	}
 	if (owner->parent != nullptr)
 	{
 		modelMatrixGlobal = owner->parent->transform->modelMatrixGlobal.Mul(modelMatrixLocal);
@@ -297,6 +302,13 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 				(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
 				(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);
 				(*it)->transform->UpdateAABB();
+				if ((*it)->treeNode != nullptr && !(*it)->aaBBGlobal->Contains((*it)->treeNode->aabb))
+				{
+					App->spacePartitioning->aabbTree.ReleaseNode((*it)->treeNode);
+					(*it)->treeNode = nullptr;
+					App->spacePartitioning->aabbTree.InsertGO((*it));
+				}
+				
 			}
 		}
 	}

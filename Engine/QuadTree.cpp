@@ -66,3 +66,46 @@ std::vector<QTNode*>& QTNode::Flush()
 	return lowerNodes;
 }
 
+
+inline void QuadTree::Calculate()
+{
+	treeRoot = new QTNode();
+	unsigned u = 0u;
+	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket, u);
+	std::queue<QTNode*> Q;
+	Q.push(treeRoot);
+	while (!Q.empty())
+	{
+		QTNode* currentNode = Q.front(); Q.pop();
+		if (currentNode->bucket.size() > bucketSize && currentNode->depth < maxDepth)
+		{
+			std::vector<QTNode*> newNodes = currentNode->Flush();
+			for each (QTNode* node in newNodes)
+			{
+				Q.push(node);
+			}
+		}
+	}
+
+}
+
+inline void QuadTree::DebugDraw() const
+{
+	if (treeRoot == nullptr)
+		return;
+	std::queue<QTNode*> Q;
+	Q.push(treeRoot);
+
+	while (!Q.empty())
+	{
+		QTNode* node = Q.front();
+		Q.pop();
+		if (node->lowerNodes.size() == 0u)
+			dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
+		for each (QTNode* n in node->lowerNodes)
+		{
+			Q.push(n);
+		}
+	}
+
+}

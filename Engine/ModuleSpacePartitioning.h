@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "QuadTree.h"
 #include "KDTree.h"
+#include "AABBTree.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 
@@ -22,7 +23,7 @@ public:
 	unsigned currentKDTree = 0u;
 	QuadTree quadTree;
 	KDTree kDTree;
-	
+	AABBTree aabbTree;
 
 };
 

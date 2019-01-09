@@ -154,21 +154,8 @@ void SubModuleEditorConfig::Show()
 					break;
 			}
 		}
-		if (ImGui::CollapsingHeader("QuadTree"))
-		{
-			ImGui::Checkbox("Show QuadTree", &App->spacePartitioning->quadTree.showOnEditor);
-			if (ImGui::InputInt("QuadTree Max Depth", &App->spacePartitioning->quadTree.maxDepth))
-			{
-				if (App->spacePartitioning->quadTree.maxDepth < 1)
-					App->spacePartitioning->quadTree.maxDepth = 1;
-			}
-			if (ImGui::InputInt("QuadTree Bucket Size", &App->spacePartitioning->quadTree.bucketSize))
-			{
-				if (App->spacePartitioning->quadTree.bucketSize < 1)
-					App->spacePartitioning->quadTree.bucketSize = 1;
-			}
-		}
-		if (ImGui::CollapsingHeader("KDTree"))
+		
+		if (ImGui::CollapsingHeader("KDTree Static Space Partitioning"))
 		{
 			ImGui::Checkbox("Show KDTree", &App->spacePartitioning->kDTree.showOnEditor);
 			if (ImGui::InputInt("KDTree Max Depth", &App->spacePartitioning->kDTree.maxDepth))
@@ -185,6 +172,10 @@ void SubModuleEditorConfig::Show()
 				App->spacePartitioning->kDTree.Init();
 				App->spacePartitioning->kDTree.Calculate();
 			}
+		}
+		if (ImGui::CollapsingHeader("AABBTree Dynamic Space Partitioning"))
+		{
+			ImGui::Checkbox("Show AABBTree", &App->spacePartitioning->aabbTree.showOnEditor);			
 		}
 		if (ImGui::CollapsingHeader("Scene Module"))
 		{

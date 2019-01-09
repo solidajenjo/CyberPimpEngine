@@ -5,7 +5,6 @@
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
-#include "MathGeoLib/include/Geometry/Plane.h"
 
 ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT)
 {

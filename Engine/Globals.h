@@ -13,15 +13,25 @@
 	} \
 }
 
+#define RELEASE_ARRAY( x ) \
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }
+
+
 #define PROCESS_PRIMITIVE(){\
 								newMesh->material->owner = newGO;\
 								App->renderer->insertRenderizable(newGO);\
 								newMesh->SendToGPU();\
 								newGO->InsertComponent(newMesh);\
 								newGO->isInstantiated = true; \
-								App->scene->InsertGameObject(newGO);\
 								App->scene->AttachToRoot(newGO);\
 								newGO->transform->PropagateTransform();\
+								App->scene->InsertGameObject(newGO);\
 								ImGui::CloseCurrentPopup(); }
 
 void log(const char file[], int line, const char* format, ...);
@@ -38,5 +48,5 @@ enum update_status
 #define RESIZABLE_WINDOW true
 #define TITLE "Draconis Engine"
 #define OPENGL_VERSION "#version 330"
-
+#define MAX_NON_STATIC_GAMEOBJECTS 4096
 #endif

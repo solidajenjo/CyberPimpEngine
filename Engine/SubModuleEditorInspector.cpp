@@ -10,6 +10,7 @@
 #include "Component.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
+#include "Transform.h"
 #include <list>
 
 

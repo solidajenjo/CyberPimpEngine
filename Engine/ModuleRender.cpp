@@ -88,7 +88,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 	std::vector<ComponentLight*> directionals;
 	std::vector<ComponentLight*> points;
 	std::vector<ComponentLight*> spots;
-	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it)
+	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it) //TODO: Make a light pool to direct access
 	{
 		for (Component* comp : (*it).second->components)
 		{
@@ -114,8 +114,9 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
 		std::set<GameObject*> intersections;
+		
 		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
-		App->spacePartitioning->quadTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
+		App->spacePartitioning->aabbTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		for (GameObject* go : intersections)
 		{
 			if (go->enabled && (App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))

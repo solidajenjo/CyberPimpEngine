@@ -3,6 +3,7 @@
 #include "imgui/imgui.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
+#include "Transform.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"

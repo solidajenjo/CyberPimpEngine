@@ -53,7 +53,7 @@ bool ModuleScene::CleanUp()
 	LOG("Cleaning scene GameObjects. Done");
 	selected = nullptr;
 	sceneCamera = nullptr;
-	App->textures->CleanUp();
+	App->textures->CleanUp();	
 	return true;
 }
 
@@ -145,7 +145,7 @@ bool ModuleScene::LoadScene(const std::string & path)
 			}
 			else
 			{
-				rapidjson::Value config = document.GetObjectA();
+				rapidjson::Value config = document.GetObjectJSON();
 				App->appScale = config["scale"].GetDouble();
 				switch ((int)App->appScale)
 				{
@@ -168,7 +168,7 @@ bool ModuleScene::LoadScene(const std::string & path)
 				App->spacePartitioning->quadTree.bucketSize = config["quadTreeBucketSize"].GetInt();
 				App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)config["aa"].GetInt();
 				App->editor->toolBar->aa_item_current = App->editor->toolBar->aa_items[(unsigned)App->editor->gameViewPort->antialiasing];
-				rapidjson::Value serializedCam = config["editorCamera"].GetObjectA();
+				rapidjson::Value serializedCam = config["editorCamera"].GetObjectJSON();
 				App->camera->editorCamera.UnSerialize(serializedCam);
 			}
 		}
@@ -261,14 +261,16 @@ bool ModuleScene::LoadScene(const std::string & path)
 				LinkGameObjects();
 				if (staticGameObjects)
 				{
-					App->spacePartitioning->quadTree.Calculate();
-				}
-				if (nonStaticGameObjects)
-				{
 					App->spacePartitioning->kDTree.Init();
 					App->spacePartitioning->kDTree.Calculate();
 				}
-				root->transform->PropagateTransform();
+				if (nonStaticGameObjects)
+				{
+					App->spacePartitioning->aabbTree.CleanUp();
+					App->spacePartitioning->aabbTree.Init();
+					App->spacePartitioning->aabbTree.Calculate();					
+				}
+				//root->transform->PropagateTransform();
 			}
 			delete buffer;
 		}
@@ -284,6 +286,7 @@ void ModuleScene::InsertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);
 	sceneGameObjects[newGO->gameObjectUUID] = newGO;
+	App->spacePartitioning->aabbTree.InsertGO(newGO);
 }
 
 void ModuleScene::ImportGameObject(GameObject * newGO, ImportedType type)
@@ -450,10 +453,12 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("YES", ImVec2(100, 20)))
-				{
+				{					
 					DeleteGameObject(gObj);
 					selected = nullptr;
 					App->spacePartitioning->kDTree.Calculate();
+					if (gObj->treeNode!= nullptr)
+						App->spacePartitioning->aabbTree.ReleaseNode(gObj->treeNode);
 					ImGui::CloseCurrentPopup();
 				}
 				ImGui::EndPopup();
@@ -468,7 +473,8 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 			}
 			if (ImGui::IsItemClicked())
 			{
-				gObj->parent->InsertChild(gObj->Clone());
+				GameObject* clone = gObj->Clone();
+				gObj->parent->InsertChild(clone);
 				gObj->parent->transform->PropagateTransform();
 				closeContextPopup = true;
 			}
@@ -591,7 +597,7 @@ void ModuleScene::SetSkyBox()
 	*/
 }
 
-void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs) const
+void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*> &staticGOs, unsigned &GOCount) const
 {
 	bool first = true;
 	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)
@@ -611,13 +617,13 @@ void ModuleScene::GetStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>
 				globalAABB->GetCornerPoints(&corners[8]);
 				globalAABB->Enclose(&corners[0], 16);
 			}
-			staticGOs.push_back((*it).second);
+			staticGOs[++GOCount] = (*it).second;
 		}
 		RELEASE(corners);
 	}
 }
 
-void ModuleScene::GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>& nonStaticGOs, unsigned &GOCount) const
+void ModuleScene::GetNonStaticGlobalAABB(AABB* globalAABB, std::vector<GameObject*>& nonStaticGOs, unsigned &GOCount) const //TODO:Keep a pool with no static gameobjects
 {
 	bool first = true;
 	for (std::map<std::string, GameObject*>::const_iterator it = sceneGameObjects.begin(); it != sceneGameObjects.end(); ++it)

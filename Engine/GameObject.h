@@ -1,18 +1,17 @@
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
 
-#include "Globals.h"
 #include <list>
 #include <string>
-#include "Transform.h"
-#include "Component.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
-#include "crossguid/include/crossguid/guid.hpp"
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 
 class ComponentMesh;
+class Transform;
+class Component;
+class AABBTreeNode;
 
 class GameObject
 {
@@ -68,6 +67,8 @@ public:
 	bool isStatic = false;
 	bool isContainer = false;
 	bool active = true;
+
+	AABBTreeNode* treeNode = nullptr; //Pointer to the AABBTree node who holds the gameobject
 };
 
 

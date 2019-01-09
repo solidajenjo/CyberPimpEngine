@@ -12,6 +12,8 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "MaterialImporter.h"
+#include "crossguid/include/crossguid/guid.hpp"
+#include "Transform.h"
 #include <stack>
 
 

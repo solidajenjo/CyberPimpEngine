@@ -1,6 +1,8 @@
 #include "SubModuleEditorMenu.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleSpacePartitioning.h"
+#include "AABBTree.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "FileExplorer.h"
@@ -29,7 +31,9 @@ void SubModuleEditorMenu::Show()
 				if (ImGui::MenuItem("New"))
 				{
 					App->scene->CleanUp();
-					App->scene->Init();										
+					App->scene->Init();	
+					App->spacePartitioning->aabbTree.CleanUp();
+					App->spacePartitioning->aabbTree.Init();
 				}
 				if (ImGui::MenuItem("Save"))
 				{

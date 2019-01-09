@@ -242,6 +242,7 @@
     <ClInclude Include="Dependencies\rapidjson-1.1.0\include\rapidjson\writer.h" />
     <ClInclude Include="Dependencies\SDL\include\SDL_filesystem.h" />
     <ClInclude Include="Dependencies\SDL\include\SDL_rwops.h" />
+    <ClInclude Include="Engine\AABBTree.h" />
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\ComponentCamera.h" />
@@ -322,6 +323,7 @@
     <ClCompile Include="Dependencies\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Dependencies\physfs-3.0.1\src\physfs_platform_haiku.cpp" />
+    <ClCompile Include="Engine\AABBTree.cpp" />
     <ClCompile Include="Engine\Application.cpp" />
     <ClCompile Include="Engine\ComponentCamera.cpp" />
     <ClCompile Include="Engine\ComponentLight.cpp" />

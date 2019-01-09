@@ -12,6 +12,8 @@
 #include "SceneImporter.h"
 #include "MaterialImporter.h"
 #include "MathGeoLib/include/Geometry/Triangle.h"
+#include "crossguid/include/crossguid/guid.hpp"
+#include "Transform.h"
 #include <queue>
 
 
@@ -70,7 +72,7 @@ void GameObject::InsertComponent(Component * newComponent)
 			AABB tempAABB;
 			tempAABB.SetFrom(&mesh->meshVertices[0], mesh->nVertices);
 
-			aaBB->GetCornerPoints(&corners[0]); //TODO: Check global aabb. Not fitting the mesh
+			aaBB->GetCornerPoints(&corners[0]); 
 			tempAABB.GetCornerPoints(&corners[8]);
 			aaBB->Enclose(&corners[0], 16);		
 		}
@@ -273,14 +275,18 @@ void GameObject::PropagateStaticCheck()
 	Q.push(origin);
 	while (!Q.empty()) //propagate
 	{
-		origin = Q.front(); Q.pop();
+		origin = Q.front(); Q.pop();		
 		origin->isStatic = isStatic;
+		
 		for (std::list<GameObject*>::iterator it = origin->children.begin(); it != origin->children.end(); ++it)
 		{
 			Q.push(*it);			
 		}
 	}
-	App->spacePartitioning->quadTree.Calculate();
+	App->spacePartitioning->kDTree.Calculate();
+	App->spacePartitioning->aabbTree.CleanUp();
+	App->spacePartitioning->aabbTree.Init();
+	App->spacePartitioning->aabbTree.Calculate();
 }
 
 

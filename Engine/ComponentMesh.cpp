@@ -15,6 +15,7 @@
 #include "SceneImporter.h"
 #include "glew-2.1.0/include/GL/glew.h"
 #include "debugdraw.h"
+#include "Transform.h"
 #include "GameObject.h"
 #include "Brofiler/ProfilerCore/Brofiler.h"
 #pragma warning(push)
