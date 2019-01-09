@@ -24,6 +24,7 @@ public:
 	QuadTree quadTree;
 	KDTree kDTree;
 	AABBTree aabbTree;
+	AABBTree aabbTreeLighting;
 
 };
 

@@ -6,9 +6,9 @@
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
 
-ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT)
+ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) //TODO: calculate guizmos by demand on creation
 {
-	CalculateGuizmos();
+	//CalculateGuizmos();
 }
 
 void ComponentLight::EditorDraw()

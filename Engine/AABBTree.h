@@ -29,7 +29,7 @@ class AABBTree
 {
 public:
 
-	void Init();
+	void Init(GameObject::GameObjectLayers layer);
 	void CleanUp();
 	void Reset();
 	void Calculate();
@@ -47,9 +47,10 @@ public:
 
 	AABBTreeNode* treeRoot = nullptr;
 	AABBTreeNode** nodesFreePool = nullptr;
-	AABBTreeNode** nodesCreatedPool = nullptr; //all created nodes container to clean
+	AABBTreeNode** nodesCreatedPool = nullptr; //all created nodes container to cleaning pourposes
 	bool showOnEditor = false;
 	unsigned lastFreeNode = MAX_AABB_TREE_NODES - 1;
+	GameObject::GameObjectLayers treeLayer = GameObject::GameObjectLayers::DEFAULT;
 };
 
 template<typename T>

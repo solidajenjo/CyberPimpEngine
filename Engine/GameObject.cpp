@@ -15,6 +15,7 @@
 #include "crossguid/include/crossguid/guid.hpp"
 #include "Transform.h"
 #include <queue>
+#include "FakeGameObject.h"
 
 
 
@@ -223,8 +224,15 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 			case (unsigned)Component::ComponentTypes::LIGHT_COMPONENT:
 			{
 				ComponentLight* newLight = new ComponentLight();
-				newLight->UnSerialize(*it);
 				InsertComponent(newLight);
+				newLight->UnSerialize(*it);
+				newLight->CalculateGuizmos();
+				FakeGameObject* fgo = new FakeGameObject();
+				fgo->component = newLight;
+				fgo->layer = GameObject::GameObjectLayers::LIGHTING;
+				fgo->isFake = true;
+				fgo->original = this;
+				App->scene->lightingFakeGameObjects.push_back(fgo);
 				break;
 			}
 
@@ -285,8 +293,10 @@ void GameObject::PropagateStaticCheck()
 	}
 	App->spacePartitioning->kDTree.Calculate();
 	App->spacePartitioning->aabbTree.CleanUp();
-	App->spacePartitioning->aabbTree.Init();
+	App->spacePartitioning->aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
 	App->spacePartitioning->aabbTree.Calculate();
+	App->spacePartitioning->aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
+	App->spacePartitioning->aabbTreeLighting.Calculate();
 }
 
 

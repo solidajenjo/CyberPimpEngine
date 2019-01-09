@@ -20,7 +20,8 @@ public:
 	enum class GameObjectLayers
 	{
 		DEFAULT,			// General layer
-		WORLD_VOLUME		// QuadTree && KDTree detectable - Used to discard lights, cameras & other non volumetric instantiated gameobjects
+		WORLD_VOLUME,		// QuadTree / KDTree / AABBTree detectable - Used to discard lights, cameras & other non volumetric instantiated gameobjects
+		LIGHTING			// AABBTree lights layer to lighting frustum culling
 	};
 
 	GameObject(const char name[1024], bool isContainer = false);
@@ -67,6 +68,7 @@ public:
 	bool isStatic = false;
 	bool isContainer = false;
 	bool active = true;
+	bool isFake = false;
 
 	AABBTreeNode* treeNode = nullptr; //Pointer to the AABBTree node who holds the gameobject
 };

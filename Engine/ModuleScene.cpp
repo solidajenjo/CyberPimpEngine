@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "FakeGameObject.h"
 #include "ModuleScene.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleRender.h"
@@ -54,6 +55,9 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	sceneCamera = nullptr;
 	App->textures->CleanUp();	
+	for (FakeGameObject* fgo : lightingFakeGameObjects)
+		RELEASE(fgo);
+
 	return true;
 }
 
@@ -283,8 +287,10 @@ bool ModuleScene::LoadScene(const std::string & path)
 				if (nonStaticGameObjects)
 				{
 					App->spacePartitioning->aabbTree.CleanUp();
-					App->spacePartitioning->aabbTree.Init();
+					App->spacePartitioning->aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
 					App->spacePartitioning->aabbTree.Calculate();					
+					App->spacePartitioning->aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
+					App->spacePartitioning->aabbTreeLighting.Calculate();
 				}
 				//root->transform->PropagateTransform();
 			}

@@ -95,6 +95,8 @@ void SubModuleEditorViewPort::Show()
 			App->spacePartitioning->kDTree.DebugDraw();
 		if (App->spacePartitioning->aabbTree.showOnEditor)
 			App->spacePartitioning->aabbTree.Draw();
+		if (App->spacePartitioning->aabbTreeLighting.showOnEditor)
+			App->spacePartitioning->aabbTreeLighting.Draw();
 		App->frameBuffer->UnBind();
 		ImVec2 curPos = ImGui::GetCursorPos();
 		ImVec2 winPos = ImGui::GetWindowPos();

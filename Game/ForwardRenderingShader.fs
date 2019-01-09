@@ -51,11 +51,11 @@ uniform Material mat;
 //lighting
 uniform float appScale;
 uniform int nPoints;
-uniform PointLight lightPoints[10];
+uniform PointLight lightPoints[100];
 uniform int nSpots;
-uniform SpotLight lightSpots[10];
+uniform SpotLight lightSpots[100];
 uniform int nDirectionals;
-uniform DirectionalLight lightDirectionals[10];
+uniform DirectionalLight lightDirectionals[2];
 uniform Fog fogParameters;
 
 uniform mat4 view;

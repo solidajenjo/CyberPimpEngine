@@ -92,8 +92,6 @@ void SubModuleEditorConfig::Show()
 		{
 			if (ImGui::Button("Show forward rendering active uniform data"))
 			{
-				
-				GLint i;
 				GLint count;
 				GLint size; 
 				GLenum type; 
@@ -204,6 +202,12 @@ void SubModuleEditorConfig::Show()
 		{
 			ImGui::Checkbox("Show AABBTree", &App->spacePartitioning->aabbTree.showOnEditor);			
 		}
+		ImGui::PushID(1);
+		if (ImGui::CollapsingHeader("AABBTree Dynamic lighting Space Partitioning"))
+		{
+			ImGui::Checkbox("Show AABBTree", &App->spacePartitioning->aabbTreeLighting.showOnEditor);
+		}
+		ImGui::PopID();
 		if (ImGui::CollapsingHeader("Scene Module"))
 		{
 			if (ImGui::Button("Clear scene"))

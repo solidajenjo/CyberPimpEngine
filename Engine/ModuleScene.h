@@ -9,6 +9,7 @@
 
 class GameObject;
 class ComponentCamera;
+class FakeGameObject;
 
 class ModuleScene :	public Module
 {
@@ -65,6 +66,7 @@ public:
 	GameObject* selected = nullptr;
 	ComponentCamera* sceneCamera = nullptr;
 	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
+	std::vector<FakeGameObject*> lightingFakeGameObjects; // handles fake gameobjects to insert lights on the partitioning trees
 
 private:
 

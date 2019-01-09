@@ -4,9 +4,12 @@
 #include "Transform.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "FakeGameObject.h"
+#include "ComponentLight.h"
 
-void AABBTree::Init()
+void AABBTree::Init(GameObject::GameObjectLayers layer) 
 {
+	treeLayer = layer;
 	nodesFreePool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	nodesCreatedPool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
@@ -46,29 +49,53 @@ void AABBTree::Reset()
 }
 
 void AABBTree::Calculate()
-{
+{	
 	LOG("Recalc AABBTREE");
-	static AABB* a = new AABB();
-	std::vector<GameObject*> GOs;
-	GOs.resize(MAX_NON_STATIC_GAMEOBJECTS);
-	unsigned k = 0u;
-	App->scene->GetNonStaticGlobalAABB(a, GOs, k);
-
-	for (unsigned i = 1u; i <= k; ++i)
+	switch (treeLayer)
 	{
-		InsertGO(GOs[i]);
+	case GameObject::GameObjectLayers::WORLD_VOLUME:
+	{
+		static AABB* a = new AABB();
+		std::vector<GameObject*> GOs;
+		GOs.resize(MAX_NON_STATIC_GAMEOBJECTS);
+		unsigned k = 0u;
+		App->scene->GetNonStaticGlobalAABB(a, GOs, k);
+
+		for (unsigned i = 1u; i <= k; ++i)
+		{
+			InsertGO(GOs[i]);
+		}
+		break;
+	}
+	case GameObject::GameObjectLayers::LIGHTING:
+		for (FakeGameObject* fgo : App->scene->lightingFakeGameObjects)
+		{			
+			InsertGO(fgo);
+		}
 	}
 }
 
 void AABBTree::InsertGO(GameObject* go)
 {
-	//For now only world volume accepted
-	if (go->layer != GameObject::GameObjectLayers::WORLD_VOLUME) //TODO: Make selectable layer on aabbTree creation 
+	if (go->layer != treeLayer) 
 		return;
 	assert(go != nullptr); //tried to insert a null GameObject in the AABBTree
-	go->transform->UpdateAABB();
+	
 	std::stack<AABBTreeNode*> S;
 	
+	if (go->isFake)
+	{
+		FakeGameObject* fgo = (FakeGameObject*)go;
+		switch (fgo->component->type) //other component types can be added in the future
+		{
+		case Component::ComponentTypes::LIGHT_COMPONENT:
+			ComponentLight* light = (ComponentLight*)((FakeGameObject*)go)->component;
+			go->aaBBGlobal->SetNegativeInfinity();
+			go->aaBBGlobal->Enclose(light->pointSphere);
+			break;
+		}
+	}
+
 	//tree root behaves different it could not be binary
 
 	if ((treeRoot->leftSon == nullptr && treeRoot->rightSon != nullptr)

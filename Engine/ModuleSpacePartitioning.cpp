@@ -4,10 +4,11 @@
 #include "debugdraw.h"
 
 
-bool ModuleSpacePartitioning::Init() //TODO:Clear Trees on new
+bool ModuleSpacePartitioning::Init() 
 {
 	kDTree.Init();
-	aabbTree.Init();
+	aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
+	aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
 	return true;
 }
 

@@ -178,13 +178,14 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 		glUniform3fv(glGetUniformLocation(program,
 			(posStr + ".color").c_str()), 1, cL->color.ptr());
 		++lightNum;
+		if (lightNum == 2u) //max 2 directional lights Direct / Indirect
+			break;
 	}
 	glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
 
 	lightNum = 0u;
 	for (ComponentLight* cL : points)
 	{
-		cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
 		if (cL->pointSphere.Intersects(*transform->owner->aaBBGlobal) || cL->pointSphere.Contains(*transform->owner->aaBBGlobal))
 		{
 			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "]";
