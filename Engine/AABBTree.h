@@ -58,7 +58,6 @@ inline void AABBTree::GetIntersections(T &intersector, std::set<GameObject*> &in
 	BROFILER_CATEGORY("AABBTree intersections", Profiler::Color::Azure);
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
-	unsigned count = 0u;
 	while (!S.empty())
 	{
 		AABBTreeNode* node = S.top();
@@ -73,18 +72,13 @@ inline void AABBTree::GetIntersections(T &intersector, std::set<GameObject*> &in
 			{
 				S.push(node->leftSon);
 			}
-			if (node->leftSon != nullptr)
-				++count;
+
 			if (node->rightSon != nullptr&& node->rightSon->aabb.ContainsQTree(intersector))
 			{
 				S.push(node->rightSon);
-				++count;
 			}
-			if (node->rightSon != nullptr)
-				++count;
+
 		}
-		if (node->isLeaf)
-			++count;
 		
 	}
 
