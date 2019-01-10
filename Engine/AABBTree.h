@@ -74,7 +74,7 @@ inline void AABBTree::GetIntersections(T &intersector, std::set<GameObject*> &in
 				S.push(node->leftSon);
 			}
 
-			if (node->rightSon != nullptr&& node->rightSon->aabb.ContainsQTree(intersector))
+			if (node->rightSon != nullptr && node->rightSon->aabb.ContainsQTree(intersector))
 			{
 				S.push(node->rightSon);
 			}

@@ -6,8 +6,7 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Geometry/Sphere.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-#include "Transform.h"
-#include "GameObject.h"
+
 
 class ComponentLight : public Component
 {
@@ -30,25 +29,7 @@ public:
 
 	bool ConeContainsAABB(const AABB &aabb) const;  // returns true if the aabb is inside or intersects the spot light cone
 
-	inline void CalculateGuizmos()
-	{
-
-		//point light
-
-		float a = influence * attenuation[2];
-		float b = influence * attenuation[1];
-		float c = (influence * attenuation[0]) - 1.f;
-		float p = (-b + sqrt((b * b - 4.f * a * c)) / (2.f * a));
-
-		pointSphere.r = abs(p);
-		pointSphere.pos = owner->transform->getGlobalPosition();
-
-		//spot light
-
-		spotDistance = pointSphere.r; // max distance is equivalent as the point light radius
-		spotOutterDistance = abs(spotDistance / sin(spotDistance));
-		spotEndRadius = spotDistance * tan(outterAngle);
-	};
+	void CalculateGuizmos();
 
 	//members
 

@@ -32,7 +32,7 @@ void SubModuleEditorViewPort::Show()
 	if (enabled)
 	{	
 		ImGui::Begin(editorModuleName.data(), &enabled);
-		
+		isFocused = ImGui::IsWindowFocused();
 		const char* items[] = { "Translate", "Rotate", "Scale"};
 		static const char* item_current = items[0];
 		static unsigned selected = 0u;		
@@ -80,7 +80,7 @@ void SubModuleEditorViewPort::Show()
 		if (App->editor->gizmosEnabled)
 		{
 			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, 0.f, 1.f * App->appScale, dd::colors::DarkGray);
-			if (App->scene->sceneCamera != nullptr && App->scene->selected == App->scene->sceneCamera->owner)
+			if (App->scene->sceneCamera != nullptr)
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);
 			}

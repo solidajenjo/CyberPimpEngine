@@ -84,33 +84,35 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 {
 	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
-	//Temporary - Collect all lights
+	std::set<GameObject*> lightIntersections;
+	if (App->scene->sceneCamera != nullptr)
+		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->scene->sceneCamera->frustum, lightIntersections);
+	else
+		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->camera->editorCamera.frustum, lightIntersections);
+
+	//Separate lights by type
 	std::vector<ComponentLight*> directionals;
 	std::vector<ComponentLight*> points;
 	std::vector<ComponentLight*> spots;
-	for (std::map<std::string, GameObject*>::const_iterator it = App->scene->sceneGameObjects.begin(); it != App->scene->sceneGameObjects.end(); ++it) //TODO: Make a light pool to direct access
+	for (GameObject* go :  lightIntersections)
 	{
-		for (Component* comp : (*it).second->components)
+		ComponentLight* cL = (ComponentLight*)go->components.front();
+
+		switch (cL->lightType)
 		{
-			if (comp->type == Component::ComponentTypes::LIGHT_COMPONENT)
-			{
-				ComponentLight* cL = (ComponentLight*)comp;
-				switch (cL->lightType)
-				{
-				case ComponentLight::LightTypes::DIRECTIONAL:
-					directionals.push_back(cL);
-					break;
-				case ComponentLight::LightTypes::POINT:
-					cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
-					points.push_back(cL);
-					break;
-				case ComponentLight::LightTypes::SPOT:
-					spots.push_back(cL);
-					break;
-				}
-			}
+		case ComponentLight::LightTypes::DIRECTIONAL:
+			directionals.push_back(cL);
+			break;
+		case ComponentLight::LightTypes::POINT:
+			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
+			points.push_back(cL);
+			break;
+		case ComponentLight::LightTypes::SPOT:
+			spots.push_back(cL);
+			break;
 		}
 	}
+
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
 		std::set<GameObject*> intersections;

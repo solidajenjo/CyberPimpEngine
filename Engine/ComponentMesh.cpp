@@ -381,6 +381,10 @@ void ComponentMesh::SendToGPU()
 	glBindVertexArray(0);
 	VAO = vao;
 	VIndex = vio;
+	if (VAO == 0 || VIndex == 0)
+	{
+		LOG("Error sending mesh to GPU");
+	}
 }
 
 void ComponentMesh::ReleaseFromGPU()

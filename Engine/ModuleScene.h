@@ -9,7 +9,6 @@
 
 class GameObject;
 class ComponentCamera;
-class FakeGameObject;
 
 class ModuleScene :	public Module
 {
@@ -32,7 +31,8 @@ public:
 	bool SaveScene(const std::string &path) const;
 	bool LoadScene(const std::string &path);
 
-	void InsertGameObject(GameObject* newGO); //Insert instantiated Game Object
+	void InsertGameObject(GameObject* fgo); //Insert instantiated Game Object
+	void InsertFakeGameObject(GameObject* newGO); //Insert instantiated Game Object
 	void ImportGameObject(GameObject* newGO, ImportedType type); //Insert imported game Object
 	void DestroyGameObject(GameObject* destroyableGO);
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys
@@ -66,7 +66,7 @@ public:
 	GameObject* selected = nullptr;
 	ComponentCamera* sceneCamera = nullptr;
 	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
-	std::vector<FakeGameObject*> lightingFakeGameObjects; // handles fake gameobjects to insert lights on the partitioning trees
+	std::vector<GameObject*> lightingFakeGameObjects; // handles fake gameobjects to insert lights on the partitioning trees
 
 private:
 

@@ -15,6 +15,7 @@ public:
 
 	float height = 0, width = 0;
 	bool cursorIn = false;	
+	bool isFocused = false;
 	float pickingDelay = .0f;
 };
 

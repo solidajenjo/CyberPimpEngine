@@ -859,9 +859,6 @@
     <ClInclude Include="Engine\AABBTree.h">
       <Filter>SpacePartitioners</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\FakeGameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="EngineModules">

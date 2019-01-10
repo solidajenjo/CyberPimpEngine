@@ -4,12 +4,12 @@
 #include "Transform.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "FakeGameObject.h"
 #include "ComponentLight.h"
 
 void AABBTree::Init(GameObject::GameObjectLayers layer) 
 {
 	treeLayer = layer;
+	LOG("AABBTree Init - Layer %d", (int)treeLayer);
 	nodesFreePool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	nodesCreatedPool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
@@ -22,35 +22,27 @@ void AABBTree::Init(GameObject::GameObjectLayers layer)
 
 void AABBTree::CleanUp()
 {
-	Reset();
+	LOG("AABBTree CleanUp - Layer %d", (int)treeLayer);
 	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
 		RELEASE(nodesCreatedPool[i]);
 	
 	RELEASE_ARRAY(nodesFreePool);
 	RELEASE_ARRAY(nodesCreatedPool);
+	lastFreeNode = MAX_AABB_TREE_NODES - 1;
 }
 
 
 void AABBTree::Reset()
 {
-	std::stack<AABBTreeNode*> S;
-	S.push(treeRoot);
-	while (!S.empty())
-	{
-		AABBTreeNode* node = S.top();
-		S.pop();
-		if (node->leftSon != nullptr)
-			S.push(node->leftSon);
-		if (node->rightSon != nullptr)
-			S.push(node->rightSon);
-		if (node != treeRoot)
-			ResetReleaseNode(node);
-	}
+	LOG("Reset AABBTREE - Layer %d", (int)treeLayer);
+	CleanUp();
+	Init(treeLayer);
 }
 
 void AABBTree::Calculate()
 {	
-	LOG("Recalc AABBTREE");
+	LOG("Recalculate AABBTREE - Layer %d", (int)treeLayer);
+	Reset();
 	switch (treeLayer)
 	{
 	case GameObject::GameObjectLayers::WORLD_VOLUME:
@@ -68,11 +60,20 @@ void AABBTree::Calculate()
 		break;
 	}
 	case GameObject::GameObjectLayers::LIGHTING:
-		for (FakeGameObject* fgo : App->scene->lightingFakeGameObjects)
-		{			
+		for (GameObject* fgo : App->scene->lightingFakeGameObjects)
+		{	
+			ComponentLight* cL = (ComponentLight*)fgo->components.front();
+			cL->pointSphere.pos = fgo->components.front()->owner->transform->getGlobalPosition();
+			fgo->aaBBGlobal->SetNegativeInfinity();
+			fgo->aaBBGlobal->Enclose(cL->pointSphere);
 			InsertGO(fgo);
+			LOG("Light sphere inserted - Position (%.3f, %.3f, %.3f) Radius %.3f", cL->pointSphere.pos.x, cL->pointSphere.pos.y, 
+				cL->pointSphere.pos.z, cL->pointSphere.r);
+			LOG("Enclosing AABB - Min (%.3f, %.3f, %.3f) Max (%.3f, %.3f, %.3f)", fgo->aaBBGlobal->MinX(), fgo->aaBBGlobal->MinY(),
+				fgo->aaBBGlobal->MinZ(), fgo->aaBBGlobal->MaxX(), fgo->aaBBGlobal->MaxY(), fgo->aaBBGlobal->MaxZ());
 		}
 	}
+	LOG("AABBTREE Completed - Layer %d", (int)treeLayer);
 }
 
 void AABBTree::InsertGO(GameObject* go)
@@ -83,19 +84,6 @@ void AABBTree::InsertGO(GameObject* go)
 	
 	std::stack<AABBTreeNode*> S;
 	
-	if (go->isFake)
-	{
-		FakeGameObject* fgo = (FakeGameObject*)go;
-		switch (fgo->component->type) //other component types can be added in the future
-		{
-		case Component::ComponentTypes::LIGHT_COMPONENT:
-			ComponentLight* light = (ComponentLight*)((FakeGameObject*)go)->component;
-			go->aaBBGlobal->SetNegativeInfinity();
-			go->aaBBGlobal->Enclose(light->pointSphere);
-			break;
-		}
-	}
-
 	//tree root behaves different it could not be binary
 
 	if ((treeRoot->leftSon == nullptr && treeRoot->rightSon != nullptr)

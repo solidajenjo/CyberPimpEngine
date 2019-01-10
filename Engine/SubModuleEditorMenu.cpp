@@ -33,6 +33,7 @@ void SubModuleEditorMenu::Show()
 					App->scene->CleanUp();
 					App->scene->Init();	
 					App->spacePartitioning->aabbTree.CleanUp();
+					App->spacePartitioning->aabbTreeLighting.CleanUp();
 					App->spacePartitioning->aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
 					App->spacePartitioning->aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
 				}

@@ -66,6 +66,13 @@ void SubModuleEditorInspector::Show()
 					{
 						ComponentLight* newLight = new ComponentLight();
 						App->scene->selected->InsertComponent(newLight);
+						newLight->CalculateGuizmos();
+						GameObject* fgo = new GameObject("");
+						fgo->components.push_back(newLight);
+						fgo->layer = GameObject::GameObjectLayers::LIGHTING;
+						fgo->isFake = true;
+						App->scene->selected->fakeGameObjectReference = fgo;
+						App->scene->InsertFakeGameObject(fgo);
 					}
 				}
 			}
@@ -86,6 +93,7 @@ void SubModuleEditorInspector::Show()
 						case Component::ComponentTypes::LIGHT_COMPONENT:
 						{
 							ComponentLight* cL = (ComponentLight*)(*it);
+							//cL->CalculateGuizmos();
 							App->frameBuffer->Bind();
 							switch (cL->lightType)
 							{
@@ -93,11 +101,11 @@ void SubModuleEditorInspector::Show()
 								dd::arrow(cL->owner->transform->getGlobalPosition(), cL->owner->transform->getGlobalPosition() + cL->owner->transform->getGlobalPosition().Normalized(), dd::colors::Gold, App->appScale);								
 								break;
 							case ComponentLight::LightTypes::POINT:
-								cL->pointSphere.pos = App->scene->selected->transform->getGlobalPosition();
 								dd::sphere(cL->pointSphere.pos, dd::colors::Gold, cL->pointSphere.r);
 								break;
 							case ComponentLight::LightTypes::SPOT:
-								dd::cone(App->scene->selected->transform->getGlobalPosition(), App->scene->selected->transform->front * cL->spotDistance, dd::colors::Gold, cL->spotEndRadius, .01f);
+								dd::sphere(cL->pointSphere.pos, dd::colors::DarkGray, cL->pointSphere.r);
+								dd::cone(App->scene->selected->transform->getGlobalPosition(), App->scene->selected->transform->front * cL->spotDistance, dd::colors::Gold, cL->spotEndRadius, .01f);								
 								break;
 							}
 							App->frameBuffer->UnBind();

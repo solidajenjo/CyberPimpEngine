@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "FakeGameObject.h"
 #include "ModuleScene.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleRender.h"
@@ -16,7 +15,8 @@
 #include "imgui/imgui.h"
 #include "ComponentMesh.h"
 #include "ComponentMap.h"
-#include "ComponentCamera.h";
+#include "ComponentCamera.h"
+#include "ComponentLight.h"
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
 #include "SDL/include/SDL_rwops.h"
@@ -33,7 +33,6 @@ bool ModuleScene::Init()
 	modelFolder = new GameObject("Models", true);
 	mapFolder = new GameObject("Maps", true);
 	materialFolder = new GameObject("Materials", true);
-	App->spacePartitioning->kDTree.Init();
 	AttachToAssets(modelFolder);
 	AttachToAssets(mapFolder);
 	AttachToAssets(materialFolder);
@@ -55,9 +54,9 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	sceneCamera = nullptr;
 	App->textures->CleanUp();	
-	for (FakeGameObject* fgo : lightingFakeGameObjects)
+	for (GameObject* fgo : lightingFakeGameObjects)
 		RELEASE(fgo);
-
+	lightingFakeGameObjects.resize(0);
 	return true;
 }
 
@@ -139,8 +138,9 @@ bool ModuleScene::LoadScene(const std::string & path)
 {
 	LOG("Loading scene %s", path.c_str());
 	CleanUp();
+	App->spacePartitioning->aabbTree.Reset();	
+
 	bool staticGameObjects = false;
-	bool nonStaticGameObjects = false;
 	if (!App->fileSystem->Exists(path + ".cfg"))
 	{
 		LOG("Error loading scene configuration %s", (path + ".cfg").c_str());
@@ -268,12 +268,10 @@ bool ModuleScene::LoadScene(const std::string & path)
 					{
 						GameObject* newGO = new GameObject("");
 						if (newGO->UnSerialize(*it))
-						{							
-							sceneGameObjects[newGO->gameObjectUUID] = newGO;
+						{						
+							InsertGameObject(newGO);							
 							if (newGO->isStatic)
 								staticGameObjects = true;
-							else
-								nonStaticGameObjects = true;
 						}
 					}
 				}
@@ -281,18 +279,12 @@ bool ModuleScene::LoadScene(const std::string & path)
 				LinkGameObjects();
 				if (staticGameObjects)
 				{
-					App->spacePartitioning->kDTree.Init();
 					App->spacePartitioning->kDTree.Calculate();
 				}
-				if (nonStaticGameObjects)
-				{
-					App->spacePartitioning->aabbTree.CleanUp();
-					App->spacePartitioning->aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
-					App->spacePartitioning->aabbTree.Calculate();					
-					App->spacePartitioning->aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
-					App->spacePartitioning->aabbTreeLighting.Calculate();
-				}
-				//root->transform->PropagateTransform();
+									
+				root->transform->PropagateTransform();
+				LOG("Lighting tree recalculation");
+				App->spacePartitioning->aabbTreeLighting.Calculate();
 			}
 			delete buffer;
 		}
@@ -301,14 +293,33 @@ bool ModuleScene::LoadScene(const std::string & path)
 			LOG("Error loading scene %s",  path.c_str());			
 		}
 	}
+	LOG("Scene loaded");
 	return true;
+}
+void ModuleScene::InsertFakeGameObject(GameObject* fgo) 
+{
+	assert(fgo != nullptr);
+	switch (fgo->layer)
+	{
+	case GameObject::GameObjectLayers::LIGHTING:
+		lightingFakeGameObjects.push_back(fgo);		
+		ComponentLight* cL = (ComponentLight*)fgo->components.front();
+		cL->pointSphere.pos = fgo->components.front()->owner->transform->getGlobalPosition();
+		fgo->aaBBGlobal->SetNegativeInfinity();
+		fgo->aaBBGlobal->Enclose(cL->pointSphere);
+		App->spacePartitioning->aabbTreeLighting.InsertGO(fgo);
+	}
+	
 }
 
 void ModuleScene::InsertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);
 	sceneGameObjects[newGO->gameObjectUUID] = newGO;
-	App->spacePartitioning->aabbTree.InsertGO(newGO);
+	if (newGO->transform != nullptr)
+		newGO->transform->UpdateAABB();
+	if (newGO->isInstantiated)
+		App->spacePartitioning->aabbTree.InsertGO(newGO);
 }
 
 void ModuleScene::ImportGameObject(GameObject * newGO, ImportedType type)
@@ -477,10 +488,8 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 				if (ImGui::Button("YES", ImVec2(100, 20)))
 				{					
 					DeleteGameObject(gObj);
-					selected = nullptr;
+					selected = nullptr;		
 					App->spacePartitioning->kDTree.Calculate();
-					if (gObj->treeNode!= nullptr)
-						App->spacePartitioning->aabbTree.ReleaseNode(gObj->treeNode);
 					ImGui::CloseCurrentPopup();
 				}
 				ImGui::EndPopup();
@@ -548,6 +557,14 @@ void ModuleScene::AttachToMaterials(GameObject * go)
 void ModuleScene::DestroyGameObject(GameObject * destroyableGO)
 {
 	assert(destroyableGO != nullptr);
+	if (destroyableGO->layer == GameObject::GameObjectLayers::WORLD_VOLUME && destroyableGO->treeNode != nullptr)
+		App->spacePartitioning->aabbTree.ReleaseNode(destroyableGO->treeNode);
+	if (destroyableGO->fakeGameObjectReference != nullptr)
+	{
+		lightingFakeGameObjects.erase(std::find(lightingFakeGameObjects.begin(),
+			lightingFakeGameObjects.end(), destroyableGO->fakeGameObjectReference));
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(destroyableGO->fakeGameObjectReference->treeNode);
+	}
 	destroyableGO->parent->children.remove(destroyableGO);
 	sceneGameObjects.erase(destroyableGO->gameObjectUUID);
 }

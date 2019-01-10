@@ -251,7 +251,6 @@
     <ClInclude Include="Engine\ComponentMaterial.h" />
     <ClInclude Include="Engine\ComponentMesh.h" />
     <ClInclude Include="Engine\debugdraw.h" />
-    <ClInclude Include="Engine\FakeGameObject.h" />
     <ClInclude Include="Engine\FileExplorer.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Globals.h" />

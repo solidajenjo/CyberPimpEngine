@@ -69,6 +69,7 @@ public:
 	bool isContainer = false;
 	bool active = true;
 	bool isFake = false;
+	GameObject* fakeGameObjectReference = nullptr;
 
 	AABBTreeNode* treeNode = nullptr; //Pointer to the AABBTree node who holds the gameobject
 };

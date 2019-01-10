@@ -5,10 +5,15 @@
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
+#include "Transform.h"
+#include "GameObject.h"
+#include "ModuleScene.h"
+#include "ModuleEditorCamera.h"
+#include "ModuleSpacePartitioning.h"
+#include "AABBTree.h"
 
-ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) //TODO: calculate guizmos by demand on creation
+ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) 
 {
-	//CalculateGuizmos();
 }
 
 void ComponentLight::EditorDraw()
@@ -76,6 +81,8 @@ void ComponentLight::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>&
 	writer.Double(innerAngle);
 	writer.String("outter");
 	writer.Double(outterAngle);
+	writer.String("lightInfluence");
+	writer.Double(influence);
 	writer.EndObject();
 }
 
@@ -107,6 +114,7 @@ ComponentLight * ComponentLight::Clone()
 
 bool ComponentLight::ConeContainsAABB(const AABB &aabb) const
 {
+	//TODO:Update lighting aabb tree
 	float3 lightPos = owner->transform->getGlobalPosition();
 	//check if spot light center passes through the aabb
 	LineSegment line;
@@ -127,3 +135,42 @@ bool ComponentLight::ConeContainsAABB(const AABB &aabb) const
 	return false;
 
 }
+void ComponentLight::CalculateGuizmos()
+{
+	float a = influence * attenuation[2];
+	float b = influence * attenuation[1];
+	float c = (influence * attenuation[0]) - 1.f;
+	float p = (-b + sqrt((b * b - 4.f * a * c)) / (2.f * a));
+
+	if (owner != nullptr)
+	{
+		switch (lightType)
+		{
+		case LightTypes::POINT:
+			pointSphere.pos = owner->transform->getGlobalPosition();
+			pointSphere.r = abs(p);
+			break;
+		case LightTypes::SPOT:
+			spotDistance = abs(p); // max distance is equivalent as the point light radius
+			spotOutterDistance = abs(spotDistance / sin(spotDistance));
+			spotEndRadius = spotDistance * tan(outterAngle);
+			pointSphere.pos = owner->transform->getGlobalPosition() + owner->transform->front * spotDistance;
+			pointSphere.r = max(spotEndRadius, spotDistance);
+			break;
+		case LightTypes::DIRECTIONAL:
+			pointSphere.pos = float3::zero;
+			if (App->scene->sceneCamera != nullptr)
+				pointSphere.r = App->scene->sceneCamera->zFar;
+			else
+				pointSphere.r = App->camera->editorCamera.zFar;
+		}
+		if (owner->fakeGameObjectReference != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(owner->fakeGameObjectReference->treeNode);
+			owner->fakeGameObjectReference->treeNode = nullptr;
+			owner->fakeGameObjectReference->aaBBGlobal->SetNegativeInfinity();
+			owner->fakeGameObjectReference->aaBBGlobal->Enclose(pointSphere);
+			App->spacePartitioning->aabbTreeLighting.InsertGO(owner->fakeGameObjectReference);
+		}
+	}
+};

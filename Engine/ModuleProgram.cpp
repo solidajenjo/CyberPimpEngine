@@ -15,7 +15,7 @@ bool ModuleProgram::Init()
 bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string fsName)
 {
 	unsigned program;
-	LOG("Shader Program Creation");
+	LOG("Shader Program Creation\nVertex shader: %s\nFragment shader %s", vsName.c_str(), fsName.c_str());
 	program = glCreateProgram();
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
 	char* vSource = readFile(vsName.c_str());

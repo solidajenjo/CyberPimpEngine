@@ -15,7 +15,6 @@
 #include "crossguid/include/crossguid/guid.hpp"
 #include "Transform.h"
 #include <queue>
-#include "FakeGameObject.h"
 
 
 
@@ -47,14 +46,17 @@ GameObject::~GameObject()
 	RELEASE(transform); 
 	RELEASE(aaBB);
 	RELEASE(aaBBGlobal);
-	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	if (!isFake)
 	{
-		if ((*it)->Release())
+		for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		{
+			if ((*it)->Release())
+				RELEASE(*it);
+		}
+		for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+		{
 			RELEASE(*it);
-	}
-	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-	{				
-		RELEASE(*it);
+		}
 	}
 }
 
@@ -227,12 +229,12 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				InsertComponent(newLight);
 				newLight->UnSerialize(*it);
 				newLight->CalculateGuizmos();
-				FakeGameObject* fgo = new FakeGameObject();
-				fgo->component = newLight;
+				GameObject* fgo = new GameObject("");
+				fgo->components.push_back(newLight);
 				fgo->layer = GameObject::GameObjectLayers::LIGHTING;
 				fgo->isFake = true;
-				fgo->original = this;
-				App->scene->lightingFakeGameObjects.push_back(fgo);
+				fakeGameObjectReference = fgo;
+				App->scene->InsertFakeGameObject(fgo);
 				break;
 			}
 
@@ -344,27 +346,45 @@ GameObject * GameObject::Clone(bool breakInstance) const
 	clonedGO->isInstantiated = isInstantiated;
 	for (std::list<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{
-		if ((*it)->type == Component::ComponentTypes::MESH_COMPONENT)
+		switch ((*it)->type)
+		{
+		case Component::ComponentTypes::MESH_COMPONENT:
 		{
 			ComponentMesh* mesh = (ComponentMesh*)(*it);
 			ComponentMesh* newMesh;
-			
+
 			if (!breakInstance && strlen(mesh->meshPath) > 0)
 				newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
 			else
 				newMesh = mesh->Clone();
-			
+
 			newMesh->SendToGPU();
 			App->renderer->insertRenderizable(clonedGO);
 			clonedGO->InsertComponent(newMesh);
+			break;
 		}
-		else
+		case Component::ComponentTypes::LIGHT_COMPONENT:
+		{
+			ComponentLight* cL = (ComponentLight*)(*it)->Clone();
+			clonedGO->InsertComponent(cL);
+			cL->CalculateGuizmos();
+			GameObject* fgo = new GameObject("");
+			fgo->components.push_back(cL);
+			fgo->layer = GameObject::GameObjectLayers::LIGHTING;
+			fgo->isFake = true;
+			clonedGO->fakeGameObjectReference = fgo;
+			App->scene->InsertFakeGameObject(fgo);
+			break;
+		}
+		default:
 			clonedGO->InsertComponent((*it)->Clone());
+		}
 	}
 	for (std::list<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
 	{
 		clonedGO->InsertChild((*it)->Clone(breakInstance));
 	}
+	clonedGO->transform->UpdateAABB();
 	App->scene->InsertGameObject(clonedGO);
 	return clonedGO;
 }

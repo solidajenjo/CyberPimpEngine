@@ -30,7 +30,7 @@ update_status ModuleEditorCamera::Update()
 	else
 		editorCamera.target = editorCamera.camPos + (editorCamera.frustum.front * App->appScale * 10.f);
 
-	if (!isOrbiting && App->editor->viewPort->cursorIn && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
+	if (!isOrbiting && App->editor->viewPort->isFocused && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		isRotating = true;
 	}
@@ -133,32 +133,33 @@ update_status ModuleEditorCamera::Update()
 		}
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+	if (App->editor->viewPort->isFocused)
 	{
-		focusLerp = 0.f;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
-	{
-		if (focusLerp < 1.f)
-			focusLerp += 0.05f + orbitFocus;
-
-		if ((editorCamera.target - editorCamera.camPos).AngleBetween(editorCamera.frustum.front) > 0.f) //should rotate?
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{
-			Quat currentLookingQuat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.frustum.front * 2.f).Normalized(), editorCamera.frustum.up, float3::unitY); //curent quat
-			Quat lookMat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.target - editorCamera.camPos).Normalized(), editorCamera.frustum.up, float3::unitY); //target rotation
-			lookMat = currentLookingQuat.Lerp(lookMat, focusLerp); //smooth look at
-			editorCamera.RecalculateFrustum(lookMat * editorCamera.frustum.front, lookMat * editorCamera.frustum.up);
+			focusLerp = 0.f;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
+		{
+			if (focusLerp < 1.f)
+				focusLerp += 0.05f + orbitFocus;
+
+			if ((editorCamera.target - editorCamera.camPos).AngleBetween(editorCamera.frustum.front) > 0.f) //should rotate?
+			{
+				Quat currentLookingQuat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.frustum.front * 2.f).Normalized(), editorCamera.frustum.up, float3::unitY); //curent quat
+				Quat lookMat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.target - editorCamera.camPos).Normalized(), editorCamera.frustum.up, float3::unitY); //target rotation
+				lookMat = currentLookingQuat.Lerp(lookMat, focusLerp); //smooth look at
+				editorCamera.RecalculateFrustum(lookMat * editorCamera.frustum.front, lookMat * editorCamera.frustum.up);
+			}
+		}
+		if (App->input->wheelAmount != 0)
+		{
+
+			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * editorCamera.zoomSpeed * App->input->wheelAmount * App->appTime->realDeltaTime * App->appScale;
+			editorCamera.RecalculateFrustum();
 		}
 	}
-	if (App->input->wheelAmount != 0)
-	{
-		
-		editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * editorCamera.zoomSpeed * App->input->wheelAmount * App->appTime->realDeltaTime * App->appScale;
-		editorCamera.RecalculateFrustum();
-	}
-
-
 	return UPDATE_CONTINUE;
 }
 

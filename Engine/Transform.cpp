@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ModuleSpacePartitioning.h"
+#include "ComponentLight.h"
 #include "AABBTree.h"
 #include <queue>
 #include "imgui/imgui.h"
@@ -264,11 +265,25 @@ void Transform::UpdateAABB() const
 }
 void Transform::PropagateTransform() // update & propagate transform matrix
 {
-	if (owner->treeNode != nullptr && !owner->aaBBGlobal->Contains(owner->treeNode->aabb))
+	if (owner->treeNode != nullptr && owner->layer == GameObject::GameObjectLayers::WORLD_VOLUME && !owner->aaBBGlobal->Contains(owner->treeNode->aabb))
 	{
 		App->spacePartitioning->aabbTree.ReleaseNode(owner->treeNode);
 		owner->treeNode = nullptr;
 		App->spacePartitioning->aabbTree.InsertGO(owner);
+	}
+	if (owner->fakeGameObjectReference != nullptr 
+		&& !owner->fakeGameObjectReference->aaBBGlobal->Contains(owner->fakeGameObjectReference->treeNode->aabb))
+	{
+		switch (owner->fakeGameObjectReference->layer)//other component types can be added in the future
+		{
+		case GameObject::GameObjectLayers::LIGHTING:
+			ComponentLight* cL = (ComponentLight*)owner->components.front();
+			owner->aaBBGlobal->SetNegativeInfinity();
+			owner->aaBBGlobal->Enclose(cL->pointSphere);
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(owner->fakeGameObjectReference->treeNode);
+			owner->fakeGameObjectReference->treeNode = nullptr;
+			App->spacePartitioning->aabbTreeLighting.InsertGO(owner->fakeGameObjectReference);
+		}
 	}
 	if (owner->parent != nullptr)
 	{
@@ -302,11 +317,27 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 				(*it)->transform->up = (*it)->transform->modelMatrixGlobal.Col3(1);
 				(*it)->transform->right = (*it)->transform->modelMatrixGlobal.Col3(0);
 				(*it)->transform->UpdateAABB();
-				if ((*it)->treeNode != nullptr && !(*it)->aaBBGlobal->Contains((*it)->treeNode->aabb))
+
+				//AABBTree checks
+				if ((*it)->treeNode != nullptr && (*it)->layer == GameObject::GameObjectLayers::WORLD_VOLUME && !(*it)->aaBBGlobal->Contains((*it)->treeNode->aabb))
 				{
 					App->spacePartitioning->aabbTree.ReleaseNode((*it)->treeNode);
 					(*it)->treeNode = nullptr;
 					App->spacePartitioning->aabbTree.InsertGO((*it));
+				}
+				if ((*it)->fakeGameObjectReference != nullptr
+					&& !(*it)->fakeGameObjectReference->aaBBGlobal->Contains((*it)->fakeGameObjectReference->treeNode->aabb))
+				{
+					switch ((*it)->fakeGameObjectReference->layer) //other component types can be added in the future
+					{
+					case GameObject::GameObjectLayers::LIGHTING:
+						ComponentLight* cL = (ComponentLight*)(*it)->fakeGameObjectReference->components.front();
+						(*it)->fakeGameObjectReference->aaBBGlobal->SetNegativeInfinity();
+						(*it)->fakeGameObjectReference->aaBBGlobal->Enclose(cL->pointSphere);
+						App->spacePartitioning->aabbTreeLighting.ReleaseNode((*it)->fakeGameObjectReference->treeNode);
+						(*it)->fakeGameObjectReference->treeNode = nullptr;
+						App->spacePartitioning->aabbTreeLighting.InsertGO((*it)->fakeGameObjectReference);
+					}
 				}
 				
 			}
