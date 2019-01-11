@@ -81,7 +81,7 @@ vec4 specular(vec3 half, vec4 specularTex)
 	float spec = pow(max(0.0f, dot(half, normal)), frag_shininess);
 	return vec4(specularTex.r * mat.specularColor.r * mat.k_specular * spec, 
 						 specularTex.g * mat.specularColor.g * mat.k_specular * spec,
-						 specularTex.b * mat.specularColor.b * mat.k_specular * spec, 1.0f);
+						 specularTex.b * mat.specularColor.b * mat.k_specular * spec, .0f);
 }
 
 vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
@@ -130,12 +130,12 @@ void main()
 
 	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
 
-	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, 1.0f);
+	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, min(mat.diffuseColor.a, diffuseTex.a));
 
 	for (int i = 0; i < nDirectionals; ++i)
 	{
 		vec3 light_dir = normalize(lightDirectionals[i].position);
-		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1), light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
+		color = color + directionalBlinn(vec4(lightDirectionals[i].color, 1.f), light_dir, eye_pos, occlusionTex, diffuseTex, specularTex);	
 	}
 
 	for (int i = 0; i < nPoints; ++i)
@@ -153,7 +153,5 @@ void main()
 	float fragDistance = length(position - eye_pos);
 	float fogAmount = fogParameters.fogFalloff * fragDistance + fogParameters.fogFalloff * fogParameters.fogQuadratic * fragDistance * fragDistance;	
 
-	color = color + vec4(fogAmount, fogAmount, fogAmount, 1.0f) * vec4(fogParameters.fogColor, 1.0f);
-	color.a = 1.0f;
-
+	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);
 }

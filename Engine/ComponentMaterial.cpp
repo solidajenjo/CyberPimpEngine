@@ -79,6 +79,7 @@ void ComponentMaterial::EditorDraw()
 			mapSelectorSelected->mapId = texture->mapId;
 			sprintf_s(mapSelectorSelected->mapPath, texture->mapPath);
 		}
+		ImGui::Checkbox("Uses alpha", &useAlpha);
 		ImGui::Separator();
 		ImGui::Text("Specular");
 		ImGui::ColorEdit4("Specular Color", &specularColor[0]);
@@ -150,6 +151,7 @@ void ComponentMaterial::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffe
 	writer.StartObject();
 	writer.String("type"); writer.Int((int)type);
 	writer.String("materialPath"); writer.String(materialPath);
+	writer.String("useAlpha"); writer.Bool(useAlpha);
 	writer.EndObject();
 		
 }

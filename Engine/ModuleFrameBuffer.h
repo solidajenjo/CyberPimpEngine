@@ -26,6 +26,7 @@ public:
 	unsigned int colorRenderbuffer = 0;
 	unsigned int depthRenderbuffer = 0;
 
+
 };
 
 #endif

@@ -3,6 +3,8 @@
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFrameBuffer.h"
+#include "ModuleSpacePartitioning.h";
+#include "AABBTree.h"
 #include "debugdraw.h"
 #include "Application.h"
 #include "imgui/imgui.h"
@@ -44,10 +46,16 @@ void SubModuleEditorInspector::Show()
 					if (ImGui::Button("Break instance"))
 					{
 						GameObject* clone = App->scene->selected->Clone(true);
+						GameObject* original = App->scene->selected;
 						App->scene->selected->parent->InsertChild(clone);	
-						App->scene->DeleteGameObject(App->scene->selected);	
 						clone->parent->transform->PropagateTransform();
+						if (App->scene->selected->treeNode != nullptr)
+						{
+							App->spacePartitioning->aabbTree.ReleaseNode(App->scene->selected->treeNode);
+							App->spacePartitioning->aabbTree.InsertGO(clone);
+						}
 						App->scene->selected = clone;
+						App->scene->DeleteGameObject(original);
 					}
 				}
 			}

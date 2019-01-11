@@ -30,6 +30,7 @@ public:
 	bool ConeContainsAABB(const AABB &aabb) const;  // returns true if the aabb is inside or intersects the spot light cone
 
 	void CalculateGuizmos();
+	//TODO: Make a create fake method
 
 	//members
 

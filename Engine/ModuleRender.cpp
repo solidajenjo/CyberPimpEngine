@@ -48,6 +48,9 @@ bool ModuleRender::Init()
 
 	App->frameBuffer->Start();
 	App->gameFrameBuffer->Start();
+
+	alphaRenderizables.resize(MAX_ALPHA_MESHES);
+
 	return ret;
 }
 
@@ -80,7 +83,7 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::Render(const ComponentCamera* camera) const
+void ModuleRender::Render(const ComponentCamera* camera) 
 {
 	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
@@ -91,7 +94,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->camera->editorCamera.frustum, lightIntersections);
 
 	//Separate lights by type
-	std::vector<ComponentLight*> directionals;
+	std::vector<ComponentLight*> directionals; //TODO: Remove push_backs
 	std::vector<ComponentLight*> points;
 	std::vector<ComponentLight*> spots;
 	for (GameObject* go :  lightIntersections)
@@ -113,6 +116,8 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 		}
 	}
 
+	alphaAmount = 0u;
+
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
 		std::set<GameObject*> intersections;
@@ -127,7 +132,12 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points, spots);
+						if (((ComponentMesh*)comp)->material->useAlpha)
+						{
+							alphaRenderizables[alphaAmount++] = go;
+						}
+						else
+							((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points, spots);
 					}
 				}
 			}
@@ -135,7 +145,7 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 	}
 	else
 	{
-		for (std::list<const GameObject*>::const_iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes 
+		for (std::list<GameObject*>::iterator it = renderizables.begin(); it != renderizables.end(); ++it) //render meshes 
 		{
 			assert((*it) != nullptr);
 			bool render = true;
@@ -149,14 +159,42 @@ void ModuleRender::Render(const ComponentCamera* camera) const
 				{
 					if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
 					{
-						((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points, spots);
+						if (((ComponentMesh*)(*it2))->material->useAlpha)
+						{
+							alphaRenderizables[alphaAmount++] = (*it);
+						}
+						else
+							((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points, spots);
 					}
 				}
 			}
 			glEnd();
 		}
 	}
-	glBindVertexArray(0);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	if (alphaAmount > 1u)
+		std::sort(alphaRenderizables.begin(), alphaRenderizables.begin() + alphaAmount + 1, [&camera](const GameObject* go1, const GameObject* go2)
+		{		
+			if (go2 == nullptr || go1 == nullptr)
+				return false;
+			return go1->transform->getGlobalPosition().Distance(camera->frustum.pos) < go2->transform->getGlobalPosition().Distance(camera->frustum.pos);
+		});
+
+	for (unsigned i = 0u; i < alphaAmount; ++i)
+	{
+		for (Component* comp : alphaRenderizables[i]->components)
+		{
+			if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
+			{
+				((ComponentMesh*)comp)->Render(camera, alphaRenderizables[i]->transform, directionals, points, spots);
+			}
+		}
+	}
+	glDisable(GL_BLEND);
+
 }
 
 
@@ -167,7 +205,7 @@ void ModuleRender::insertRenderizable(GameObject * go)
 	renderizables.push_back(go);
 }
 
-void ModuleRender::removeRenderizable(const GameObject * go)
+void ModuleRender::removeRenderizable(GameObject * go)
 {
 	assert(go != nullptr);
 	renderizables.remove(go);

@@ -46,6 +46,8 @@ public:
 	char occlusionMap[1024] = "";
 	char emissiveMap[1024] = "";
 
+	bool useAlpha = false;
+
 	//Resource management
 	static ComponentMaterial* GetMaterial(const std::string path);
 	static std::map<std::string, ComponentMaterial*> materialsLoaded;

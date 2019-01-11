@@ -260,7 +260,7 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	}
 
 
-	glUniform4f(glGetUniformLocation(program, "mat.diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
+	glUniform4f(glGetUniformLocation(program, "mat.diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, material->diffuseColor.w);
 	glUniform4f(glGetUniformLocation(program, "mat.emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
 	glUniform4f(glGetUniformLocation(program, "mat.specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
 	

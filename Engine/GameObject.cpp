@@ -205,6 +205,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				char materialPath[1024];
 				sprintf_s(materialPath, (*it)["materialPath"].GetString());
 				ComponentMaterial* mat = ComponentMaterial::GetMaterial(materialPath);
+				mat->useAlpha = (*it)["useAlpha"].GetBool();
 				if (mat != nullptr)
 					InsertComponent(mat);
 				break;

@@ -4,6 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include <list>
+#include <vector>
+
+#define MAX_ALPHA_MESHES 512
 
 class GameObject;
 class ComponentCamera;
@@ -20,10 +23,10 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	void Render(const ComponentCamera* camera) const;
+	void Render(const ComponentCamera* camera);
 	
 	void insertRenderizable(GameObject* go);
-	void removeRenderizable(const GameObject* go);
+	void removeRenderizable(GameObject* go);
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
@@ -36,7 +39,9 @@ public:
 	float fogQuadratic = 1000.f;
 
 private:
-	std::list<const GameObject*> renderizables;  //The owner of the component should clean this
+	std::list<GameObject*> renderizables;  //The owner of the component should clean this
+	std::vector<GameObject*> alphaRenderizables; //store meshes with alpha to render in order to get the blend working 
+	unsigned alphaAmount = 0u;
 };
 
 #endif
