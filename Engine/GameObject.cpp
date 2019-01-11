@@ -236,6 +236,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				fgo->isFake = true;
 				fakeGameObjectReference = fgo;
 				App->scene->InsertFakeGameObject(fgo);
+				hasLights = true;
 				break;
 			}
 

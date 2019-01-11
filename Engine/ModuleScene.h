@@ -31,8 +31,9 @@ public:
 	bool SaveScene(const std::string &path) const;
 	bool LoadScene(const std::string &path);
 
-	void InsertGameObject(GameObject* fgo); //Insert instantiated Game Object
-	void InsertFakeGameObject(GameObject* newGO); //Insert instantiated Game Object
+	void InsertGameObject(GameObject* go); //Insert instantiated Game Object
+	void InsertFakeGameObject(GameObject* fgo); //Insert fake Game Object
+	void RemoveFakeGameObject(GameObject* fgo);
 	void ImportGameObject(GameObject* newGO, ImportedType type); //Insert imported game Object
 	void DestroyGameObject(GameObject* destroyableGO);
 	void ShowHierarchy(bool isWorld = true); //editor drawing moved here to mantain controled & private the gameobjects on the scene. This avoids wrong loads & destroys

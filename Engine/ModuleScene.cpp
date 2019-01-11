@@ -311,7 +311,15 @@ void ModuleScene::InsertFakeGameObject(GameObject* fgo)
 	}
 	
 }
-
+void ModuleScene::RemoveFakeGameObject(GameObject* fgo)
+{
+	switch (fgo->layer)
+	{
+	case GameObject::GameObjectLayers::LIGHTING:
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(fgo->treeNode);
+		lightingFakeGameObjects.erase(std::find(lightingFakeGameObjects.begin(), lightingFakeGameObjects.end(), fgo));
+	}
+}
 void ModuleScene::InsertGameObject(GameObject * newGO)
 {
 	assert(newGO != nullptr);

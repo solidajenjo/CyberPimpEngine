@@ -70,7 +70,7 @@ void SubModuleEditorInspector::Show()
 						newCam->RecalculateFrustum(App->scene->selected->transform->front, App->scene->selected->transform->up);
 						App->scene->selected->InsertComponent(newCam);
 					}
-					if (selectedNewComponent - 1 == (int)Component::ComponentTypes::LIGHT_COMPONENT)
+					if (!App->scene->selected->hasLights && selectedNewComponent - 1 == (int)Component::ComponentTypes::LIGHT_COMPONENT)
 					{
 						ComponentLight* newLight = new ComponentLight();
 						App->scene->selected->InsertComponent(newLight);
@@ -81,18 +81,27 @@ void SubModuleEditorInspector::Show()
 						fgo->isFake = true;
 						App->scene->selected->fakeGameObjectReference = fgo;
 						App->scene->InsertFakeGameObject(fgo);
+						App->scene->selected->hasLights = true;
+					}
+					else if (selectedNewComponent - 1 == (int)Component::ComponentTypes::LIGHT_COMPONENT)
+					{
+						LOG("Only one light component allowed");
 					}
 				}
 			}
+			bool deleteComponent = false;
+			Component* deleteableComponent = nullptr;
+			unsigned compId = 0u;
 			for (std::list<Component*>::const_iterator it = App->scene->selected->components.begin(); it != App->scene->selected->components.end(); ++it)
 			{							
+				ImGui::PushID(++compId);
 				if ((*it)->type != Component::ComponentTypes::MESH_COMPONENT)
 				{
 					if (!App->scene->selected->isContainer)
 					{
 						if (ImGui::Button("Remove"))
 						{
-							//delete component
+							deleteComponent = true;
 						}
 					}
 					(*it)->EditorDraw();
@@ -101,22 +110,39 @@ void SubModuleEditorInspector::Show()
 						case Component::ComponentTypes::LIGHT_COMPONENT:
 						{
 							ComponentLight* cL = (ComponentLight*)(*it);
-							App->frameBuffer->Bind();
-							switch (cL->lightType)
+							if (!deleteComponent)
 							{
-							case ComponentLight::LightTypes::DIRECTIONAL:
-								dd::arrow(cL->owner->transform->getGlobalPosition(), cL->owner->transform->getGlobalPosition() + cL->owner->transform->getGlobalPosition().Normalized(), dd::colors::Gold, App->appScale);								
-								break;
-							case ComponentLight::LightTypes::POINT:
-								dd::sphere(cL->pointSphere.pos, dd::colors::Gold, cL->pointSphere.r);
-								break;
-							case ComponentLight::LightTypes::SPOT:
-								dd::sphere(cL->pointSphere.pos, dd::colors::DarkGray, cL->pointSphere.r);
-								dd::cone(App->scene->selected->transform->getGlobalPosition(), App->scene->selected->transform->front * cL->spotDistance, dd::colors::Gold, cL->spotEndRadius, .01f);								
-								break;
+								App->frameBuffer->Bind();
+								switch (cL->lightType)
+								{
+								case ComponentLight::LightTypes::DIRECTIONAL:
+									dd::arrow(cL->owner->transform->getGlobalPosition(), cL->owner->transform->getGlobalPosition() + cL->owner->transform->getGlobalPosition().Normalized(), dd::colors::Gold, App->appScale);
+									break;
+								case ComponentLight::LightTypes::POINT:
+									dd::sphere(cL->pointSphere.pos, dd::colors::Gold, cL->pointSphere.r);
+									break;
+								case ComponentLight::LightTypes::SPOT:
+									dd::sphere(cL->pointSphere.pos, dd::colors::DarkGray, cL->pointSphere.r);
+									dd::cone(App->scene->selected->transform->getGlobalPosition(), App->scene->selected->transform->front * cL->spotDistance, dd::colors::Gold, cL->spotEndRadius, .01f);
+									break;
+								}
+								App->frameBuffer->UnBind();
 							}
-							App->frameBuffer->UnBind();
+							else
+							{
+								App->scene->RemoveFakeGameObject(cL->owner->fakeGameObjectReference);
+								cL->owner->hasLights = false;
+								cL->owner->fakeGameObjectReference = nullptr;
+								deleteableComponent = cL;
+							}
+							break;
 						}
+						default:
+							if (deleteComponent)
+							{
+								deleteableComponent = (*it);
+							}
+							break;
 					}
 				}
 				else if (!firstMesh) //if it's a mesh a different behaviour needed when multi-mesh gameobjects
@@ -124,13 +150,6 @@ void SubModuleEditorInspector::Show()
 
 					firstMesh = true;
 					ImGui::PushID(this);
-					if (!App->scene->selected->isContainer)
-					{
-						if (ImGui::Button("Remove"))
-						{
-							//delete component
-						}
-					}
 					if (ImGui::CollapsingHeader("Mesh"))
 					{
 						for (std::list<Component*>::const_iterator it2 = App->scene->selected->components.begin(); it2 != App->scene->selected->components.end(); ++it2)
@@ -141,8 +160,13 @@ void SubModuleEditorInspector::Show()
 					}
 					ImGui::PopID();
 				}
+				ImGui::PopID();
 			}
-
+			if (deleteComponent)
+			{
+				deleteableComponent->owner->components.erase(std::find(deleteableComponent->owner->components.begin(), deleteableComponent->owner->components.end(), deleteableComponent));
+				RELEASE(deleteableComponent);
+			}
 		}
 		ImGui::End();
 	}
