@@ -278,10 +278,10 @@ void Transform::PropagateTransform() // update & propagate transform matrix
 		{
 		case GameObject::GameObjectLayers::LIGHTING:
 			ComponentLight* cL = (ComponentLight*)owner->components.front();
-			owner->aaBBGlobal->SetNegativeInfinity();
-			owner->aaBBGlobal->Enclose(cL->pointSphere);
+			owner->fakeGameObjectReference->aaBBGlobal->SetNegativeInfinity();
+			owner->fakeGameObjectReference->aaBBGlobal->Enclose(cL->pointSphere);
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(owner->fakeGameObjectReference->treeNode);
-			owner->fakeGameObjectReference->treeNode = nullptr;
+			owner->fakeGameObjectReference->treeNode = nullptr;			
 			App->spacePartitioning->aabbTreeLighting.InsertGO(owner->fakeGameObjectReference);
 		}
 	}
