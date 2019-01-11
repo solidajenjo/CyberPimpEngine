@@ -115,7 +115,7 @@ void ComponentMesh::EditorDraw()
 {	
 	static const ComponentMaterial* item_current = material;	
 	ImGui::PushID(this);
-	if (ImGui::BeginCombo("Material", item_current->owner != nullptr ? item_current->owner->name : "Default Mesh Material"))
+	if (ImGui::BeginCombo("Material", item_current->owner != nullptr ? item_current->owner->name : ""))
 	{
 		ComponentMaterial** mats = new ComponentMaterial*[ComponentMaterial::materialsLoaded.size()];
 		unsigned i = 0u;
@@ -127,7 +127,7 @@ void ComponentMesh::EditorDraw()
 		for (unsigned n = 0u; n < ComponentMaterial::materialsLoaded.size(); ++n)
 		{
 			bool is_selected = (item_current == mats[n]);
-			if (ImGui::Selectable(mats[n]->owner != nullptr ? mats[n]->owner->name : "Default Mesh Material", is_selected))
+			if (ImGui::Selectable(mats[n]->owner != nullptr ? mats[n]->owner->name : "", is_selected))
 			{
 				if (material->Release())
 					RELEASE(material);
