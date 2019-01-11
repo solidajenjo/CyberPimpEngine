@@ -24,6 +24,7 @@ void ComponentLight::EditorDraw()
 		int lType = (int)lightType;
 		if (ImGui::Combo("Light type", &lType, "Directional\0Point\0Spot\0")) {
 			lightType = (LightTypes)lType;
+			CalculateGuizmos();
 		}
 		ImGui::ColorEdit3("Light Color", &color[0]);
 		switch (lightType)

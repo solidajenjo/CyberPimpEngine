@@ -111,6 +111,7 @@ void ModuleRender::Render(const ComponentCamera* camera)
 			points.push_back(cL);
 			break;
 		case ComponentLight::LightTypes::SPOT:
+			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
 			spots.push_back(cL);
 			break;
 		}

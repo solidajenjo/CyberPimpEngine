@@ -101,7 +101,6 @@ void SubModuleEditorInspector::Show()
 						case Component::ComponentTypes::LIGHT_COMPONENT:
 						{
 							ComponentLight* cL = (ComponentLight*)(*it);
-							//cL->CalculateGuizmos();
 							App->frameBuffer->Bind();
 							switch (cL->lightType)
 							{
