@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "ComponentMaterial.h"
 #include "MaterialImporter.h"
+#include "Transform.h"
 
 SubModuleEditorFileInspector::SubModuleEditorFileInspector(const std::string & editorModuleName) : SubModuleEditor(editorModuleName)
 {

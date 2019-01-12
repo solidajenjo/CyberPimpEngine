@@ -40,7 +40,6 @@ public:
 
 	void PropagateStaticCheck();
 	
-	
 	GameObject* MakeInstanceOf() const;
 	GameObject* Clone(bool breakInstance = false) const;
 

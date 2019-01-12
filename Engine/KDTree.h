@@ -5,7 +5,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include "GameObject.h"
 #include "debugdraw.h"
 #include <queue>
@@ -47,7 +47,7 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const;
 
 	//members
 
@@ -58,7 +58,7 @@ public:
 };
 
 template<typename T>
-inline void KDTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
+inline void KDTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const
 {
 	BROFILER_CATEGORY("KDTree intersections", Profiler::Color::Azure);
 	std::queue<KDTNode*> Q;

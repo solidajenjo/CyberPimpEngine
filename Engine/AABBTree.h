@@ -4,7 +4,7 @@
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include <vector>
 #include <stack>
-#include <set>
+#include <unordered_set>
 #include "GameObject.h"
 
 #define MAX_AABB_TREE_NODES 4096
@@ -41,7 +41,7 @@ public:
 	inline void RecalculateBoxes(AABBTreeNode* node);
 	inline AABBTreeNode* GetFreeNode(AABBTreeNode* parent);
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const;
 
 	//members
 
@@ -54,7 +54,7 @@ public:
 };
 
 template<typename T>
-inline void AABBTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
+inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const
 {
 	BROFILER_CATEGORY("AABBTree intersections", Profiler::Color::Azure);
 	std::stack<AABBTreeNode*> S;

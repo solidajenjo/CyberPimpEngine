@@ -8,7 +8,7 @@
 #include "GameObject.h"
 #include "debugdraw.h"
 #include <queue>
-#include <set>
+#include <unordered_set>
 #include "Brofiler/ProfilerCore/Brofiler.h"
 
 class QTNode
@@ -35,7 +35,7 @@ public:
 	void Calculate();
 	void DebugDraw() const;
 	template<typename T>
-	void GetIntersections(T &intersector, std::set<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const;
 
 	//members
 
@@ -46,7 +46,7 @@ public:
 };
 
 template<typename T>
-inline void QuadTree::GetIntersections(T &intersector, std::set<GameObject*> &intersections) const
+inline void QuadTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const
 {
 	BROFILER_CATEGORY("QuadTree intersections", Profiler::Color::Beige);
 	if (treeRoot == nullptr)

@@ -155,7 +155,6 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
 	unsigned program = *App->program->forwardRenderingProgram;
-	//unsigned program = *App->program->normalInspectorProgram;
 	glUseProgram(program);	
 	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
 	if (App->renderer->fog)

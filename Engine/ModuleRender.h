@@ -27,6 +27,7 @@ public:
 	
 	void insertRenderizable(GameObject* go);
 	void removeRenderizable(GameObject* go);
+
 //members
 
 	void* context; // Opaque SDL typedef void* openGL handler. 
@@ -37,6 +38,8 @@ public:
 	float fogColor[3] = { 1.f, 1.f, 1.f };
 	float fogFalloff = 5000.f;
 	float fogQuadratic = 1000.f;
+	unsigned activeLights = 0u;
+
 
 private:
 	std::list<GameObject*> renderizables;  //The owner of the component should clean this

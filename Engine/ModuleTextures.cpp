@@ -20,7 +20,7 @@ ModuleTextures::ModuleTextures()
 
 bool ModuleTextures::Init()
 {
-	char fallbackImageWhite[4] = { GLubyte(255), GLubyte(255), GLubyte(255), GLubyte(255) };
+	GLubyte fallbackImageWhite[4] = { GLubyte(255), GLubyte(255), GLubyte(255), GLubyte(255) };
 	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &whiteFallback);
@@ -31,7 +31,7 @@ bool ModuleTextures::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, fallbackImageWhite);
 
-	char fallbackImageBlack[4] = { GLubyte(0), GLubyte(0), GLubyte(0), GLubyte(0) };
+	GLubyte fallbackImageBlack[4] = { GLubyte(0), GLubyte(0), GLubyte(0), GLubyte(0) };
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &blackFallback);

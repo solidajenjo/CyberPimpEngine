@@ -117,7 +117,7 @@ void SubModuleEditorViewPort::Show()
 					float x = Lerp(-1.f, 1.f, mouseInWindowPos.x / App->frameBuffer->viewPortWidth); // -1 -> left // 1 right
 					float y = Lerp(1.f, -1.f, mouseInWindowPos.y / App->frameBuffer->viewPortHeight); // 1 -> up // -1 down
 					picking = App->camera->editorCamera.frustum.UnProjectLineSegment(x, y); //x & y in clipping coords
-					std::set<GameObject*> intersections;
+					std::unordered_set<GameObject*> intersections;
 					App->spacePartitioning->aabbTree.GetIntersections(picking, intersections);
 					App->spacePartitioning->kDTree.GetIntersections(picking, intersections);
 					float bestDistance = .0f;

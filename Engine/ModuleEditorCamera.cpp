@@ -133,7 +133,7 @@ update_status ModuleEditorCamera::Update()
 		}
 
 	}
-	if (App->editor->viewPort->isFocused)
+	if (App->editor->viewPort->isFocused && App->editor->viewPort->cursorIn)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{

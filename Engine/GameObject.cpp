@@ -124,15 +124,12 @@ bool GameObject::RayAgainstMeshNearestHitPoint(const LineSegment &lSeg, float3 &
 				tri.a = mesh->meshVertices[mesh->meshIndices[i]];
 				tri.b = mesh->meshVertices[mesh->meshIndices[i + 1u]];
 				tri.c = mesh->meshVertices[mesh->meshIndices[i + 2u]];
-				if (lSeg.Intersects(tri, &d, &intersectionPoint))
-				{					
-					if (hit == false || d < bestDistance)
-					{
-						hit = true;
-						hitPoint = intersectionPoint;
-						bestDistance = d;
-					}					
-				}
+				if (lSeg.Intersects(tri, &d, &intersectionPoint) && (hit == false || d < bestDistance))
+				{
+					hit = true;
+					hitPoint = intersectionPoint;
+					bestDistance = d;
+				}					
 			}			
 		}
 	}

@@ -3,7 +3,7 @@
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFrameBuffer.h"
-#include "ModuleSpacePartitioning.h";
+#include "ModuleSpacePartitioning.h"
 #include "AABBTree.h"
 #include "debugdraw.h"
 #include "Application.h"
@@ -97,13 +97,11 @@ void SubModuleEditorInspector::Show()
 				ImGui::PushID(++compId);
 				if ((*it)->type != Component::ComponentTypes::MESH_COMPONENT)
 				{
-					if (!App->scene->selected->isContainer)
+					if (!App->scene->selected->isContainer && ImGui::Button("Remove"))
 					{
-						if (ImGui::Button("Remove"))
-						{
-							deleteComponent = true;
-						}
+						deleteComponent = true;
 					}
+
 					(*it)->EditorDraw();
 					switch((*it)->type)
 					{

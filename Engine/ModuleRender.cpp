@@ -16,6 +16,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentLight.h"
+#include <set>
 
 
 // Called before render is available
@@ -87,11 +88,14 @@ void ModuleRender::Render(const ComponentCamera* camera)
 {
 	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
-	std::set<GameObject*> lightIntersections;
+
+	std::unordered_set<GameObject*> lightIntersections;
 	if (App->scene->sceneCamera != nullptr)
 		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->scene->sceneCamera->frustum, lightIntersections);
 	else
 		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->camera->editorCamera.frustum, lightIntersections);
+
+	activeLights = lightIntersections.size();
 
 	//Separate lights by type
 	std::vector<ComponentLight*> directionals; //TODO: Remove push_backs
@@ -121,18 +125,28 @@ void ModuleRender::Render(const ComponentCamera* camera)
 
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
-		std::set<GameObject*> intersections;
+		std::unordered_set<GameObject*> intersections; //unordered set container to avoid repeated items 
 		
 		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		App->spacePartitioning->aabbTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
-		for (GameObject* go : intersections)
+
+		std::vector<GameObject*> orderedMeshes(intersections.size()); 
+		std::copy(intersections.begin(), intersections.end(), orderedMeshes.begin());
+		std::sort(orderedMeshes.begin(), orderedMeshes.end(),
+			[&camera](const GameObject* go1, const GameObject* go2)
+			{
+				return (go1 != nullptr || go2 != nullptr) && go1->transform->getGlobalPosition().Distance(camera->frustum.pos) < go2->transform->getGlobalPosition().Distance(camera->frustum.pos); 
+			});
+
+		for (GameObject* go : orderedMeshes)
 		{
 			if (go->enabled && (App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
 			{
 				for (Component* comp : go->components)
 				{
-					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
+					switch (comp->type)
 					{
+					case Component::ComponentTypes::MESH_COMPONENT:
 						if (((ComponentMesh*)comp)->material->useAlpha)
 						{
 							alphaRenderizables[alphaAmount++] = go;
@@ -158,8 +172,9 @@ void ModuleRender::Render(const ComponentCamera* camera)
 			{
 				for (std::list<Component*>::const_iterator it2 = (*it)->components.cbegin(); it2 != (*it)->components.cend(); ++it2)
 				{
-					if ((*it2)->type == Component::ComponentTypes::MESH_COMPONENT)
+					switch ((*it2)->type)
 					{
+					case Component::ComponentTypes::MESH_COMPONENT:
 						if (((ComponentMesh*)(*it2))->material->useAlpha)
 						{
 							alphaRenderizables[alphaAmount++] = (*it);
@@ -176,15 +191,7 @@ void ModuleRender::Render(const ComponentCamera* camera)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	if (alphaAmount > 1u)
-		std::sort(alphaRenderizables.begin(), alphaRenderizables.begin() + alphaAmount + 1, [&camera](const GameObject* go1, const GameObject* go2)
-		{		
-			if (go2 == nullptr || go1 == nullptr)
-				return false;
-			return go1->transform->getGlobalPosition().Distance(camera->frustum.pos) < go2->transform->getGlobalPosition().Distance(camera->frustum.pos);
-		});
-
-	for (unsigned i = 0u; i < alphaAmount; ++i)
+	for (unsigned i = 0u; i < alphaAmount; ++i) //distance ordered guaranted 
 	{
 		for (Component* comp : alphaRenderizables[i]->components)
 		{
