@@ -107,6 +107,7 @@ void SubModuleEditorConfig::Show()
 					LOG("Uniform #%d Type: %u Name: %s", i, type, name);
 				}
 			}
+			ImGui::Text("Rendering resolution %d x %d", App->gameFrameBuffer->viewPortWidth, App->gameFrameBuffer->viewPortHeight);
 			ImGui::Text("Active lights %d", App->renderer->activeLights);
 			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);			
 			if (ImGui::Checkbox("Wireframe", &wireframe)) 

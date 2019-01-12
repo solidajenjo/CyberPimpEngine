@@ -20,7 +20,7 @@ void SubModuleEditorGameViewPort::Show()
 		ImVec2 size = ImGui::GetWindowSize();
 		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30); //padding
 		ImVec2 viewPortRegionUnscaled = viewPortRegion;
-		unsigned multiplier = 0u;
+		float multiplier = 0u;
 		if (antialiasing == AntiaAliasing::SSAA2)
 		{
 			multiplier = 2u;
