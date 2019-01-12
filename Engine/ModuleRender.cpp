@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "ModuleProgram.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleScene.h"
@@ -11,12 +10,9 @@
 #include "Transform.h"
 #include "sdl/include/SDL_video.h" 
 #include "glew-2.1.0/include/GL/glew.h"
-#include "MathGeoLib/include/Geometry/AABB.h"
-#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentLight.h"
-#include <set>
 
 
 // Called before render is available

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "Application.h"
-#include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "SubModuleEditorViewPort.h"
 #include "Globals.h"

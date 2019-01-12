@@ -1,7 +1,5 @@
 #include "SubModuleEditorInspector.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleFrameBuffer.h"
 #include "ModuleSpacePartitioning.h"
 #include "AABBTree.h"

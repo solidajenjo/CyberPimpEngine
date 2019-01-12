@@ -1,7 +1,5 @@
 #include "ModuleSpacePartitioning.h"
 #include "Application.h"
-#include "ModuleScene.h"
-#include "debugdraw.h"
 
 
 bool ModuleSpacePartitioning::Init() 

@@ -1,16 +1,14 @@
 #include "ComponentLight.h"
-#include "Globals.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Geometry/LineSegment.h"
-#include "Transform.h"
-#include "GameObject.h"
 #include "ModuleScene.h"
 #include "ModuleEditorCamera.h"
 #include "ModuleSpacePartitioning.h"
 #include "AABBTree.h"
+
 
 ComponentLight::ComponentLight() : Component(ComponentTypes::LIGHT_COMPONENT) 
 {
@@ -156,7 +154,7 @@ void ComponentLight::CalculateGuizmos()
 			spotOutterDistance = abs(spotDistance / sin(spotDistance));
 			spotEndRadius = spotDistance * tan(outterAngle);
 			pointSphere.pos = owner->transform->getGlobalPosition() + owner->transform->front * spotDistance;
-			pointSphere.r = max(spotEndRadius, spotDistance);
+			pointSphere.r = spotEndRadius > spotDistance ? spotEndRadius : spotDistance;
 			break;
 		case LightTypes::DIRECTIONAL:
 			pointSphere.pos = float3::zero;

@@ -5,8 +5,7 @@
 #include "QuadTree.h"
 #include "KDTree.h"
 #include "AABBTree.h"
-#include "MathGeoLib/include/Geometry/AABB.h"
-#include "MathGeoLib/include/Geometry/LineSegment.h"
+
 
 class ModuleSpacePartitioning :
 	public Module

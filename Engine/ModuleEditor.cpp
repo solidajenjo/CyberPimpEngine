@@ -1,12 +1,10 @@
 #include "imgui/imgui.h"
 #include "imgui/examples/imgui_impl_sdl.h"
 #include "imgui/examples/imgui_impl_opengl3.h"
-#include "glew-2.1.0/include/GL/glew.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
-#include "ModuleFrameBuffer.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
@@ -18,7 +16,6 @@
 #include "SubModuleEditorToolBar.h"
 #include "SubModuleEditorFileInspector.h"
 #include "GameObject.h"
-#include "ModuleEditorCamera.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 

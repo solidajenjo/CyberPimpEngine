@@ -1,5 +1,6 @@
 #include "ModuleFileSystem.h"
 #include "SDL/include/SDL_filesystem.h"
+#include "physfs-3.0.1/src/physfs.h"
 
 bool ModuleFileSystem::Init()
 {

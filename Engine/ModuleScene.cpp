@@ -10,7 +10,6 @@
 #include "SubModuleEditorGameViewPort.h"
 #include "SubModuleEditorToolBar.h"
 #include "QuadTree.h"
-#include "ModuleInput.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "ComponentMesh.h"
@@ -19,7 +18,6 @@
 #include "ComponentLight.h"
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
-#include "SDL/include/SDL_rwops.h"
 #include <stack>
 #include "SDL/include/SDL_filesystem.h"
 
@@ -712,7 +710,7 @@ void ModuleScene::FlattenHierarchyOnImport(GameObject * go)
 	std::stack<GameObject*> S;
 	S.push(go);
 
-	GameObject* node;
+	GameObject* node = nullptr;
 
 	while (!S.empty())
 	{

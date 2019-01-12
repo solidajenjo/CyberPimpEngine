@@ -2,7 +2,6 @@
 #define _MODULE_FRAMEBUFFER_H
 
 #include "Module.h"
-#include "Globals.h"
 
 class ComponentMesh;
 

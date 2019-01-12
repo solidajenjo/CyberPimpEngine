@@ -1,9 +1,7 @@
 #include "Transform.h"
 #include "MathGeoLib/include/Math/MathFunc.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
-#include "MathGeoLib/include/Geometry/OBB.h"
 #include "MathGeoLib/include/Math/float4.h"
-#include "MathGeoLib/include/Geometry/LineSegment.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -28,7 +26,7 @@ Transform::Transform(GameObject* go) : Component(ComponentTypes::TRANSFORM_COMPO
 
 void Transform::Rotate(const float3& rotations) 
 {
-	modelMatrixLocal = modelMatrixLocal * Quat::FromEulerXYZ(rotations.x, rotations.y, rotations.z); //rotate in local coords
+	modelMatrixLocal = modelMatrixLocal * float4x4::FromEulerXYZ(rotations.x, rotations.y, rotations.z); //rotate in local coords
 	rotation += rotations;	
 
 	PropagateTransform();
@@ -259,7 +257,8 @@ void Transform::UpdateAABB() const
 	//update AABB
 	if (owner->aaBB != nullptr)
 	{
-		owner->aaBBGlobal->SetFrom(*owner->aaBB);
+		owner->aaBBGlobal->SetNegativeInfinity();
+		owner->aaBBGlobal->Enclose(*owner->aaBB);
 		owner->aaBBGlobal->TransformAsAABB(modelMatrixGlobal);
 	}
 }

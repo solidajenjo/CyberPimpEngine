@@ -1,5 +1,4 @@
 #include "ModuleEditorCamera.h"
-#include "glew-2.1.0/include/GL/glew.h"
 #include "SDL/include/SDL_keycode.h"
 #include "SDL/include/SDL_mouse.h"
 #include "MathGeoLib/include/MathGeoLib.h"

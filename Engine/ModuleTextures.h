@@ -4,7 +4,6 @@
 #include <list>
 #include <string>
 #include "Module.h"
-#include "Globals.h"
 
 class ModuleTextures : public Module
 {
