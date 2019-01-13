@@ -9,6 +9,7 @@
 #include "ModuleProgram.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
+#include "ModuleFrameBuffer.h"
 #include "imgui/imgui.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "crossguid/include/crossguid/guid.hpp"
@@ -151,76 +152,92 @@ void ComponentMesh::EditorDraw()
 	material->EditorDraw();
 }
 
-void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const
+void ComponentMesh::Render(const ComponentCamera * camera, const Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots, ModuleRender::RenderMode renderMode) const
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
-	unsigned program = *App->program->forwardRenderingProgram;
-	glUseProgram(program);	
+	unsigned program;
+	switch (renderMode)
+	{
+	case ModuleRender::RenderMode::FORWARD:
+	{
+		program = *App->program->forwardRenderingProgram;
+		glUseProgram(program);
+		unsigned lightNum = 0u;
+		for (ComponentLight* cL : directionals)
+		{
+			std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "]";
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+			glUniform3fv(glGetUniformLocation(program,
+				(posStr + ".color").c_str()), 1, cL->color.ptr());
+			++lightNum;
+			if (lightNum == 2u) //max 2 directional lights Direct / Indirect
+				break;
+		}
+		glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
+
+		lightNum = 0u;
+		for (ComponentLight* cL : points)
+		{
+			if (cL->pointSphere.Intersects(*transform->owner->aaBBGlobal) || cL->pointSphere.Contains(*transform->owner->aaBBGlobal))
+			{
+				std::string posStr = "lightPoints[" + std::to_string(lightNum) + "]";
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".color").c_str()), 1, cL->color.ptr());
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
+				++lightNum;
+			}
+		}
+		glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
+
+		lightNum = 0u;
+		for (ComponentLight* cL : spots)
+		{
+			if (cL->ConeContainsAABB(*transform->owner->aaBBGlobal))
+			{
+				std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]";
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".color").c_str()), 1, cL->color.ptr());
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
+				glUniform3fv(glGetUniformLocation(program,
+					(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
+				glUniform1f(glGetUniformLocation(program,
+					(posStr + ".inner").c_str()), cos(cL->innerAngle));
+				glUniform1f(glGetUniformLocation(program,
+					(posStr + ".outter").c_str()), cos(cL->outterAngle));
+				++lightNum;
+			}
+		}
+		glUniform1i(glGetUniformLocation(program, "nSpots"), lightNum);
+		if (App->renderer->fog)
+		{
+			glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), 1.f / App->renderer->fogFalloff);
+			glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), 1.f / App->renderer->fogQuadratic);
+			glUniform3fv(glGetUniformLocation(program, "fogParameters.fogColor"), 1, &App->renderer->fogColor[0]);
+		}
+		else
+		{
+			glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), .0f);
+			glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
+		}
+
+		break;
+	}
+	case ModuleRender::RenderMode::DEFERRED:
+		program = *App->program->deferredStage1Program;
+		glUseProgram(program);
+		break;
+	}
+	
+	//TODO: Send only the really needed uniforms
 	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
-	if (App->renderer->fog)
-	{
-		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), 1.f / App->renderer->fogFalloff);
-		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), 1.f / App->renderer->fogQuadratic);
-		glUniform3fv(glGetUniformLocation(program, "fogParameters.fogColor"), 1, &App->renderer->fogColor[0]);			
-	}
-	else
-	{
-		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), .0f);
-		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
-	}
-	unsigned lightNum = 0u;
-	for (ComponentLight* cL : directionals)
-	{
-		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "]";
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-		glUniform3fv(glGetUniformLocation(program,
-			(posStr + ".color").c_str()), 1, cL->color.ptr());
-		++lightNum;
-		if (lightNum == 2u) //max 2 directional lights Direct / Indirect
-			break;
-	}
-	glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
-
-	lightNum = 0u;
-	for (ComponentLight* cL : points)
-	{
-		if (cL->pointSphere.Intersects(*transform->owner->aaBBGlobal) || cL->pointSphere.Contains(*transform->owner->aaBBGlobal))
-		{
-			std::string posStr = "lightPoints[" + std::to_string(lightNum) + "]";
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".color").c_str()), 1, cL->color.ptr());
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
-			++lightNum;
-		}
-	}
-	glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
-
-	lightNum = 0u;
-	for (ComponentLight* cL : spots)
-	{
-		if (cL->ConeContainsAABB(*transform->owner->aaBBGlobal))
-		{
-			std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]";
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".color").c_str()), 1, cL->color.ptr());
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
-			glUniform3fv(glGetUniformLocation(program,
-				(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
-			glUniform1f(glGetUniformLocation(program,
-				(posStr + ".inner").c_str()), cos(cL->innerAngle));
-			glUniform1f(glGetUniformLocation(program,
-				(posStr + ".outter").c_str()), cos(cL->outterAngle));
-			++lightNum;
-		}
-	}
-	glUniform1i(glGetUniformLocation(program, "nSpots"), lightNum);
+	
 
 	glUniformMatrix4fv(glGetUniformLocation(program,
 		"model"), 1, GL_TRUE, transform->modelMatrixGlobal.ptr());
@@ -263,19 +280,115 @@ void ComponentMesh::Render(const ComponentCamera * camera, Transform* transform,
 	glUniform4f(glGetUniformLocation(program, "mat.emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
 	glUniform4f(glGetUniformLocation(program, "mat.specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
 	
-	
-	float3 lightPos = float3(0.f, 200.f, 1000.f);
-	
-	glUniform1f(glGetUniformLocation(program, "mat.ambient"), 0.9f);
 	glUniform1f(glGetUniformLocation(program, "mat.shininess"), material->shininess);
 	glUniform1f(glGetUniformLocation(program, "mat.k_ambient"), material->kAmbient);
 	glUniform1f(glGetUniformLocation(program, "mat.k_diffuse"), material->kDiffuse);
 	glUniform1f(glGetUniformLocation(program, "mat.k_specular"), material->kSpecular);
 
+	if (App->renderer->fog)
+	{
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), 1.f / App->renderer->fogFalloff);
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), 1.f / App->renderer->fogQuadratic);
+		glUniform3fv(glGetUniformLocation(program, "fogParameters.fogColor"), 1, &App->renderer->fogColor[0]);
+	}
+	else
+	{
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogFalloff"), .0f);
+		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
+	}
+
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
 	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
 }
+
+void ComponentMesh::RenderDeferred(const ModuleFrameBuffer* frameBuffer, const ComponentCamera* camera, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const
+{
+	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
+	unsigned program = *App->program->deferredStage2Program;
+	glUseProgram(program);
+	
+	float4x4 model = float4x4::identity;
+	model = model.FromTRS(float3(-1.f, -1.f, .0f), float4x4::identity, float3(2.f, 2.f, .1f));
+	
+	glUniformMatrix4fv(glGetUniformLocation(program,
+		"model"), 1, GL_TRUE, model.ptr());
+
+	glUniform1i(glGetUniformLocation(program, "gDiffuse"), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, frameBuffer->texColorBuffer);
+	
+	glUniform1i(glGetUniformLocation(program, "gPosition"), 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, frameBuffer->positionBuffer);
+	
+	glUniform1i(glGetUniformLocation(program, "gNormal"), 2);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, frameBuffer->normalsBuffer);
+
+	glUniform1i(glGetUniformLocation(program, "gSpecular"), 3);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, frameBuffer->specularBuffer);
+
+	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
+
+	unsigned lightNum = 0u;
+	for (ComponentLight* cL : directionals)
+	{
+		std::string posStr = "lightDirectionals[" + std::to_string(lightNum) + "]";
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".color").c_str()), 1, cL->color.ptr());
+		++lightNum;
+		if (lightNum == 2u) //max 2 directional lights Direct / Indirect
+			break;
+	}
+	glUniform1i(glGetUniformLocation(program, "nDirectionals"), lightNum);
+
+	lightNum = 0u;
+	for (ComponentLight* cL : points)
+	{
+		std::string posStr = "lightPoints[" + std::to_string(lightNum) + "]";
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".color").c_str()), 1, cL->color.ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
+		++lightNum;
+}
+	glUniform1i(glGetUniformLocation(program, "nPoints"), lightNum);
+
+	lightNum = 0u;
+	for (ComponentLight* cL : spots)
+	{
+		std::string posStr = "lightSpots[" + std::to_string(lightNum) + "]";
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".position").c_str()), 1, cL->owner->transform->getGlobalPosition().ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".color").c_str()), 1, cL->color.ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".attenuation").c_str()), 1, cL->attenuation.ptr());
+		glUniform3fv(glGetUniformLocation(program,
+			(posStr + ".direction").c_str()), 1, cL->owner->transform->front.ptr());
+		glUniform1f(glGetUniformLocation(program,
+			(posStr + ".inner").c_str()), cos(cL->innerAngle));
+		glUniform1f(glGetUniformLocation(program,
+			(posStr + ".outter").c_str()), cos(cL->outterAngle));
+		++lightNum;
+	}
+	glUniform1i(glGetUniformLocation(program, "nSpots"), lightNum);
+
+	float4x4 view = camera->frustum.ViewMatrix(); //transform from 3x4 to 4x4
+	glUniformMatrix4fv(glGetUniformLocation(program,
+		"view"), 1, GL_TRUE, view.ptr());
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
+	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
+}
+
 
 ComponentMesh * ComponentMesh::Clone()
 {

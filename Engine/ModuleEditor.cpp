@@ -5,6 +5,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleFrameBuffer.h"
 #include "Application.h"
 #include "SubModuleEditorMenu.h"
 #include "SubModuleEditorConsole.h"
@@ -36,10 +37,11 @@ bool ModuleEditor::Init()
 	subModules.push_back(console = new SubModuleEditorConsole("Console"));
 	subModules.push_back(worldInspector = new SubModuleEditorWorldInspector("World Inspector"));
 	subModules.push_back(inspector = new SubModuleEditorInspector("Inspector"));
-	subModules.push_back(gameViewPort = new SubModuleEditorGameViewPort("Game Viewport"));
 	subModules.push_back(config = new SubModuleEditorConfig("Config"));
 	subModules.push_back(files = new SubModuleEditorFileInspector("Files"));
 	subModules.push_back(viewPort = new SubModuleEditorViewPort("Viewport"));
+	subModules.push_back(gameViewPort = new SubModuleEditorGameViewPort("Game Viewport"));
+
 	App->consoleBuffer = new ImGuiTextBuffer();
 
 	toolBar = new SubModuleEditorToolBar("ToolBar");

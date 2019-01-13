@@ -103,7 +103,7 @@ void SubModuleEditorConfig::Show()
 					LOG("Uniform #%d Type: %u Name: %s", i, type, name);
 				}
 			}
-			ImGui::Text("Rendering resolution %d x %d", App->gameFrameBuffer->viewPortWidth, App->gameFrameBuffer->viewPortHeight);
+			ImGui::Text("Game rendering resolution %d x %d", App->gameFrameBuffer->viewPortWidth, App->gameFrameBuffer->viewPortHeight);
 			ImGui::Text("Active lights %d", App->renderer->activeLights);
 			ImGui::Checkbox("Frustum culling", &App->renderer->frustumCulling);			
 			if (ImGui::Checkbox("Wireframe", &wireframe)) 
@@ -112,6 +112,61 @@ void SubModuleEditorConfig::Show()
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			bool b = App->renderer->renderMode == ModuleRender::RenderMode::DEFERRED;
+			if (ImGui::Checkbox("Deferred Mode", &b))
+			{
+				if (b)
+					App->renderer->renderMode = ModuleRender::RenderMode::DEFERRED;
+				else
+					App->renderer->renderMode = ModuleRender::RenderMode::FORWARD;
+				
+				App->gameFrameBuffer->RecalcFrameBufferTexture();
+				App->frameBuffer->RecalcFrameBufferTexture();
+			}
+			if (ImGui::TreeNodeEx("Deferred rendering buffers"))
+			{
+				float w = ImGui::GetWindowContentRegionMax().x * .2f;
+				if (ImGui::TreeNodeEx("Editor viewport"))
+				{
+					float aspectRatio = (float)App->frameBuffer->viewPortWidth / (float)App->frameBuffer->viewPortHeight;
+					
+					ImGui::Text("Color");
+					ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Position");
+					ImGui::Image((void*)(intptr_t)App->frameBuffer->positionBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Normals");
+					ImGui::Image((void*)(intptr_t)App->frameBuffer->normalsBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Specular color");
+					ImGui::Image((void*)(intptr_t)App->frameBuffer->specularBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Render result");
+					ImGui::Image((void*)(intptr_t)App->frameBuffer->renderedBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNodeEx("Game viewport"))
+				{
+					float aspectRatio = (float)App->gameFrameBuffer->viewPortWidth / (float)App->gameFrameBuffer->viewPortHeight;
+					ImGui::Text("Color");
+					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Position");
+					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->positionBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Normals");
+					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->normalsBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Specular color");
+					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->specularBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Separator();
+					ImGui::Text("Render result");
+					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->renderedBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::TreePop();
+				}
+				ImGui::TreePop();
 			}
 			ImGui::Separator();
 			

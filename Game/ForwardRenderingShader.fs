@@ -9,7 +9,6 @@ struct Material
 	vec4 diffuseColor;
 	vec4 emissiveColor;
 	vec4 specularColor;	
-	float ambient;
 	float shininess;
 	float k_ambient;
 	float k_diffuse;
@@ -60,7 +59,7 @@ uniform Fog fogParameters;
 
 uniform mat4 view;
 
-out vec4 color;
+layout (location = 0) out vec4 color;
 
 in vec2 UV0;
 in vec3 normal;
@@ -71,8 +70,8 @@ vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 diffuseTex)
 {
 	
     float NL = max(0.0f, dot(normal, light_dir));	
-	float intensity = mat.ambient * mat.k_ambient * occlusionTex.r + mat.k_diffuse * NL;
-	return diffuseTex * mat.diffuseColor * intensity;
+	float intensity = (mat.k_ambient + mat.k_diffuse) * NL;
+	return diffuseTex * mat.diffuseColor * intensity * occlusionTex.r;	
 }
 
 vec4 specular(vec3 half, vec4 specularTex)
@@ -90,7 +89,6 @@ vec4 directionalBlinn(vec4 light_color, vec3 light_dir, vec3 eye_pos, vec4 occlu
 
 	vec4 lambertColor = lambert(light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = specular(half, specularTex);
-
 	return (lambertColor + specColor) * light_color;
 }
 
@@ -103,7 +101,7 @@ vec4 pointBlinn(PointLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTe
 	float att = 1.0f / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
 	vec4 lambertColor = att * lambert(light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = att * specular(half, specularTex);
-	return (lambertColor + specColor) * vec4(light.color, 1.0f);
+	return (lambertColor + specColor) * vec4(light.color, 1.0f);	
 }
 
 vec4 spotBlinn(SpotLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex, vec4 diffuseTex, vec4 specularTex)
@@ -128,10 +126,9 @@ void main()
 	vec4 diffuseTex = texture2D(mat.diffuseMap, UV0);
 	vec4 specularTex = texture2D(mat.specularMap, UV0);
 
-	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	
+	vec3 eye_pos = -(transpose(mat3(view)) * view[3].xyz);	//TODO:This on vertex shader?
 
 	color = vec4(emissiveTex.r * mat.emissiveColor.r, emissiveTex.g * mat.emissiveColor.g, emissiveTex.b * mat.emissiveColor.b, min(mat.diffuseColor.a, diffuseTex.a));
-
 	for (int i = 0; i < nDirectionals; ++i)
 	{
 		vec3 light_dir = normalize(lightDirectionals[i].position);
@@ -154,4 +151,6 @@ void main()
 	float fogAmount = fogParameters.fogFalloff * fragDistance + fogParameters.fogFalloff * fogParameters.fogQuadratic * fragDistance * fragDistance;	
 
 	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);
+
+	//color = vec4(normal.x, normal.y, normal.z, 1);
 }

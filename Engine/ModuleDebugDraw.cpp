@@ -564,7 +564,7 @@ const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
     "in vec4 v_Color;\n"
     "\n"
     "uniform sampler2D u_glyphTexture;\n"
-    "out vec4 out_FragColor;\n"
+    "layout (location = 0) out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -615,7 +615,9 @@ void ModuleDebugDraw::Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_wi
     implementation->mvpMatrix = proj * view;
 
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	//glDepthFunc(GL_GREATER);
     dd::flush();
+	//glDepthFunc(GL_LESS);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

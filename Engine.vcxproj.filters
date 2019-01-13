@@ -950,5 +950,17 @@
     <None Include="Game\NormalInspectorShader.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Game\DeferredRenderingFirstStage.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\DeferredRenderingFirstStage.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\DeferredRenderingLightStage.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\DeferredRenderingLightStage.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

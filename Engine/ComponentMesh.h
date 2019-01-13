@@ -6,11 +6,13 @@
 #include <map>
 #include "MathGeoLib/include/Math/float3.h"
 #include "Component.h"
+#include "ModuleRender.h"
 
 class ComponentMaterial;
 class ComponentCamera;
 class ComponentLight;
 class Transform;
+class ModuleFrameBuffer;
 
 struct par_shapes_mesh_s;
 
@@ -36,7 +38,8 @@ public:
 	void FromPrimitive(Primitives primitive);
 	void EditorDraw() override;
 
-	void Render(const ComponentCamera* camera, Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const;
+	void Render(const ComponentCamera* camera, const Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots, ModuleRender::RenderMode renderMode) const;
+	void RenderDeferred(const ModuleFrameBuffer* frameBuffer, const ComponentCamera* camera, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots) const;
 	ComponentMesh* Clone() override;
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override;
 	void UnSerialize(rapidjson::Value &value) override;

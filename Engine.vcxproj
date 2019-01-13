@@ -375,6 +375,10 @@
     <None Include="Dependencies\MathGeoLib\include\Math\Matrix.inl" />
     <None Include="Game\default.fs" />
     <None Include="Game\default.vs" />
+    <None Include="Game\DeferredRenderingFirstStage.fs" />
+    <None Include="Game\DeferredRenderingFirstStage.vs" />
+    <None Include="Game\DeferredRenderingLightStage.fs" />
+    <None Include="Game\DeferredRenderingLightStage.vs" />
     <None Include="Game\ForwardRenderingShader.fs" />
     <None Include="Game\ForwardRenderingShader.vs" />
     <None Include="Game\NormalInspectorShader.fs" />
