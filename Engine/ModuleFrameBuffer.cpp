@@ -44,8 +44,9 @@ bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 	if (App->renderer->renderMode == ModuleRender::RenderMode::DEFERRED)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, renderedBufferRenderer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, viewPortWidth, viewPortHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBuffer);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBufferRenderer);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewPortWidth, viewPortHeight);
@@ -86,8 +87,9 @@ bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 	else
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, renderedBufferRenderer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, viewPortWidth, viewPortHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBuffer);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBufferRenderer);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewPortWidth, viewPortHeight);

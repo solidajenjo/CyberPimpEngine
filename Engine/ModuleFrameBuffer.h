@@ -25,6 +25,7 @@ public:
 	unsigned int normalsBuffer = 0u;
 	unsigned int specularBuffer = 0u;
 	unsigned int renderedBuffer = 0u;
+	unsigned int renderedBufferRenderer = 0u;
 
 	unsigned int depthRenderbuffer = 0u;
 
