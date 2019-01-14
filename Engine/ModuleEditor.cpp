@@ -15,6 +15,7 @@
 #include "SubModuleEditorConfig.h"
 #include "SubModuleEditorToolBar.h"
 #include "SubModuleEditorFileInspector.h"
+#include "ModuleFrameBuffer.h"
 #include "GameObject.h"
 #include "ImGuizmo/ImGuizmo.h"
 

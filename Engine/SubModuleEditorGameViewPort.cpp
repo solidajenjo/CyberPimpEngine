@@ -53,7 +53,7 @@ void SubModuleEditorGameViewPort::Show()
 			App->scene->sceneCamera->camPos = App->scene->sceneCamera->owner->transform->getGlobalPosition();
 			App->scene->sceneCamera->frustum.front = App->scene->sceneCamera->owner->transform->front;
 			App->scene->sceneCamera->frustum.up = App->scene->sceneCamera->owner->transform->up;
-			App->scene->sceneCamera->RecalculateFrustum();			
+			//App->scene->sceneCamera->RecalculateFrustum();			
 			App->gameFrameBuffer->Bind();
 			App->renderer->Render(App->scene->sceneCamera);
 			App->gameFrameBuffer->UnBind();
