@@ -13,6 +13,7 @@ void ModuleFrameBuffer::Start()
 	{
 		glGenFramebuffers(1, &framebuffer);
 		glGenRenderbuffers(1, &depthRenderbuffer);
+		glGenRenderbuffers(1, &renderedBufferRenderer);
 		// generate textures
 		glGenTextures(1, &renderedBuffer);
 		glGenTextures(1, &positionBuffer);

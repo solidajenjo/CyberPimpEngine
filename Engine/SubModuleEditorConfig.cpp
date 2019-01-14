@@ -127,26 +127,6 @@ void SubModuleEditorConfig::Show()
 			if (ImGui::TreeNodeEx("Deferred rendering buffers"))
 			{
 				float w = ImGui::GetWindowContentRegionMax().x * .2f;
-				if (ImGui::TreeNodeEx("Editor viewport"))
-				{
-					float aspectRatio = (float)App->frameBuffer->viewPortWidth / (float)App->frameBuffer->viewPortHeight;
-					
-					ImGui::Text("Color");
-					ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Position");
-					ImGui::Image((void*)(intptr_t)App->frameBuffer->positionBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Normals");
-					ImGui::Image((void*)(intptr_t)App->frameBuffer->normalsBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Specular color");
-					ImGui::Image((void*)(intptr_t)App->frameBuffer->specularBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Render result");
-					ImGui::Image((void*)(intptr_t)App->frameBuffer->renderedBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::TreePop();
-				}
 				if (ImGui::TreeNodeEx("Game viewport"))
 				{
 					float aspectRatio = (float)App->gameFrameBuffer->viewPortWidth / (float)App->gameFrameBuffer->viewPortHeight;
