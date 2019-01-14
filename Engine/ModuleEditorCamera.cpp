@@ -68,7 +68,6 @@ update_status ModuleEditorCamera::Update()
 		isRotating = false;
 	}
 	iPoint mouseMotion = App->input->GetMouseMotion();
-	LOG("winX = %d winSizeX = %d winPosX = %d rPos = %d", winX, winSizeX, xPos, winX + winSizeX);
 	if (isRotating || isOrbiting)
 	{
 
