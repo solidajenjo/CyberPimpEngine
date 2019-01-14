@@ -13,7 +13,8 @@ public:
 	{
 		DEFAULT,
 		FORWARD_RENDERING,
-		NORMAL_INSPECTOR
+		DEFERRED_RENDERING_STAGE1,
+		DEFERRED_RENDERING_STAGE2,
 	};
 
 	bool Init() override;
@@ -26,7 +27,8 @@ public:
 
 	unsigned* default = nullptr;
 	unsigned* forwardRenderingProgram = nullptr;
-	unsigned* normalInspectorProgram = nullptr;
+	unsigned* deferredStage1Program = nullptr;
+	unsigned* deferredStage2Program = nullptr;
 
 private:
 

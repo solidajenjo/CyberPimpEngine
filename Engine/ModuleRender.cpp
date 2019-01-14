@@ -22,7 +22,7 @@ bool ModuleRender::Init()
 	LOG("Creating Renderer context");
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -47,6 +47,9 @@ bool ModuleRender::Init()
 	App->gameFrameBuffer->Start();
 
 	alphaRenderizables.resize(MAX_ALPHA_MESHES);
+
+	deferredRenderingQuad = new ComponentMesh(ComponentMesh::Primitives::PLANE);
+	deferredRenderingQuad->SendToGPU();
 
 	return ret;
 }
@@ -80,11 +83,10 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::Render(const ComponentCamera* camera) 
+void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer* frameBuffer)
 {
 	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
-
 	std::unordered_set<GameObject*> lightIntersections;
 	if (App->scene->sceneCamera != nullptr)
 		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->scene->sceneCamera->frustum, lightIntersections);
@@ -97,7 +99,7 @@ void ModuleRender::Render(const ComponentCamera* camera)
 	std::vector<ComponentLight*> directionals; //TODO: Remove push_backs
 	std::vector<ComponentLight*> points;
 	std::vector<ComponentLight*> spots;
-	for (GameObject* go :  lightIntersections)
+	for (GameObject* go : lightIntersections)
 	{
 		ComponentLight* cL = (ComponentLight*)go->components.front();
 
@@ -122,16 +124,16 @@ void ModuleRender::Render(const ComponentCamera* camera)
 	if (frustumCulling && App->scene->sceneCamera != nullptr)
 	{
 		std::unordered_set<GameObject*> intersections; //unordered set container to avoid repeated items 
-		
+
 		App->spacePartitioning->kDTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 		App->spacePartitioning->aabbTree.GetIntersections(App->scene->sceneCamera->frustum, intersections);
 
-		std::vector<GameObject*> orderedMeshes(intersections.size()); 
+		std::vector<GameObject*> orderedMeshes(intersections.size());
 		std::copy(intersections.begin(), intersections.end(), orderedMeshes.begin());
 		std::sort(orderedMeshes.begin(), orderedMeshes.end(),
 			[&camera](const GameObject* go1, const GameObject* go2)
 			{
-				return (go1 != nullptr || go2 != nullptr) && go1->transform->getGlobalPosition().Distance(camera->frustum.pos) < go2->transform->getGlobalPosition().Distance(camera->frustum.pos); 
+				return (go1 != nullptr || go2 != nullptr) && go1->transform->getGlobalPosition().Distance(camera->frustum.pos) < go2->transform->getGlobalPosition().Distance(camera->frustum.pos);
 			});
 
 		for (GameObject* go : orderedMeshes)
@@ -148,7 +150,7 @@ void ModuleRender::Render(const ComponentCamera* camera)
 							alphaRenderizables[alphaAmount++] = go;
 						}
 						else
-							((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points, spots);
+							((ComponentMesh*)comp)->Render(camera, go->transform, directionals, points, spots, renderMode);
 					}
 				}
 			}
@@ -176,7 +178,7 @@ void ModuleRender::Render(const ComponentCamera* camera)
 							alphaRenderizables[alphaAmount++] = (*it);
 						}
 						else
-							((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points, spots);
+							((ComponentMesh*)(*it2))->Render(camera, (*it)->transform, directionals, points, spots, renderMode);
 					}
 				}
 			}
@@ -186,19 +188,25 @@ void ModuleRender::Render(const ComponentCamera* camera)
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 	for (unsigned i = 0u; i < alphaAmount; ++i) //distance ordered guaranted 
 	{
 		for (Component* comp : alphaRenderizables[i]->components)
 		{
 			if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
 			{
-				((ComponentMesh*)comp)->Render(camera, alphaRenderizables[i]->transform, directionals, points, spots);
+				((ComponentMesh*)comp)->Render(camera, alphaRenderizables[i]->transform, directionals, points, spots, RenderMode::FORWARD); // alpha materials always forward rendered
 			}
 		}
 	}
 	glDisable(GL_BLEND);
 
+	if (renderMode == RenderMode::DEFERRED)
+	{
+		frameBuffer->UnBind();  // Draw gBuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer->framebuffer); //Bind to draw deferred 
+		deferredRenderingQuad->RenderDeferred(frameBuffer, camera, directionals, points, spots);
+	}
 }
 
 

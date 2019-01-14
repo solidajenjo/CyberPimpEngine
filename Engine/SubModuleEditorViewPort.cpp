@@ -28,6 +28,8 @@ void SubModuleEditorViewPort::Show()
 {
 	if (enabled)
 	{	
+		ModuleRender::RenderMode currentRenderMode = App->renderer->renderMode;
+		App->renderer->renderMode = ModuleRender::RenderMode::FORWARD; //The editor only on forward render
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		isFocused = ImGui::IsWindowFocused();
 		const char* items[] = { "Translate", "Rotate", "Scale"};
@@ -71,9 +73,11 @@ void SubModuleEditorViewPort::Show()
 			App->camera->editorCamera.RecalculateFrustum();
 			App->frameBuffer->RecalcFrameBufferTexture();
 		}
-		
+		//App->frameBuffer->RecalcFrameBufferTexture(); 
 		App->frameBuffer->Bind();
-		App->renderer->Render(&App->camera->editorCamera);
+		App->renderer->Render(&App->camera->editorCamera, App->frameBuffer);
+		App->frameBuffer->UnBind();
+
 		if (App->editor->gizmosEnabled)
 		{
 			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, 0.f, 1.f * App->appScale, dd::colors::DarkGray);
@@ -94,10 +98,11 @@ void SubModuleEditorViewPort::Show()
 			App->spacePartitioning->aabbTree.Draw();
 		if (App->spacePartitioning->aabbTreeLighting.showOnEditor)
 			App->spacePartitioning->aabbTreeLighting.Draw();
-		App->frameBuffer->UnBind();
+		
+
 		ImVec2 curPos = ImGui::GetCursorPos();
 		ImVec2 winPos = ImGui::GetWindowPos();
-		ImGui::Image((void*)(intptr_t)App->frameBuffer->texColorBuffer, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((void*)(intptr_t)App->frameBuffer->renderedBuffer, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
 
 		//mouse picking		
 		if (pickingDelay > 0.f)
@@ -215,6 +220,8 @@ void SubModuleEditorViewPort::Show()
 			}
 		}
 		ImGui::End();
+		App->renderer->renderMode = currentRenderMode; //Restore game render mode
+
 	}
 }
 

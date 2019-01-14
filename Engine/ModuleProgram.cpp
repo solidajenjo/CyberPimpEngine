@@ -8,7 +8,8 @@ bool ModuleProgram::Init()
 	bool ret = true;
 	ret = ret && Compile(ModuleProgram::Shaders::DEFAULT, "default.vs", "default.fs");
 	ret = ret && Compile(ModuleProgram::Shaders::FORWARD_RENDERING, "ForwardRenderingShader.vs", "ForwardRenderingShader.fs");
-	ret = ret && Compile(ModuleProgram::Shaders::NORMAL_INSPECTOR, "NormalInspectorShader.vs", "NormalInspectorShader.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::DEFERRED_RENDERING_STAGE1, "DeferredRenderingFirstStage.vs", "DeferredRenderingFirstStage.fs");
+	ret = ret && Compile(ModuleProgram::Shaders::DEFERRED_RENDERING_STAGE2, "DeferredRenderingLightStage.vs", "DeferredRenderingLightStage.fs");
 	return ret;
 }
 
@@ -92,9 +93,14 @@ bool ModuleProgram::Compile(Shaders shaderType, std::string vsName, std::string 
 		forwardRenderingProgram = new unsigned;
 		*forwardRenderingProgram = program;
 		break;
-	case Shaders::NORMAL_INSPECTOR:
-		normalInspectorProgram = new unsigned;
-		*normalInspectorProgram = program;
+	case Shaders::DEFERRED_RENDERING_STAGE1:
+		deferredStage1Program = new unsigned;
+		*deferredStage1Program = program;
+		break;
+	case Shaders::DEFERRED_RENDERING_STAGE2:
+		deferredStage2Program = new unsigned;
+		*deferredStage2Program = program;
+		break;
 	}
 	return true;
 }

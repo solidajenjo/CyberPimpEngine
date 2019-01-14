@@ -37,6 +37,8 @@ update_status ModuleEditorCamera::Update()
 	{
 		isRotating = false;
 	}
+	iPoint mouseMotion = App->input->GetMouseMotion();
+
 	if (isRotating || isOrbiting)
 	{
 		int winX, winY, winSizeX, winSizeY;
@@ -44,17 +46,17 @@ update_status ModuleEditorCamera::Update()
 		SDL_GetWindowPosition(App->window->window, &winX, &winY);
 		SDL_GetWindowSize(App->window->window, &winSizeX, &winSizeY);
 		ImVec2 winPos = ImGui::GetMousePos();
+		
 		if (winPos.x < winX)
 		{
 			SDL_WarpMouseInWindow(App->window->window, winSizeX, winPos.y);
-			App->input->mouse_motion.x = 0;
+			mouseMotion.x = 0;
 		}
 		if (winPos.x > winSizeX)
 		{
 			SDL_WarpMouseInWindow(App->window->window, winX, winPos.y);
-			App->input->mouse_motion.x = 0;
-		}
-		iPoint mouseMotion = App->input->GetMouseMotion();
+			mouseMotion.x = 0;
+		}		
 	}
 	if (isRotating)
 	{
@@ -88,8 +90,6 @@ update_status ModuleEditorCamera::Update()
 		{
 			editorCamera.camPos = editorCamera.camPos - editorCamera.frustum.front * App->appScale * editorCamera.moveSpeed * movementScale * App->appTime->realDeltaTime;
 		}
-
-		iPoint mouseMotion = App->input->GetMouseMotion();
 
 		editorCamera.pitch(-mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
 		editorCamera.yaw(-mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime);
