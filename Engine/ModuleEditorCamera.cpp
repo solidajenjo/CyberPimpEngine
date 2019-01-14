@@ -23,12 +23,42 @@ bool ModuleEditorCamera::Init()
 }
 
 update_status ModuleEditorCamera::Update()
-{	
+{
+	if (outviewPortWait > 0.f)
+	{
+		outviewPortWait -= App->appTime->realDeltaTime; 
+		return UPDATE_CONTINUE;
+	}
 	if (App->scene->selected != nullptr && !App->scene->IsRoot(App->scene->selected))
 		editorCamera.target = App->scene->selected->aaBBGlobal->CenterPoint();
-	else
+	else if (App->scene->selected == nullptr)
 		editorCamera.target = editorCamera.camPos + (editorCamera.frustum.front * App->appScale * 10.f);
 
+	int winX, winY, winSizeX, winSizeY;
+
+	SDL_GetWindowPosition(App->window->window, &winX, &winY);
+	SDL_GetWindowSize(App->window->window, &winSizeX, &winSizeY);
+	int xPos, yPos;
+	SDL_GetMouseState(&xPos, &yPos);
+		
+	if (isOrbiting || isRotating)
+	{
+		if (xPos < 0)
+		{
+			SDL_WarpMouseInWindow(App->window->window, winSizeX, yPos);
+			App->input->mouse_motion.x = 0;
+			outviewPortWait = .05F;
+			return UPDATE_CONTINUE;
+		}
+		if (xPos > winSizeX)
+		{
+			SDL_WarpMouseInWindow(App->window->window, 0, yPos);
+			App->input->mouse_motion.x = 0;
+			outviewPortWait = .05F;
+			return UPDATE_CONTINUE;
+		}
+	}
+	
 	if (!isOrbiting && App->editor->viewPort->isFocused && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		isRotating = true;
@@ -38,30 +68,10 @@ update_status ModuleEditorCamera::Update()
 		isRotating = false;
 	}
 	iPoint mouseMotion = App->input->GetMouseMotion();
-
+	LOG("winX = %d winSizeX = %d winPosX = %d rPos = %d", winX, winSizeX, xPos, winX + winSizeX);
 	if (isRotating || isOrbiting)
 	{
-		int winX, winY, winSizeX, winSizeY;
 
-		SDL_GetWindowPosition(App->window->window, &winX, &winY);
-		SDL_GetWindowSize(App->window->window, &winSizeX, &winSizeY);
-		int xPos, yPos;
-		SDL_GetMouseState(&xPos, &yPos);
-		
-		if (xPos < winX)
-		{
-			SDL_WarpMouseInWindow(App->window->window, winSizeX, yPos);
-			return UPDATE_CONTINUE;
-		}
-		if (xPos > winSizeX)
-		{
-			SDL_WarpMouseInWindow(App->window->window, winX, yPos);
-			return UPDATE_CONTINUE;
-		}		
-	}
-	if (isRotating)
-	{
-		
 		float movementScale = 1.f;
 
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
@@ -95,69 +105,69 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.pitch(-mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
 		editorCamera.yaw(-mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime);
 		editorCamera.RecalculateFrustum();
-	}
 
-	
 
-	bool focus = false;
-	float orbitFocus = 0.f;
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN)
-	{
-		focusLerp = 0.f;
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
-	{
-		isOrbiting = true;
-		isRotating = false;
-	}
-	else
-		isOrbiting = false;
-
-	if (isOrbiting)
-	{
-		iPoint mouseMotion = App->input->GetMouseMotion();
-		Quat orbitMat = Quat::RotateY(mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
-		editorCamera.camPos =  orbitMat * (editorCamera.camPos - editorCamera.target) + editorCamera.target;
-		editorCamera.RecalculateFrustum();
-		focus = true;
-
-		float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos)); 
-		if (focusLerp > 1.0f && angleToTarget <= 1.0f)
-		{			
-			focusLerp = 1.f;
-		}
-		else
-		{
-			orbitFocus = 0.1f;
-		}
-
-	}
-	if (App->editor->viewPort->isFocused && App->editor->viewPort->cursorIn)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		bool focus = false;
+		float orbitFocus = 0.f;
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN)
 		{
 			focusLerp = 0.f;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 		{
-			if (focusLerp < 1.f)
-				focusLerp += 0.05f + orbitFocus;
-
-			if ((editorCamera.target - editorCamera.camPos).AngleBetween(editorCamera.frustum.front) > 0.f) //should rotate?
-			{
-				Quat currentLookingQuat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.frustum.front * 2.f).Normalized(), editorCamera.frustum.up, float3::unitY); //curent quat
-				Quat lookMat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.target - editorCamera.camPos).Normalized(), editorCamera.frustum.up, float3::unitY); //target rotation
-				lookMat = currentLookingQuat.Lerp(lookMat, focusLerp); //smooth look at
-				editorCamera.RecalculateFrustum(lookMat * editorCamera.frustum.front, lookMat * editorCamera.frustum.up);
-			}
+			isOrbiting = true;
+			isRotating = false;
 		}
-		if (App->input->wheelAmount != 0)
-		{
+		else
+			isOrbiting = false;
 
-			editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * editorCamera.zoomSpeed * App->input->wheelAmount * App->appTime->realDeltaTime * App->appScale;
+		if (isOrbiting)
+		{
+			iPoint mouseMotion = App->input->GetMouseMotion();
+			Quat orbitMat = Quat::RotateY(mouseMotion.x * editorCamera.rotSpeed * App->appTime->realDeltaTime) * math::Quat::RotateAxisAngle(editorCamera.frustum.WorldRight(), mouseMotion.y * editorCamera.rotSpeed * App->appTime->realDeltaTime);
+			editorCamera.camPos = orbitMat * (editorCamera.camPos - editorCamera.target) + editorCamera.target;
 			editorCamera.RecalculateFrustum();
+			focus = true;
+
+			float angleToTarget = RadToDeg(editorCamera.frustum.front.AngleBetween(editorCamera.target - editorCamera.camPos));
+			if (focusLerp > 1.0f && angleToTarget <= 1.0f)
+			{
+				focusLerp = 1.f;
+			}
+			else
+			{
+				orbitFocus = 0.1f;
+			}
+
+		}
+		if (App->editor->viewPort->isFocused && App->editor->viewPort->cursorIn)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+			{
+				focusLerp = 0.f;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT || focus)
+			{
+				if (focusLerp < 1.f)
+					focusLerp += 0.05f + orbitFocus;
+
+				if ((editorCamera.target - editorCamera.camPos).AngleBetween(editorCamera.frustum.front) > 0.f) //should rotate?
+				{
+					Quat currentLookingQuat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.frustum.front * 2.f).Normalized(), editorCamera.frustum.up, float3::unitY); //curent quat
+					Quat lookMat = Quat::LookAt(editorCamera.frustum.front, (editorCamera.target - editorCamera.camPos).Normalized(), editorCamera.frustum.up, float3::unitY); //target rotation
+					lookMat = currentLookingQuat.Lerp(lookMat, focusLerp); //smooth look at
+					editorCamera.RecalculateFrustum(lookMat * editorCamera.frustum.front, lookMat * editorCamera.frustum.up);
+				}
+			}
+			if (App->input->wheelAmount != 0)
+			{
+
+				editorCamera.camPos = editorCamera.camPos + editorCamera.frustum.front * editorCamera.zoomSpeed * App->input->wheelAmount * App->appTime->realDeltaTime * App->appScale;
+				editorCamera.RecalculateFrustum();
+			}
 		}
 	}
 	return UPDATE_CONTINUE;

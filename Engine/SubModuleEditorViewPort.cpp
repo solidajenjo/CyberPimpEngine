@@ -77,10 +77,18 @@ void SubModuleEditorViewPort::Show()
 		App->frameBuffer->Bind();
 		App->renderer->Render(&App->camera->editorCamera, App->frameBuffer);
 		App->frameBuffer->UnBind();
-
+		float3 Z = 200.f * float3(0.f, 0.f, 1.f) * App->appScale;
 		if (App->editor->gizmosEnabled)
-		{
+		{			
 			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, 0.f, 1.f * App->appScale, dd::colors::DarkGray);
+
+			float3 x = 200.f * float3(1.f, 0.f, 0.f) * App->appScale; //TODO:Change 200 for global
+			float3 y = 200.f * float3(0.f, 1.f, 0.f) * App->appScale;
+			float3 z = 200.f * float3(0.f, 0.f, 1.f) * App->appScale;
+			dd::line(x * App->appScale, float3(0.f, 0.f, 0.f), dd::colors::Red);
+			dd::line(y * App->appScale, float3(0.f, 0.f, 0.f), dd::colors::Green);
+			dd::line(z * App->appScale, float3(0.f, 0.f, 0.f), dd::colors::Blue);
+
 			if (App->scene->sceneCamera != nullptr)
 			{
 				dd::frustum((App->scene->sceneCamera->frustum.ProjectionMatrix() * App->scene->sceneCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Coral);

@@ -19,6 +19,7 @@ public:
 
 private:
 	float focusLerp = 0.f;
+	float outviewPortWait = 0.f;
 	bool isRotating = false;
 	bool isOrbiting = false;
 	bool movementStart = false;	

@@ -351,13 +351,14 @@ GameObject * GameObject::Clone(bool breakInstance) const
 		case Component::ComponentTypes::MESH_COMPONENT:
 		{
 			ComponentMesh* mesh = (ComponentMesh*)(*it);
-			ComponentMesh* newMesh;
+			ComponentMesh* newMesh = nullptr;
 
 			if (!breakInstance && strlen(mesh->meshPath) > 0)
 				newMesh = ComponentMesh::GetMesh(mesh->meshPath); //get an instance
 			else
 				newMesh = mesh->Clone();
 
+			newMesh->material->owner = clonedGO;
 			newMesh->SendToGPU();
 			App->renderer->insertRenderizable(clonedGO);
 			clonedGO->InsertComponent(newMesh);
