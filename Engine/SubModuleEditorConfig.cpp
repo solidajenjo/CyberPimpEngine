@@ -124,29 +124,25 @@ void SubModuleEditorConfig::Show()
 				App->gameFrameBuffer->RecalcFrameBufferTexture();
 				App->frameBuffer->RecalcFrameBufferTexture();
 			}
-			if (ImGui::TreeNodeEx("Deferred rendering buffers"))
+			if (ImGui::TreeNodeEx("Rendering buffers"))
 			{
 				float w = ImGui::GetWindowContentRegionMax().x * .2f;
-				if (ImGui::TreeNodeEx("Game viewport"))
-				{
-					float aspectRatio = (float)App->gameFrameBuffer->viewPortWidth / (float)App->gameFrameBuffer->viewPortHeight;
-					ImGui::Text("Color");
-					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Position");
-					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->positionBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Normals");
-					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->normalsBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Specular color");
-					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->specularBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::Separator();
-					ImGui::Text("Render result");
-					ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->renderedBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::TreePop();
-				}
-				ImGui::TreePop();
+				float aspectRatio = (float)App->gameFrameBuffer->viewPortWidth / (float)App->gameFrameBuffer->viewPortHeight;
+				ImGui::Text("Color");
+				ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->texColorBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Separator();
+				ImGui::Text("Position");
+				ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->positionBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Separator();
+				ImGui::Text("Normals");
+				ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->normalsBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Separator();
+				ImGui::Text("Specular color");
+				ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->specularBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Separator();
+				ImGui::Text("Render result");
+				ImGui::Image((void*)(intptr_t)App->gameFrameBuffer->renderedBuffer, ImVec2(w * aspectRatio, w), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::TreePop();
 			}
 			ImGui::Separator();
 			

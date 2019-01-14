@@ -60,7 +60,7 @@ ComponentMaterial::~ComponentMaterial()
 void ComponentMaterial::EditorDraw()
 {	
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Material"))
+	if (ImGui::CollapsingHeader((std::string("Material - ") + std::string(this->owner->name)).c_str()))
 	{		
 		if (mapSelectorReference != nullptr)
 		{

@@ -262,6 +262,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 					newMesh->UnSerialize(*it);
 					if (newMesh->primitiveType != ComponentMesh::Primitives::VOID_PRIMITIVE)
 						newMesh->material->owner = this;
+					newMesh->material->useAlpha = (*it)["material"]["useAlpha"].GetBool();
 					newMesh->SendToGPU();
 					InsertComponent(newMesh);
 					App->renderer->insertRenderizable(this);

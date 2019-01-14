@@ -54,7 +54,6 @@ void SubModuleEditorGameViewPort::Show()
 			App->scene->sceneCamera->frustum.front = App->scene->sceneCamera->owner->transform->front;
 			App->scene->sceneCamera->frustum.up = App->scene->sceneCamera->owner->transform->up;
 			App->scene->sceneCamera->RecalculateFrustum();	
-			//App->gameFrameBuffer->RecalcFrameBufferTexture(); //TODO: This??
 			App->gameFrameBuffer->Bind();
 			App->renderer->Render(App->scene->sceneCamera, App->gameFrameBuffer);
 			App->gameFrameBuffer->UnBind();			

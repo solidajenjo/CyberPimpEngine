@@ -114,9 +114,9 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::EditorDraw()
 {	
-	static const ComponentMaterial* item_current = material;	
+	ComponentMaterial* item_current = nullptr;	
 	ImGui::PushID(this);
-	if (ImGui::BeginCombo("Material", item_current->owner != nullptr ? item_current->owner->name : ""))
+	if (ImGui::BeginCombo("Change Material", ""))
 	{
 		ComponentMaterial** mats = new ComponentMaterial*[ComponentMaterial::materialsLoaded.size()];
 		unsigned i = 0u;
@@ -134,12 +134,7 @@ void ComponentMesh::EditorDraw()
 					RELEASE(material);
 				
 				item_current = mats[n];
-				material = ComponentMaterial::GetMaterial(item_current->materialPath);
-				if (strlen(meshPath) > 0)
-				{
-					SceneImporter si;
-					si.SaveMesh(this, meshPath);
-				}
+				material = ComponentMaterial::GetMaterial(item_current->materialPath);				
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -155,6 +150,7 @@ void ComponentMesh::EditorDraw()
 void ComponentMesh::Render(const ComponentCamera * camera, const Transform* transform, const std::vector<ComponentLight*> &directionals, const std::vector<ComponentLight*> &points, const std::vector<ComponentLight*> &spots, ModuleRender::RenderMode renderMode) const
 {
 	BROFILER_CATEGORY("Mesh Render", Profiler::Color::Aqua);
+
 	unsigned program;
 	switch (renderMode)
 	{
