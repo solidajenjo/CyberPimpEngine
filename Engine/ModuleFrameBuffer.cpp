@@ -15,6 +15,7 @@ void ModuleFrameBuffer::Start()
 		glGenFramebuffers(1, &gDepthframebuffer);
 
 		glGenRenderbuffers(1, &depthRenderbuffer);
+		glGenRenderbuffers(1, &gDepthRenderedBuffer);
 		glGenRenderbuffers(1, &renderedBufferRenderer);
 		glGenRenderbuffers(1, &alphaBufferRenderer);
 		// generate textures

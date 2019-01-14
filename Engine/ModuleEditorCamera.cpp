@@ -45,17 +45,18 @@ update_status ModuleEditorCamera::Update()
 
 		SDL_GetWindowPosition(App->window->window, &winX, &winY);
 		SDL_GetWindowSize(App->window->window, &winSizeX, &winSizeY);
-		ImVec2 winPos = ImGui::GetMousePos();
+		int xPos, yPos;
+		SDL_GetMouseState(&xPos, &yPos);
 		
-		if (winPos.x < winX)
+		if (xPos < winX)
 		{
-			SDL_WarpMouseInWindow(App->window->window, winSizeX, winPos.y);
-			mouseMotion.x = 0;
+			SDL_WarpMouseInWindow(App->window->window, winSizeX, yPos);
+			return UPDATE_CONTINUE;
 		}
-		if (winPos.x > winSizeX)
+		if (xPos > winSizeX)
 		{
-			SDL_WarpMouseInWindow(App->window->window, winX, winPos.y);
-			mouseMotion.x = 0;
+			SDL_WarpMouseInWindow(App->window->window, winX, yPos);
+			return UPDATE_CONTINUE;
 		}		
 	}
 	if (isRotating)
