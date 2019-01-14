@@ -178,6 +178,7 @@ bool ModuleScene::LoadScene(const std::string & path)
 				App->spacePartitioning->quadTree.maxDepth = config["quadTreeDepth"].GetInt();
 				App->spacePartitioning->quadTree.bucketSize = config["quadTreeBucketSize"].GetInt();
 				App->editor->gameViewPort->antialiasing = (SubModuleEditorGameViewPort::AntiaAliasing)config["aa"].GetInt();
+				App->editor->gameViewPort->framebufferDirty = true;
 				App->editor->toolBar->aa_item_current = App->editor->toolBar->aa_items[(unsigned)App->editor->gameViewPort->antialiasing];
 				rapidjson::Value serializedCam = config["editorCamera"].GetObjectJSON();
 				App->camera->editorCamera.UnSerialize(serializedCam);

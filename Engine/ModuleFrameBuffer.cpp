@@ -12,6 +12,7 @@ void ModuleFrameBuffer::Start()
 	if (framebuffer == 0)
 	{
 		glGenFramebuffers(1, &framebuffer);
+		glGenFramebuffers(1, &gDepthframebuffer);
 
 		glGenRenderbuffers(1, &depthRenderbuffer);
 		glGenRenderbuffers(1, &renderedBufferRenderer);

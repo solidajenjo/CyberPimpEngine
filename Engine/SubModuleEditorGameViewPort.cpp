@@ -26,7 +26,7 @@ void SubModuleEditorGameViewPort::Show()
 			multiplier = 2u;
 			viewPortRegion = ImVec2(viewPortRegion.x * multiplier, viewPortRegion.y * multiplier);
 		}
-		if (framebufferDirty || multiplier > 0u || width != size.x || height != size.y) //viewport changed
+		if (framebufferDirty || width != size.x || height != size.y) //viewport changed
 		{
 			framebufferDirty = false;
 			width = size.x;
