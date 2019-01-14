@@ -21,18 +21,18 @@ void SubModuleEditorGameViewPort::Show()
 		ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30); //padding
 		ImVec2 viewPortRegionUnscaled = viewPortRegion;
 		float multiplier = 0u;
-		if (framebufferDirty && antialiasing == AntiaAliasing::SSAA2) //TODO: Move enum class
+		if (antialiasing == AntiaAliasing::SSAA2)
 		{
 			multiplier = 2u;
 			viewPortRegion = ImVec2(viewPortRegion.x * multiplier, viewPortRegion.y * multiplier);
 		}
 		if (framebufferDirty || multiplier > 0u || width != size.x || height != size.y) //viewport changed
-		{				
+		{
 			framebufferDirty = false;
 			width = size.x;
 			height = size.y;
 			App->gameFrameBuffer->viewPortWidth = viewPortRegion.x;
-			App->gameFrameBuffer->viewPortHeight = viewPortRegion.y;	
+			App->gameFrameBuffer->viewPortHeight = viewPortRegion.y;
 			if (App->scene->sceneCamera != nullptr)
 			{
 				App->scene->sceneCamera->aspectRatio = viewPortRegion.x / viewPortRegion.y;

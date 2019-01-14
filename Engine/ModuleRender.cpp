@@ -201,10 +201,10 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 	}
 	glDisable(GL_BLEND);
 
-	frameBuffer->UnBind();  // Draw gBuffer
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer->framebuffer); //Bind to draw deferred 
 	if (renderMode == RenderMode::DEFERRED)
 	{
+		frameBuffer->UnBind();  // Draw gBuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer->framebuffer); //Bind to draw deferred 
 		deferredRenderingQuad->RenderDeferred(frameBuffer, camera, directionals, points, spots);
 	}
 }

@@ -48,8 +48,8 @@ public:
 	float fogQuadratic = 1000.f;
 	unsigned activeLights = 0u;
 
-	//RenderMode renderMode = RenderMode::FORWARD;
-	RenderMode renderMode = RenderMode::DEFERRED;
+	RenderMode renderMode = RenderMode::FORWARD;
+	//RenderMode renderMode = RenderMode::DEFERRED;
 
 private:
 

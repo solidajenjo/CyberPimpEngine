@@ -28,6 +28,8 @@ void SubModuleEditorViewPort::Show()
 {
 	if (enabled)
 	{	
+		ModuleRender::RenderMode currentRenderMode = App->renderer->renderMode;
+		App->renderer->renderMode = ModuleRender::RenderMode::FORWARD; //The editor only on forward render
 		ImGui::Begin(editorModuleName.data(), &enabled);
 		isFocused = ImGui::IsWindowFocused();
 		const char* items[] = { "Translate", "Rotate", "Scale"};
@@ -74,6 +76,7 @@ void SubModuleEditorViewPort::Show()
 		//App->frameBuffer->RecalcFrameBufferTexture(); 
 		App->frameBuffer->Bind();
 		App->renderer->Render(&App->camera->editorCamera, App->frameBuffer);
+		App->frameBuffer->UnBind();
 
 		if (App->editor->gizmosEnabled)
 		{
@@ -96,7 +99,6 @@ void SubModuleEditorViewPort::Show()
 		if (App->spacePartitioning->aabbTreeLighting.showOnEditor)
 			App->spacePartitioning->aabbTreeLighting.Draw();
 		
-		App->frameBuffer->UnBind();
 
 		ImVec2 curPos = ImGui::GetCursorPos();
 		ImVec2 winPos = ImGui::GetWindowPos();
@@ -218,6 +220,8 @@ void SubModuleEditorViewPort::Show()
 			}
 		}
 		ImGui::End();
+		App->renderer->renderMode = currentRenderMode; //Restore game render mode
+
 	}
 }
 
