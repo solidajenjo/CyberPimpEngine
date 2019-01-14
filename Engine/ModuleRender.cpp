@@ -137,7 +137,7 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 			});
 		for (GameObject* go : orderedMeshes)
 		{
-			if (go->enabled && (App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
+			if (go->active && (App->scene->sceneCamera->frustum.Intersects(*go->aaBBGlobal) || App->scene->sceneCamera->frustum.Contains(*go->aaBBGlobal)))
 			{
 				for (Component* comp : go->components)
 				{
@@ -162,7 +162,7 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 		{
 			assert((*it) != nullptr);
 			bool render = true;
-			if (!(*it)->enabled || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects(*(*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains(*(*it)->aaBBGlobal)))
+			if (!(*it)->active || (frustumCulling && App->scene->sceneCamera != nullptr && !App->scene->sceneCamera->frustum.Intersects(*(*it)->aaBBGlobal) && !App->scene->sceneCamera->frustum.Contains(*(*it)->aaBBGlobal)))
 			{
 				render = false;
 			}

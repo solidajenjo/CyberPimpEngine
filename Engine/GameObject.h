@@ -56,7 +56,7 @@ public:
 
 	AABB* aaBB = nullptr;
 	AABB* aaBBGlobal = nullptr;
-	bool enabled = true, selected = false, isRenderizable = false;
+	bool selected = false, isRenderizable = false;
 	
 	char name[1024] = "";
 	char gameObjectUUID[40] = ""; //unique game object id

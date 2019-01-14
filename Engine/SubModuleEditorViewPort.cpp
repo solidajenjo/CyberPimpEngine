@@ -125,7 +125,7 @@ void SubModuleEditorViewPort::Show()
 					float bestDistance = .0f;
 					for each (GameObject* go in intersections)
 					{
-						if (!App->scene->IsRoot(go))
+						if (!App->scene->IsRoot(go) && go->active)
 						{
 							LineSegment localLS = picking;
 							localLS.Transform(go->transform->modelMatrixGlobal.Inverted());
