@@ -77,10 +77,9 @@ void SubModuleEditorViewPort::Show()
 		App->frameBuffer->Bind();
 		App->renderer->Render(&App->camera->editorCamera, App->frameBuffer);
 		App->frameBuffer->UnBind();
-		float3 Z = 200.f * float3(0.f, 0.f, 1.f) * App->appScale;
 		if (App->editor->gizmosEnabled)
 		{			
-			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, 0.f, 1.f * App->appScale, dd::colors::DarkGray);
+			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, -.1f, 1.f * App->appScale, dd::colors::DarkGray);
 
 			float3 x = 200.f * float3(1.f, 0.f, 0.f) * App->appScale; //TODO:Change 200 for global
 			float3 y = 200.f * float3(0.f, 1.f, 0.f) * App->appScale;

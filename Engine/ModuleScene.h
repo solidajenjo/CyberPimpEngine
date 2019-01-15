@@ -68,6 +68,7 @@ public:
 	ComponentCamera* sceneCamera = nullptr;
 	std::map<std::string, GameObject*> sceneGameObjects; //handles all scene game objects
 	std::vector<GameObject*> lightingFakeGameObjects; // handles fake gameobjects to insert lights on the partitioning trees
+	bool isPlaying = false;
 
 private:
 

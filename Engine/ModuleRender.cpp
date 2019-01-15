@@ -186,28 +186,31 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 		}
 	}
 
-	if (renderMode == RenderMode::DEFERRED && alphaAmount > 0u)
+	if (renderMode == RenderMode::DEFERRED)
 	{
 		frameBuffer->UnBind();  // Flush gBuffer to read later
 		frameBuffer->StoreDepth(); //Store gBuffer depth
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer->framebuffer); //Bind to draw deferred 
 		deferredRenderingQuad->RenderDeferred(frameBuffer, camera, directionals, points, spots);
 		frameBuffer->UnBind();
-		frameBuffer->BindAlpha(); //Restore gBuffer depth & binds deferred framebuffer to draw
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		for (int i = alphaAmount - 1; i >= 0 && hasAlpha; --i) //distance ordered guaranted - paint from closest to furthest
+		if (alphaAmount > 0u)
 		{
-			for (Component* comp : alphaRenderizables[i]->components)
+			frameBuffer->BindAlpha(); //Restore gBuffer depth & binds deferred framebuffer to draw
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			for (int i = alphaAmount - 1; i >= 0 && hasAlpha; --i) //distance ordered guaranted - paint from closest to furthest
 			{
-				if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
+				for (Component* comp : alphaRenderizables[i]->components)
 				{
-					((ComponentMesh*)comp)->Render(camera, alphaRenderizables[i]->transform, directionals, points, spots, RenderMode::FORWARD); // alpha materials always forward rendered
+					if (comp->type == Component::ComponentTypes::MESH_COMPONENT)
+					{
+						((ComponentMesh*)comp)->Render(camera, alphaRenderizables[i]->transform, directionals, points, spots, RenderMode::FORWARD); // alpha materials always forward rendered
+					}
 				}
 			}
+			glDisable(GL_BLEND);
 		}
-		glDisable(GL_BLEND);
 		frameBuffer->UnBind();
 	}
 

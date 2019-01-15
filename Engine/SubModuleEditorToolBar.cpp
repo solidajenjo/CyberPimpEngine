@@ -1,5 +1,6 @@
 #include "SubModuleEditorToolBar.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "SubModuleEditorGameViewPort.h"
 #include "Application.h"
 #include "imgui/imgui.h"
@@ -55,5 +56,28 @@ void SubModuleEditorToolBar::Show()
 		ImGui::EndCombo();
 	}
 	ImGui::PopItemWidth();
+	ImGui::SameLine();
+	if (App->scene->isPlaying)
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.1f, .1f, .1f, 1.f));
+	bool b = false;
+	if (ImGui::Button("Play", ImVec2(100, 20)) && !App->scene->isPlaying)
+	{
+		App->scene->SaveScene("/autosave.scn");
+		App->scene->isPlaying = true;
+		b = true;
+	}
+	if (App->scene->isPlaying && !b)
+		ImGui::PopStyleColor();
+	ImGui::SameLine();
+	if (ImGui::Button("Pause", ImVec2(100, 20)))
+	{
+
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop", ImVec2(100, 20)))
+	{
+		App->scene->LoadScene("User Data/autosave.scn");
+		App->scene->isPlaying = false;
+	}
 	ImGui::End();
 }
