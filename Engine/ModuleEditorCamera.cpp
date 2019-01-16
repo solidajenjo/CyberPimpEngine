@@ -33,7 +33,6 @@ update_status ModuleEditorCamera::Update()
 		editorCamera.target = App->scene->selected->aaBBGlobal->CenterPoint();
 	else if (App->scene->selected == nullptr)
 		editorCamera.target = editorCamera.camPos + (editorCamera.frustum.front * App->appScale * 10.f);
-	LOG("%.3f %.3f %.3f", editorCamera.target.x, editorCamera.target.y, editorCamera.target.z);
 	int winX, winY, winSizeX, winSizeY;
 
 	SDL_GetWindowPosition(App->window->window, &winX, &winY);
