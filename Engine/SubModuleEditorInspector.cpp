@@ -32,7 +32,11 @@ void SubModuleEditorInspector::Show()
 				ImGui::Separator();
 				ImGui::Separator();
 				ImGui::Separator();
-				ImGui::Checkbox("Active", &App->scene->selected->active);
+				if (ImGui::Checkbox("Active", &App->scene->selected->active))
+				{
+					if (App->scene->selected->fakeGameObjectReference != nullptr)
+						App->scene->selected->fakeGameObjectReference->active = App->scene->selected->active;
+				}
 				ImGui::SameLine();
 				if (ImGui::Checkbox("Static", &App->scene->selected->isStatic))
 				{

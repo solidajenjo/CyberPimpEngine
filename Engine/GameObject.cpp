@@ -231,6 +231,7 @@ bool GameObject::UnSerialize(rapidjson::Value &value)
 				fgo->components.push_back(newLight);
 				fgo->layer = GameObject::GameObjectLayers::LIGHTING;
 				fgo->isFake = true;
+				fgo->active = active;
 				fakeGameObjectReference = fgo;
 				App->scene->InsertFakeGameObject(fgo);
 				hasLights = true;

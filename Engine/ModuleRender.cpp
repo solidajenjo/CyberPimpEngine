@@ -117,19 +117,22 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 	std::vector<ComponentLight*> spots;
 	for (GameObject* go : lightIntersections)
 	{
-		ComponentLight* cL = (ComponentLight*)go->components.front();
-
-		switch (cL->lightType)
+		if (go->active)
 		{
-		case ComponentLight::LightTypes::DIRECTIONAL:
-			directionals.push_back(cL);
-			break;
-		case ComponentLight::LightTypes::POINT:
-			points.push_back(cL);
-			break;
-		case ComponentLight::LightTypes::SPOT:
-			spots.push_back(cL);
-			break;
+			ComponentLight* cL = (ComponentLight*)go->components.front();
+
+			switch (cL->lightType)
+			{
+			case ComponentLight::LightTypes::DIRECTIONAL:
+				directionals.push_back(cL);
+				break;
+			case ComponentLight::LightTypes::POINT:
+				points.push_back(cL);
+				break;
+			case ComponentLight::LightTypes::SPOT:
+				spots.push_back(cL);
+				break;
+			}
 		}
 	}
 
