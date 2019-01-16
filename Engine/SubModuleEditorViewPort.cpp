@@ -81,7 +81,7 @@ void SubModuleEditorViewPort::Show()
 		{			
 			dd::xzSquareGrid(-200.f * App->appScale, 200.f * App->appScale, -.1f, 1.f * App->appScale, dd::colors::DarkGray);
 
-			float3 x = 200.f * float3(1.f, 0.f, 0.f) * App->appScale; //TODO:Change 200 for global
+			float3 x = 200.f * float3(1.f, 0.f, 0.f) * App->appScale; 
 			float3 y = 200.f * float3(0.f, 1.f, 0.f) * App->appScale;
 			float3 z = 200.f * float3(0.f, 0.f, 1.f) * App->appScale;
 			dd::line(x * App->appScale, float3(0.f, 0.f, 0.f), dd::colors::Red);

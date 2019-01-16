@@ -12,12 +12,15 @@ void ModuleFrameBuffer::Start()
 	if (framebuffer == 0)
 	{
 		glGenFramebuffers(1, &framebuffer);
+		glGenFramebuffers(1, &msaa_framebuffer);
 		glGenFramebuffers(1, &gDepthframebuffer);
 
 		glGenRenderbuffers(1, &depthRenderbuffer);
 		glGenRenderbuffers(1, &gDepthRenderedBuffer);
 		glGenRenderbuffers(1, &renderedBufferRenderer);
 		glGenRenderbuffers(1, &alphaBufferRenderer);
+		glGenRenderbuffers(1, &msaa_depthRenderbuffer);
+		glGenRenderbuffers(1, &msaa_renderedBufferRenderer);
 		// generate textures
 		glGenTextures(1, &renderedBuffer);
 		glGenTextures(1, &positionBuffer);
@@ -37,8 +40,14 @@ bool ModuleFrameBuffer::CleanUp()
 {
 	LOG("Cleaning Module Framebuffer");
 	glDeleteFramebuffers(1, &framebuffer);
-	glDeleteTextures(1, &texColorBuffer); //TODO:delete textures
-	LOG("Cleaning Module Framebuffer. Done"); //TODO:create framebuffer object
+	glDeleteFramebuffers(1, &msaa_framebuffer);
+	glDeleteFramebuffers(1, &gDepthframebuffer);
+	glDeleteTextures(1, &renderedBuffer);
+	glDeleteTextures(1, &positionBuffer);
+	glDeleteTextures(1, &normalsBuffer);
+	glDeleteTextures(1, &specularBuffer);
+	glDeleteTextures(1, &texColorBuffer);
+	LOG("Cleaning Module Framebuffer. Done"); 
 	return true;
 }
 
@@ -101,22 +110,48 @@ bool ModuleFrameBuffer::RecalcFrameBufferTexture()
 	}
 	else
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER, renderedBufferRenderer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, viewPortWidth, viewPortHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBufferRenderer);
+		if (msaa)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, renderedBufferRenderer);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, viewPortWidth, viewPortHeight);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBufferRenderer);
 
-		glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewPortWidth, viewPortHeight);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+			glBindTexture(GL_TEXTURE_2D, renderedBuffer);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewPortWidth, viewPortHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedBuffer, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glBindTexture(GL_TEXTURE_2D, renderedBuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewPortWidth, viewPortHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedBuffer, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
-		glDrawBuffers(1, attachments);
+			glBindFramebuffer(GL_FRAMEBUFFER, msaa_framebuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, msaa_depthRenderbuffer);
+			glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, viewPortWidth, viewPortHeight);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, msaa_depthRenderbuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, msaa_renderedBufferRenderer);
+			glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA, viewPortWidth, viewPortHeight);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, msaa_renderedBufferRenderer);
+
+			glDrawBuffer(GL_COLOR_ATTACHMENT0);
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+			glBindRenderbuffer(GL_RENDERBUFFER, renderedBufferRenderer);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, viewPortWidth, viewPortHeight);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderedBufferRenderer);
+
+			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewPortWidth, viewPortHeight);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+
+			glBindTexture(GL_TEXTURE_2D, renderedBuffer);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewPortWidth, viewPortHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedBuffer, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glDrawBuffer(GL_COLOR_ATTACHMENT0);
+		}
+
 	}
 	
 
@@ -140,7 +175,17 @@ void ModuleFrameBuffer::StoreDepth() const
 
 void ModuleFrameBuffer::Bind() const
 {
-	if (framebuffer != 0)
+	if (msaa)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glViewport(0, 0, viewPortWidth, viewPortHeight);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, msaa_framebuffer);
+		glViewport(0, 0, viewPortWidth, viewPortHeight);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	else
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 		glViewport(0, 0, viewPortWidth, viewPortHeight);
@@ -159,6 +204,12 @@ void ModuleFrameBuffer::BindAlpha() const
 
 void ModuleFrameBuffer::UnBind() const
 {		
+	if (msaa)
+	{
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, msaa_framebuffer);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+		glBlitFramebuffer(0, 0, viewPortWidth, viewPortHeight, 0, 0, viewPortWidth, viewPortHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

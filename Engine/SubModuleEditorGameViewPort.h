@@ -13,7 +13,8 @@ public:
 	enum class AntiaAliasing
 	{
 		NONE = 0,
-		SSAA2
+		SSAA2,
+		MSAA4,
 	};
 
 	SubModuleEditorGameViewPort(const std::string& editorModuleName) : SubModuleEditor(editorModuleName) {};

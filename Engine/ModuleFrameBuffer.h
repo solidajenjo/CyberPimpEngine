@@ -20,6 +20,7 @@ public:
 //members
 
 	unsigned int framebuffer = 0u;
+	unsigned int msaa_framebuffer = 0u;
 	unsigned int gDepthframebuffer = 0u;
 	
 	unsigned int texColorBuffer = 0u;
@@ -27,16 +28,19 @@ public:
 	unsigned int normalsBuffer = 0u;
 	unsigned int specularBuffer = 0u;
 	unsigned int renderedBuffer = 0u;
-	unsigned int gDepthRenderedBuffer = 0u;
 
-	unsigned int renderedBufferRenderer = 0u;
+	unsigned int gDepthRenderedBuffer = 0u;	
 	unsigned int alphaBufferRenderer = 0u;
 	unsigned int depthRenderbuffer = 0u;
+	unsigned int renderedBufferRenderer = 0u;
+	unsigned int msaa_depthRenderbuffer = 0u;
+	unsigned int msaa_renderedBufferRenderer = 0u;
+
 
 	unsigned int viewPortWidth = 0u;
 	unsigned int viewPortHeight = 0u;
 
-
+	bool msaa = false;
 };
 
 #endif

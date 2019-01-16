@@ -14,7 +14,7 @@ public:
 
 	unsigned toolBarHeight = 60u;
 
-	const char* aa_items[2] = { "None", "SSAAx2" };
+	const char* aa_items[3] = { "None", "SSAAx2", "MSAAx4" };
 	const char* scale_items[4] = { "1", "10", "100", "1000" };
 	const char* scale_item_current = scale_items[0];
 	const char* aa_item_current = aa_items[0];

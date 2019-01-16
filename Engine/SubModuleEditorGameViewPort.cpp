@@ -28,6 +28,11 @@ void SubModuleEditorGameViewPort::Show()
 		}
 		if (framebufferDirty || width != size.x || height != size.y) //viewport changed
 		{
+			if (antialiasing == AntiaAliasing::MSAA4)
+				App->gameFrameBuffer->msaa = true;
+			else
+				App->gameFrameBuffer->msaa = false;
+
 			framebufferDirty = false;
 			width = size.x;
 			height = size.y;
