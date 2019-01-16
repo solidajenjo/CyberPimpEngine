@@ -231,7 +231,6 @@ void ComponentMesh::Render(const ComponentCamera * camera, const Transform* tran
 		break;
 	}
 	
-	//TODO: Send only the really needed uniforms
 	glUniform1f(glGetUniformLocation(program, "appScale"), App->appScale);
 	
 

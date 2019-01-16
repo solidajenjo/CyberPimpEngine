@@ -156,7 +156,7 @@ void Transform::EditorDraw()
 	static float3 oldPos = pos;
 	static float3 oldRot = rot;
 	static float3 oldScl = scl;
-	static bool windowJumped = false; //TODO:REmove static
+	static bool windowJumped = false; 
 	static bool jumpRefresh = false;
 	if (jumpRefresh) //it tooks 2 frames to change the value with the new pos after a big jump
 	{

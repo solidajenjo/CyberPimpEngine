@@ -22,8 +22,7 @@
 #include "ModuleInput.h"
 #include "ModuleTime.h"
 #include "Transform.h"
-#include "TimeClock.h" //TODO: Check if all includes are needed
-
+#include "TimeClock.h" 
 void SubModuleEditorViewPort::Show()
 {
 	if (enabled)
