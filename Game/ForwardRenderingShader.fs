@@ -110,12 +110,11 @@ vec4 spotBlinn(SpotLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex,
 	light_dir = light_dir / distance;
 	vec3 half = normalize(normalize(eye_pos - position) + light_dir);
 
-	vec3 light_direction = normalize(-light.direction);
-	float cos_a = min(1.0, max(0.0, (dot(light_dir, light.direction)-light.outter)/max(0.0001, light.inner-light.outter)));
+	float cos_a = min(1.0, max(0.0, (dot(light_dir, light.direction) - light.outter)/max(0.0001, light.inner - light.outter)));
 	float att = cos_a / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
-	vec4 lambertColor = att * lambert(light_dir, occlusionTex, diffuseTex);
+	vec4 lambertColor = att * lambert(-light_dir, occlusionTex, diffuseTex);
 	vec4 specColor = att * specular(half, specularTex);
-	return (lambertColor + specColor) * vec4(light.color, 1.0f);
+	return (lambertColor + specColor) * vec4(light.color, 1.0f);	
 }
 
 void main()

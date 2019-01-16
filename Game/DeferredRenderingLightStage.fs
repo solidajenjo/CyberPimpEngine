@@ -103,7 +103,7 @@ vec3 spotBlinn(SpotLight light, vec3 light_dir, vec3 eye_pos)
 	vec3 light_direction = normalize(light.direction);
 	float cos_a = min(1.0f, max(0.0f, (dot(light_dir, light.direction)-light.outter)/max(0.0001f, light.inner-light.outter)));
 	float att = cos_a / (light.attenuation[0]  + light.attenuation[1] * distance + light.attenuation[2] * (distance * distance));
-	vec3 lambertColor = att * lambert(light_dir);
+	vec3 lambertColor = att * lambert(-light_dir);
 	vec3 specColor = att * specular(half);
 	return (lambertColor + specColor) * light.color;
 }

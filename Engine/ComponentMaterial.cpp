@@ -186,15 +186,15 @@ bool ComponentMaterial::Release()
 ComponentMaterial * ComponentMaterial::Clone()
 {
 	ComponentMaterial* newMat = new ComponentMaterial(diffuseColor.x, diffuseColor.y, diffuseColor.z, diffuseColor.w);
-	if (texture != nullptr)
+	if (texture != nullptr && strcmp(texture->mapPath, "W_FBACK") != 0 && strcmp(texture->mapPath, "B_FBACK") != 0)
 		newMat->texture = ComponentMap::GetMap(texture->mapPath);
-	if (normal != nullptr)
+	if (normal != nullptr && strcmp(normal->mapPath, "W_FBACK") != 0 && strcmp(normal->mapPath, "B_FBACK") != 0)
 	    newMat->normal = ComponentMap::GetMap(normal->mapPath);
-	if (specular != nullptr)
+	if (specular != nullptr && strcmp(specular->mapPath, "W_FBACK") != 0 && strcmp(specular->mapPath, "B_FBACK") != 0)
 		newMat->specular = ComponentMap::GetMap(specular->mapPath);
-	if (occlusion != nullptr)
+	if (occlusion != nullptr && strcmp(occlusion->mapPath, "W_FBACK") != 0 && strcmp(occlusion->mapPath, "B_FBACK") != 0)
 		newMat->occlusion = ComponentMap::GetMap(occlusion->mapPath);
-	if (emissive != nullptr)
+	if (emissive != nullptr && strcmp(emissive->mapPath, "W_FBACK") != 0 && strcmp(emissive->mapPath, "B_FBACK") != 0)
 		newMat->emissive = ComponentMap::GetMap(emissive->mapPath);
 
 	newMat->program = program;

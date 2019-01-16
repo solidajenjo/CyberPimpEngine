@@ -113,7 +113,6 @@ ComponentLight * ComponentLight::Clone()
 
 bool ComponentLight::ConeContainsAABB(const AABB &aabb) const
 {
-	//TODO:Update lighting aabb tree
 	float3 lightPos = owner->transform->getGlobalPosition();
 	//check if spot light center passes through the aabb
 	LineSegment line;

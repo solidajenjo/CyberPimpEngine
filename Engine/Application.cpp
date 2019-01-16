@@ -50,6 +50,7 @@ bool Application::Init()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 	
+	App->scene->LoadScene("Assignment2 scene");
 	return ret;
 }
 
