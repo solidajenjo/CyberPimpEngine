@@ -16,7 +16,7 @@ out vec3 normal;
 void main()
 {
 	position = (model*vec4(vertex_position, 1.0)).xyz;
-	normal = normalize(inverse(mat3(model)) * vertex_normal);
+	normal = mat3(transpose(inverse(model))) * vertex_normal;
     gl_Position = proj*view*model*vec4(vertex_position, 1.0);
 		
    	UV0 = vertex_uv0;

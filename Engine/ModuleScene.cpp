@@ -493,9 +493,9 @@ void ModuleScene::DrawNode(GameObject* gObj, bool isWorld)
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("YES", ImVec2(100, 20)))
-				{					
+				{				
 					DeleteGameObject(gObj);
-					selected = nullptr;		
+					selected = nullptr;							
 					App->spacePartitioning->kDTree.Calculate();
 					ImGui::CloseCurrentPopup();
 				}
@@ -584,6 +584,7 @@ void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
 	std::stack<GameObject*> S;
 	std::stack<GameObject*> DFS; // start the destroy from the leaves of the tree and upwards to avoid crashes
 	S.push(go);
+	DFS.push(go);
 	while (!S.empty())
 	{
 		GameObject* node = S.top();
@@ -600,8 +601,7 @@ void ModuleScene::DeleteGameObject(GameObject* go, bool isAsset)
 		DestroyGameObject(DFS.top());
 		RELEASE(DFS.top());
 		DFS.pop();
-	}
-	RELEASE(go); 	
+	} 	
 }
 
 bool ModuleScene::MakeParent(const std::string &parentUUID, GameObject * son)

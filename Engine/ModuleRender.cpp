@@ -96,7 +96,7 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 	activeLights = lightIntersections.size();
 
 	//Separate lights by type
-	std::vector<ComponentLight*> directionals; //TODO: Remove push_backs
+	std::vector<ComponentLight*> directionals; 
 	std::vector<ComponentLight*> points;
 	std::vector<ComponentLight*> spots;
 	for (GameObject* go : lightIntersections)
