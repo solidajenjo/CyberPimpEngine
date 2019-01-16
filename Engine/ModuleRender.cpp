@@ -87,6 +87,22 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 {
 	BROFILER_CATEGORY("Render", Profiler::Color::Aquamarine);
 	assert(camera != nullptr);
+
+	//update light spheres
+	for (GameObject* fgo : App->scene->lightingFakeGameObjects)
+	{
+		ComponentLight* cL = (ComponentLight*)fgo->components.front();
+		switch (cL->lightType)
+		{
+		case ComponentLight::LightTypes::POINT:
+			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
+			break;
+		case ComponentLight::LightTypes::SPOT:
+			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition() + cL->owner->transform->front * cL->spotDistance;
+			break;
+		}
+	}
+
 	std::unordered_set<GameObject*> lightIntersections;
 	if (App->scene->sceneCamera != nullptr)
 		App->spacePartitioning->aabbTreeLighting.GetIntersections(App->scene->sceneCamera->frustum, lightIntersections);
@@ -109,11 +125,9 @@ void ModuleRender::Render(const ComponentCamera* camera, const ModuleFrameBuffer
 			directionals.push_back(cL);
 			break;
 		case ComponentLight::LightTypes::POINT:
-			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition();
 			points.push_back(cL);
 			break;
 		case ComponentLight::LightTypes::SPOT:
-			cL->pointSphere.pos = cL->owner->transform->getGlobalPosition() + cL->owner->transform->front * cL->spotDistance;
 			spots.push_back(cL);
 			break;
 		}
