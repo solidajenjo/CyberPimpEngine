@@ -298,6 +298,7 @@ void GameObject::PropagateStaticCheck()
 	App->spacePartitioning->aabbTree.CleanUp();
 	App->spacePartitioning->aabbTree.Init(GameObject::GameObjectLayers::WORLD_VOLUME);
 	App->spacePartitioning->aabbTree.Calculate();
+	App->spacePartitioning->aabbTreeLighting.CleanUp();
 	App->spacePartitioning->aabbTreeLighting.Init(GameObject::GameObjectLayers::LIGHTING);
 	App->spacePartitioning->aabbTreeLighting.Calculate();
 }
