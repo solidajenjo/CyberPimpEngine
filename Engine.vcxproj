@@ -261,6 +261,7 @@
     <ClInclude Include="Engine\ModuleEditor.h" />
     <ClInclude Include="Engine\ModuleFileSystem.h" />
     <ClInclude Include="Engine\ModuleFrameBuffer.h" />
+    <ClInclude Include="Engine\ModuleGamePlaySystem.h" />
     <ClInclude Include="Engine\ModuleProgram.h" />
     <ClInclude Include="Engine\ModuleScene.h" />
     <ClInclude Include="Engine\ModuleSpacePartitioning.h" />
@@ -341,6 +342,7 @@
     <ClCompile Include="Engine\ModuleEditor.cpp" />
     <ClCompile Include="Engine\ModuleFileSystem.cpp" />
     <ClCompile Include="Engine\ModuleFrameBuffer.cpp" />
+    <ClCompile Include="Engine\ModuleGamePlaySystem.cpp" />
     <ClCompile Include="Engine\ModuleProgram.cpp" />
     <ClCompile Include="Engine\ModuleScene.cpp" />
     <ClCompile Include="Engine\ModuleSpacePartitioning.cpp" />

@@ -236,6 +236,9 @@
     <ClCompile Include="Engine\AABBTree.cpp">
       <Filter>SpacePartitioners</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ModuleGamePlaySystem.cpp">
+      <Filter>EngineModules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Application.h">
@@ -858,6 +861,9 @@
     </ClInclude>
     <ClInclude Include="Engine\AABBTree.h">
       <Filter>SpacePartitioners</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ModuleGamePlaySystem.h">
+      <Filter>EngineModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
