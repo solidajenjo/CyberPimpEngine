@@ -57,6 +57,8 @@ public:
 	unsigned nNormals = 0;	
 	std::vector<float3> meshVertices;
 	std::vector<float3> meshNormals;
+	std::vector<float3> meshTangents;
+	std::vector<float3> meshBiTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
 

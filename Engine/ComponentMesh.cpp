@@ -8,6 +8,7 @@
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
 #include "ModuleScene.h"
+#include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleFrameBuffer.h"
 #include "imgui/imgui.h"
@@ -97,6 +98,118 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 	for (unsigned i = 0u; i < nIndices; ++i)
 	{
 		meshIndices[i] = mesh->triangles[i];
+
+	}
+
+	//calculate tangent & bitangent
+	assert(nIndices % 3 == 0);
+
+	meshTangents.resize(meshVertices.size(), float3::zero);
+	meshBiTangents.resize(meshVertices.size(), float3::zero);	
+
+	for (unsigned i = 0u; i < nIndices; i += 3)
+	{
+		{
+			float3 tangent, bitangent;
+			unsigned vIndex1 = meshIndices[i];
+			unsigned vIndex2 = meshIndices[i + 1];
+			unsigned vIndex3 = meshIndices[i + 2];
+
+			float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+			float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+			float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+
+			float2 deltaUV1 = UV1 - UV;
+			float2 deltaUV2 = UV2 - UV;
+
+			float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+			float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+
+			float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+			tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+			tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+			tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+			tangent = tangent.Normalized();
+
+			bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+			bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+			bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+			bitangent = bitangent.Normalized();
+
+			meshTangents[vIndex1] = meshTangents[vIndex1] + tangent;
+			meshBiTangents[vIndex1] = meshBiTangents[vIndex1] + bitangent;
+		}
+
+		{
+			float3 tangent, bitangent;
+			unsigned vIndex1 = meshIndices[i + 1];
+			unsigned vIndex2 = meshIndices[i];
+			unsigned vIndex3 = meshIndices[i + 2];
+
+			float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+			float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+			float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+
+			float2 deltaUV1 = UV1 - UV;
+			float2 deltaUV2 = UV2 - UV;
+
+			float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+			float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+
+			float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+			tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+			tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+			tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+			tangent = tangent.Normalized();
+
+			bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+			bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+			bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+			bitangent = bitangent.Normalized();
+
+			meshTangents[vIndex1] = meshTangents[vIndex1] + tangent;
+			meshBiTangents[vIndex1] = meshBiTangents[vIndex1] + bitangent;
+		}
+
+		{
+			float3 tangent, bitangent;
+			unsigned vIndex1 = meshIndices[i + 2];
+			unsigned vIndex2 = meshIndices[i + 1];
+			unsigned vIndex3 = meshIndices[i];
+
+			float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+			float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+			float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+
+			float2 deltaUV1 = UV1 - UV;
+			float2 deltaUV2 = UV2 - UV;
+
+			float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+			float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+
+			float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+			tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+			tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+			tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+			tangent = tangent.Normalized();
+
+			bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+			bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+			bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+			bitangent = bitangent.Normalized();
+
+			meshTangents[vIndex1] = meshTangents[vIndex1] + tangent;
+			meshBiTangents[vIndex1] = meshBiTangents[vIndex1] + bitangent;
+		}
+	}
+
+	for (unsigned i = 0u; i < nVertices; ++i)
+	{
+		meshTangents[i] = meshTangents[i].Normalized();
+		meshBiTangents[i] = meshBiTangents[i].Normalized();
 	}
 
 	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f); // create material	
@@ -269,6 +382,14 @@ void ComponentMesh::Render(const ComponentCamera * camera, const Transform* tran
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, material->specular->mapId);
 	}
+	
+	if (material->normal != nullptr && material->normal->mapId > 0)
+	{
+		glUniform1i(glGetUniformLocation(program, "mat.normalMap"), 3);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, material->normal->mapId);
+	}
+
 
 
 	glUniform4f(glGetUniformLocation(program, "mat.diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, material->diffuseColor.w);
@@ -292,6 +413,18 @@ void ComponentMesh::Render(const ComponentCamera * camera, const Transform* tran
 		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
 	}
 
+	//normal subroutine selection
+	unsigned normalSR;
+
+	if (material->normal->mapId == App->textures->whiteFallback || material->normal->mapId == App->textures->blackFallback)
+		normalSR = glGetSubroutineIndex(program, GL_FRAGMENT_SHADER, "modelNormal");
+	else
+		normalSR = glGetSubroutineIndex(program, GL_FRAGMENT_SHADER, "useNormalMap");
+
+	unsigned indices[1] = { normalSR };
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, indices);
+
+	//draw 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
 	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
@@ -457,9 +590,12 @@ void ComponentMesh::SendToGPU()
 	if (VAO > 0) //only once at gpu 
 		return;
 	GLuint vbo, vao, vio;
-	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices);
+	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices) + (sizeof(float3) * 2 * nVertices);
 	unsigned offsetTexCoords = nVertices * sizeof(float3);
 	unsigned offsetNormals = offsetTexCoords + (nVertices * sizeof(float) * 2);
+	unsigned offsetTangents = offsetNormals + (nVertices * sizeof(float3));
+	unsigned offsetBiTangents = offsetTangents + (nVertices * sizeof(float3));
+
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &vio);
@@ -472,6 +608,13 @@ void ComponentMesh::SendToGPU()
 	
 	if (meshNormals.size() > 0)
 		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(float3) * meshNormals.size(), &meshNormals[0]);
+
+	if (meshTangents.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(float3) * meshTangents.size(), &meshTangents[0]);
+
+	if (meshBiTangents.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetBiTangents, sizeof(float3) * meshBiTangents.size(), &meshBiTangents[0]);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * nIndices, &meshIndices[0], GL_STATIC_DRAW);
 
@@ -481,7 +624,10 @@ void ComponentMesh::SendToGPU()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)offsetTexCoords);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,	0, (void*)offsetNormals);
-
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetTangents);
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetBiTangents);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
