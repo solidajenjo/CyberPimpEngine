@@ -67,6 +67,7 @@ in vec3 normalIn;
 in vec3 position;
 in vec3 tan;
 in vec3 bitan;
+in mat4 Mmodel;
 
 vec3 normal;
 
@@ -82,8 +83,7 @@ subroutine (NormalSubroutine) vec3 useNormalMap()
 
 	vec3 T = normalize(tan);
 	vec3 B = normalize(bitan);
-	vec3 N = normalize(normalM);
-	
+	vec3 N = normalize(normalIn);	
 	mat3 TBN = mat3(T, B, N);
 
 	return normalize(TBN * normalM);
@@ -91,7 +91,8 @@ subroutine (NormalSubroutine) vec3 useNormalMap()
 subroutine (NormalSubroutine) vec3 modelNormal()
 {
 	return normalIn;
-}
+}
+
 
 //lighting computation
 

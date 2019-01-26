@@ -46,6 +46,8 @@ public:
 	bool Release() override;
 	void SendToGPU();
 	void ReleaseFromGPU();
+	void CalculateTangents();
+	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
 
 //members
 
@@ -58,7 +60,6 @@ public:
 	std::vector<float3> meshVertices;
 	std::vector<float3> meshNormals;
 	std::vector<float3> meshTangents;
-	std::vector<float3> meshBiTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
 
