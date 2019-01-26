@@ -1,5 +1,5 @@
 #include "ModuleGamePlaySystem.h"
-#include <windows.h>
+#include <Windows.h>
 #include "../DLLGamePlaySystem/DLLGamePlaySystem.h"
 
 bool ModuleGamePlaySystem::Init()
@@ -9,7 +9,7 @@ bool ModuleGamePlaySystem::Init()
 
 update_status ModuleGamePlaySystem::Update()
 {	
-	HINSTANCE dll;
+/*	HINSTANCE dll;
 	SET_CALLBACK SetCallBack;
 	HELLO_WORLD HelloWorld;
 
@@ -36,7 +36,7 @@ update_status ModuleGamePlaySystem::Update()
 
 		FreeLibrary(dll);
 	}
-
+	*/
 	return UPDATE_CONTINUE;
 }
 
