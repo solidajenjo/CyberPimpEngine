@@ -95,7 +95,16 @@ void SubModuleEditorViewPort::Show()
 			{
 				dd::aabb(App->scene->selected->aaBBGlobal->minPoint, App->scene->selected->aaBBGlobal->maxPoint, dd::colors::Yellow);				
 			}
+			if (App->scene->selected != nullptr && App->scene->selected->isInstantiated)
+			{
+				float3 selectedGlobalPosition = App->scene->selected->transform->getGlobalPosition();
+				dd::line(selectedGlobalPosition, selectedGlobalPosition + App->scene->selected->transform->front * App->appScale, dd::colors::Blue);
+				dd::line(selectedGlobalPosition, selectedGlobalPosition + App->scene->selected->transform->up * App->appScale, dd::colors::Green);
+				dd::line(selectedGlobalPosition, selectedGlobalPosition + App->scene->selected->transform->right * App->appScale, dd::colors::Red);
+			}
+
 			App->debugDraw->Draw(&App->camera->editorCamera, App->frameBuffer->framebuffer, App->frameBuffer->viewPortWidth, App->frameBuffer->viewPortHeight);
+			
 			
 		}			
 		if (App->spacePartitioning->kDTree.showOnEditor)

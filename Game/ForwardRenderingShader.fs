@@ -1,4 +1,4 @@
-#version 330 core
+#version 400 core
 
 struct Material
 {
@@ -6,6 +6,7 @@ struct Material
 	sampler2D emissiveMap;
 	sampler2D occlusionMap;
 	sampler2D specularMap;
+	sampler2D normalMap;
 	vec4 diffuseColor;
 	vec4 emissiveColor;
 	vec4 specularColor;	
@@ -62,9 +63,38 @@ uniform mat4 view;
 layout (location = 0) out vec4 color;
 
 in vec2 UV0;
-in vec3 normal;
+in vec3 normalIn;
 in vec3 position;
+in vec3 tan;
+in vec3 bitan;
+in mat4 Mmodel;
 
+vec3 normal;
+
+//uniform subroutines
+
+subroutine vec3 NormalSubroutine(); // Signature
+subroutine uniform NormalSubroutine getNormal; // pointer
+
+subroutine (NormalSubroutine) vec3 useNormalMap()
+{
+	vec3 normalM = texture(mat.normalMap, UV0).xyz;
+	normalM = normalize(normalM * 2.0 - 1.0);
+
+	vec3 T = normalize(tan);
+	vec3 B = normalize(bitan);
+	vec3 N = normalize(normalIn);	
+	mat3 TBN = mat3(T, B, N);
+
+	return normalize(TBN * normalM);
+}
+subroutine (NormalSubroutine) vec3 modelNormal()
+{
+	return normalIn;
+}
+
+
+//lighting computation
 
 vec4 lambert(vec3 light_dir, vec4 occlusionTex, vec4 diffuseTex)
 {
@@ -117,8 +147,12 @@ vec4 spotBlinn(SpotLight light, vec3 light_dir, vec3 eye_pos, vec4 occlusionTex,
 	return (lambertColor + specColor) * vec4(light.color, 1.0f);	
 }
 
+//main program
+
 void main()
 {
+
+	normal = getNormal();
 
 	vec4 occlusionTex = texture2D(mat.occlusionMap, UV0);		
 	vec4 emissiveTex = texture2D(mat.emissiveMap, UV0);
@@ -149,7 +183,6 @@ void main()
 	float fragDistance = length(position - eye_pos);
 	float fogAmount = fogParameters.fogFalloff * fragDistance + fogParameters.fogFalloff * fogParameters.fogQuadratic * fragDistance * fragDistance;	
 
-	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);
-
-	//color = vec4(normal.x, normal.y, normal.z, 1);
+	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);	
+	
 }

@@ -1207,12 +1207,12 @@ int PHYSFS_init(const char *argv0)
     baseDir = calculateBaseDir(argv0);
     if (!baseDir) goto initFailed;
 
-    userDir = __PHYSFS_platformCalcUserDir();
-    if (!userDir) goto initFailed;
+    //userDir = __PHYSFS_platformCalcUserDir();
+    //if (!userDir) goto initFailed;
 
     /* Platform layer is required to append a dirsep. */
     assert(baseDir[strlen(baseDir) - 1] == __PHYSFS_platformDirSeparator);
-    assert(userDir[strlen(userDir) - 1] == __PHYSFS_platformDirSeparator);
+    //assert(userDir[strlen(userDir) - 1] == __PHYSFS_platformDirSeparator);
 
     if (!initStaticArchivers()) goto initFailed;
 

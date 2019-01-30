@@ -12,6 +12,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleGamePlaySystem.h"
 #include "Module.h"
 #include "Brofiler/ProfilerCore/Brofiler.h"
 using namespace std;
@@ -33,6 +34,7 @@ Application::Application()
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(debugDraw = new ModuleDebugDraw());	
+	modules.push_back(gamePlaySystem = new ModuleGamePlaySystem());	
 }
 
 Application::~Application()

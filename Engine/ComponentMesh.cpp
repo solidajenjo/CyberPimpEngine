@@ -8,6 +8,7 @@
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
 #include "ModuleScene.h"
+#include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleFrameBuffer.h"
 #include "imgui/imgui.h"
@@ -97,10 +98,72 @@ void ComponentMesh::FromPrimitive(Primitives primitive)
 	for (unsigned i = 0u; i < nIndices; ++i)
 	{
 		meshIndices[i] = mesh->triangles[i];
+
 	}
+
+	//calculate tangent
+	
+	CalculateTangents();
 
 	material = new ComponentMaterial(1.f, 1.f, 1.f, 1.f); // create material	
 	delete mesh;
+}
+
+void ComponentMesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3)
+{
+	float3 tangent;
+
+	float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+	float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+	float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+
+	float2 deltaUV1 = UV1 - UV;
+	float2 deltaUV2 = UV2 - UV;
+
+	float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+	float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+
+	float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+	tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+	tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+	tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+	tangent = tangent.Normalized();
+
+	meshTangents[vIndex1] = meshTangents[vIndex1] + tangent;
+}
+
+void ComponentMesh::CalculateTangents()
+{
+	assert(nIndices % 3 == 0);
+
+	meshTangents.resize(meshVertices.size(), float3::zero);
+
+	for (unsigned i = 0u; i < nIndices; i += 3) //for all the triangles of the mesh
+	{
+		//calculate tangents for each vertex of the triangle
+		//V1
+		unsigned vIndex1 = meshIndices[i];
+		unsigned vIndex2 = meshIndices[i + 1];
+		unsigned vIndex3 = meshIndices[i + 2];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+		//V2
+		vIndex1 = meshIndices[i + 1];
+		vIndex2 = meshIndices[i];
+		vIndex3 = meshIndices[i + 2];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+		//V3
+		vIndex1 = meshIndices[i + 2];
+		vIndex2 = meshIndices[i + 1];
+		vIndex3 = meshIndices[i];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+
+	}
+
+	for (unsigned i = 0u; i < nVertices; ++i)
+	{
+		meshTangents[i] = meshTangents[i].Normalized();
+	}
 }
 
 
@@ -269,6 +332,14 @@ void ComponentMesh::Render(const ComponentCamera * camera, const Transform* tran
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, material->specular->mapId);
 	}
+	
+	if (material->normal != nullptr && material->normal->mapId > 0)
+	{
+		glUniform1i(glGetUniformLocation(program, "mat.normalMap"), 4);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, material->normal->mapId);
+	}
+
 
 
 	glUniform4f(glGetUniformLocation(program, "mat.diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, material->diffuseColor.w);
@@ -292,6 +363,18 @@ void ComponentMesh::Render(const ComponentCamera * camera, const Transform* tran
 		glUniform1f(glGetUniformLocation(program, "fogParameters.fogQuadratic"), .0f);
 	}
 
+	//normal subroutine selection
+	unsigned normalSR;
+
+	if (material->normal->mapId == App->textures->whiteFallback || material->normal->mapId == App->textures->blackFallback)
+		normalSR = glGetSubroutineIndex(program, GL_FRAGMENT_SHADER, "modelNormal");
+	else
+		normalSR = glGetSubroutineIndex(program, GL_FRAGMENT_SHADER, "useNormalMap");
+
+	unsigned indices[1] = { normalSR };
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, indices);
+
+	//draw 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIndex);
 	glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, 0);
@@ -456,10 +539,16 @@ void ComponentMesh::SendToGPU()
 {
 	if (VAO > 0) //only once at gpu 
 		return;
+
+	if (meshTangents.size() == 0) //if the mesh don't have tangents -> calculate them
+		CalculateTangents();
+
 	GLuint vbo, vao, vio;
-	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices);
+	unsigned totalSize = (sizeof(float3) * 2 * nVertices) + (sizeof(float) * 2 * nVertices) + (sizeof(float3) * 2 * nVertices);
 	unsigned offsetTexCoords = nVertices * sizeof(float3);
 	unsigned offsetNormals = offsetTexCoords + (nVertices * sizeof(float) * 2);
+	unsigned offsetTangents = offsetNormals + (nVertices * sizeof(float3));
+
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &vio);
@@ -472,6 +561,11 @@ void ComponentMesh::SendToGPU()
 	
 	if (meshNormals.size() > 0)
 		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(float3) * meshNormals.size(), &meshNormals[0]);
+
+	if (meshTangents.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(float3) * meshTangents.size(), &meshTangents[0]);
+	
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * nIndices, &meshIndices[0], GL_STATIC_DRAW);
 
@@ -481,6 +575,8 @@ void ComponentMesh::SendToGPU()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)offsetTexCoords);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,	0, (void*)offsetNormals);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetTangents);
 
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

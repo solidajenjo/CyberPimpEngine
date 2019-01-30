@@ -20,6 +20,7 @@ class ModuleFrameBuffer;
 class ModuleDebugDraw;
 class ModuleFileSystem;
 class ModuleSpacePartitioning;
+class ModuleGamePlaySystem;
 
 class Application
 {
@@ -47,6 +48,7 @@ public:
 	ModuleDebugDraw* debugDraw = nullptr;
 	ModuleFileSystem* fileSystem = nullptr;
 	ModuleSpacePartitioning* spacePartitioning = nullptr;
+	ModuleGamePlaySystem* gamePlaySystem = nullptr;
 
 	bool exit = false;
 	ImGuiTextBuffer* consoleBuffer = nullptr;
